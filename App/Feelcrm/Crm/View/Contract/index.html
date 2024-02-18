@@ -1,0 +1,407 @@
+<extend name="Public:common"/>
+
+<block name="content">
+
+    <div class="list-main layui-form">
+
+		<div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('CONTRACT_LIST')}<span class="page-content">{:L('TOTAL_RECORDS')}：<span>{$pageCount|default='0'}</span> {:L('STRIP')}</span></li>
+
+            </ul>
+
+        </div>
+
+		<include file="Public/filterViewRange" />
+
+		<div class="list-filter" data-type="highKeyword[time_range_type]">
+
+			<div class="list-filter-tit">{:L('SELECT_TIME')}</div>
+
+			<include file="Public/searchTimeRange" />
+
+			<div data-value="create_time" class="filter-time-type layui-form-radio mt0 <eq name='highKeyword[time_range_type]' value='create_time'>layui-form-radioed</eq><empty name='highKeyword[time_range_type]'>layui-form-radioed</empty> ml15 fts13 gray6">
+				<i class="iconfont <eq name='highKeyword[time_range_type]' value='create_time'>icon-xuanzhong<else/><empty name='highKeyword[time_range_type]'>icon-xuanzhong<else/>icon-xuanze</empty></eq> fts15"></i>
+				<div>{:L('CREATE_TIME')}</div>
+			</div>
+
+			<volist name="filterlist" id="vo">
+
+				<eq name="vo.form_type" value="date">
+
+					<div data-value="{$vo.form_name}" class="filter-time-type <eq name='highKeyword[time_range_type]' value='$vo.form_name'>layui-form-radioed</eq> layui-form-radio mt0 fts13 gray6">
+						<i class="iconfont <eq name='highKeyword[time_range_type]' value='$vo.form_name'>icon-xuanzhong<else/>icon-xuanze</eq> fts15"></i>
+						<div>{$vo.form_description}</div>
+					</div>
+
+				</eq>
+
+			</volist>
+
+		</div>
+
+        <div class="list-header clearfix">
+
+            <div class="header-left">
+
+                {:FEELCRM('Contract/create','',L('ADD_CONTRACT'),'item-deleteBtn','','iconfont icon-xinzeng')}
+
+            </div>
+
+            <div class="header-right">
+
+				<div class="customer-listOperate">
+
+					<div class="listOperate">
+
+						<div class="layui-form">
+
+							<select class="layui-input" disabled><option>{:L('OPERATION')}</option></select>
+
+						</div>
+
+						<div class="operate hidden">
+
+							<notempty name="isDelContractAuth">
+
+								<a href="javascript:" data-href="{:U('Contract/delete')}" data-name="{:L('DELETE')}" id="delContract">{:L('DELETE_CONTRACT')}</a>
+
+							</notempty>
+
+							<notempty name="isExportContractAuth">
+
+								<a href="javascript:" title="{:L('EXPORT')}" id="startExport">{:L('EXPORT_DATA')}</a>
+
+							</notempty>
+
+							<notempty name="isImportContractAuth">
+
+								<a href="javascript:" id="uploadFile">{:L('IMPORT_CUSTOMER')}</a>
+
+								<a href="__ROOT__/{$importTemp}" title="{:L('CONTRACT_IMPORT_TEMPLATE')}" download="{:L('CONTRACT_IMPORT_TEMPLATE')}" >{:L('DOWNLOAD_TEMPLATE')}</a>
+
+							</notempty>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<span class="advanced-searc-btn fr" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i> <span>{:L('ADVANCED_SEARCH')}</span></span>
+
+                <form action="{$controllerAndAction}" method="get" class="fr" id="filterForm">
+
+					<input type="hidden" name='highKeyword[condition]' value="1" />
+
+					<input type="hidden" name='customer_auth' value="{$customer_auth}" />
+
+					<input type="hidden" name="highKeyword[start_time]"  value="{$highKeyword.start_time}" />
+
+					<input type="hidden" name="highKeyword[end_time]"  value="{$highKeyword.end_time}" />
+
+					<input type="hidden" name="highKeyword[time_range_type]" value="{$highKeyword.time_range_type}" />
+
+					<!--<include file="Public/searchTimeRange" />-->
+
+					<div class="compact-menu">
+
+						<!--<notempty name="isExportContractAuth">
+
+							<a href="javascript:" title="{:L('EXPORT')}" id="startExport"><i class="iconfont icon-export"></i></a>
+
+						</notempty>
+
+						<a href="javascript:" title="{:L('ADVANCED_SEARCH')}" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i></a>-->
+
+					</div>
+
+                    <div class="compact-search">
+
+                        <i class="iconfont icon-search crmSearchBtn"></i>
+
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="{:L('CONTRACT_NO')}({:L('WITHOUT_PREFIX')})/{:L('CONTRACT_NAME')}" onkeydown="javascript:if (event.keyCode == 13){$(this).parents('form').submit();}" />
+
+                       <!-- <a href="javascript:" class="searchBtn">{:L('SEARCH')}</a>-->
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+		<div id="advanced-search" class="hidden feelcrm-advanced-search feeldesk-form hg100">
+
+			<form action="{$controllerAndAction}" method="get" id="highSearchForm" class="hg100">
+
+				<input type="hidden" name='customer_auth' value="{$customer_auth}" />
+
+			<include file="Public/highKeywordHeader" />
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('OWNED_CUSTOMER')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<empty name="highKeyword.customer_id" >
+
+								<input type="radio" id="selectCustomerInput" class="layui-input" name="highKeyword[customer_id]" title="{:L('NO_CUSTOMER_SELECTED')}" checked value="" readonly />
+
+							<else/>
+
+								<input type="radio" id="selectCustomerInput" class="layui-input" name="highKeyword[customer_id]" title="{:CrmgetFieldName($highKeyword['customer_id'],'customer')}" checked value="{$highKeyword.customer_id}" readonly />
+
+							</empty>
+
+							<div id="selectCustomer" class="feelcrm-commbtn" >{:L('SELECT_CUSTOMER')}</div>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>
+
+					<!--<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('CONTRACT_RESPONSIBLE')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<select name="highKeyword[member_id]" lay-ignore id="select2" >
+
+								<option value="">{:L('SELECT_CONTRACT_RESPONSIBLE')}</option>
+
+								<volist name="members" id="v">
+
+									<option value="{$v.member_id}" <eq name="highKeyword.member_id" value="$v.member_id">selected</eq>>{$v.name}</option>
+
+								</volist>
+
+							</select>
+
+							<script type="text/javascript">
+
+								$("#select2").select2();
+
+							</script>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>-->
+
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('CONTRACT_NO')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							 <input type="text" name="highKeyword[contract_no]" value="{$highKeyword.contract_no}" placeholder="{:L('NOT_CONTRACT_PREFIX')}" class="layui-input">
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('SEARCH_FUZZY_QUERY1')}"></i>
+
+					</div>
+
+					<include file="Public/highKeywordForm" />
+
+				</div>
+
+			</div>
+
+			</form>
+
+		</div>
+
+        <div id='list' class="item-list feelcrm-list">
+
+            <table class="layui-table" lay-skin="line">
+
+                <thead>
+
+                    <tr>
+
+						<th class="checkbox"><input type="checkbox" name="" lay-skin="primary" lay-filter="ListAllChoose"></th>
+
+                       <!-- <th>{:L('CONTRACT_NO')}</th>-->
+
+						<volist name="formList" id="vo">
+							<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+							<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+							<th>{$vo.form_description}</th>
+
+							</if>
+						</volist>
+
+						<th>{:L('OWNED_CUSTOMER')}</th>
+
+						<th>{:L('CREATE_TIME')}</th>
+
+						<th>{:L('LEADER')}</th>
+
+						<th>{:L('FOUNDER')}</th>
+
+						<th>{:L('ENTRY_METHOD')}</th>
+
+						<!--<th class="hidden">{:L('OPERATION')}</th>-->
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <empty name="contract">
+
+                        <tr class="nodata center">
+
+                            <td colspan="11">
+
+                                <p><i class="iconfont icon-nothing fts20"></i></p>
+
+                                <p>{:L('NO_DATA')}</p>
+
+                            </td>
+
+                        </tr>
+
+                    <else />
+
+                        <volist name="contract" id="vo">
+
+                            <tr data-id="{$vo.contract_id|encrypt='CONTRACT'}" data-customer="{$vo.customer_id|encrypt='CUSTOMER'}" data-no="{$vo.contract_prefix}{$vo.contract_no}">
+
+								<td class="checkbox relative">
+
+									<input type="checkbox" name="del[]" lay-skin="primary" value="{$vo.contract_id|encrypt='CONTRACT'}" >
+
+								</td>
+
+                               <!-- <td mini='contract' class="blue8">{$vo.contract_prefix}{$vo.contract_no}</td>-->
+
+								<volist name="formList" id="v">
+									<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+									<if condition="!$v['role_id'] || in_array($index['role_id'],explode(',',$v['role_id']))">
+									<td mini='contract' <eq name="v.form_type" value="textarea">title="{$vo['detail'][$v['form_name']]|strip_tags}"</eq> <eq name='v.form_name' value='name'>class="blue8"</eq> <eq name='v.form_name' value='price'>class="red"</eq>><eq name="v.form_type" value="textarea">{:mb_substr(strip_tags($vo['detail'][$v['form_name']]),0,20)}...<else/>{$vo['detail'][$v['form_name']]}</eq></td>
+
+
+									</if>
+								</volist>
+
+                                <td mini='elseCustomer' class="blue8">{$vo.customer_name}</td>
+
+								<td mini='contract'>{$vo.createtime|getDates}</td>
+
+								<td mini='contract'>{$vo.member_name}</td>
+
+                                <td mini='contract'>{$vo.create_name}</td>
+
+								<td mini='contract'>{:getCrmEntryMethod($vo['entry_method'])}</td>
+
+								<!--<td class="listOperate hidden">
+
+                                    <i class="iconfont icon-dian"></i>
+
+                                    <div class="operate hidden">
+
+                                        {:FEELCRM('contract/edit',['id'=>encrypt($vo['contract_id'],'CONTRACT')],L('EDITOR'))}
+
+                                        {:FEELCRM('contract/delete',['id'=>encrypt($vo['contract_id'],'CONTRACT')],L('DELETE'),'','async')}
+
+
+                                    </div>
+
+                                </td>-->
+
+                            </tr>
+
+                        </volist>
+
+                    </empty>
+
+                </tbody>
+
+            </table>
+
+            <div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+        </div>
+
+        <include file="Public:section" />
+
+    </div>
+
+	<include file="Public/exportpage" />
+
+	<include file="Public/selectCustomer" />
+
+	<script>
+
+		var export_url = "/Contract/export";
+
+		var export_action = "{$Think.ACTION_NAME}";
+
+	</script>
+
+	<script type="text/javascript">
+
+		layui.use('upload', function()
+		{
+			var upload = layui.upload;
+
+			upload.render(
+			{
+				elem:'#uploadFile',
+
+				url: "{:U('Upload/importExcel',['source'=>'contract'])}",
+
+				field:'excel',
+
+				exts: 'xlsx|xls',
+
+				accept:'file',
+
+				before:function()
+				{
+					layer.msg("{:L('IMPORT_LOADING')}",{time:1000000,shift:0,offset:['100px']})
+				},
+				done: function(res)
+				{
+					if(res.error == 1)
+					{
+						layer.msg(res.msg,{icon:1,time:1000,shift:0,offset:['60px']},function()
+						{
+							window.location.href = res.url;
+						});
+					}
+					else
+					{
+						layer.msg(res.msg,{icon:2,time:2000,offset:['60px']});
+					}
+				}
+			})
+		});
+
+	</script>
+
+</block>

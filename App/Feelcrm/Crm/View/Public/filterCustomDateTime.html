@@ -1,0 +1,42 @@
+<div class="list-filter select-fiter" data-type="custom_date_time">
+
+	<div class="list-filter-tit">{:L('TIME_LIMIT')}</div>
+	<div class="list-filter-option <eq name='custom_date_time' value='yesterday'>active</eq>" data-value="yesterday">{:L('YESTERDAY')}</div>
+	<div class="list-filter-option <eq name='custom_date_time' value='today'>active</eq>" data-value="today">{:L('NOWADAYS')}</div>
+	<div class="list-filter-option <eq name='custom_date_time' value='last-week'>active</eq>" data-value="last-week">{:L('LAST_WEEK')}</div>
+	<div class="list-filter-option <eq name='custom_date_time' value='this-week'>active</eq>" data-value="this-week">{:L('THIS_WEEK')}</div>
+	<div class="list-filter-option <eq name='custom_date_time' value='prev-month'>active</eq>" data-value="prev-month">{:L('PREV_MONTH')}</div>
+	<div class="list-filter-option <eq name='custom_date_time' value='this-month'>active</eq>" data-value="this-month">{:L('THIS_MONTH')}</div>
+	<div class="list-filter-option <eq name='custom_date_time' value='this-season'>active</eq>" data-value="this-season">{:L('THIS_SEASON')}</div>
+	<div class="list-filter-option mr20 <eq name='custom_date_time' value='this-year'>active</eq>" data-value="this-year">{:L('THIS_YEAR')}</div>
+	<div class="list-filter-time <notempty name='custom_date_time'><notin name='custom_date_time' value='yesterday,today,last-week,this-week,prev-month,this-month,this-season,this-year'>active</notin></notempty>" id="customDateRange">
+		<input type="text" class="w10 border-none white" <notempty name='custom_date_time'><notin name='custom_date_time' value='yesterday,today,last-week,this-week,prev-month,this-month,this-season,this-year'>value="{$custom_date_time}"</notin></notempty> id="customDateTime" />
+		{:L('CUSTOM_TIME')}
+	</div>
+
+</div>
+
+<script>
+
+	layui.use('laydate',function()
+	{
+		var laydate = layui.laydate;
+
+		var option = {
+			elem:'#customDateTime',
+			eventElem: '#customDateRange',
+			range: true,
+			trigger: 'click',
+			btns: ['clear', 'confirm'],
+			done: function(value)
+			{
+				$("input[name='custom_date_time']").val(value);
+
+				$('#filterForm').submit();
+			}
+		};
+
+		laydate.render(option);
+	})
+
+</script>

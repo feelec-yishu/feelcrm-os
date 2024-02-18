@@ -1,0 +1,113 @@
+<include file="Public/header" />
+
+<div class="feeldesk">
+
+    <header class="hidden">
+
+		<!-- CRM -->
+		<div class="header-tab header-one-tab fts0">
+
+			<div class="tab tab-this">
+
+				<a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/CrmMobile">CRM</a>
+
+			</div>
+
+		</div>
+
+    </header>
+
+
+	<div class="feeldesk-main bgf">
+
+		<div class="mt20 feelcrm-backlog-main" style="color: #fff;text-align: center;line-height: 16vw;font-size: 5.6vw;" >
+			{:C('WEB_TITLE')}
+		</div>
+
+		<div class="fts21 bold mt20">{:L('FUNCTION_MODULE')}</div>
+
+		<div class="feelcrm-function-module mt20">
+
+			<!--线索-->
+			<notempty name="isClueAuth">
+				<li>
+					<a href="{:U('Clue/index')}">
+						<span class="iconfont icon-cloud-search-full yellow2"></span>
+						<span>{:L('CLUE')}</span>
+					</a>
+				</li>
+			</notempty>
+
+			<!--客户-->
+			<notempty name="isCustomerAuth">
+				<li>
+					<a href="{:U('Customer/index')}">
+						<span class="iconfont icon-customer blue6"></span>
+						<span>{:L('CUSTOMER')}</span>
+					</a>
+				</li>
+			</notempty>
+
+			<!--合作伙伴-->
+			<notempty name="isAgentAuth">
+
+				<eq name="crmsite.customerReseller" value="1">
+					<li>
+						<a href="{:U('Customer/agent')}">
+							<span class="iconfont icon-hezuohuobanguanli green6"></span>
+							<span>{:L('DEALER')}</span>
+						</a>
+					</li>
+				</eq>
+			</notempty>
+
+			<!--联系人-->
+			<notempty name="isContacterAuth">
+				<li>
+					<a href="{:U('Customer/contacter')}">
+						<span class="iconfont icon-lianxirenxinxi green1"></span>
+						<span>{:L('CONTACT')}</span>
+					</a>
+				</li>
+			</notempty>
+
+			<!--商机-->
+			<notempty name="isOpportunityAuth">
+				<li>
+					<a href="{:U('Opportunity/index')}">
+						<span class="iconfont icon-shangjitibao violet"></span>
+						<span>{:L('OPPORTUNITY')}</span>
+					</a>
+				</li>
+			</notempty>
+
+			<!--联系记录-->
+			<notempty name="isFollowupAuth">
+				<li>
+					<a href="{:U('Customer/followup')}">
+						<span class="iconfont icon-kehugenjin yellow1"></span>
+						<span>{:L('CONTACT_RECORD')}</span>
+					</a>
+				</li>
+			</notempty>
+
+			<!--合同-->
+			<notempty name="isContractAuth">
+				<li>
+					<a href="{:U('Contract/index')}">
+						<span class="iconfont icon-hetongguanli blue0787f6"></span>
+						<span>{:L('CONTRACT')}</span>
+					</a>
+				</li>
+			</notempty>
+
+			<div class="clear"></div>
+		</div>
+
+	</div>
+
+    <include file="Public/buoy" />
+
+</div>
+
+<include file="Public/footer" />

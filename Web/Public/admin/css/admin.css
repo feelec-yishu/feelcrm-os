@@ -1,0 +1,334 @@
+@import "../../css/common.css";
+
+/*-------------------- 首页头部样式START --------------------*/
+
+.feeldesk-header{position: fixed;width:100%;background: #2b2f3e;height:50px;line-height:50px;z-index:1000;padding: 0 20px}
+
+.feeldesk-header .header-left img{display: inline-block;width:134px;}
+
+.feeldesk-header .header-left div{display: inline-block;color:#fff;margin-left: 30px;}
+
+.feeldesk-header .header-right{position: absolute;right: 0;top: 0;text-align: center;}
+
+.feeldesk-header .header-right .iconfont,.nav-ul-icon .iconfont{font-size: 25px}
+
+.feeldesk-header .header-right .nav{display:inline-block;float:left;position: relative}
+
+.feeldesk-header .header-right .nav .icon-tixing{vertical-align: bottom !important;}
+
+.feeldesk-header .header-right .nav:hover{background: #222731}
+
+.feeldesk-header .header-right .nav>a,.feeldesk-header .header-right .nav i{color:#9e9e9e}
+
+.feeldesk-header .header-right .nav:hover,.feeldesk-header .header-right .nav a:hover,.feeldesk-header .header-right .nav i:hover{color:#fff}
+
+.nav .menu-panel{display:none}
+
+.nav a.item{display:block;padding:0 20px;vertical-align:middle}
+
+.nav .layui-badge{position:absolute;left: 33px;top: 10px;border-radius: 50%;background: #ff7900}
+
+
+/* 功能菜单 */
+
+.func-menu{position: absolute;right: -32px;}
+
+
+/* 语言选择 */
+
+.nav .lang-panel{display:none;position:absolute;right: 0;top: 51px;z-index: 201610;border:none;width:100%;background-color:#000f10;box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);}
+
+
+/* 消息面板*/
+
+.header-right .message-panel a{color:#fff;font-size: 14px}
+
+.header-right .message-panel{position:absolute;right:0;top:51px;background: #222731;width: 360px;z-index: 201610;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.175);-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.175);-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.175);}
+
+.header-right .message-arrow{border-left: 6px solid transparent;border-right: 6px solid transparent;border-bottom: 6px solid #eaedf1;position: absolute;top: -6px;right: 26px;}
+
+.header-right .message-panel .message-header{padding: 0 15px;color: #fff;line-height: 50px;}
+
+.header-right .message-panel .message-header a{color:#3dfdff}
+
+.header-right .message-panel .message-item{height:200px;overflow-y: auto;}
+
+.header-right .message-panel .message-title:hover,.lang-panel ul>li:hover,.personal-menu li:hover{background:#2b2f3e;}
+
+.header-right .message-panel .message-title a{text-align:left;display:inline-block;width:100%;padding:0 10px}
+
+.header-right .message-panel .message-list{color:#428bca}
+
+.header-right .message-panel .message-footer{line-height: 50px;text-align: center;border-top: 1px solid #2b2f3e;}
+
+/* 个人信息 */
+
+.header-right .user img{width:30px;height:30px;border-radius:100%;}
+
+.personal-menu{position: absolute;right: 0;}
+
+.func-menu,.personal-menu{top: 51px;z-index: 201610;border:none;min-width:130px;background-color:#000f10;white-space: nowrap}
+
+.func-menu,.personal-menu a{padding: 0 10px;text-align: left;white-space: nowrap}
+
+.personal-menu a,.lang-panel a {display: block;color:#fff;}
+
+.personal-menu .iconfont{font-size: 20px;margin-right: 10px;}
+
+.personal-menu li:hover .iconfont,.nav-ul-icon .iconfont{color:#fff}
+/*-------------------- 左侧导航栏样式 -------------------- */
+
+.feeldesk-left{position:fixed;width:250px;top: 50px;bottom: 0;z-index: 999;overflow-x: hidden;background: #222731;}
+
+.feeldesk-left-icon{width:55px}
+
+.left-shade{position: fixed;left: 0;top: 0;z-index: 1000;width: 220px;height: 100%;background-color: #000;filter: alpha(opacity=40);opacity: .3;display: none}
+
+/* 一级菜单 */
+
+.feeldesk-left .menu-item{height:100%;}
+
+.menu-item .menu-fold{background:#222731;text-align: center;color:#fff;font-size: 25px;cursor: pointer;line-height: 50px;    border-bottom: 1px solid #41465e;}
+
+.nav-ul{position:relative;padding:0;font-size: 0;box-sizing: border-box!important;}
+
+.nav-li{position:relative;display: block;color:#fff;line-height:50px;font-size:16px;cursor: pointer;vertical-align: middle;margin-bottom: 10px}
+
+.nav-li:hover,.menu-item .menu-fold:hover{background: #2b2f3e}
+
+.nav-ul .nav-li:last-child{margin-bottom:45px}
+
+.nav-menu{width:100%;height:100%;font-size:15px;}
+
+.nav-menu .iconfont{color:#fff;font-size:20px;padding: 0 8px 0 20px}
+
+.nav-menu .layui-icon{padding-right: 20px}
+
+.nav-menu .nav-menu-name{display: inline-block;width:calc(100% - 93px);}
+
+/* 窄边 */
+.nav-ul-icon li{line-height: 50px;cursor: pointer}
+
+.nav-ul-icon li.current,.nav-ul-icon li.icon-current{background: #2b2f3e;border-left: 3px solid #3dfdff}
+
+.nav-ul-icon li.active{background: #2b2f3e;}
+
+/* 窄边菜单 */
+.nav-icon-menu{position: absolute;top: 50px;left: 55px;background-color: #222731;min-height: 100%;width:250px;color:#fff;border-left: 1px solid #41465e;}
+
+.nav-icon-menu .icon-menu-title{text-align: center;color:#fff;line-height:50px;border-bottom: 1px solid #41465e;font-size: 15px}
+
+.nav-icon-menu a{display: inline-block;width:100%;color:#fff;text-align: left;line-height: 50px;padding-left: 50px;font-size: 14px}
+
+.nav-icon-menu a:hover,.icon-menu-active{color: #3dfdff !important;background-color: #2b2f3e;}
+
+/* 二级菜单 */
+
+.child-menu-ul{background:#2b2f3e;display:none;}
+
+.child-menu-li{position: relative;text-align:left;line-height:40px;}
+
+.child-menu-a{display:inline-block;width:100%;padding-left: 50px;color:#fff;font-size: 14px}
+
+.child-menu-a .layui-badge-dot,.nav-icon-menu .layui-badge-dot{width: 5px;height: 5px;vertical-align: middle;background-color:#fff;margin-right: 5px;margin-top: -2px;}
+
+.child-menu-a .layui-badge{position: absolute;right: 12px;top: 11px;background-color: #23b7e5;}
+
+.child-menu-a:hover,.child-menu-current{color:#3dfdff}
+
+.child-menu-a:hover .layui-badge-dot,
+.child-menu-current .layui-badge-dot,
+.nav-icon-menu a:hover .layui-badge-dot,
+.icon-menu-active .layui-badge-dot{background-color:#3dfdff}
+
+/*-------------------- 右侧公共样式START --------------------*/
+
+.feeldesk-right-wrap{width:100%;height:100vh;padding:50px 0 0 55px;}
+
+.feeldesk-right{text-align: left!important;}
+
+/* 顶部面包屑 */
+
+.fd-right-main{position:relative;width: 100%;height:100%}
+
+.fd-body {padding:0 20px;width:100%;height: calc(100% - 25px);}
+
+.fd-body .layui-table[lay-skin=line] td, .layui-table[lay-skin=line] th{text-align: center !important;}
+
+.home-crumb{font-size: 20px;color:#333;line-height: 50px;font-family: MONOSPACE;font-weight: bold;}
+
+.crumb{display:inline-block;height:50px;line-height: 50px;font-size: 20px;font-family: MONOSPACE;font-weight: bold;}
+
+.crumb .layui-icon{font-size: 15px;vertical-align: middle;padding-bottom: 3px;display: inline-block;}
+
+.fd-content-top{position: relative;margin: 10px 0;height:40px;line-height:28px;}
+
+.footer-copy{position: absolute;left: 0;right: 0;bottom: 10px;z-index: 1;height: 20px;line-height: 20px;color: #333;text-align: center;}
+
+/*-------------------- 右侧公共样式END --------------------*/
+
+
+/*分页相关css*/
+
+.table-footer{width:100%;padding:10px 0;}
+
+.delete_ticket{line-height:30px;font-size:14px;width:90px;border: 1px solid #e2e2e2;padding: 0 5px;border-radius: 4px;background: #fbfbfb;text-align: center}
+
+.delete_ticket a:hover{color:#07a7db;}
+
+.right-list-page{background-color:#FFF;text-align: center;padding:40px 0;}
+
+.feeldesk-page a,.feeldesk-page span{display: inline-block;background: #fff;width:30px;height:30px;line-height: 30px;margin: 0 3px;color:#999;border:1px solid #e3e9ed;border-radius: 2px}
+
+.feeldesk-page span.current{background: #23b7e5;color:#fff;border-color:#23b7e5}
+
+.feeldesk-page a.next,.feeldesk-page a.prev{border-radius: 2px;}
+
+.feeldesk-page a.prev i,.feeldesk-page a.next i{font-size: 12px;margin-top: -3px;}
+
+/*-------------------- 右侧公共样式START --------------------*/
+
+    .feeldesk-right{text-align: left!important;}
+
+    /* 顶部面包屑 */
+
+    .feeldesk-right-main{background: rgb(255, 255, 255);width: 100%;height: 100%;}
+
+    .feeldesk-right-top {position: fixed;left:230px;top:50px;right:20px;padding: 14px 0 14px 20px;border-bottom: 1px solid #eee;background: #fff;z-index: 1000}
+
+    .feeldesk-right-top ul {display: block;height: 26px;width: 100%;position: relative;z-index: 0;}
+
+    .feeldesk-right-top ul li {z-index: 2;left: 0;background: url(../img/titlebtn_bg.png) left top no-repeat;width: 96px;font-size: 14px;line-height: 26px;color: #FFF;text-align: center;}
+
+    .feeldesk-right-top ul .li2 {position: absolute;z-index: 23;left: 88px;top: 0;background: url(../img/titlebtn_bg1.png) left top;height: 26px;width: 131px;font-family: "宋体",serif;line-height: 26px;color: #FFF;text-align: center;}
+
+    .feeldesk-right-top ul .li3 {position: absolute;z-index: 33;left: 211px;top: 0;background: url(../img/titlebtn_bg2.png) left top;height: 26px;width: 131px;font-family: "宋体",serif;line-height: 26px;color: #FFF;text-align: center;}
+
+    .feeldesk-body {position: absolute;left: 220px;right: 20px;top: 105px;bottom: 0;z-index: 998;padding-left:20px;min-width: 900px;overflow: hidden;overflow-y: auto;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+
+    .feeldesk-content-top{position: relative;margin: 10px 0;height:40px;line-height:28px;}
+
+/*-------------------- 右侧公共样式END --------------------*/
+
+/* 菜单管理 */
+
+	/* 菜单列表 */
+
+		.feeldesk-menu-content{padding:0 25px}
+
+		.feeldesk-menu-title{padding: 10px 0;height: 60px;margin: 10px 0;}
+
+		.feeldesk-menu-title h2{float: left;font-weight: normal;font-size: 22px;}
+
+		.feeldesk-menu .title li{float: left;width: 25%;background:#f7f7f7;padding: 10px 10px 10px 20px;font-weight: bold;color: #666;text-align: center;}
+
+		.feeldesk-menu .feeldesk-menu-parent li{float: left;width: 24%;border: 1px solid #e2e2e2;color: #555;background: #e6e6e6;height: 40px;line-height: 40px;border-radius: 16px;margin-top: 10px;margin-left: 15px;text-align: center;}
+
+		.feeldesk-menu .feeldesk-menu-child li{background: #FFF;}
+
+		.feeldesk-menu-child-title{padding-left: 60px !important;}
+
+		.feeldesk-menu-input, .scAddTextName{background-color: #FFF;line-height: 28px;width: 298px;border: 1px solid #dbdbdb;background-image: none;display: inline-block;text-align: center;}
+
+		.feeldesk-menu-select{width: 178px;border: 1px solid #dbdbdb;line-height: 28px;height: 28px;}
+
+	/* 新增菜单 */
+
+		.feeldesk-addMenu{padding: 20px 5px;}
+
+		.feeldesk-addMenu table tr{display: block;border-left: 1px solid #e2e2e2;border-right: 1px solid #e2e2e2;border-bottom: 1px solid #e2e2e2;}
+
+		.feeldesk-addMenu table tr td{padding: 10px;}
+
+		.feeldesk-suerEdit{display:inline-block;width:100%;text-align:center;}
+
+		.feeldesk-suerEdit a{width: 37%;height: 37px;line-height: 37px;font-size: 15px;}
+
+	/* 新增子菜单 */
+
+		.feeldesk-addAction{margin:20px;border-top:1px solid #e2e2e2;border-left:1px solid #e2e2e2;border-right:1px solid #e2e2e2}
+
+		.feeldesk-addAction table{margin: 0;vertical-align: middle;background-color: #FFF;}
+
+		.feeldesk-addAction table tr{border-bottom: 1px solid #e2e2e2;padding: 10px 0;vertical-align: middle;}
+
+		.feeldesk-addAction table tr td{height: 30px;text-align: center;color: #545454;font-family: "宋体",serif;font-size: 14px;vertical-align: middle;padding-top: 10px;line-height: 30px;padding-bottom: 10px;width:150px}
+
+		.feeldesk-addAction form span{background: #dd514c;padding: 5px 10px;font-size: 12px;color: #fff;border-radius: 5px;}
+
+		.feeldesk-addAction table tr td .submitBtn {font: normal 14px/14px 'Microsoft Yahei';cursor:pointer;display: inline-block;margin-left: 5px;margin-top: 5px;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;background: #dd514c;color: #fff;padding: 0 10px;height: 30px;line-height: 20px;border: none;width: 60px;}
+
+	/* 编辑菜单 */
+
+		.feeldesk-editMenu{padding: 20px 5px;}
+
+		.feeldesk-editMenu table tr{display: block;border-left: 1px solid #e2e2e2;border-right: 1px solid #e2e2e2;border-bottom: 1px solid #e2e2e2;}
+
+		.feeldesk-editMenu table tr td{padding: 10px;}
+
+		.feeldesk-suerEdit{display:inline-block;width:100%;text-align:center;}
+
+		.feeldesk-suerEdit a{width: 37%;height: 37px;line-height: 37px;font-size: 15px;}
+
+/* 按钮 */
+
+	.feelecBtn{display:inline-block;font-size:14px;height:38px;line-height:38px;width:92px;background-color:#0DA7DB;color:#FFF;text-align:center;padding-right: 10px;padding-left: 10px;border-radius:4px;margin: 0 3px;}
+
+	.feelecBtn:hover{opacity: .8;color: #FFF;}
+
+	.feeldesk-suer-btn{ font: normal 14px/14px 'Microsoft Yahei';display: inline-block; margin-left: 5px;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;background: #dd514c;color: #fff; padding:0 10px; height: 30px; line-height: 30px;}
+
+	.feeldesk-suer-btn:hover{color: #fff;opacity:0.8}
+
+    .feeldesk-createBtn1{border: 1px solid #dedede;height: 40px;line-height: 39px;font-family: "宋体",serif;font-size: 14px;color: #666;display: inline-block;border-radius: 3px;padding-left: 46px;background:#FFF url(../img/addbtn_lvse.png) 20px center no-repeat;padding-right: 20px;}
+
+    .feeldesk-createBtn1:hover{opacity: .8;color: #666;border:1px solid #00c3ec}
+
+	.feeldesk-createBtn{border: 1px solid #dedede;background: url(../img/addbtn_lvse.png) #fff no-repeat 20px center;height: 40px;line-height: 39px;font-family: "宋体",serif;font-size: 14px;color: #666;display: inline-block;border-radius: 3px;padding-left: 46px;padding-right: 20px;}
+
+	.feeldesk-createBtn:hover{opacity: .8;color: #666;border:1px solid #00c3ec}
+
+	.feeldesk-smallBtn{display:inline-block;font-size:14px;height:30px;line-height:30px;background:#0DA7DB;color:#fff;text-align:center;padding-right: 10px;padding-left: 10px;border-radius:4px;margin: 0 3px;}
+
+	.feeldesk-smallBtn:hover{color: #fff;opacity: .8;}
+
+	.sethead{position:absolute;bottom:0;left:100px;}
+
+	.feeldesk-setface{position:absolute;bottom:25px;left:100px;height:30px;line-height:30px}
+
+	.feeldesk-setpwd{height:30px;line-height:30px}
+
+	.feeldesk-resetBtn{height:30px;line-height:30px;background:#57c5f7}
+
+	.feeldesk-tempBtn{height:30px;line-height:30px}
+
+	.feelecBtn1{display:inline-block;background:#fbfbfb;padding:3px 10px;border-radius:3px;border:1px solid #ced6d8}
+
+	.feelecBtn1:hover{color:#E83828;border-color:#E83828}
+
+
+/* 成功页面 */
+
+	.success{width: 500px;margin: 100px auto;text-align: center;}
+
+	.success p,.success span{font-size: 18px;padding: 5px;color: #0DA7DB;}
+	
+	.success a{color: red;font-size: 14px;padding: 5px;font-weight: normal;}
+	
+	.success img{display: block;margin: 20px auto;}
+	
+/* 失败页面 */
+
+	.error{width: 500px;margin: 100px auto;text-align: center;}
+
+	.error p,.error span{font-size: 18px;padding: 5px;color: #0DA7DB;}
+	
+	.error a{color: red;font-size: 14px;padding: 5px;font-weight: normal;}
+	
+	.error img{display: block;margin: 20px auto;}
+
+/* 头像 */
+
+	.feeldesk-headimg{width:80px;height:80px;}
+	
+	#file_upload:hover{border:none;}

@@ -1,0 +1,295 @@
+﻿<include file="Public/header" />
+
+<div class="feeldesk feeldesk-notify bgf" >
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="header-left" id="all-read" data-type="read">{:L('ALL_READ')}</a>
+
+            <div class="header-title">{:L('NOTIFY')}</div>
+
+            <a href="javascript:" class="header-right" id="all-delete" data-type="delete">{:L('CLEAR_MSG')}</a>
+
+        </div>
+
+        <if condition="$groupSystemAuth['ticket_auth'] && $groupSystemAuth['crm_auth']">
+
+            <!-- 全部 -->
+            <div class="message-tab message-tab-two">
+
+                <div class="tab-item">
+
+                    <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Mobile/Message/getMessage" class="tab-ticket <eq name='Think.MODULE_NAME' value='Mobile'>current</eq>">
+
+                        <i class="iconfont icon-ticket-tab">
+
+                            <gt name="unReadNumber.ticket" value="0"><span><gt name="unReadNumber.ticket" value="99">99+<else />{$unReadNumber.ticket}</gt></span></gt>
+
+                        </i>
+
+                        <p>{:L('TICKET')}</p>
+
+                    </a>
+
+                </div>
+
+                <div class="tab-item">
+
+                    <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/CrmMobile/Message/getMessage" class="tab-crm  <eq name='Think.MODULE_NAME' value='CrmMobile'>current</eq>">
+
+                        <i class="iconfont icon-crm-tab">
+
+                            <gt name="unReadNumber.crm" value="0"><span><gt name="unReadNumber.crm" value="99">99+<else />{$unReadNumber.crm}</gt></span></gt>
+
+                        </i>
+
+                        <p>{:L('CRM')}</p>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        <elseif condition="!$groupSystemAuth['ticket_auth'] && $groupSystemAuth['crm_auth']" />
+
+            <!-- 工单 -->
+            <div class="one-tab-item">
+
+                <i class="iconfont icon-crm-tab">
+
+                    <gt name="unReadNumber.crm" value="0"><span><gt name="unReadNumber.crm" value="99">99+<else />{$unReadNumber.crm}</gt></span></gt>
+
+                </i>
+
+                <p>{:L('CRM')}</p>
+
+            </div>
+
+        <else />
+
+            <!-- CRM -->
+            <div class="one-tab-item">
+
+                <i class="iconfont icon-ticket-tab">
+
+                    <gt name="unReadNumber.ticket" value="0"><span><gt name="unReadNumber.ticket" value="99">99+<else />{$unReadNumber.ticket}</gt></span></gt>
+
+                </i>
+
+                <p>{:L('TICKET')}</p>
+
+            </div>
+
+        </if>
+
+    </header>
+
+    <div class="feeldesk-main message-main" id="messageItem"></div>
+
+	<div class="message-operate">
+
+        <a href="javascript:" class="message-delete">{:L('DELETE')}</a>
+
+        <a href="javascript:" class="delete-cancel">{:L('CANCEL')}</a>
+
+    </div>
+
+    <div class="message-shade"></div>
+
+</div>
+
+<include file="Public/footer" />
+
+<script type="text/javascript">
+
+    $(function ()
+    {
+        var headerHeight = $('header')[0].getBoundingClientRect().height;
+
+        var footerHeight = $('.feeldesk-footer')[0].getBoundingClientRect().height;
+
+        var totalHeight = headerHeight + footerHeight;
+
+        $('.message-main').css('height','calc(100% - '+totalHeight+'px)');
+
+        if($('.one-tab-item').length > 0)
+        {
+            $('.feeldesk-main').addClass('one-tab-main');
+        }
+
+        layui.use('flow', function()
+        {
+            var flow = layui.flow;
+
+            flow.load(
+            {
+                elem: '#messageItem',
+                scrollElem:'.feeldesk-main',
+                isAuto:false,
+                done: function(page, next)
+                {
+                    var url = "{$Think.ACTION_NAME}";
+
+                    var lis = [];
+
+                    $.get("{:U('Message/getMessage')}?p="+page+"&request=flow", function(data)
+                    {
+                        layui.each(data.data, function(index, item)
+                        {
+                            var url = "{:U('Message/detail')}?id="+item.msg_id;
+
+                            var tag = '';
+
+                            var style = '';
+
+                            if(item.read_status == 1)
+                            {
+                                style = "un-read";
+
+                                tag = "<span></span>";
+                            }
+
+							var items =
+                                "<div class='message-item'>" +
+                                "<div class='message-date'>"+item.create_time+"</div>" +
+                                "<div class='message-box' data-href='"+url+"'>" +
+                                "<div class='box-head relative'>" +
+                                "<i class='iconfont icon-message "+style+"'>"+tag+"</i>" +
+                                "<span>"+item.msg_name+"</span>" +
+                                "<a href='javascript:' class='iconfont icon-menu' data-value='"+item.msg_id+"'></a>" +
+                                "</div>" +
+                                "<div class='box-content'>" +
+                                "<div class='message-title'>"+item.msg_title+"</div>" +
+                                "<ul>" +
+                                "<li>"+item.title_name+"</li>"+item.msg_item+
+                                "<li>"+item.msg_content+"</li>" +
+                                "</ul>" +
+                                "</div>" +
+                                "<div class='box-footer'>"+language.DETAIL+"</div>" +
+                                "</div>" +
+                                "</div>";
+
+                            lis.push(items);
+                        });
+
+                        next(lis.join(''), page < data.pages);
+                    });
+
+					$(document).on('click','.message-box',function()
+                    {
+                        window.location.href = $(this).data('href');
+                    });
+
+                    $(document).on('click','.icon-menu',function(e)
+                    {
+                        e.stopPropagation();
+
+                        var value = $(this).data('value');
+
+                        $('.message-shade').fadeIn('700').prev('.message-operate').slideDown('700').find('.delete-cancel').on('click',function()
+                        {
+                            $(this).parent('.message-operate').slideUp('700').next('.message-shade').fadeOut(700);
+                        });
+
+                        $('.message-delete').unbind('click').on('click',function()
+                        {
+                            layer.confirm(language.SURE_DELETE_MESSAGE,
+                            {
+                                skin:'msg-window',
+                                title:false,
+                                closeBtn:false,
+                                offset:['40%'],
+                                btnAlign: 'c',
+                                btn:[language.CANCEL,language.SURE],
+                                yes:function(index, layero)
+                                {
+                                    layer.close(index);
+                                },
+                                btn2:function(index, layero)
+                                {
+                                    var loading = layer.load(2,{offset:['40%']});
+
+                                    $.post("/"+moduleName+"/Message/delete",{id:value},function(data)
+                                    {
+                                        if(data.errcode == 0)
+                                        {
+                                            layer.msg(data.msg,{time:1000,offset:['40%']},function()
+                                            {
+                                                window.location.reload();
+                                            });
+                                        }
+                                        else
+                                        {
+                                            layer.close(loading);
+
+                                            layer.msg(data.msg,{time:1500,offset:['40%']});
+                                        }
+                                    });
+
+                                    return false
+                                }
+                            });
+                        })
+                    });
+                }
+            });
+        });
+
+        $('#all-read,#all-delete').unbind('click').on('click',function()
+        {
+            var type = $(this).data('type');
+
+            var title = '';
+
+            if(type == 'read')
+            {
+                title = language.READ_ALL_MESSAGE;
+            }
+            else
+            {
+                title = language.DELETE_ALL_MESSAGE;
+            }
+
+            layer.confirm(title,
+            {
+                skin:'msg-window',
+                title:false,
+                closeBtn:false,
+                offset:['40%'],
+                btnAlign: 'c',
+                btn:["{:L('CANCEL')}","{:L('SURE')}"],
+                yes:function(index, layero)
+                {
+                    layer.close(index);
+                },
+                btn2:function(index, layero)
+                {
+                    var loading = layer.load(2,{offset:['40%']});
+
+                    $.post("{:U('Message/updateMessageStatus')}",{type:type},function(data)
+                    {
+                        if(data.errcode == 0)
+                        {
+                            layer.msg(data.msg,{time:1000,offset:['40%']},function()
+                            {
+                                window.location.reload();
+                            });
+                        }
+                        else
+                        {
+                            layer.close(loading);
+
+                            layer.msg(data.msg,{time:1500,offset:['40%']});
+                        }
+                    });
+
+                    return false
+                }
+            });
+        })
+    })
+
+</script>

@@ -1,0 +1,417 @@
+.layui-form-select dl dd.layui-this {background-color: rgba(254,115,0,0.05);color: #40485b;}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+
+::-webkit-scrollbar-button:vertical{display:none;}
+
+::-webkit-scrollbar-track:vertical{background-color:black;}
+
+::-webkit-scrollbar-track-piece{background-color:#fff;}
+
+::-webkit-scrollbar-thumb:vertical{margin-right:10px; background-color:#cecece;border-radius: 3px;}
+
+/* 工单详情 */
+.ticket-detail{height:100%;overflow-x: hidden}
+
+.ticket-detail .ticket-read{display:inline-block;position: relative;float: right;z-index: 9;}
+
+.ticket-detail .ticket-read i.icon-ticket-unread{color:#FF7A00;font-size: 30px;opacity: 1}
+
+.ticket-detail .ticket-read i.icon-ticket-read{color:#12C8CC;font-size: 30px;opacity: 1}
+
+.viewer-open .viewer-container{top:49px}
+
+.ticket-detail-content{position:relative;height: calc(100% - 60px);overflow-x: hidden}
+
+.ticket-detail .detail-header{width:100%;background: #fff;line-height: 60px;padding: 0 20px}
+
+.ticket-detail .detail-header>ul:first-child{border-bottom: 1px solid #eee;}
+
+.ticket-detail .detail-header li.info-icon:hover{background-color: #fff}
+
+.ticket-detail .detail-header span.info-icon{cursor: pointer}
+
+.ticket-detail .detail-header span.info-icon:hover{color:#23b7e5}
+
+.detail-info,.detail-customer{border-bottom:1px solid #eee;line-height: 60px;}
+
+/* 状态与优先级 */
+.ticket-detail .detail-header .status-item,
+.ticket-detail .detail-header .audit-item
+{height: auto !important;min-width: 130px !important;}
+
+.ticket-detail .detail-header .status-item dl.update-status,
+.ticket-detail .detail-header .audit-item dl.update-audit
+{position:initial;overflow-y:initial !important;overflow-x:initial !important;height: auto !important}
+
+.ticket-detail .detail-header .status-item dl.update-status {overflow-x: hidden !important;overflow-y: auto !important;}
+
+.ticket-detail .detail-header .status-item dl.update-status dd,
+.ticket-detail .detail-header .audit-item dl.update-audit dd
+{overflow:initial !important;padding: 0 10px}
+
+.ticket-detail .detail-header li.select-status,
+.ticket-detail .detail-header li.select-audit
+{position: relative;border:1px dashed #eee;}
+
+.ticket-detail .detail-header li.select-audit a.audit-detail{display: inline-block;color: #2c6ee5;padding-left: 5px;border-left: 1px solid #eee;
+    height: 20px;line-height: 20px;margin-left: 5px;}
+
+.ticket-detail .detail-header li.select-audit a.audit-detail i{font-size: 15px;margin-top: -1px}
+
+.ticket-detail .detail-header li.select-audit a.audit-detail:hover{color:#2c6ee5}
+
+/* 审核流程记录 */
+.audit-progress{position: absolute;top:35px;left:0;box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.12);z-index: 100;background-color: #f5f5f7;
+    text-align: left;font-family: 'PingFang-SC-Medium', serif;width:300px;height: 370px}
+
+.audit-progress .progress-title{height: 40px;line-height: 40px;padding: 0 10px;font-size:12px;color:#333;background-color: #fff;}
+
+.audit-progress .progress-title i.iconfont{color:#999;font-size:17px}
+
+.audit-progress .progress-title i.iconfont:hover{color:#2c6ee5}
+
+.audit-progress .ticket-auditor{height: 40px;line-height: 40px;background-color: #fff;padding-left:10px;border-top:1px solid #eee;}
+
+.audit-progress .ticket-auditor a{display: inline-block;padding:0 10px;margin-left: 3px;border-left: 1px solid #eee;color:#2c6ee5;}
+
+.audit-progress .ticket-auditor a:hover{color:#2c6ee5}
+
+.audit-progress .ticket-auditor div.fr span:before{content:'、'}
+
+.audit-progress .ticket-auditor div.fr span:first-child:before{content:''}
+
+.audit-progress .progress-content{margin-top:5px;padding: 0 10px;background-color: #f5f5f7;height:255px;overflow-x: hidden}
+
+.audit-progress .progress-content .opinion-title{text-align: center;height: 40px;line-height: 40px;color:#999}
+
+.audit-progress .progress-content .progress-item{background-color: #fff;padding: 0 10px;margin-top: 20px;box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);}
+
+.audit-progress .progress-content .progress-item .audit-level{background-color: #fff;height: 40px;line-height: 40px;border-bottom:1px solid #eee;color:#999}
+
+.audit-progress .progress-content .progress-item .audit-content{padding: 5px 0}
+
+.audit-progress .progress-content .progress-item .audit-content .audit-member{height: 30px;line-height: 30px;}
+
+.audit-progress .progress-content .progress-item .audit-content .audit-member span{display:inline-block;color:#2c6ee5;margin-right: 5px;}
+
+.audit-progress .progress-footer{position: absolute;bottom: 0;background: #f5f5f7;width: 100%;left: 0;padding-bottom: 0;
+    height: 70px;line-height: 75px;text-align: center}
+
+.audit-progress .progress-footer a{display:inline-block;padding: 0 10px;background-color: #2c6ee5;color:#fff;height: 35px;line-height: 35px;
+    border-radius: 3px;min-width:80px;font-size: 13px}
+
+.audit-progress .progress-footer a:hover{opacity: .8}
+
+.audit-progress .progress-content .progress-no-data{text-align: center;padding: 20px 0}
+
+.ticket-detail .detail-header .select-status .status-item,
+.ticket-detail .detail-header .select-audit .audit-item
+{position:absolute;top:35px;left:0;height:300px;margin-right: 0 !important;padding:10px;min-width:256px;
+    text-align: left !important;background: #fff;border: 1px solid #eee;border-radius: 4px;
+    box-shadow: 0 1px 40px 0 rgba(140,146,163,0.2),inset 0 0 0 0 #dededf !important;z-index: 1}
+
+.ticket-detail .detail-header .select-audit i.icon-no-audit{color:#ffb517;font-size: 12px;margin-right: 4px;vertical-align: top !important;}
+
+.ticket-detail .detail-header .select-audit i.icon-pass-audit{color:#10c6b3;font-size: 12px;margin-right: 4px;vertical-align: top !important;}
+
+.ticket-detail .detail-header .select-audit i.icon-reject-audit{color:#ff3d3a;font-size: 12px;margin-right: 4px;vertical-align: top !important;}
+
+.ticket-detail .detail-header .layui-form-select .layui-input{cursor:text;}
+
+.ticket-detail .detail-header .layui-form-select dl{display: block !important;box-shadow:none;border:none;overflow-x: hidden;overflow-y: auto;height:230px}
+
+.ticket-detail .detail-header .layui-form-select dl dd:hover{background-color: #f5f5f5}
+
+.ticket-detail .detail-header .layui-edge{display: none !important;}
+
+.ticket-detail .detail-header div.ticket-model,
+.ticket-detail .detail-header li.ticket-status,
+.detail-header>ul>li,
+.detail-customer ul li
+{display: inline-block;margin-right: 4px;height:30px;line-height: 30px;text-align: center;}
+
+.ticket-detail .detail-header .ticket-model{border:1px solid #5FB878;border-radius: 5px;color:#5FB878;padding: 0 5px;}
+
+.ticket-detail .detail-header .ticket-status{padding: 0 5px;border:1px solid;border-radius: 5px;}
+
+.ticket-detail .detail-header>ul>li,.detail-customer ul li{border:1px solid #eee;border-radius: 100px;padding: 0 10px;color:#40485b;cursor:pointer}
+
+.ticket-detail .detail-header>ul>li:hover,.detail-customer ul li:hover{background-color: #fafafa}
+
+.ticket-detail .detail-header>ul>li img{width:20px;border-radius: 50%;margin-right: 2px;margin-top: -2px;}
+
+.ticket-detail .detail-header>ul>li.info-icon{position: absolute;top:13px;right: 20px;padding: 0}
+
+.ticket-detail .detail-header>ul>li .icon-nothing{display: inline-block;font-size: 13px;margin-top: -1px}
+
+.ticket-detail .detail-slide:after{padding: 20px 0}
+
+
+/* 审核 - 弹窗 */
+.ticket-audit{padding: 20px;}
+
+.ticket-audit textarea{height: 200px;width: 100%;padding: 10px;resize: none}
+
+.ticket-audit .audit-btn{width: 100%;height: 45px;line-height: 45px;text-align: center;cursor: pointer;color:#fff;font-size: 15px}
+
+.ticket-audit .audit-btn:hover{opacity: .8}
+
+.ticket-detail .detail-content .ticket-title{position:relative;font-size:15px;line-height: 55px;border-bottom:1px solid #eee}
+
+.ticket-detail .title-right{position: absolute;top: calc(50% - 15px);right: 0;font-weight: normal;font-size: 0;height: 30px;line-height: 30px;}
+
+.ticket-detail .title-right .ticket-operate:hover{border-color:#138df5;color:#138df5}
+
+.ticket-detail .title-right .ticket-operate{display:inline-block;min-width: 63px;height: 30px;line-height: 30px;text-align: center;cursor: pointer;
+    background-color: #fff;border-radius: 2px;font-size: 12px;color:#537c8d;border:1px solid #537c8d;margin-right: 10px;padding: 0 7px 0 10px}
+
+.ticket-detail .title-right .ticket-operate i{margin-left:-2px;margin-top: -1px}
+
+.ticket-detail .title-right .title-right-menu{position:absolute;top:35px;right:8px;border-radius:3px;background-color: #fff;z-index: 100;
+    display: none;box-shadow:0 1px 40px 0 rgba(140,146,163,0.2),inset 0 0 0 0 #dededf !important;border:1px solid #eee;}
+
+.ticket-detail .title-right .title-right-menu li{cursor: pointer;min-width: 80px;height: 30px;line-height: 30px;font-size: 12px;color:#666;
+    text-align: center;padding: 0 5px}
+
+.ticket-detail .title-right .title-right-menu li:hover{background-color: #f5f5f5;color:#537c8d;}
+
+.ticket-detail .title-right .title-right-menu li a{display: inline-block;width: 100%}
+
+
+/* 详情Tab */
+.ticket-detail .detail-main{margin: 0;border: 0;border-radius: 0;padding:0 20px;}
+
+.ticket-detail .detail-main .layui-tab{margin: 0;border-bottom: 1px solid #eee;}
+
+.ticket-detail .detail-main .layui-tab-content{padding: 0 0 10px 0}
+
+.ticket-detail .detail-main .layui-tab-title{margin-bottom: 10px;height: 50px}
+
+.ticket-detail .detail-main .layui-tab-title li{min-width: 100px;line-height: 50px}
+
+.ticket-detail .detail-main .layui-tab-title .layui-this{color:#138df5}
+
+.ticket-detail .detail-main .layui-tab-title .layui-this:after{border:none;border-bottom:3px solid #138df5;height: 51px;}
+
+.ticket-detail .detail-main .layui-tab .no-data{text-align: center;padding: 20px 0;color:#666}
+
+.ticket-detail .detail-main .layui-tab .satisfy-btn{display:block;text-align: center;padding: 20px 0;color:#537c8d}
+
+.ticket-detail .detail-main .layui-tab .layui-tab-bar{height: 45px;line-height: 45px;border:none;}
+
+/* 详情Tab - 工单内容 */
+.ticket-detail .detail-content .ticket-form{position: relative;font-size: 0;padding-top: 10px}
+
+.ticket-detail .ticket-form .ticket-form-icon{position: absolute;top: 15px;right: -20px;font-size: 20px;cursor: pointer}
+
+.ticket-detail .ticket-form .ticket-form-icon:hover{color:#23b7e5}
+
+.ticket-detail .ticket-form-item{border:1px solid #ebebeb;margin-bottom: 20px;}
+
+.ticket-detail .ticket-form-item .ticket-form-name{margin: 0 20px;line-height: 50px;font-size: 13px;color:#537c8d;border-bottom:1px dashed #ebebeb}
+
+.ticket-detail .ticket-form-item .ticket-option-form{padding: 0 20px;line-height: 50px;font-size: 13px;color:#537c8d}
+
+.ticket-detail .ticket-form-item .ticket-option-form .ticket-option-content{color:#333;font-weight: normal;}
+
+.ticket-detail .ticket-form-item .text-form-content{min-height: 50px;padding: 15px 20px;font-size: 14px;color:#333;}
+
+.ticket-detail .ticket-form-item .ticket-textarea-form{line-height: 30px;word-break: break-word}
+
+.ticket-detail .ticket-image{padding-top:10px;}
+
+.ticket-detail .ticket-file{border-bottom:1px solid #eee;color:#000;}
+
+.ticket-detail .ticket-attach{line-height: 50px;padding-right: 20px;font-size: 15px;font-weight: normal !important;}
+
+.ticket-detail .ticket-attach span{padding-right: 5px;vertical-align:middle;}
+
+.ticket-detail .ticket-attach i.icon-zhankai,.ticket-attach i.icon-shouqi{color:#537c8d}
+
+.ticket-detail .ticket-file ul li i.icon-xiazai{margin-top: -3px}
+
+.ticket-detail .ticket-file ul li{height: 30px;line-height: 30px;color:#537c8d;font-size: 12px;}
+
+.ticket-file ul li > a{color:#128cf6;}
+
+.ticket-image ul{font-size: 0}
+
+.ticket-image ul li.center-item{margin-left: 18px;margin-right: 18px;}
+
+.ticket-image ul li{display:inline-block;width:calc((100% - 36px)/3);margin-bottom: 20px;}
+
+.ticket-image ul li img{display: inline-block;width: 100%;}
+
+
+/* 详情Tab - 工单信息 */
+.ticket-detail .detail-main .ticket-info ul{font-size: 0;}
+
+.ticket-detail .detail-main .ticket-info ul li{display:inline-block;width: 50%;height:45px;line-height:45px;font-size: 12px;color:#40485b;}
+
+.ticket-detail .detail-main .ticket-info ul li.ticket-from i.iconfont {font-size: 20px;color: #23b7e5;vertical-align: bottom !important;}
+
+/* 详情Tab - 满意度 */
+.ticket-satisfy{line-height: 30px;}
+
+.ticket-satisfy .ticket-satisfy-content span{vertical-align: middle;font-size: 14px;margin-right: 5px}
+
+.ticket-satisfy .ticket-satisfy-content .layui-rate li i.layui-icon{font-size:17px}
+
+.ticket-satisfy .ticket-satisfy-label{padding: 10px 0}
+
+.ticket-satisfy .ticket-satisfy-label li.label-item{display: inline-block;margin-right: 5px;border:1px solid #eee;height: 25px;line-height: 25px;padding: 0 10px;
+    font-size: 12px;color:#666;}
+
+/* 详情 - 工单回复 */
+.detail-reply{padding-bottom: 20px;}
+
+.reply-header{height: 50px;line-height: 50px;border-bottom:1px solid #eee;font-size: 14px;}
+
+.reply-header a{display: inline-block;min-width: 100px;padding: 0 5px;text-align: center;height: 50px;line-height: 49px}
+
+.reply-header a.active{border-bottom: 3px solid #2c6ee5;color:#2c6ee5}
+
+.reply-item .nodata{margin:50px 0;text-align: center;line-height: 30px;}
+
+.reply-item .item{border-bottom:1px solid #eee;padding: 20px 0}
+
+.reply-item .item:last-child{border-bottom:none}
+
+.reply-item .item .content-header .face{width:30px;height: 30px;border-radius: 50%;margin-right: 10px;}
+
+.reply-item .item .content-header span:nth-child(2){color:#537c8d;font-weight: bold;font-size:12px;}
+
+.reply-item .item .content-header span:nth-child(3){color:#32465d;font-size:12px;}
+
+.reply-item .item .content-header span:nth-child(4){font-size: 12px;color:#666}
+
+.reply-item .item .reply-content{font-size:12px;color:#333;margin-top: 15px;padding-left: 45px;}
+
+.reply-item .item .reply-content img.reply-image{margin-right: 20px !important;}
+
+.reply-item .reply-attach{padding-left: 45px;margin-top: 5px}
+
+.reply-item .attach-item{padding-top: 10px;font-size:12px;color:#537c8d}
+
+.reply-item .attach-item a{color:#128cf6;}
+
+.reply-item .attach-item a i{margin-top: -3px}
+
+/* 详情 - 回复框 */
+.reply-box{position: absolute;left:0;right:0;bottom: 0;width: 100%;line-height: 60px;background: #fff;}
+
+.reply-box .reply-input{padding: 0 20px}
+
+.reply-box .reply-input img,
+.reply-box .reply-textarea img
+{width:35px !important;height:35px !important;border-radius: 50%;margin-right: 10px;}
+
+.reply-box .reply-input input
+{border:1px solid #eee;height: 35px;line-height: 35px;border-radius: 3px;width: calc(100% - 50px);padding-left: 10px;font-size: 12px}
+
+.reply-box .reply-textarea{padding:0 20px;box-shadow: 0 0 10px 0 rgba(0,0,0,.1)}
+
+.reply-box .reply-textarea .textarea-hide{height: 30px;line-height: 45px;text-align: center;cursor:pointer}
+
+.reply-box .reply-textarea .layui-layedit{display: inline-block;width:calc(100% - 50px);border-radius: 4px;border-color:#eee}
+
+.reply-box .reply-textarea .layui-layedit-tool {line-height: 40px}
+
+.reply-box .reply-operate {position:relative;margin-left: 47px;border-bottom: 1px solid #eee}
+
+.reply-box .reply-operate .ui {display:inline-block;border:1px solid #eee;border-radius: 4px;height:30px;line-height: 29px;padding: 0 5px;margin-right: 15px}
+
+.reply-box .reply-operate .ui a{display: inline-block;text-align: center;width: 100%;}
+
+.reply-box .reply-operate .submit-reply{position:relative;padding: 0;white-space: nowrap;font-size: 0;}
+
+.reply-box .reply-operate a.submit-btn {padding: 0 10px;font-size: 12px;background-color: #138df5;border-radius: 3px;color: #fff;}
+
+.reply-operate .upload-attach{position: absolute;right: 0;margin-right: 0;border:none;height:30px;line-height: 30px;display: inline-block;top: 13px;}
+
+.reply-operate .upload-attach .layui-btn {height: 30px;line-height: 30px;padding: 0 10px;border-radius: 4px;border-color:#eee;font-size: 12px}
+
+.reply-operate .upload-attach .layui-btn .layui-icon{font-size:15px}
+
+.reply-box .attach-item{margin-left: 47px;padding: 15px 0;line-height: 30px;color:#32465d}
+
+.reply-box .attach-item i.icon-guanbi{font-size:12px;margin-left: 5px;color:#537c8d;cursor:pointer;}
+
+/* 详情 - 催单 - 弹窗 */
+
+.urge-window .urge-panel{position:relative;background: #fff;width:100%;height:100%;margin: 0 auto;z-index: 200;}
+
+.urge-window .urge-panel>.urge-main{height: calc(100% - 65px);overflow-x: hidden}
+
+.urge-window .urge-panel>.urge-main .urge-title{padding:0 20px;color:#666;background-color: #fafafa;height: 35px;line-height: 35px;font-size: 13px}
+
+.urge-window .urge-panel>.urge-main .urge-list ul{line-height:60px;}
+
+.urge-window .urge-panel>.urge-main .urge-list ul li{display: inline-block;text-align: left;background-color: #fff;word-break: break-all;
+    line-height: normal;min-width: 120px;margin-right: 10px;}
+
+.urge-window .urge-panel>.urge-main .urge-list ul li span.urge-name{font-size: 14px;color:#333;vertical-align: middle}
+
+.urge-window .urge-panel>.urge-main .layui-form-checkbox[lay-skin=primary]{padding-left: 22px}
+
+.urge-window .urge-panel>.urge-main .layui-form-checkbox[lay-skin=primary] i{width: 15px;height: 15px;line-height: 15px;border: 1px solid #d1d1d1;margin-top: 2px}
+
+.urge-window .urge-panel>.urge-main .urge-textarea{padding: 0 15px;margin-top: 15px}
+
+.urge-window .urge-panel>.urge-main .urge-textarea .layui-layedit{border-radius: 5px}
+
+.urge-window .urge-panel>.urge-main .urge-title .urge-tag{color:#138df5}
+
+.urge-window .urge-panel .submit-urge{position: absolute;width: 100%;bottom: 0;height: 65px;line-height: 65px;background-color: #fff;border-top: 1px solid #eee;text-align: center}
+
+.urge-window .urge-panel .submit-urge .layui-btn{background-color: #138df5;border-radius: 3px;padding: 0 5px;height: 35px;line-height: 35px;font-size: 13px;min-width: 70px;}
+
+.urge-layer{border-radius: 5px !important;}
+
+.urge-label{background-color: #fff;border-radius: 5px;height: 280px;}
+
+.urge-label .label-header{position:relative;background-color: #fff;color:#333;padding: 15px 10px;font-size: 14px;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom: 1px solid #e3e9ed}
+
+.urge-label .label-header .close{position:absolute;top: 13px;right:10px;font-size: 20px;cursor:pointer}
+
+.urge-label .label-item{padding:10px 0 10px 10px}
+
+.urge-label .label-item>div{margin:10px 0 20px 0;font-size: 12px;color:#2b2f3e}
+
+.urge-label .label-item ul li{background-color: #fafafa;display: inline-block;width: calc((100% - 20px)/2);margin-bottom: 10px;margin-right: 10px;color:#2b2f3e;
+    border-radius: 5px;}
+
+.urge-label .label-item ul li span{font-weight: bold}
+
+.urge-label .label-item ul li i{font-size:30px;color:#6a728b;margin-right: 5px;}
+
+.urge-label{border-radius: 5px !important;}
+
+
+/* 详情 - 满意度 - 弹窗*/
+
+.satisfy .satisfy-label .current,.satisfy .satisfy-label .label-item:hover{border-color:#138df5;color:#138df5}
+
+.satisfy textarea{margin-bottom: 20px;border:1px solid #eee;}
+
+.satisfy textarea:focus{border-color:#ccdeff;background-color: #fff;}
+
+.sa-btn {height:40px;line-height:40px;font-size:14px;margin-bottom:0;background-color: #138df5;border-radius: 3px}
+
+
+/* 详情 - 重启工单 */
+
+.restart-panel {position: relative;background: #fff;height:100%;margin: 0 auto;z-index: 200}
+
+.restart-panel>form{padding: 20px 20px 0 0;}
+
+.restart-panel>form .layui-input-block{margin-left: 20px}
+
+.restart-panel>form .layui-form-select .layui-edge{border-width: 5px;}
+
+.restart-panel .submit-restart{position: absolute;bottom: 0;left: calc((50% - 40px));text-align: center}
+
+.restart-panel .submit-restart .layui-btn{background-color: #2c6ee5;width: 80px}
+
+.restart-panel>header .restart-close{position:absolute;right:20px;display: inline-block;font-size:20px !important;color:#fff;cursor:pointer}

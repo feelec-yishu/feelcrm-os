@@ -1,0 +1,271 @@
+<extend name="Public:common"/>
+
+<block name="crumb1">{:L('USER_MANAGER')}</block>
+
+<block name="content">
+
+    <style type='text/css'>
+
+        .member-list {height:auto}
+
+        .member-list .header-right{position:static;}
+
+    </style>
+
+    <div class="feeldesk-list">
+
+        <div class="feeldesk-list-header member-list clearfix">
+
+            <div class="header-left">
+
+                <notempty name="data.auth.create">
+
+                    <a href="javascript:" onclick="openFormWindow(this,'{:U(\'create\')}')" class="createBtn" title="{:L('ADD_USER')}">
+                        <i class="iconfont icon-xinzeng"></i>{:L('ADD_USER')}
+                    </a>
+
+                </notempty>
+
+                <form id='memberForm' class="layui-form ui-block middle ml15">
+
+                    <div class="layui-form-item mb0">
+
+                        <div class="layui-input-inline">
+
+                            <select name="group_id" lay-filter="member-groups" lay-search>
+
+                                <option value="">{:L('SELECT_SECTOR')}</option>
+
+                                <volist name="data.groups" id="vo">
+
+                                    <option value="{$vo.group_id}" <eq name="vo.group_id" value="$group_id">selected</eq>>{$vo.group_name}</option>
+
+                                </volist>
+
+                            </select>
+
+                        </div>
+
+                        <div class="layui-input-inline">
+
+                            <select name="role_id" lay-filter="member-roles" lay-search>
+
+                                <option value="">{:L('SELECT_ROLE')}</option>
+
+                                <volist name="data.roles" id="vo">
+
+                                    <option value="{$vo.role_id}" <eq name="vo.role_id" value="$role_id">selected</eq>>{$vo.role_name}</option>
+
+                                </volist>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="header-right clearfix">
+
+                <div class="compact-menu">
+
+                    <a href="javascript:" id="uploadFile" title="{:L('IMPORT_MEMBER')}"><i class="iconfont icon-upload-white"></i></a>
+
+                    <a href="__ROOT__/Attachs/excel/Users.xlsx" title="{:L('DOWNLOAD_TEMPLATE')}"><i class="iconfont icon-download fts16"></i></a>
+
+                    <notempty name="data.auth.delete">
+
+                        <a href="javascript:" title="{:L('BATCH_DELETE')}" class="right-radius-5 disabled" id="batchDelete" data-value="{:U('Member/delete')}" data-remind="{:L('DELETE_MEMBER_REMIND')}">
+
+                            <i class="iconfont icon-shanchu"></i>
+
+                        </a>
+
+                    </notempty>
+
+                </div>
+
+                <form action="{$controllerAndAction}" method="get" class="fr">
+
+                    <div class="compact-search">
+
+                        <i class="iconfont icon-search"></i>
+
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="{:L('CUSTOMER_SEARCH')}"/>
+
+                        <a href="javascript:" class="searchBtn">{:L('SEARCH')}</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="feeldesk-list-content layui-form">
+
+            <div class="feeldesk-list-main" id="list">
+
+                <form class="feeldesk-item" id="itemForm">
+
+                    <table class="layui-table" lay-skin="nob">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>{:L('CHOOSE')}</th><th>{:L('ACCOUNT')}</th><th>{:L('NAME')}</th><th>{:L('NICKNAME')}</th><th>{:L('EMAIL')}</th><th>{:L('MOBILE')}</th>
+
+                            <th>{:L('SUBORDINATE_SECTOR')}</th><th>{:L('ROLE')}</th><th>{:L('REG_TIME')}</th><th>{:L('STATUS')}</th><th>{:L('OPERATION')}</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <empty name="data.member">
+
+                            <tr class="nodata center"><td colspan="11">{:L('NO_DATA')}</td></tr>
+
+                        <else />
+
+                            <volist name="data.member" id="vo">
+
+                                <tr>
+
+                                    <td class="checkbox"><input type="checkbox" name="batch[]" lay-skin="primary" value={$vo.member_id|encrypt='MEMBER'} lay-filter="ListChoose"></td>
+
+                                    <td>{$vo.account}</td>
+
+                                    <td>{$vo.name}</td>
+
+                                    <td>{$vo.nickname}</td>
+
+                                    <td>{$vo.email}</td>
+
+                                    <td>
+                                        {$vo.mobile}
+                                        <eq name="callcenterAuth" value="1">
+                                        <i class="iconfont icon-boda blue6 icon-onclickcall" onclick="OnclickCall({$vo['mobile']})"></i>
+                                        </eq>
+                                    </td>
+
+                                    <td>{:getMemberGroupName($data['groups'],$vo['group_id'])}</td>
+
+                                    <td>{$data['roles'][$vo['role_id']]['role_name']}</td>
+
+                                    <td>{$vo.create_time|getDates}</td>
+
+                                    <td>
+
+                                        <if condition="checkUserLoginStatus($vo['last_active_time']) && ($vo['login_status'] eq 1)">
+
+                                            <span class="open-status enable">{:L('ONLINE')}</span>
+
+                                        <else />
+
+                                            <span class="open-status disable">{:L('OFFLINE')}</span>
+
+                                        </if>
+
+                                    </td>
+
+                                    <td class="feeldesk-list-operate">
+
+                                        <i class="iconfont icon-dian"></i>
+
+                                        <div class="operate-panel hidden">
+
+                                            <php>$id = encrypt($vo['member_id'],'MEMBER');</php>
+
+                                            <notempty name="data.auth.editor">
+
+                                                <a href='javascript:' title="{:L('EDITOR')}" onclick="openFormWindow(this,'{:U(\'editor\',[\'id\'=>$id])}')">
+                                                    {:L('EDITOR')}
+                                                </a>
+
+                                            </notempty>
+
+                                            <notempty name="data.auth.delete">
+                                                <neq name="vo.is_first" value="2">
+                                                    <a href="{:U('delete',['id'=>$id])}" load="delMember">{:L('DELETE')}</a>
+                                                </neq>
+                                            </notempty>
+
+                                            <notempty name="data.auth.reset">
+
+                                                <a href="{:U('reset',['id'=>$id])}" load="async">{:L('RESET_PASSWORD')}</a>
+
+                                            </notempty>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            </volist>
+
+                        </empty>
+
+                        </tbody>
+
+                    </table>
+
+                </form>
+
+            </div>
+
+            <div class="feeldesk-list-footer">
+
+                <input type="checkbox" name="" lay-skin="primary" lay-filter="ListAllChoose" title="{:L('CHECK_ALL')}">
+
+                <notempty name="data.page"><div class="user-page">{$data.page}</div></notempty>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+
+        importExcel('member');
+
+        layui.use('upload', function()
+        {
+//            删除用户
+            $("a[load='delMember']").on('click',function(e)
+            {
+                e.preventDefault();
+
+                var action = $(this).attr('href');
+
+                layer.confirm("{:L('DELETE_MEMBER_REMIND')}",{icon: 3, title:language.PROMPT,offset:['100px']},function()
+                {
+                    $.get(action,function(data)
+                    {
+                        if(data.status == 0)
+                        {
+                            feelDeskAlert(data.msg);
+                        }
+                        else
+                        {
+                            feelDeskAlert(data.msg,data);
+                        }
+
+                    },'JSON');
+
+                    layer.close();
+                });
+            });
+        });
+
+    </script>
+
+</block>

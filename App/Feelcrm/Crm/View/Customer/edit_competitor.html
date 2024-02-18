@@ -1,0 +1,256 @@
+<extend name="Public:base"/>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0">
+
+		<form action="{:U('customer/edit_competitor',['id'=>encrypt($competitor['competitor_id'],'CUSTOMER'),'customer_id'=>encrypt($competitor['customer_id'],'CUSTOMER'),'detailtype'=>encrypt($detailtype,'CUSTOMER'),'detail_source'=>$detail_source])}" class="layui-form" method="post" enctype="multipart/form-data">
+
+        <div class="form-nav">
+
+            <ul>
+
+                <li><a href="javascript:" class="form-tab active">{:L('MODIFY_COMPETITOR')}</a></li>
+
+				<notempty name="detailtype"><a href="javascript:history.go(-1);" class="feelcrm-cancleBtn fr mt5 mr30">{:L('CANCEL')}</a></notempty>
+
+				<a href="javascript:void(0)" class="layui-btn layui-btn-normal feelcrm-commbtn fr mt5 mr10" id="submitForm">{:L('SUBMIT')}</a>
+
+            </ul>
+
+        </div>
+
+        <div class="form-content pt50">
+		<php>
+			$t = 0;
+			$ft = 0;
+			$reg = 0;
+		</php>
+
+
+				 <div class="form-item">
+
+                     <volist name="competitorform" id="vo">
+
+                        <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+                        <if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+                        <!-- 字段未设置编辑权限或当前用户在编辑权限内 -->
+                        <if condition="!$vo['member_id'] || in_array($index['member_id'],explode(',',$vo['member_id']))">
+
+                        <div class="layui-form-item">
+
+                            <label class="layui-form-label">
+
+                                <eq name="vo.is_required" value="0"><span class="red">*</span> </eq>
+
+                                {$vo.form_description}
+
+                            </label>
+
+							<eq name="vo.form_type" value="region">
+
+								<php>
+									$reg++;
+								</php>
+
+								{:W('Region/getRegionEdit',['competitor_form',$vo['form_name'],$reg,$competitor])}
+
+							<else/>
+
+                            <div class="layui-input-inline">
+
+                                <eq name="vo.form_type" value="text">
+
+                                    <!-- 单行文本框 -->
+                                    <input type="text" name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="phone">
+
+                                    <!-- {:L('CELL_PHONE')} -->
+                                    <input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="email">
+
+                                    <!-- {:L('MAILBOX')} -->
+                                    <input type="text" name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="number">
+
+                                    <!-- {:L('DIGITAL')} -->
+                                    <input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								<eq name="vo.form_type" value="decimal">
+
+                                    <!-- 小数 -->
+                                    <input type="text" name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="select">
+
+                                    <!-- 下拉菜单 -->
+                                    <select name="competitor_form[{$vo.form_name}]">
+
+                                        <option value="">{$vo.form_description}</option>
+
+                                        <foreach name="vo.option" item="op">
+
+                                            <option value="{$op}" <eq name="competitor[$vo[form_name]]" value="$op" >selected</eq>>{$op}</option>
+
+                                        </foreach>
+
+                                    </select>
+
+                                </eq>
+								
+								<eq name="vo.form_type" value="select_text">
+
+                                    <php>
+                                        $st++;
+                                    </php>
+                                    <!-- 下拉填写 -->
+                                    {:W('Update/selectTextForm',['competitor',$vo,$st,$competitor])}
+
+                                </eq>
+
+                                <!-- 时间控件 -->
+                                <eq name="vo.form_type" value="date">
+
+									<php>
+										$ft++;
+									</php>
+
+                                    <input type='text' name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" class="layui-input cursor layui-form-time" id="form_time<php>echo $ft;</php>" placeholder="{:L('SELECT_TIME')}" >
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="checkbox">
+
+                                    <!-- 复选框 -->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="checkbox" name="competitor_form[{$vo.form_name}][]" <in name="op" value="$competitor[$vo[form_name]]">checked</in> lay-skin="primary" title="{$op}" value="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="radio">
+
+                                    <!-- 单选框-->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="radio" name="competitor_form[{$vo.form_name}]" <eq name="competitor[$vo[form_name]]" value="$op" >checked</eq> value="{$op}" title="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <!-- 文本域 -->
+                                <eq name="vo.form_type" value="textarea">
+
+									<php>
+										$t++
+									</php>
+
+                                    <textarea class="layui-textarea layui-hide ticket-textarea" name="competitor_form[{$vo.form_name}]" id="ticketEditor<php>echo $t;</php>">{$competitor[$vo['form_name']]}</textarea>
+
+                                </eq>
+
+                            </div>
+
+							</eq>
+
+                            <notempty name="vo.form_explain">
+
+                                <i class="layui-icon layui-icon-about intro-icon" data-note="{$vo.form_explain}"></i>
+
+                            </notempty>
+
+                        </div>
+
+                        <else/>
+
+                            <eq name="vo.form_type" value="region">
+
+                                <input type="hidden" name="competitor_form[{$vo.form_name}_defaultCountry]" value="{$competitor[$vo['form_name']]['defaultCountry']}" >
+                                <input type="hidden" name="competitor_form[{$vo.form_name}_defaultProv]" value="{$competitor[$vo['form_name']]['defaultProv']}" >
+                                <input type="hidden" name="competitor_form[{$vo.form_name}_defaultCity]" value="{$competitor[$vo['form_name']]['defaultCity']}" >
+                                <input type="hidden" name="competitor_form[{$vo.form_name}_defaultArea]" value="{$competitor[$vo['form_name']]['defaultArea']}" >
+
+                                <else/>
+
+                                <input type="hidden" name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" >
+
+                            </eq>
+
+                        </if>
+
+                        <else/>
+
+                            <eq name="vo.form_type" value="region">
+
+                                <input type="hidden" name="competitor_form[{$vo.form_name}_defaultCountry]" value="{$competitor[$vo['form_name']]['defaultCountry']}" >
+                                <input type="hidden" name="competitor_form[{$vo.form_name}_defaultProv]" value="{$competitor[$vo['form_name']]['defaultProv']}" >
+                                <input type="hidden" name="competitor_form[{$vo.form_name}_defaultCity]" value="{$competitor[$vo['form_name']]['defaultCity']}" >
+                                <input type="hidden" name="competitor_form[{$vo.form_name}_defaultArea]" value="{$competitor[$vo['form_name']]['defaultArea']}" >
+
+                                <else/>
+
+                                <input type="hidden" name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" >
+
+                            </eq>
+
+                        </if>
+
+                    </volist>
+
+				</div>
+
+        </div>
+
+		</form>
+
+    </div>
+
+
+
+
+    <include file="Public:language" />
+
+
+    <script type="text/javascript">
+
+        $("#choose").hide();
+
+        layui.use('form',function()
+        {
+            var form = layui.form;
+
+            form.on('select(form_type)', function(data)
+            {
+                var type = data.value;
+
+                if(type == 'radio' || type == 'checkbox' || type == 'select')
+                {
+                    $("#choose").slideDown(300);
+                }
+                else
+                {
+                    $("#choose").slideUp(300);
+                }
+            });
+        })
+
+    </script>
+
+</block>

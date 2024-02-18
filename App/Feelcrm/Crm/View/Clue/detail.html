@@ -1,0 +1,1009 @@
+<extend name="Public:base"/>
+
+<block name="content">
+
+	<include file="Public/selectMember" />
+
+	<script>
+
+		$(function(){
+
+			$('#Memberlist .feeldesk-page a').click(function(){
+
+				pageclick(this,'/Clue/detail');
+
+				return false;
+			})
+
+		})
+
+	</script>
+
+	<include file="Public/toPool" />
+
+	<div class="comment-shade"></div>
+
+	<div class="comment-panel hidden" id="comment">
+
+		<header><span>{:L('COMMENT')}</span><i class="iconfont icon-guanbi comment-close" title="{:L('CLOSE')}"></i></header>
+
+		<form action="{:U('Customer/commentFollow')}" id="commentForm" class="layui-form">
+
+			<input type="hidden" name="comment[follow_id]" id="commentFollowId"/>
+
+			<textarea id='commentEditor' name="comment[content]" cols="30" rows="10" placeholder="{:L('ENTER_COMMENT_CONTENT')}"></textarea>
+
+			<div class="submit-comment"><a href="javascript:" class="layui-btn">{:L('SUBMIT')}</a></div>
+
+		</form>
+
+	</div>
+
+	<div class="">
+
+	</div>
+
+	<div class="customer-detail feeldesk-form pd0 feelcrm-form">
+
+		<div class="customer-detail-content">
+
+			<div class="detail-sidebar sidebar" id="closeCustomerDetail"><i class="iconfont icon-right"></i></div>
+
+			<div class="customer-header h-auto">
+
+				<div class="customer-header-name">{$clue.detail.name}</div>
+
+				<div class="customer-header-right">
+
+					<in name="detailtype" value="index">
+
+						<eq name="clue.isvalid" value="1">
+
+							<if condition="$clue['member_id'] gt 0">
+
+								<neq name="clue.status" value="2">
+
+									{:FEELCRM('Clue/transform',['id'=>encrypt($clue['clue_id'],'CLUE')],L('TRANSFORM'),'feelcrm-commbtn ml5')}
+
+									<notempty name="istoPoolClueAuth">
+
+										<neq name="clue.status" value="2">
+
+											<a href="javascript:" class="feelcrm-commbtn ml5" data-id="{:encrypt($clue['clue_id'],'CLUE')}" data-href="{:U('Clue/toPool')}" data-name="{:L('GIVE_UP_CLUES')}" id="toPoolCustomer">{:L('GIVE_UP')}</a>
+
+										</neq>
+
+									</notempty>
+
+								</neq>
+
+								<notempty name="istransferClueAuth">
+
+									<a href="javascript:" class="chooseMemberDetail feelcrm-commbtn ml5" data-id="{:encrypt($clue['clue_id'],'CLUE')}" data-href="{:U('Clue/transfer')}" data-name="{:L('TRANSFER')}" >{:L('TRANSFER')}</a>
+
+								</notempty>
+
+								{:FEELCRM('Clue/delete',['id'=>encrypt($clue['clue_id'],'CLUE'),'type'=>encrypt('index','CLUE')],L('DELETE'),'feelcrm-commbtn ml5','trash')}
+
+								<else/>
+
+								<notempty name="isDrawClueAuth">
+
+									<a href="javascript:" class="feelcrm-commbtn ml5" data-id="{:encrypt($clue['clue_id'],'CLUE')}" data-href="{:U('Clue/draw')}" data-name="{:L('RECEIVE')}" id="drawOperate">{:L('RECEIVE')}</a>
+
+								</notempty>
+
+								<notempty name="isAllotClueAuth">
+
+									<a href="javascript:" class="chooseMemberDetail feelcrm-commbtn ml5" data-id="{:encrypt($clue['clue_id'],'CLUE')}" data-href="{:U('Clue/allot')}" data-name="{:L('DISTRIBUTION')}" >{:L('DISTRIBUTION')}</a>
+
+								</notempty>
+
+								{:FEELCRM('Clue/delete',['id'=>encrypt($clue['clue_id'],'CLUE'),'type'=>encrypt('pool','CLUE')],L('DELETE'),'feelcrm-commbtn ml5','trash')}
+
+							</if>
+
+							<else/>
+
+							{:FEELCRM('Recover/re_clue',['id'=>encrypt($clue['clue_id'],'CLUE')],L('RECOVERY'),'feelcrm-commbtn ml5','batch')}
+
+							{:FEELCRM('Clue/delete',['id'=>encrypt($clue['clue_id'],'CLUE'),'type'=>encrypt('index','CLUE')],L('DELETE'),'feelcrm-commbtn ml5','trash')}
+
+						</eq>
+
+					</in>
+
+				</div>
+
+				<div class="clear"></div>
+
+				<div class="customer-system-info">
+
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('SUBORDINATE_SECTOR')}</p><p class="system-nav-con">{:CrmgetMemberGroupName($groupList,$clue['group_id'])}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('LEADER')}</p><p class="system-nav-con blue8">{$clue.member_name|default='<span class="iconfont icon-nothing gray1"></span>'}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('FINAL_FOLLOW-UP')}</p><p class="system-nav-con">{$clue.lastfollowtime|getDates}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('NEXT_CONTACT_TIME')}</p><p class="system-nav-con">{$clue.nextcontacttime|getDates}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('CREATE_TIME')}</p><p class="system-nav-con">{$clue.createtime|getDates}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('FOUNDER')}</p><p class="system-nav-con">{:getCustomerCreateName($clue['creater_id'],$clue['creater_name'])}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('STATUS')}</p><p class="system-nav-con">{:getClueStatusName($clue['status'],'html')}</p></div>
+					<eq name="clue.status" value="2">
+						<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('CUSTOMER')}</p><p class="system-nav-con"><a href="javascript:;" mini="customer" data-id="{:encrypt($clue['customer_id'],'CUSTOMER')}" data-type="detailPop" class="blue8">{$clue.customer.name}</a></p></div>
+					</eq>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('ENTRY_METHOD')}</p><p class="system-nav-con">{:getCrmEntryMethod($clue['entry_method'])}</p></div>
+				</div>
+
+				<div class="clear"></div>
+
+
+			</div>
+
+			<div class="form-nav" id="detail-nav">
+
+				<ul>
+
+					<li><a href="javascript:;" class="form-tab active">{:L('CLUE_DETAILS')}</a></li>
+
+					<div class="clear"></div>
+
+				</ul>
+
+			</div>
+
+			<!--{:L('CUSTOMER_DETAIL')}-->
+			<!--<form class="layui-form">-->
+
+			<div class="form-content form-content1 relative" style="overflow:inherit">
+
+				<div class="<notin name='detailtype' value='index'>hidden</notin>" >
+
+					<div class="form-item pb25 pt10 ">
+
+						<form class="layui-form" action="{:U('clue/edit',['id'=>encrypt($clue['clue_id'],'CLUE'),'type'=>encrypt('detail','CLUE'),'detailtype'=>encrypt('index','CLUE')])}">
+
+							<eq name="clue.isvalid" value="1">
+
+								<a href="javascript:" class="feelcrm-commbtn fr edit-customer-detail" >{:L('EDITOR')}</a>
+
+								<a href="javascript:" class="feelcrm-commbtn fr finish-customer-detail" data-no="{$clue.clue_prefix}{$clue.clue_no}">{:L('COMPLETE')}</a>
+
+							</eq>
+
+							<div class="clear"></div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">{:L('CLUE_NO')}</label>
+
+								<div class="layui-input-inline">{$clue.clue_prefix}{$clue.clue_no}</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<php>
+								$t = 0;
+								$ft = 0;
+								$reg = 0;
+							</php>
+
+							<volist name="clueform" id="vo">
+							<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+							<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+								<div class="layui-form-item mb10 wd50 fl">
+
+									<label class="layui-form-label">{$vo.form_description}</label>
+
+									<div class="layui-input-inline <notempty name='isEditClueAuth'>pd0 detail-update-form</notempty>">
+
+										<div class="layui-detail-edit-default" >
+
+											<span class="fl">{$clue['detail'][$vo['form_name']]|default='--'}</span>
+
+											<if condition="$vo['form_name'] eq 'phone' && $clue['detail'][$vo['form_name']]">
+
+												<span class="fl icon-onclickcall"><i class="iconfont icon-boda blue8" onclick="CallUp({$clue['detail'][$vo['form_name']]},4);"></i></span>
+
+											</if>
+
+											<div class="clear"></div>
+
+										</div>
+
+										<notempty name="isEditClueAuth">
+
+											<div class="hidden layui-detail-edit-form">
+
+												<eq name="vo.form_type" value="date">
+													<php>$ft++;</php>
+												</eq>
+
+												<eq name="vo.form_type" value="region">
+													<php>$reg++;</php>
+												</eq>
+
+												<php>$t++;</php>
+
+												{:W('Update/updateFormContent',[$clue,$clue['clue_id'],$vo,'clue',$t,$ft,$reg])}
+
+											</div>
+
+											<i class="i-update-success iconfont icon-system-success hidden"></i>
+
+										</notempty>
+
+									</div>
+
+									<div class="clear"></div>
+
+								</div>
+
+							<else/>
+
+								<eq name="vo.form_type" value="region">
+
+									<input type="hidden" name="clue_form[{$vo.form_name}_defaultCountry]" value="{$clue[$vo['form_name']]['defaultCountry']}" >
+									<input type="hidden" name="clue_form[{$vo.form_name}_defaultProv]" value="{$clue[$vo['form_name']]['defaultProv']}" >
+									<input type="hidden" name="clue_form[{$vo.form_name}_defaultCity]" value="{$clue[$vo['form_name']]['defaultCity']}" >
+									<input type="hidden" name="clue_form[{$vo.form_name}_defaultArea]" value="{$clue[$vo['form_name']]['defaultArea']}" >
+
+								<else/>
+
+									<input type="hidden" name="clue_form[{$vo.form_name}]" value="{$clue['detail'][$vo['form_name']]}" >
+
+								</eq>
+
+							</if>
+							</volist>
+
+							<php>$tx = 0;</php>
+
+							<volist name="clueform2" id="vo">
+
+							<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+							<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+								<div class="layui-form-item mb10 wd100 layui-form-item-textarea fl">
+
+									<label class="layui-form-label">
+
+										{$vo.form_description}
+
+									</label>
+
+									<div class="layui-input-inline <notempty name='isEditClueAuth'>pd0 detail-update-form</notempty>">
+
+										<div class="layui-detail-edit-default textareaImg">
+
+											{$clue['detail'][$vo['form_name']]|default='--'}
+
+										</div>
+
+										<notempty name="isEditClueAuth">
+
+											<php>$tx++;</php>
+
+											<div class="hidden layui-detail-edit-form">
+
+												<textarea class="layui-textarea layui-hide ticket-textarea" name="clue_form[{$vo.form_name}]" id="crmEditor{$tx}">{$clue['detail'][$vo['form_name']]}</textarea>
+
+
+											</div>
+
+											<i class="i-update-success iconfont icon-system-success hidden"></i>
+
+										</notempty>
+
+									</div>
+
+									<div class="clear"></div>
+
+								</div>
+
+							<else/>
+
+								<input type="hidden" name="clue_form[{$vo.form_name}]" value="{$clue['detail'][$vo['form_name']]}" >
+
+							</if>
+
+							</volist>
+
+							<div class="clear"></div>
+
+						</form>
+
+					</div>
+
+				</div>
+
+
+
+				<div class="form-nav pd0" id="customer-detail-nav">
+
+					<ul>
+
+						<eq name="clue.isvalid" value="1">
+
+							<notempty name="isFollowAuthView">
+
+								<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,1)" <eq name="detailtype" value="index">class="active"</eq>>{:L('CONTACT_RECORD')}</a></li>
+
+								<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,9)" >{:L('ATTACHMENT')}</a></li>
+
+							</notempty>
+
+							<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,2)">{:L('OPERATION_RECORD')}</a></li>
+
+							<else/>
+
+							<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,2)" class="active">{:L('OPERATION_RECORD')}</a></li>
+
+						</eq>
+
+					</ul>
+
+				</div>
+
+				<eq name="clue.isvalid" value="1">
+
+					<notempty name="isFollowAuthView">
+
+						<!--{:L('CONTACT_RECORD')}-->
+						<div class="customerDetailContent <neq name='detailtype' value='index'>hidden</neq>" id="customer-detail-content1">
+
+							<div class="form-content">
+
+								<div class="layui-tab-content pb0 follow-default">
+
+									<div class="layui-tab-item layui-show ">
+
+										<div class="form-item">
+
+											<div class="layui-form-item">
+
+												<div class="layui-input-inline wd100">
+
+													<input type="text" class="layui-input" placeholder="{:L('ADD_CONTACT_RECORD')}" name="" id="follow-entry">
+
+												</div>
+
+											</div>
+
+										</div>
+
+									</div>
+
+								</div>
+
+								<div class="layui-tab-content pb0 follow-tocreate hidden">
+
+									<form action="{:U('customer/create_follow',['id'=>encrypt($clue['clue_id'],'CLUE'),'detailtype'=>encrypt('index','CLUE'),'sourcetype'=>'clue'])}" class="layui-form" method="post" enctype="multipart/form-data">
+
+										{:W('Follow/createFollow')}
+
+									</form>
+
+								</div>
+
+								<div class="feelcrm-follow">
+
+									{:W('Follow/followList',[$follow,$clue])}
+
+								</div>
+
+							</div>
+
+							<script>
+
+								$(function(){
+
+									$('#follow-entry').click(function(){
+
+										$('.follow-default').addClass('hidden');
+
+										$('.follow-tocreate').show();
+
+									})
+								})
+
+							</script>
+
+							<script type="text/javascript">
+
+								$(function()
+								{
+									layui.use(['layedit','form'], function()
+									{
+										var layedit = layui.layedit;
+
+										var commentEditor = layedit.build('commentEditor',{hideTool:['strong','italic','underline','del','|','left','center','right','link','unlink','image','help'], height:120});
+
+										$('.reply-comment,.comment-close').on('click',function()
+										{
+											$("#comment,.comment-shade").fadeToggle();
+
+											var value = $(this).data('value');
+
+											if(value != undefined)
+											{
+												$('#commentFollowId').val(value);
+											}
+
+											$('.submit-comment a').unbind('click').on('click',function()
+											{
+												layedit.sync(commentEditor);
+
+												layer.load(2,{offset:['150px']});
+
+												$.post("{:U('Customer/commentFollow')}",$('#commentForm').serialize(),function(data)
+												{
+													if(data.errcode == 0)
+													{
+														layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+														{
+															window.location.reload();
+														});
+													}
+													else
+													{
+														layer.closeAll('loading');
+
+														layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+													}
+												},'JSON')
+											})
+										})
+									});
+
+									$('.comment-more').on('click',function()
+									{
+										$(this).siblings('.comment-item:gt(2)').slideToggle('fast');
+
+										$(this).find('i').toggleClass('icon-upward');
+									});
+								})
+
+							</script>
+
+						</div>
+
+						<div class="customerDetailContent hidden" id="customer-detail-content9">
+
+							<div class="feelcrm-follow border-none followContent" >
+
+								{:W('Follow/fileList',[$files])}
+
+							</div>
+
+						</div>
+
+					</notempty>
+
+					<!--{:L('OPERATION_RECORD')}-->
+					<div class="customerDetailContent <notempty name='isFollowAuthView'>hidden</notempty>" id="customer-detail-content2">
+
+						<!--<div class="form-item pb25 pt20 ">
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('SUBORDINATE_SECTOR')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{:CrmgetMemberGroupName($groupList,$clue['group_id'])}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('LAST_FOLLOW-UP_TIME')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{$clue.lastfollowtime|getDates}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('CUSTOMER_RESPONSIBLE')}
+
+								</label>
+
+								<div class="layui-input-inline blue6">
+
+									{$clue.member_name}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('NEXT_CONTACT_TIME')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{$clue.nextcontacttime|getDates}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('FOUNDER')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{:getCustomerCreateName($clue['creater_id'],$clue['creater_name'])}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('CREATE_TIME')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{$clue.createtime|getDates}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="clear"></div>
+
+						</div>-->
+
+						<notempty name="abandon_log">
+
+							<!--<div class="customer-detail-title" >
+
+								<span>{:L('GIVE_UP')}{:L('CLUE')}</span>
+
+							</div>-->
+
+							<div class="item-list wd100 pl0 pr0 border_b">
+
+								<table class="layui-table mar0" lay-skin="line">
+
+									<thead>
+
+									<tr>
+
+										<th class="common_con_th">{:L('REASON_FOR_GIVING_UP')}</th><th>{:L('CLUE')}{:L('LEADER')}</th><th>{:L('OPERATOR')}</th><th>{:L('TIME')}</th>
+
+									</tr>
+
+									</thead>
+
+									<tbody>
+
+									<volist name="abandon_log" id="vo">
+
+										<tr>
+
+											<td class="common_con_td" title="{$vo.abandon_name}">{$vo.abandon_name}</td>
+
+											<td>{$vo.member_name}</td>
+
+											<td>{$vo.operator_name}</td>
+
+											<td>{$vo.createtime|getDates}</td>
+										</tr>
+
+									</volist>
+
+									</tbody>
+
+								</table>
+
+							</div>
+
+						</notempty>
+
+						<div class="operate-info" id="CrmLogBox">
+
+
+						</div>
+
+						<script>
+
+							layui.use('flow', function()
+							{
+								var flow = layui.flow;
+
+								flow.load(
+								{
+									elem: '#CrmLogBox',
+									scrollElem:'.feeldesk-main',
+									isAuto:false,
+									done: function(page, next)
+									{
+										var url = "{$Think.ACTION_NAME}";
+
+										var clue_id = "{:encrypt($clue['clue_id'],'CLUE')}";
+
+										var detailtype = "{:encrypt($detailtype,'CLUE')}";
+
+										var lis = [];
+
+										$.get("{:U('clue/'.ACTION_NAME)}?id="+clue_id+"&detailtype="+detailtype+"&p="+page+"&request=crmlog", function(data)
+										{
+											if(data.data)
+											{
+												if (data.data.length > 0) {
+													layui.each(data.data, function (index, item) {
+														var items = '<div class="operate-list">';
+
+														if (item.member.face) {
+															items += '<img src="' + item.member.face + '" alt="">';
+														} else {
+															items += '<img src="/Attachs/face/face.png" alt="">';
+														}
+														items += '&nbsp;&nbsp;&nbsp;<span class="blue8">' + item.member.name + '</span>';
+
+														items += '<span class="gray9 fts12">&nbsp;• ' + item.createtime + '&nbsp;</span>';
+
+														items += '<span>' + item.content + '</span>';
+
+														items += '</div>';
+
+														lis.push(items);
+													});
+
+													next(lis.join(''), page < data.pages);
+												} else {
+													var items = "";
+
+													lis.push(items);
+
+													next(lis.join(''), page < data.pages);
+												}
+											}
+										});
+
+									}
+								});
+							});
+
+						</script>
+
+					</div>
+
+					<else/>
+
+					<!--{:L('OPERATION_RECORD')}-->
+					<div class="customerDetailContent" id="customer-detail-content2">
+
+						<!--<div class="form-item pb25 pt20 ">
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('SUBORDINATE_SECTOR')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{:CrmgetMemberGroupName($groupList,$clue['group_id'])}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('LAST_FOLLOW-UP_TIME')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{$clue.lastfollowtime|getDates}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('CUSTOMER_RESPONSIBLE')}
+
+								</label>
+
+								<div class="layui-input-inline blue6">
+
+									{$clue.member_name}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('NEXT_CONTACT_TIME')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{$clue.nextcontacttime|getDates}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('FOUNDER')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{:getCustomerCreateName($clue['creater_id'],$clue['creater_name'])}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('CREATE_TIME')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{$clue.createtime|getDates}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="clear"></div>
+
+						</div>-->
+
+						<notempty name="abandon_log">
+
+							<!--<div class="customer-detail-title" >
+
+								<span>{:L('GIVE_UP')}{:L('CLUE')}</span>
+
+							</div>-->
+
+							<div class="item-list wd100 pl0 pr0 border_b">
+
+								<table class="layui-table mar0" lay-skin="line">
+
+									<thead>
+
+									<tr>
+
+										<th class="common_con_th">{:L('REASON_FOR_GIVING_UP')}</th><th>{:L('CLUE')}{:L('LEADER')}</th><th>{:L('OPERATOR')}</th><th>{:L('TIME')}</th>
+
+									</tr>
+
+									</thead>
+
+									<tbody>
+
+									<volist name="abandon_log" id="vo">
+
+										<tr>
+
+											<td class="common_con_td" title="{$vo.abandon_name}">{$vo.abandon_name}</td>
+
+											<td>{$vo.member_name}</td>
+
+											<td>{$vo.operator_name}</td>
+
+											<td>{$vo.createtime|getDates}</td>
+										</tr>
+
+									</volist>
+
+									</tbody>
+
+								</table>
+
+							</div>
+
+						</notempty>
+
+						<div class="operate-info" id="CrmLogBox">
+
+
+						</div>
+
+						<script>
+
+							layui.use('flow', function()
+							{
+								var flow = layui.flow;
+
+								flow.load(
+								{
+									elem: '#CrmLogBox',
+									scrollElem:'.feeldesk-main',
+									isAuto:false,
+									done: function(page, next)
+									{
+										var url = "{$Think.ACTION_NAME}";
+
+										var clue_id = "{:encrypt($clue['clue_id'],'CLUE')}";
+
+										var detailtype = "{:encrypt($detailtype,'CLUE')}";
+
+										var lis = [];
+
+										$.get("{:U('clue/'.ACTION_NAME)}?id="+clue_id+"&detailtype="+detailtype+"&p="+page+"&request=crmlog", function(data)
+										{
+											if(data.data)
+											{
+												if (data.data.length > 0) {
+													layui.each(data.data, function (index, item) {
+														var items = '<div class="operate-list">';
+
+														if (item.member.face) {
+															items += '<img src="' + item.member.face + '" alt="">';
+														} else {
+															items += '<img src="/Attachs/face/face.png" alt="">';
+														}
+														items += '&nbsp;&nbsp;&nbsp;<span class="blue8">' + item.member.name + '</span>';
+
+														items += '<span class="gray9 fts12">&nbsp;• ' + item.createtime + '&nbsp;</span>';
+
+														items += '<span>' + item.content + '</span>';
+
+														items += '</div>';
+
+														lis.push(items);
+													});
+
+													next(lis.join(''), page < data.pages);
+												} else {
+													var items = "";
+
+													lis.push(items);
+
+													next(lis.join(''), page < data.pages);
+												}
+											}
+										});
+
+									}
+								});
+							});
+
+						</script>
+
+					</div>
+
+				</eq>
+			</div>
+
+	</div>
+
+	</div>
+
+	<script type="text/javascript">
+
+		$('body').find('#closeCustomerDetail').click(function()
+		{
+			window.parent.postMessage('closeDetail','*');
+		});
+
+		window.addEventListener('message', function(e)
+		{
+			if(e.data)
+			{
+				window.formCustomer = 1;
+			}
+		}, false)
+
+		$(function(){
+
+			var Awidth = $('#detail-nav').width();
+
+			var linum = $('#detail-nav ul').children("li").length;
+
+			var liwidth = 130 * linum;
+
+			if(Awidth > liwidth)
+			{
+				$('#detail-nav ul').css('min-width',Awidth+'px');
+			}
+			else
+			{
+				$('#detail-nav ul').css('min-width',liwidth+'px');
+			}
+
+			var Cwidth = $('#customer-detail-nav').width();
+
+			var Clinum = $('#customer-detail-nav ul').children("li").length;
+
+			var Cliwidth = 130 * Clinum;
+
+			if(Cwidth > Cliwidth)
+			{
+				$('#customer-detail-nav ul').css('min-width',Cwidth+'px');
+			}
+			else
+			{
+				$('#customer-detail-nav ul').css('min-width',Cliwidth+'px');
+			}
+		})
+
+	</script>
+
+	<include file="Public:language" />
+
+</block>

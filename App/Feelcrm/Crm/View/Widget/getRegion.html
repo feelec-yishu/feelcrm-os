@@ -1,0 +1,124 @@
+
+<div class="region-input-div wd70 fl">
+
+<div class="layui-input-inline wd100 mb10 region-item <neq name='crmsite.regionType' value='world'>hidden</neq>">
+
+	<select name="{$FormName}[{$form_name}_defaultCountry]" id="country<php>echo $reg;</php>" lay-ignore >
+
+		<option value="">{:L('PLEASE_SELECT')}</option>
+
+		<volist name="country" id="vc">
+
+			<option value="{$vc.code}" <neq name='crmsite.regionType' value='world'><eq name='vc.code' value='1'>selected</eq><else/><eq name='crmsite.defaultCountry' value='$vc.code'>selected</eq></neq>>{$vc.name}</option>
+
+		</volist>
+
+	</select>
+
+</div>
+
+<div class="layui-input-inline wd100 mb10 <empty name='crmsite.defaultProv'>hidden</empty> layui-form region-item" lay-filter="province">
+
+	<select  name="{$FormName}[{$form_name}_defaultProv]" lay-filter="select-province<php>echo $reg;</php>" id="province<php>echo $reg;</php>" lay-ignore >
+
+		<option value="">{:L('PLEASE_SELECT')}</option>
+
+		<notempty name='crmsite.defaultProv'>
+
+			<volist name="province" id="vc">
+
+				<option c-value="{$vc.country_code}" value="{$vc.code}" <eq name='crmsite.defaultProv' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+			</volist>
+
+		</notempty>
+
+	</select>
+
+</div>
+
+<div class="layui-input-inline wd100 mb10 <empty name='crmsite.defaultCity'>hidden</empty> layui-form region-item" lay-filter="city">
+
+	<select  name="{$FormName}[{$form_name}_defaultCity]" lay-filter="select-city<php>echo $reg;</php>" id="city<php>echo $reg;</php>" lay-ignore >
+
+		<option value="">{:L('PLEASE_SELECT')}</option>
+
+		<notempty name='crmsite.defaultCity'>
+
+			<volist name="city" id="vc">
+
+				<option c-value="{$vc.country_code}" p-value="{$vc.province_code}" value="{$vc.code}" <eq name='crmsite.defaultCity' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+			</volist>
+
+		</notempty>
+
+	</select>
+
+</div>
+
+<div class="layui-input-inline wd100 mb10 <empty name='crmsite.defaultArea'>hidden</empty> layui-form region-item" lay-filter="area">
+
+	<select  name="{$FormName}[{$form_name}_defaultArea]" lay-filter="select-area<php>echo $reg;</php>" id="area<php>echo $reg;</php>" lay-ignore >
+
+		<option value="">{:L('PLEASE_SELECT')}</option>
+
+		<notempty name='crmsite.defaultArea'>
+
+			<volist name="area" id="vc">
+
+				<option value="{$vc.code}" <eq name='crmsite.defaultArea' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+			</volist>
+
+		</notempty>
+
+	</select>
+
+</div>
+
+</div>
+
+<i class="layui-icon layui-icon-about intro-icon fl blue8 ml10" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+<script type="text/javascript">
+
+	$("#country<php>echo $reg;</php>").select2();
+
+	$("#province<php>echo $reg;</php>").select2();
+
+	$("#city<php>echo $reg;</php>").select2();
+
+	$("#area<php>echo $reg;</php>").select2();
+
+	if($("#country<php>echo $reg;</php>").val() && !$("#province<php>echo $reg;</php>").val())
+	{
+		selectProvince('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	}
+
+	if($("#province<php>echo $reg;</php>").val() && !$("#city<php>echo $reg;</php>").val())
+	{
+		selectCity('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	}
+
+	if($("#city<php>echo $reg;</php>").val() && !$("#area<php>echo $reg;</php>").val())
+	{
+		selectArea('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	}
+
+    $("#country<php>echo $reg;</php>").change(function()
+	{
+		selectProvince('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	})
+
+    $("#province<php>echo $reg;</php>").change(function()
+	{
+		selectCity('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	})
+
+    $("#city<php>echo $reg;</php>").change(function()
+	{
+		selectArea('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	})
+
+</script>

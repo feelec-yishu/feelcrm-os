@@ -1,0 +1,60 @@
+.webuploader-container {
+	position: relative;
+}
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+}
+.webuploader-pick {
+	position: relative;
+	display: inline-block;
+	height:30px;
+	line-height:30px;
+	min-width:60px;
+	cursor: pointer;
+	background: #00b7ee;
+	padding: 0 10px;
+	color: #fff;
+	text-align: center;
+	border-radius: 3px;
+}
+
+.webuploader-pick-hover {
+	opacity: .8;
+}
+
+.webuploader-pick-disable {
+	opacity: 0.6;
+	pointer-events:none;
+}
+
+.uploader-content{max-width: 700px}
+
+.uploader-content .layui-layer-content{padding: 0 20px}
+
+.uploader-content .layui-table-view{margin: 0}
+
+.uploader-content .layui-btn-normal{color:#2c6ee5;background-color: transparent}
+
+.uploader-content .layui-btn-ing{color:#999;}
+
+.uploader-content .layui-btn-disabled{background-color: #fafafa !important;}
+
+.uploader-content .layui-table thead tr {background-color: #fff;}
+
+.layui-btn-normal:hover{opacity: 1}
+
+.layui-table-tips-c{right: 0;top: 0;width: 15px;height: 15px;background-color: transparent;font-size: 13px;color:#666}
+
+.layui-table-tips-c:before{top:-5px;right: 2px;}
+
+.layui-table-tips-c:hover{background-color: transparent;color:#ff3c00}
+
+.extend-header{height: 60px;line-height: 60px;}
+
+.extend-header #extend-upload-chooseFile{display:inline-block;}
+
+.extend-header .layui-btn{float:right;height: 30px;line-height:30px;background-color: #2c6ee5;margin: 15px 0;padding: 0 10px;}
+
+.layui-table-cell{text-align: center}

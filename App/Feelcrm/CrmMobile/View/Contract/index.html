@@ -1,0 +1,71 @@
+<include file="Public/header" />
+
+<div class="feeldesk">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1);location.replace(document.referrer)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('CONTRACT_LIST')}</div>
+
+            <notempty name="isCreateContractAuth"><a href="{:U('Contract/create')}" class="header-right">{:L('ADD')}</a></notempty>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main plr2 feelcrm-footer-list">
+
+        <div class='feeldesk-item' id='customerItem'>
+
+
+
+        </div>
+
+        <include file="Public/buoy" />
+
+    </div>
+
+</div>
+
+<include file="Public/footer" />
+
+<script type="text/javascript">
+
+    layui.use('flow', function()
+    {
+        var flow = layui.flow;
+
+        flow.load(
+        {
+            elem: '#customerItem',
+            scrollElem:'.feeldesk-main',
+            isAuto:false,
+            done: function(page, next)
+            {
+                var url = "{$Think.ACTION_NAME}";
+
+                var lis = [];
+
+                $.get("{:U('Contract/'.ACTION_NAME)}?p="+page+"&request=flow", function(data)
+                {
+                    layui.each(data.data, function(index, item)
+                    {
+                        var url = "{:U('Contract/detail')}?id="+item.contract_id;
+
+                        var customerUrl = "{:U('Customer/detail')}?id="+item.customer_id;
+
+                        var items = "<div class='feeldesk-list feelcrm-mobile-list'><a href='"+url+"' class='clearfix'><div class='feeldesk-list-left'><div class='order-name ellipsis'>"+item.detail.name+"</div><div class='customer-server'>{:L('CONTRACT_NO')}：<span>"+item.contract_prefix+item.contract_no+"</span></div><div class='customer-server ellipsis'>{:L('OWNED_CUSTOMER')}：<span class='blue8' onclick='tocrmdetail(\""+customerUrl+"\")'>"+item.customer_name+"</span></div></div><div class='feeldesk-list-right'><span>"+item.member_name+"</span></div></a></div>";
+
+                        lis.push(items);
+                    });
+
+                    next(lis.join(''), page < data.pages);
+                });
+            }
+        });
+    });
+
+</script>

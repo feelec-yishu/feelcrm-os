@@ -1,0 +1,298 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('SYSTEM')}</block>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0 hg100 layui-form">
+
+        <div class="layui-tab product-tree fl">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('ALL_PRODUCTS')}<span class="page-content">{:L('TOTAL_RECORDS')}：<span>{$pageCount|default='0'}</span> {:L('STRIP')}</span></li>
+
+            </ul>
+
+			<div class="protree protree-1 protree-default">
+
+				<foreach name="product_type_h" item="vo">
+
+					{$vo}
+
+				</foreach>
+
+			</div>
+
+        </div>
+
+		<div class="layui-tab product-list fl">
+
+			<div class="list-header clearfix">
+
+				<div class="header-left">
+
+					{:FEELCRM('product/create','',L('ADD_PRODUCT'),'item-deleteBtn','','iconfont icon-adduser')}
+
+				</div>
+
+				<div class="header-right">
+
+					<if condition="$isExportProductAuth || $isImportProductAuth">
+
+					<div class="customer-listOperate">
+
+						<div class="listOperate">
+
+							<div class="layui-form productOperate">
+
+								<style>
+									.customer-listOperate .listOperate .layui-form.productOperate .layui-input{height: 32px;margin-top: 11px}
+								</style>
+
+								<select class="layui-input" disabled><option>{:L('IMPORT_EXPORT')}</option></select>
+
+							</div>
+
+							<div class="operate hidden">
+
+								<notempty name="isExportProductAuth">
+
+									<a href="javascript:" title="{:L('EXPORT')}" id="startExport">{:L('EXPORT_DATA')}</a>
+
+								</notempty>
+
+								<notempty name="isImportProductAuth">
+
+									<a href="javascript:" id="uploadFile">{:L('IMPORT_CUSTOMER')}</a>
+
+									<a href="__ROOT__/{$importTemp}" title="{:L('PRODUCT_IMPORT_TEMPLATE')}" download="{:L('PRODUCT_IMPORT_TEMPLATE')}" >{:L('DOWNLOAD_TEMPLATE')}</a>
+
+								</notempty>
+
+							</div>
+
+						</div>
+
+					</div>
+
+					</if>
+
+					<span class="advanced-searc-btn fr" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i> <span>{:L('ADVANCED_SEARCH')}</span></span>
+
+					<form action="{$controllerAndAction}" method="get" class="fr">
+
+						<div class="compact-menu">
+
+							<!--<notempty name="isExportProductAuth">
+
+								<a href="javascript:" title="{:L('EXPORT')}" id="startExport"><i class="iconfont icon-export"></i></a>
+
+							</notempty>
+
+							<a href="javascript:" title="{:L('ADVANCED_SEARCH')}" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i></a>-->
+
+						</div>
+
+						<div class="compact-search">
+
+							<i class="iconfont icon-search crmSearchBtn"></i>
+
+							<input type="text" name="keyword" value="{$keyword}" placeholder="{:L('PRODUCT_NAME')}/{:L('PRODUCT_NUM')}"/>
+
+							<!--<a href="javascript:" class="searchBtn">{:L('SEARCH')}</a>-->
+
+						</div>
+
+					</form>
+
+				</div>
+
+			</div>
+
+			<div id="advanced-search" class="hidden feelcrm-advanced-search feeldesk-form">
+
+				<form action="{$controllerAndAction}" method="get" id="highSearchForm">
+
+				<include file="Public/highKeywordHeader" />
+
+						<include file="Public/highKeywordForm" />
+
+					</div>
+
+				</div>
+
+				</form>
+
+			</div>
+
+
+			<div class="item-list">
+
+				<table class="layui-table" lay-skin="line">
+
+					<thead>
+
+						<tr>
+
+							<th>{:L('PRODUCT_CATEGORY')}</th>
+
+							<th>{:L('IMAGES')}</th>
+
+							<volist name="formList" id="vo">
+								<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+								<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+								<th>{$vo.form_description}</th>
+								</if>
+							</volist>
+
+							<th>{:L('STATUS')}</th>
+
+							<th>{:L('OPERATION')}</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody>
+
+						<empty name="product">
+
+							<tr class="nodata center">
+
+								<td colspan="11">
+
+									<p><i class="iconfont icon-nothing fts20"></i></p>
+
+									<p>{:L('NO_DATA')}</p>
+
+								</td>
+
+							</tr>
+
+						<else />
+
+							<volist name="product" id="vo">
+
+								<tr>
+
+									<td>{$vo.type_name}</td>
+
+									<td class="productImg"><img src="{$vo.product_img|default='__PUBLIC__/crm/img/default_pro.png'}" width="40" height="40" /></td>
+
+									<volist name="formList" id="v">
+										<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+										<if condition="!$v['role_id'] || in_array($index['role_id'],explode(',',$v['role_id']))">
+										<td <eq name="v.form_type" value="textarea">title="{$vo['detail'][$v['form_name']]|strip_tags}"</eq>><eq name="v.form_type" value="textarea">{:mb_substr(strip_tags($vo['detail'][$v['form_name']]),0,20)}...<else/>{$vo['detail'][$v['form_name']]}</eq> </td>
+										</if>
+									</volist>
+
+									<td><eq name="vo.closed" value="0"><span class="blue1">{:L('PUT_ON_SHELF')}</span><else/><span class="red1">{:L('OFF_SHELF')}</span></eq></td>
+
+									<td class="listOperate">
+
+										<i class="iconfont icon-dian"></i>
+
+										<div class="operate hidden">
+
+											{:FEELCRM('Product/edit',['id'=>encrypt($vo['product_id'],'PRODUCT')],L('EDITOR'))}
+
+											{:FEELCRM('Product/delete',['id'=>encrypt($vo['product_id'],'PRODUCT'),'type_id'=>encrypt($type_id,'PRODUCT')],L('DELETE'),'','async')}
+
+											<eq name="vo.closed" value="0">
+
+											{:FEELCRM('Product/closed',['id'=>encrypt($vo['product_id'],'PRODUCT'),'type'=>encrypt(1,'PRODUCT'),'type_id'=>encrypt($type_id,'PRODUCT')],L('OFF_SHELF'),'','async')}
+
+											<else/>
+
+											{:FEELCRM('Product/closed',['id'=>encrypt($vo['product_id'],'PRODUCT'),'type'=>encrypt(0,'PRODUCT'),'type_id'=>encrypt($type_id,'PRODUCT')],L('PUT_ON_SHELF'),'','async')}
+
+											</eq>
+
+										</div>
+
+									</td>
+
+								</tr>
+
+							</volist>
+
+						</empty>
+
+					</tbody>
+
+				</table>
+
+				<div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+			</div>
+
+		</div>
+
+
+    </div>
+
+	<script type="text/javascript">
+
+		layui.use('upload', function()
+		{
+			var upload = layui.upload;
+
+			upload.render(
+			{
+				elem:'#uploadFile',
+
+				url: "{:U('Upload/importExcel',['source'=>'product'])}",
+
+				field:'excel',
+
+				exts: 'xlsx|xls',
+
+				accept:'file',
+
+				before:function()
+				{
+					layer.msg("{:L('IMPORT_LOADING')}",{time:1000000,shift:0,offset:['100px']})
+				},
+				done: function(res)
+				{
+					if(res.error == 1)
+					{
+						layer.msg(res.msg,{icon:1,time:1000,shift:0,offset:['60px']},function()
+						{
+							window.location.href = res.url;
+						});
+					}
+					else
+					{
+						layer.msg(res.msg,{icon:2,time:2000,offset:['60px']});
+					}
+				}
+			})
+		});
+
+		layer.ready(function()
+		{
+			layer.photos({
+			  photos: '.productImg',
+			  shift: 5,
+			  shade: [0.8, 'rgba(0,0,0,.8)']
+			});
+
+		})
+
+	</script>
+
+	<include file="Public/exportpage" />
+
+	<script>
+
+		var export_url = "/Product/export";
+
+		var export_action = "{$Think.ACTION_NAME}";
+
+	</script>
+
+    <include file="Public/footer" />
+
+</block>

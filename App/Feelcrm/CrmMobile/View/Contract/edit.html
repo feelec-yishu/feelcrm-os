@@ -1,0 +1,508 @@
+<include file="Public/header" />
+
+<div class="feeldesk" id="formWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('MODIFY_CONTRACT')}</div>
+
+            <a href="javascript:" class="header-right" id="submitForm">{:L('COMPLETE')}</a>
+
+        </div>
+
+    </header>
+
+	<php>
+		$t = 0;
+		$ft = 0;
+		$reg = 0;
+	</php>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <form action="" id="feeldeskForm" method="post" class="layui-form">
+
+            <div class="feeldesk-form pd5">
+
+                <div class="feeldesk-form-item">
+
+                    <div class="feeldesk-form-block">
+
+						<span class="red required-icon">*</span>
+
+                        <select name="contract[member_id]" lay-filter="">
+
+                            <option value="0">{:L('LEADER')}</option>
+
+                            <volist name="members" id="v">
+
+								<option value="{$v.member_id}" <eq name="contract.member_id" value="$v.member_id" >selected</eq>>{$v.name}</option>
+
+							</volist>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+               <volist name="contractform" id="vo">
+
+				   <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+				   <if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+				   <!-- 字段未设置编辑权限或当前用户在编辑权限内 -->
+				   <if condition="!$vo['member_id'] || in_array($mobile['member_id'],explode(',',$vo['member_id']))">
+
+					<eq name="vo.form_type" value="region">
+
+						<php>
+							$reg++;
+						</php>
+
+						{:W('Region/getRegionEdit',['contract_form',$vo,$reg,$contract])}
+
+					<else/>
+
+					 <div class="feeldesk-form-item relative">
+
+						<div class="feeldesk-form-block">
+
+							<eq name="vo.is_required" value="0">
+
+								<span class="red required-icon">*</span>
+
+							</eq>
+
+							<eq name="vo.form_type" value="text">
+
+								<!-- 单行文本框 -->
+								<input type="text" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="phone">
+
+								<!-- 手机 -->
+								<input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="email">
+
+								<!-- 邮箱 -->
+								<input type="text" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="number">
+
+								<!-- 数字 -->
+								<input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="decimal">
+
+								<!-- 小数 -->
+								<input type="text" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="select">
+
+								<!-- 下拉菜单 -->
+								<select name="contract_form[{$vo.form_name}]" lay-filter="">
+
+									<option value="">{$vo.form_description}</option>
+
+									<foreach name="vo.option" item="op">
+
+										<option value="{$op}" <eq name="contract[$vo[form_name]]" value="$op" >selected</eq>>{$op}</option>
+
+									</foreach>
+
+								</select>
+
+							</eq>
+							
+							<eq name="vo.form_type" value="select_text">
+
+								<php>
+									$st++;
+								</php>
+								<!-- 下拉填写 -->
+								{:W('Update/selectTextForm',['contract',$vo,$st,$contract])}
+
+							</eq>
+
+							<eq name="vo.form_type" value="checkbox">
+
+								<!-- 多选 -->
+                                <div class="feeldesk-input feeldesk-form-check checkbox">
+
+                                    <span class='gray9'>{$vo.form_description}</span>
+
+                                    <i class="feeldesk-edge"></i>
+
+                                </div>
+
+                                <ul class="feeldesk-option-panel hidden checkboxPanel">
+
+                                    <volist name="vo.option" id="op">
+
+                                        <li data-value="{$op}">
+
+                                            <input type="checkbox" name="contract_form[{$vo.form_name}][]" <in name="op" value="$contract[$vo[form_name]]">checked</in> value="{$op}"/>
+
+                                            <div class="feeldesk-option">
+
+                                                <span class="feeldesk-option-title">{$op}</span>
+
+                                                <span class="iconfont icon-check <in name="op" value="$contract[$vo[form_name]]">icon-checkbox-checked</in>"></span>
+
+                                            </div>
+
+                                        </li>
+
+                                    </volist>
+
+                                </ul>
+
+							</eq>
+
+							<eq name="vo.form_type" value="radio">
+
+								 <!-- 单选 -->
+								<div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{$vo.form_description}</span><i class="feeldesk-edge"></i></div>
+
+								<ul class="feeldesk-option-panel radioPanel hidden">
+
+									<input type="hidden" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}"/>
+
+									<volist name="vo.option" id="op">
+
+									<li data-name="{$op}" data-value="{$op}">
+
+										<div class="feeldesk-option">
+
+											<span class="feeldesk-option-title">{$op}</span>
+
+											<span class="iconfont icon-check <eq name='contract[$vo[form_name]]' value='$op' >icon-radio-checked</eq>"></span>
+
+										</div>
+
+									</li>
+
+									</volist>
+
+								</ul>
+
+							</eq>
+
+							<!-- 文本域 -->
+							<eq name="vo.form_type" value="textarea">
+
+								<textarea name="contract_form[{$vo.form_name}]" class="feeldesk-input feeldesk-textarea" placeholder="{$vo.form_description}">{$contract[$vo['form_name']]}</textarea>
+
+							</eq>
+
+							<!-- 时间控件 -->
+							<eq name="vo.form_type" value="date">
+
+								<php>
+									$ft++;
+								</php>
+
+								<input type="text" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="{$vo.form_description}" id="datetime<php>echo $ft;</php>" class="feeldesk-input" readonly />
+
+                                <script type="text/javascript">
+
+                                    $(function()
+                                    {
+                                       jeDate("#datetime<php>echo $ft;</php>",{
+											minDate:"1900-01-01",              //最小日期
+											maxDate:"2099-12-31",              //最大日期
+											method:{
+												choose:function (params) {
+
+												}
+											},
+											format: "YYYY-MM-DD hh:mm:ss"
+										});
+                                    })
+
+                                </script>
+
+							</eq>
+
+						</div>
+
+					</div>
+
+					</eq>
+
+				   <else/>
+
+					   <eq name="vo.form_type" value="region">
+
+						   <input type="hidden" name="contract_form[{$vo.form_name}_defaultCountry]" value="{$contract[$vo['form_name']]['defaultCountry']}" >
+						   <input type="hidden" name="contract_form[{$vo.form_name}_defaultProv]" value="{$contract[$vo['form_name']]['defaultProv']}" >
+						   <input type="hidden" name="contract_form[{$vo.form_name}_defaultCity]" value="{$contract[$vo['form_name']]['defaultCity']}" >
+						   <input type="hidden" name="contract_form[{$vo.form_name}_defaultArea]" value="{$contract[$vo['form_name']]['defaultArea']}" >
+
+						   <else/>
+
+						   <input type="hidden" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" >
+
+					   </eq>
+
+				   </if>
+
+				   <else/>
+
+					   <eq name="vo.form_type" value="region">
+
+						   <input type="hidden" name="contract_form[{$vo.form_name}_defaultCountry]" value="{$contract[$vo['form_name']]['defaultCountry']}" >
+						   <input type="hidden" name="contract_form[{$vo.form_name}_defaultProv]" value="{$contract[$vo['form_name']]['defaultProv']}" >
+						   <input type="hidden" name="contract_form[{$vo.form_name}_defaultCity]" value="{$contract[$vo['form_name']]['defaultCity']}" >
+						   <input type="hidden" name="contract_form[{$vo.form_name}_defaultArea]" value="{$contract[$vo['form_name']]['defaultArea']}" >
+
+						   <else/>
+
+						   <input type="hidden" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" >
+
+					   </eq>
+
+				   </if>
+
+				</volist>
+
+				<div class="feeldesk-form-item" id="images">
+
+					<volist name="contract.contract_img" id="vo">
+
+						<div class="layui-upload-drag " style="height:75px;line-height: 75px">
+
+							<img src="{$vo}" onclick="openVisitorPhoto({$key},'images')">
+
+							<a href="javascript:" class="cancel iconfont icon-cancel" data-name="{:str_replace(C('HTTP_PROTOCOL').'://'.C('HOST_DOMAIN'),'.',$vo)}"></a>
+
+							<input type="hidden" name="photo[]" value="{$vo}">
+
+						</div>
+
+					</volist>
+
+                    <div class="layui-upload-drag uploadImg mr0" >
+
+                        <div class="iconfont icon-upload-image"></div>
+
+                    </div>
+
+                </div>
+
+				<div class="feeldesk-form-item relative">
+
+                    <div class="feeldesk-form-block">
+
+                        <button type="button" class="layui-btn layui-btn-primary uploadFile"><i class="layui-icon"></i>{:L('UPLOAD_ATTACHMENTS')}</button>
+
+                        <ul id="attachments" class="attach-item mt10">
+
+							<volist name="contract.createFiles" id="vo">
+
+								<li>
+
+									<i class="iconfont icon-fujian"></i>
+
+									<span>{$vo['file_name']}</span>
+
+									<span class="iconfont icon-close2 closed" style="cursor: pointer" data-name="{:getQiniuFileName('http://'.$contract['qiniu_domain'].'/',$vo['file_link'])}" onclick="editDeleteFile(this);"></span>
+
+									<input type="hidden" name="file[saves][]" value="{$vo['save_name']}">
+
+									<input type="hidden" name="file[names][]" value="{$vo['file_name']}">
+
+									<input type="hidden" name="file[sizes][]" value="{$vo['file_size']}">
+
+									<input type="hidden" name="file[types][]" value="{$vo['file_type']}">
+
+									<input type="hidden" name="file[links][]" value="{$vo['file_link']}">
+
+								</li>
+
+							</volist>
+
+						</ul>
+
+                    </div>
+
+                </div>
+
+				<div class="feeldesk-form-item relative">
+
+                    <div class="feeldesk-form-block" id="product-item">
+
+						<span class="red required-icon">*</span>
+
+                        <div class="feeldesk-input" id="select-product-type">
+
+							<div id="select-product">
+
+								<span>{:L('SELECT_PRODUCT')} - </span>
+
+								<volist name="contractPro" id="vo">
+
+									<span data-id="{$vo.product_id}">{$vo.product_name} </span>
+
+								</volist>
+
+							</div>
+
+							<volist name="contractPro" id="vo">
+
+								<input type="hidden" name="orderPro[]" value="{$vo.product_id}">
+
+							</volist>
+
+						</div>
+
+                        <i class="feeldesk-edge-right"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <script type="text/javascript" src="__PUBLIC__/js/photoswipe/photohtml.js"></script>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+	function editDeleteFile(obj)
+	{
+		var fileName =$(obj).data('name');
+
+		$('#attachments').append("<input type='hidden' name='delFile[]' value="+fileName+">");
+
+		$(obj).parent().remove();
+	}
+
+</script>
+
+<script type="text/javascript">
+
+    $(function()
+    {
+        $('.icon-more').unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+            $('.operate-menu').not($(this).next('.operate-menu')).slideUp('fast').prev('.icon-more').removeClass('current');
+
+            $(this).toggleClass('current').next('ul.operate-menu').slideToggle('fast');
+
+            $(document).on('click',function()
+            {
+                $('.operate-menu').slideUp('fast').prev('.icon-more').removeClass('current');
+            })
+        });
+
+        $('.to-child').unbind('click').on('click',function()
+        {
+            $(this).parents('.product-type').next('ul.product-child-item').slideToggle('fast');
+
+            $(this).toggleClass('icon-sub');
+        })
+    })
+
+</script>
+
+<!-- 产品类型 -->
+<div class="feeldesk" id="productTypeWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="iconfont icon-back-left back" id="productTypeBack"></a>
+
+            <div class="header-title">{:L('PRODUCT_CATEGORY')}</div>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <div class="product-type-main" id="product-type-list">
+
+			{$product_type_h}
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--产品-->
+<div class="feeldesk" id="productWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="iconfont icon-back-left back" id="productBack"></a>
+
+            <div class="header-title">{:L('SELECT_PRODUCT')}</div>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <div class="main-search">
+
+            <i class="iconfont icon-search"></i>
+
+            <input type="text" name="keyword" value="" placeholder="{:L('SEARCH')}" id="productSearch">
+
+        </div>
+
+        <div class="product-choose-all hidden" id="productChooseAll">
+
+            <div>{:L('SELECT_ALL')}</div>
+
+            <span class="iconfont icon-check"></span>
+
+        </div>
+
+        <div class="product-main" id="product-list">
+
+            <ul class="product-item">
+
+
+
+            </ul>
+
+			<div class="product-page"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript" src="MOBILE_PUBLIC_JS/crm-window.js"></script>

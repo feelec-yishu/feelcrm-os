@@ -1,0 +1,166 @@
+<div class="hidden hg100 layui-form" id="Memberlist">
+
+	<div class="feeldesk-form pd0 feelcrm-form">
+
+		<div class="layui-tab">
+
+			<ul class="layui-tab-title">
+
+				<li class="tab-title-name">{:L('USER_LIST')}</li>
+
+				<li class="tab-title-btn">
+
+					<a href="javascript:void(0);" id="memberDetailLay" class="layui-btn layui-btn-normal titleSubmit">{:l('SUBMIT')}</a>
+
+					<a href="javascript:closeLayerAll();" class="layui-btn layui-btn-normal titleCancel">{:l('CANCEL')}</a>
+
+					<div class="clear"></div>
+
+				</li>
+
+				<form1 action="" class="fr selectMemberForm" method="get">
+
+					<div class="compact-search">
+
+						<i class="iconfont icon-search"></i>
+
+						<input type="text" name="selectMemberKeyword" value="" placeholder="{:L('NAME1')}/{:L('CELL_PHONE')}"/>
+
+						<a href="javascript:" class="selectMemberBtn">{:L('SEARCH')}</a>
+
+					</div>
+
+				</form1>
+
+			</ul>
+
+		</div>
+
+	</div>
+
+	<div class="feelcrm-list">
+
+		<table class="layui-table" lay-skin="line">
+
+			<thead>
+
+				<tr>
+
+					<th></th><th>{:L('NAME')}</th><th>{:L('EMAIL')}</th><th>{:L('MOBILE')}</th><th>{:L('SUBORDINATE_SECTOR')}</th><th>{:L('ROLE')}</th>
+
+				</tr>
+
+			</thead>
+
+			<tbody id="member-detail">
+
+				<empty name="member">
+
+					<tr class="nodata center">
+
+						<td colspan="11">
+
+							<p><i class="iconfont icon-nothing fts20"></i></p>
+
+							<p>{:L('NO_DATA')}</p>
+
+						</td>
+
+					</tr>
+
+				<else />
+
+					<volist name="member" id="vo">
+
+						<tr>
+
+							<td><input type="radio" value="{:encrypt($vo['member_id'],'MEMBER')}" name="member" lay-skin="primary" /></td>
+
+							<td>{$vo.name}</td>
+
+							<td>{$vo.email}</td>
+
+							<td>{$vo.mobile}</td>
+
+							<td>{:CrmgetMemberGroupName($groupList,$vo['group_id'])}</td>
+
+							<td>{$roleList[$vo['role_id']]['role_name']}</td>
+
+						</tr>
+
+					</volist>
+
+				</empty>
+
+			</tbody>
+
+		</table>
+
+		<div class="right-list-page clearfix"><div class="feeldesk-page">{$memberPage}</div></div>
+
+	</div>
+
+</div>
+
+<script>
+
+	$('input[name="selectMemberKeyword"]').unbind('keyup').keyup(function (e)
+	{
+		e.stopPropagation();
+
+		if (e.keyCode == 13)
+		{
+			searchSelectMemberList();
+
+			return false;
+		}
+	});
+
+	$('.selectMemberBtn').unbind('click').bind('click',function(){
+
+		searchSelectMemberList();
+
+		return false;
+	})
+
+	function searchSelectMemberList()
+	{
+		var keyword = $('input[name="selectMemberKeyword"]').val();
+
+		$.ajax({
+			url:"{:U('AjaxRequest/getMemberList')}",
+			type:'get',
+			data:{'sMemberKeyword':keyword},
+			async: false,
+			datatype:'json',
+			success:function(data)
+			{
+
+				$('#member-detail').html(data.html);
+
+				$('#Memberlist .feeldesk-page').html(data.page);
+
+				layui.use('form', function() {
+
+					var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+					form.render();
+
+				});
+
+				$('#Memberlist .feeldesk-page a').click(function()
+				{
+					pageclick(this);
+
+					return false;
+				})
+
+			},
+			error:function()
+			{
+				layer.msg("{:L('FAILED_TO_ACQUIRE_USER')}");
+			}
+		});
+	}
+
+</script>

@@ -1,0 +1,168 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('HELP')}</block>
+
+<block name="content">
+
+    <div class="feeldesk-form pd20">
+
+        <div class="form-content">
+
+            <form action="" class="layui-form" method="post" enctype="multipart/form-data">
+<!--
+
+                <div class="form-top member-top">
+
+                    <img src="{$company.logo|default='/Attachs/logo/unlogo.png'}" class="company-logo" id="companyLogo" alt=""/>
+
+                    <input type="hidden" name="company[logo]" value="{$company.logo}" id="logo">
+
+                    <div class="top-content">{:L('LOGO_SIZE')}</div>
+
+                </div>
+-->
+
+                <div class="form-item">
+<!--
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label feeldesk-label">{:L('COMPANY_WEBSITE')}</label>
+
+                        <div class="layui-input-inline feeldesk-inline">
+
+                            <input type="text" name="company[link]" value="{$company.link}" class="layui-input" placeholder="{:L('WEBSITE_NOTE')}" />
+
+                        </div>
+
+                    </div>
+-->
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label feeldesk-label">{:L('PC_TERMINAL')}</label>
+
+                        <div class="layui-input-inline feeldesk-inline copy-input">
+
+                            <input id='pc' value="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Member/{$token}" class="layui-input" readonly />
+
+                            <div class="layui-form-mid layui-word-aux fts12">{:L('CUSTOMER_LOGIN')}，{:L('CUSTOMER_PC_NOTE')}</div>
+
+                        </div>
+
+                        <span class='copy-btn' onclick="copy('{:L(COPY_SUCCESS)}')" data-clipboard-action="copy" data-clipboard-target="#pc">{:L('COPY')}</span>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label feeldesk-label">{:L('MOBILE_TERMINAL')}</label>
+
+                        <div class="layui-input-inline feeldesk-inline copy-input">
+
+                            <input id='mobile' value="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Muser/{$token}" class="layui-input" readonly />
+
+                            <div class="layui-form-mid layui-word-aux fts12">{:L('CUSTOMER_LOGIN')}，{:L('CUSTOMER_MOBILE_NOTE')}</div>
+
+                        </div>
+
+                        <span class='copy-btn' onclick="copy('{:L(COPY_SUCCESS)}')" data-clipboard-action="copy" data-clipboard-target="#mobile">{:L('COPY')}</span>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label feeldesk-label">{:L('WECHAT_TERMINAL')}</label>
+
+                        <div class="layui-input-inline feeldesk-inline copy-input">
+
+                            <input id='wechat' value="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Wuser/{$login_token}" class="layui-input" readonly />
+
+                            <div class="layui-form-mid layui-word-aux fts12">{:L('CUSTOMER_WX_NOTE')}</div>
+
+                        </div>
+
+                        <span class='copy-btn' onclick="copy('{:L(COPY_SUCCESS)}')" data-clipboard-action="copy" data-clipboard-target="#wechat">{:L('COPY')}</span>
+
+                    </div>
+
+                </div>
+<!--
+
+                <div class="form-submit">
+
+                    <div class="layui-form-item">
+
+                        <div class="layui-input-inline">
+
+                            <a href="javascript:" class="layui-btn layui-btn-normal" id="submitForm">{:L('SUBMIT')}</a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+-->
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <include file="Public:language" />
+<!--
+
+    <script type="text/javascript">
+
+        var fileLoad;
+
+        layui.use('upload', function()
+        {
+            var upload = layui.upload;
+
+            upload.render(
+            {
+                elem:"#companyLogo",
+
+                url: "{:U('Upload/uploadHeadFile',array('type'=>'logo'))}",
+
+                size:1024,
+
+                before:function()
+                {
+                    fileLoad = layer.msg("{:L('UPLOADING')}...",{time:100000,shade: [0.3, '#393D49'],offset:['150px']});
+                },
+                done: function(data)
+                {
+                    layer.close(fileLoad);
+
+                    if(data.code == 1)
+                    {
+                        feelDeskAlert(data.msg);
+                    }
+                    else
+                    {
+                        this.item.attr("src",data.url);
+
+                        $("#logo").val(data.url);
+
+                        if($("#logo_name").length > 0)
+                        {
+                            $(this).val(data.face_name);
+                        }
+                        else
+                        {
+                            this.item.append('<input type="hidden" name="company[logo_name]" value="'+data.face_name+'" id="logo_name">');
+                        }
+
+                        feelDeskAlert(data.msg);
+                    }
+                }
+            });
+        });
+
+    </script>
+-->
+
+</block>

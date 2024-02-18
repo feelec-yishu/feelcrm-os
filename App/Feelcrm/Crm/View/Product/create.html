@@ -1,0 +1,257 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('SYSTEM')}</block>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0 feelcrm-form">
+
+        <div class="layui-tab">
+
+			<form id="web_setting" action="{:U('product/create')}" method="post" class="layui-form">
+
+            <ul class="layui-tab-title">
+
+                <li class="tab-title-name">{:L('ADD_PRODUCT')}</li>
+
+				<div class="form-submit">
+
+					<a href="javascript:" class="layui-btn layui-btn-normal submitForm">{:l('SUBMIT')}</a>
+
+				</div>
+
+            </ul>
+
+			<php>
+				$t = 0;
+				$ft = 0;
+				$reg = 0;
+			</php>
+
+            <div class="layui-tab-content form-content pt100">
+
+                <div class="layui-tab-item layui-show">
+
+                        <div class="form-item">
+
+                            <div class="layui-form-item">
+
+								<label class="layui-form-label"><span class="red">*</span>{:L('PRODUCT_CATEGORY')}</label>
+
+								<div class="layui-input-inline">
+
+									<select name="product[type_id]" lay-filter="level">
+
+										<option value="">{:L('CHOOSE_CATEGORY')}</option>
+
+										<foreach name="product_type_h" item="vo">
+
+											{$vo}
+
+										</foreach>
+
+									</select>
+
+
+								</div>
+
+							</div>
+
+							 <!-- 图片上传 -->
+							<div class="layui-form-item relative">
+
+								<label class="layui-form-label">{:L('PRODUCT_IMAGE')}</label>
+
+								<div class="layui-input-inline flex flex-wrap">
+
+									<div class="productImgList"></div>
+
+									<div class="layui-upload-drag prouploadImg">
+
+										<div>
+
+											<i class="layui-icon"></i>
+
+											<p>{:L('UPLOAD_PICTURES')}</p>
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+
+                             <volist name="productform" id="vo">
+
+								 <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+								 <if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+								 <div class="layui-form-item">
+
+									<label class="layui-form-label">
+
+										<eq name="vo.is_required" value="0"><span class="red">*</span> </eq>
+
+										{$vo.form_description}
+
+									</label>
+
+									<eq name="vo.form_type" value="region">
+
+										<php>
+											$reg++;
+										</php>
+
+										{:W('Region/getRegion',['product_form',$vo['form_name'],$reg])}
+
+									<else/>
+
+									<div class="layui-input-inline">
+
+										<eq name="vo.form_type" value="text">
+
+											<!-- 单行文本框 -->
+											<input type="text" name="product_form[{$vo.form_name}]" placeholder="" class="layui-input">
+
+										</eq>
+
+										 <eq name="vo.form_type" value="phone">
+
+											<!-- {:L('CELL_PHONE')} -->
+											<input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="product_form[{$vo.form_name}]" placeholder="" class="layui-input">
+
+										</eq>
+
+										 <eq name="vo.form_type" value="email">
+
+											<!-- {:L('MAILBOX')} -->
+											<input type="text" name="product_form[{$vo.form_name}]" placeholder="" class="layui-input">
+
+										</eq>
+
+										 <eq name="vo.form_type" value="number">
+
+											<!-- {:L('DIGITAL')} -->
+											<input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="product_form[{$vo.form_name}]" placeholder="" class="layui-input">
+
+										</eq>
+
+										<eq name="vo.form_type" value="decimal">
+
+											<!-- 小数 -->
+											<input type="text" name="product_form[{$vo.form_name}]" placeholder="" class="layui-input">
+
+										</eq>
+
+										<eq name="vo.form_type" value="select">
+
+											<!-- 下拉菜单 -->
+											<select name="product_form[{$vo.form_name}]">
+
+												<option value="">{$vo.form_description}</option>
+
+												<foreach name="vo.option" item="op">
+
+													<option value="{$op}">{$op}</option>
+
+												</foreach>
+
+											</select>
+
+										</eq>
+										
+										<eq name="vo.form_type" value="select_text">
+
+											<php>
+												$st++;
+											</php>
+											<!-- 下拉填写 -->
+											{:W('Update/selectTextForm',['product',$vo,$st])}
+
+										</eq>
+
+										<!-- 时间控件 -->
+										<eq name="vo.form_type" value="date">
+
+											<php>
+												$ft++;
+											</php>
+
+											<input type='text' name="product_form[{$vo.form_name}]" class="layui-input cursor layui-form-time" id="form_time<php>echo $ft;</php>" placeholder="{:L('SELECT_TIME')}" >
+
+										</eq>
+
+
+										<eq name="vo.form_type" value="checkbox">
+
+											<!-- 复选框 -->
+											<volist name="vo.option" id="op">
+
+												<input type="checkbox" name="product_form[{$vo.form_name}][]" lay-skin="primary" title="{$op}" value="{$op}">
+
+											</volist>
+
+										</eq>
+
+										<eq name="vo.form_type" value="radio">
+
+											<!-- 单选框-->
+											<volist name="vo.option" id="op">
+
+												<input type="radio" name="product_form[{$vo.form_name}]" value="{$op}" title="{$op}">
+
+											</volist>
+
+										</eq>
+
+										<!-- 文本域 -->
+										<eq name="vo.form_type" value="textarea">
+
+											<php>
+												$t++
+											</php>
+
+											<textarea class="layui-textarea layui-hide ticket-textarea" name="product_form[{$vo.form_name}]" id="ticketEditor<php>echo $t;</php>"></textarea>
+
+										</eq>
+
+									</div>
+
+									</eq>
+
+									<notempty name="vo.form_explain">
+
+										<i class="layui-icon layui-icon-about intro-icon" data-note="{$vo.form_explain}"></i>
+
+									</notempty>
+
+								</div>
+
+								 </if>
+
+							</volist>
+
+
+                        </div>
+
+
+
+                </div>
+
+            </div>
+
+			</form>
+
+        </div>
+
+
+
+    </div>
+
+
+    <script type="text/javascript" src="__PUBLIC__/js/submitform.js"></script>
+
+    <include file="Public/footer" />
+
+</block>

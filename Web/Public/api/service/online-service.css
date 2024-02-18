@@ -1,0 +1,220 @@
+@import "../../css/common.css";
+
+::-webkit-scrollbar{background-color:#f5f7fa;width: 5px;height: 5px;}
+
+::-webkit-scrollbar-thumb{border-radius: 5px;background-color: rgba(205, 205, 205, 0.42);}
+
+::-webkit-scrollbar-track{border-radius: 0;background: rgba(216,223,240,0.1);}
+
+.fd-right-main {position:relative;height: 100%;}
+
+.lang{position:relative;z-index:100;font-size: 0;text-align: right;margin-top: 10px;}
+
+.lang .lang-div{display: inline-block;border:1px solid #ccc;border-radius: 2px}
+
+.lang a{display: inline-block;font-size:12px;padding: 5px;}
+
+.lang a.active{background:#5FB878;color:#fff}
+
+.lang a:hover{color:#5FB878}
+
+.lang a.active:hover{color:#fff}
+
+.chat-list{height: 100%}
+
+.chat-list li{width: 100%;;display: block;padding: 15px 20px 5px 20px;border-bottom: 1px solid #f5f5f5;line-height: 30px;}
+
+.chat-list .empty{display: block;text-align:center;width: 100%;margin: 0 auto;color: #888;height:100px;line-height:100px;font-size:14px}
+
+.li-div1{margin-bottom:5px}
+
+.chat-status{display:inline-block;min-width: 65px;height: 24px;line-height: 24px;border-radius: 4px;text-align: center;color: #fff;margin-right: 5px;background: red;}
+
+.chat-detail{margin:0 20px 20px 20px}
+
+.wrapper{width:100%;height:100%;margin:20px 0}
+
+.wrapper form{width:100%}
+
+.wrapper form .layui-form-label{width:100%;float:none;text-align:left;padding:9px 25px}
+
+.wrapper form .layui-input-block{margin:0 25px}
+
+.attr-ul>li{line-height:50px;border-bottom:1px solid #ccc}
+
+.attr-ul>li .li-span1{display:inline-block;text-align:left;min-width:25%;}
+
+.attr-img{width:100%;margin-top:20px}
+
+.attr-img .attr-img-ul li{display:inline-block;border:1px solid #ccc;margin-right:10px}
+
+.error{margin:0 auto;text-align:center;border:1px solid #ccc;background:#fff;color:red;padding:40px 80px;}
+
+.layui-tab{background-color:#fff;border-radius:5px;height: 100%;margin: 0}
+
+.layui-tab-title{border-bottom:1px solid #e3e9ed;height:50px}
+
+.layui-tab-title .layui-this:after{border:none}
+
+.layui-tab-title li{line-height:48px;min-width:90px;padding:0}
+
+.footer-copy{position:absolute;background-color:#f2f3f8;left:0;bottom:0;width:100%;text-align: center;padding: 10px 0;}
+
+.layui-tab-title li.layui-this a{border-bottom:3px solid #fe7300}
+
+.layui-webchat-title li.layui-this a{border: none;padding-bottom: 3px;}
+
+.layui-webchat-title li.active a{border-bottom:3px solid #23b7e5;padding: 0;}
+
+.feeldesk-form{border-top: 0;border-top-left-radius: 0;border-top-right-radius: 0;}
+
+.layui-tab-content{height: calc(100% - 50px);overflow-x: hidden}
+
+
+
+/* 选择模板 */
+.template-type-item{line-height: 50px;color: #333;border-bottom: 1px solid #e3e9ed;font-size: 14px;cursor:pointer}
+
+.template-type-item:last-child{border: none}
+
+.template-nav{font-weight: bold;font-size: 16px}
+
+.webchat-template-nav{font-weight: normal;font-size: 15px}
+
+.template-nav i{font-size:20px}
+
+.template-item{padding-left:15px;line-height: 40px}
+
+.template-item li:last-child{padding-bottom: 10px}
+
+.template-item label{display: inline-block;width: 100%;}
+
+.template-item label span:first-child{display: inline-block;width: calc(100% - 25px);}
+
+.template-item label span:last-child{color:rgb(153,153,153);font-size: 20px}
+
+.template-item label span:last-child input{position:absolute;z-index:-9999;display:none;width:30px;height:30px;border:none}
+
+.icon-xuanzhong,.icon-xuanzhong1{color: #23b7e5 !important;}
+
+.template-bottom{text-align: center}
+
+.template-bottom a{display: inline-block;background-color: #23b7e5;padding: 0 10px;line-height: 35px;border-radius: 5px;min-width: 70px;font-size: 16px;color:#fff;}
+
+/* 创建工单 */
+.option-panel{position:absolute;width:100%;z-index:10;background-color:#fff;padding: 0 10px;border: 1px solid #e3e9ed;border-radius: 5px;margin-top: 3px;}
+
+.option-panel span.iconfont{color:rgb(153,153,153);font-size: 20px}
+
+.option-panel input{position:absolute;z-index:-9999;display:none;border:none}
+
+.option-panel .layui-form-checkbox,.option-panel .layui-form-radio{display: none}
+
+.ticket-form-title{display: inline-block;width:calc(100% - 25px)}
+
+div.feeldesk-input{height: 37px}
+
+.feeldesk-form-item .lay-ext-mulitsel .tips{top: 0}
+
+/* 选择抄送人 */
+.feeldesk-form #cc{position: relative;}
+
+.feeldesk-form #cc dl{position: absolute;top: 99px;left: 0;width:100%;border: 1px solid #ddd;background: #fff;z-index: 100;max-height: 300px;overflow-y: auto}
+
+.feeldesk-form #cc dd{padding: 0 10px;line-height: 36px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;cursor: pointer;}
+
+.feeldesk-form #cc dd.cc-box-tips{padding-left: 10px!important;color: #999;}
+
+.feeldesk-form #cc dd:hover{background:#3366FF;color:#fff}
+
+.feeldesk-form #cc dd.cc-search{position: fixed;width: 238px;height: 40px;background: #fff;padding: 0;text-align: center;line-height: 40px;}
+
+.feeldesk-form #cc dd.cc-search>input{border-radius: 2px;border: 1px solid #dce3e8;padding: 4px;height: 30px;width: 91%;}
+
+.feeldesk-form .cc-list{margin-bottom: 15px;line-height: 40px}
+
+.feeldesk-form .cc-list a{position: relative;display:inline-block;font-size:12px;height: 25px;line-height: 25px;min-width:60px;margin-right:5px;padding: 0 15px;color:#6a728b;border:1px dotted #6a728b;border-radius: 4px;text-align: center;}
+
+.feeldesk-form .cc-list a span.icon-close1{position: absolute;top: -6px;right: -1px;}
+
+.feeldesk-form .cc-list a:hover{border-color:#23b7e5;color:#23b7e5}
+
+/* 上传附件 */
+.feeldesk-form .attach-item{line-height: 25px;}
+
+.feeldesk-form .attach-item li{margin-bottom: 5px;color:#537c8d;font-size: 12px;}
+
+.feeldesk-form .attach-item li:first-child{margin-top: 20px;}
+
+.feeldesk-form .attach-item i.icon-fujian{color:#484e5f;font-size: 15px;}
+
+.feeldesk-form .attach-item span.closed{margin-left: 5px;font-size: 14px;}
+
+
+
+/* 表单 */
+.feeldesk-form{background-color: #fff;padding: 0 15px}
+
+.feeldesk-form .feeldesk-form-item{line-height: 50px;}
+
+.feeldesk-form .feeldesk-form-label{display: block;color:#333;font-size: 14px;}
+
+.feeldesk-form .feeldesk-input,.feeldesk-form .layui-input{border: 1px solid #e3e9ed;border-radius: 5px;background-color: rgb(244,244,244);padding: 0 10px;width: 100%;line-height: 35px;cursor: pointer}
+
+.feeldesk-form .feeldesk-input:focus,.feeldesk-form .layui-input:focus{background-color: #fff}
+
+.feeldesk-form .feeldesk-input::-webkit-input-placeholder,.feeldesk-form .layui-input::-webkit-input-placeholder{color:#999;}
+
+.feeldesk-form .feeldesk-input::-moz-placeholder,.feeldesk-form .layui-input::-moz-placeholder{color:#999;}
+
+.feeldesk-form .feeldesk-input:-ms-input-placeholder,.feeldesk-form .layui-inpu:-ms-input-placeholder{color:#999;}
+
+.feeldesk-form .feeldesk-textarea{background-color: #fff;resize: none;height: 150px;}
+
+.feeldesk-form .remindTime{border: none;text-align: right;line-height: 50px}
+
+.feeldesk-form .required{display:inline-block;background-color: #fe7300;width: 5px;height: 5px;border-radius: 100%;margin-top:-3px;margin-right: 3px;vertical-align: middle}
+
+.feeldesk-form .layui-form-radio{margin:0 0 0 10px;padding-right:0}
+
+.feeldesk-form .layui-form-radio i{font-size: 15px}
+
+.feeldesk-form .layui-form-radio i:hover, .layui-form-radioed i{color:#23b7e5}
+
+.feeldesk-form .layui-form-checked[lay-skin=primary] i{background-color: #23b7e5;border-color:#23b7e5}
+
+.feeldesk-form .layui-form-checkbox[lay-skin=primary]{margin-left: 10px;}
+
+.feeldesk-form .layui-form-checkbox[lay-skin=primary]:hover i{border-color:#23b7e5}
+
+.feeldesk-form .layui-form-checkbox[lay-skin=primary] span{line-height: 16px;padding-left: 7px;padding-right: 0}
+
+.feeldesk-form .layui-form-select dl dd,.layui-form-select dl dt{color:#333;}
+
+.feeldesk-form .layui-form-select dl dd.layui-this{background-color: #fff9f5;color:#333;font-weight: bold}
+
+.feeldesk-form .layui-form-select dl{border-radius: 5px;border-color:#dfefea;box-shadow: 0 0 4px 0 rgba(29,29,29,.1)}
+
+.feeldesk-form .layui-form-select .layui-edge{border-width:4px;border-top-color: #333;}
+
+.feeldesk-form .layui-form-selected .layui-edge{    margin-top: -6px;}
+
+.feeldesk-form .layui-upload-drag .layui-icon{color:#1E9FFF;font-size: 30px;}
+
+.feeldesk-form .layui-upload-drag{position:relative;width: calc((100% - 30px) / 4);border:1px solid #e7e7e7;margin-right:10px;margin-bottom:10px;padding: 0;vertical-align: middle;}
+
+.feeldesk-form .layui-upload-drag .cancel{position:absolute;top:2px;right:2px;font-size: 14px;color:#fff;line-height: normal;}
+
+.feeldesk-form .layui-upload-drag img{width: 100%;height: 100%}
+
+/* 客户详情 */
+
+.chat_editdetail{float: right;line-height: 48px;color: #0dafc8;}
+
+.chat_editdetail:hover{color: #a4b5cf;}
+
+.customer_detail .layui-form-item{border-bottom:1px solid #f2f2f2;}
+
+.customer_detail .layui-form-item .layui-form-label{font-size:14px;color:#999999;float:none;width:100%;text-align:left;height:40px;line-height:40px;padding:0;cursor:default;}
+
+.customer_detail .layui-form-item .layui-input-inline{font-size:14px;color:#333333;float:none;width:100%;text-align:left;height:40px;line-height:40px;margin:0 5px;}

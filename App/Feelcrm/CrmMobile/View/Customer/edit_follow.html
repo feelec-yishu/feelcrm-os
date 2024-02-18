@@ -1,0 +1,226 @@
+<include file="Public/header" />
+
+<div class="feeldesk" id="formWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('MODIFY_CONTACT_RECORDS')}</div>
+
+            <notempty name="isEditFollowAuth"><a href="javascript:" class="header-right" id="submitForm">{:L('COMPLETE')}</a></notempty>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <form action="{:U('customer/edit_follow',['id'=>encrypt($followup['follow_id'],'FOLLOW'),'detailtype'=>encrypt($detailtype,$detailsource)])}" id="feeldeskForm" method="post" class="layui-form">
+
+            <div class="feeldesk-form pd5">
+
+                <div class="feeldesk-form-item">
+
+                    <div class="feeldesk-form-block">
+
+                        <span class="red required-icon">*</span>
+
+                        <textarea name="follow[content]" class="feeldesk-input feeldesk-textarea" placeholder="{:L('ENTER_CONTACT_RECORD')}" id="follow_content">{$followup.content}</textarea>
+
+                    </div>
+
+                </div>
+
+                <empty name="followup.clue_id">
+
+                    <div class="feeldesk-form-item">
+
+                        <div class="feeldesk-form-block">
+
+                            <select name="follow[contacter_id]" lay-filter="">
+
+                                <volist name="contacter" id="vo">
+
+                                    <option value="{$vo.contacter_id}" <eq name="vo.contacter_id" value="$followup['contacter_id']">selected</eq>>{$vo.detail.name}</option>
+
+                                </volist>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </empty>
+
+                <div class="feeldesk-form-item">
+
+                    <div class="feeldesk-form-block">
+
+                        <select name="follow[cmncate_id]" lay-filter="getCmncateReply">
+
+                            <option value="">{:L('COMMUNICATION_TYPE')}</option>
+
+                            <volist name="cmncate" id="vo">
+
+								<option value="{$vo.cmncate_id}" <eq name="followup.cmncate_id" value="$vo['cmncate_id']">selected</eq>>{$vo.cmncate_name}</option>
+
+							</volist>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+				<div class="feeldesk-form-item <empty name='reply'>hidden</empty>">
+
+                    <div class="feeldesk-form-block">
+
+                        <select name="follow[reply_id]" id="cmncate_reply" lay-filter="ReplyContent">
+
+                            <option value="">{:L('CUSTOM_REPLY')}</option>
+
+                            <volist name="reply" id="vo">
+
+								<option value="{$vo.reply_id}" <eq name="followup.reply_id" value="$vo['reply_id']">selected</eq>>{$vo.reply_content}</option>
+
+							</volist>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="feeldesk-form-item">
+
+                    <div class="feeldesk-form-block">
+
+                        <input type="text" name="follow[nextcontacttime]" <notempty name="followup.nextcontacttime">value="{$followup.nextcontacttime|date='Y-m-d H:i:s',###}"</notempty> placeholder="{:L('NEXT_CONTACT_TIME')}" id="follow-date" class="feeldesk-input" readonly />
+
+                        <script type="text/javascript">
+
+                            $(function()
+                            {
+                                jeDate("#follow-date",{
+									minDate:"1900-01-01 09:00:00",              //最小日期
+									maxDate:"2099-12-31 23:59:59",              //最大日期
+									method:{
+										choose:function (params) {
+
+										}
+									},
+									format: "YYYY-MM-DD hh:mm:ss"
+								});
+                            })
+
+                        </script>
+
+                    </div>
+
+                </div>
+
+                <div class="feeldesk-form-item relative">
+
+                    <div class="feeldesk-form-block">
+
+                        <!-- 单选 -->
+                        <div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{:L('WHETHER_SAVE_FOLLOW_UP_TEMPLATE')}</span><i class="feeldesk-edge"></i></div>
+
+                        <ul class="feeldesk-option-panel radioPanel hidden">
+
+                            <input type="hidden" name="reply" value=""/>
+
+                            <li data-name="{:L('YES')}" data-value="1">
+
+                                <div class="feeldesk-option">
+
+                                    <span class="feeldesk-option-title">{:L('YES')}</span>
+
+                                    <span class="iconfont icon-check"></span>
+
+                                </div>
+
+                            </li>
+
+                            <li data-name="{:L('NO')}" data-value="2">
+
+                                <div class="feeldesk-option">
+
+                                    <span class="feeldesk-option-title">{:L('NO')}</span>
+
+                                    <span class="iconfont icon-check"></span>
+
+                                </div>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="feeldesk-form-item relative">
+
+                    <div class="feeldesk-form-block">
+
+                        <button type="button" class="layui-btn layui-btn-primary uploadFile"><i class="layui-icon"></i>{:L('UPLOAD_ATTACHMENTS')}</button>
+
+                        <ul id="attachments" class="attach-item mt10">
+
+                            <volist name="followup.createFiles" id="vo">
+
+                                <li>
+
+                                    <i class="iconfont icon-fujian"></i>
+
+                                    <span>{$vo['file_name']}</span>
+
+                                    <span class="iconfont icon-close2 closed" style="cursor: pointer" data-name="{:getQiniuFileName('http://'.$contract['qiniu_domain'].'/',$vo['file_link'])}" onclick="editDeleteFile(this);"></span>
+
+                                    <input type="hidden" name="file[saves][]" value="{$vo['save_name']}">
+
+                                    <input type="hidden" name="file[names][]" value="{$vo['file_name']}">
+
+                                    <input type="hidden" name="file[sizes][]" value="{$vo['file_size']}">
+
+                                    <input type="hidden" name="file[types][]" value="{$vo['file_type']}">
+
+                                    <input type="hidden" name="file[links][]" value="{$vo['file_link']}">
+
+                                </li>
+
+                            </volist>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    function editDeleteFile(obj)
+    {
+        var fileName =$(obj).data('name');
+
+        $('#attachments').append("<input type='hidden' name='delFile[]' value="+fileName+">");
+
+        $(obj).parent().remove();
+    }
+
+</script>
+

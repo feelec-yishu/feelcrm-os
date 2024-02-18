@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+    <head>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>{:C('WEB_TITLE')}</title>
+
+        <link rel="stylesheet" href="__PUBLIC__/css/common.css"/>
+
+        <link rel="stylesheet" href="CRM_PUBLIC_CSS/style.css"/>
+
+        <link rel="stylesheet" href="CRM_PUBLIC_CSS/index.css"/>
+
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__/js/layui/css/layui.css"/>
+
+        <link rel="stylesheet" href="{:C('PC_ICON_HTTP')}">
+
+        <script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.1.min.js"></script>
+
+        <script type="text/javascript" src="__PUBLIC__/js/lang/{$Think.cookie.think_language|getStrToLower}.js"></script>
+
+        <script type="text/javascript" src="CRM_PUBLIC_JS/index.js"></script>
+
+        <script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>
+
+        <script type="text/javascript" src="__PUBLIC__/js/layui/layui.js"></script>
+
+    </head>
+
+    <body>
+
+		<div class="feelcrm-leftMenu">
+
+			<if condition="$source_type != 'Feelec'">
+
+				<div class="feelcrm-menu-first">
+
+					<div class="feelcrm-leftMenu-menu feelcrm-leftMenu-menu1 first-menu-logo">
+
+						<a href="{:U('Index/welcome')}" target='CrmBox' title="{:L('HOMEPAGE')}">
+
+							<img src="{$index.firmLogo|default='__PUBLIC__/img/feelCrm.png'}" alt="">
+
+						</a>
+
+					</div>
+
+				</div>
+
+			<else />
+
+				<div class="feelcrm-menu-first">
+
+					<div class="feelcrm-leftMenu-menu feelcrm-leftMenu-menu1 first-menu-logo">数据分析</div>
+
+				</div>
+
+			</if>
+
+			<foreach name="menusCrm" item="v1">
+
+				<if condition="$source_type === 'Feelec'">
+
+					<div class="feelcrm-menu-first">
+<!--
+
+							<div class="feelcrm-leftMenu-menu feelcrm-leftMenu-menu1">
+
+								<i class="iconfont {$v1.menu_icon}"></i>
+
+								<span>{$v1.menu_name} <i class="layui-icon arrow">&#xe602;</i></span>
+
+							</div>
+-->
+
+							<div class="feelcrm-menu-second" style="display: block">
+
+								<div class="feelcrm-leftMenu-menu feelcrm-leftMenu-menu2 feelcrm-leftMenu-menuActive-second" style="padding-left: 30px">
+
+									<a href="{:U('Index/welcome')}" onclick="feelcrmActive(this,2)" target='CrmBox'>概述</a>
+
+								</div>
+
+							</div>
+
+							<foreach name="v1.childMenu" item="v2">
+
+								<if condition="($crmsite['customerReseller'] != 1 && in_array($v2['menu_action'],array('customer/agent','Analysis/customer_shipment','defineForm/shipment'))) || (in_array($v2['menu_action'],array('examine/customer','schedule/customer_examine')) && ($crmsite['customerExamine'] != 1 || !$isExamineCustomerAuth))">
+
+									<else/>
+
+									<div class="feelcrm-menu-second" style="display: block">
+
+										<div class="feelcrm-leftMenu-menu feelcrm-leftMenu-menu2" style="padding-left: 30px">
+
+											<eq name="v2.menu_action" value="CrmMenuL">
+
+												<span>{$v2.menu_name} <i class="layui-icon arrow">&#xe602;</i></span>
+
+												<else/>
+
+												<a href="{:U($v2['menu_action'])}" onclick="feelcrmActive(this,2)" target='CrmBox'>
+
+													{$v2.menu_name}
+
+												</a>
+
+											</eq>
+
+										</div>
+
+										<div class="feelcrm-menu-third">
+
+											<foreach name="v2.childMenu" item="v3">
+
+												<div class="feelcrm-leftMenu-menu feelcrm-leftMenu-menu3">
+
+													<eq name="v3.menu_action" value="CrmMenuL">
+
+														<span><li>{$v3.menu_name} </li></span>
+
+														<else/>
+
+														<a href="{:U($v3['menu_action'])}" onclick="feelcrmActive(this,3)" target='CrmBox'><li>{$v3.menu_name}</li></a>
+
+													</eq>
+
+												</div>
+
+											</foreach>
+
+										</div>
+
+									</div>
+
+								</if>
+
+							</foreach>
+
+						</div>
+
+				<else />
+
+					<div class="feelcrm-menu-first">
+
+							<div class="feelcrm-leftMenu-menu feelcrm-leftMenu-menu1">
+
+								<i class="iconfont {$v1.menu_icon}"></i>
+
+								<span>{$v1.menu_name} <i class="layui-icon arrow">&#xe602;</i></span>
+
+							</div>
+
+							<foreach name="v1.childMenu" item="v2">
+
+								<if condition="($crmsite['customerReseller'] != 1 && in_array($v2['menu_action'],array('customer/agent','Analysis/customer_shipment','defineForm/shipment'))) || (in_array($v2['menu_action'],array('examine/customer','schedule/customer_examine')) && ($crmsite['customerExamine'] != 1 || !$isExamineCustomerAuth))">
+
+									<else/>
+
+									<div class="feelcrm-menu-second">
+
+										<div class="feelcrm-leftMenu-menu feelcrm-leftMenu-menu2">
+
+											<eq name="v2.menu_action" value="CrmMenuL">
+
+												<span>{$v2.menu_name} <i class="layui-icon arrow">&#xe602;</i></span>
+
+												<else/>
+
+												<a href="{:U($v2['menu_action'])}" onclick="feelcrmActive(this,2)" target='CrmBox'>
+
+													{$v2.menu_name}
+
+													<eq name="v1.menu_action" value="CrmSchedule">
+
+														<span class="schedule-num">0</span>
+
+													</eq>
+
+												</a>
+
+											</eq>
+
+										</div>
+
+										<div class="feelcrm-menu-third">
+
+											<foreach name="v2.childMenu" item="v3">
+
+												<div class="feelcrm-leftMenu-menu feelcrm-leftMenu-menu3">
+
+													<eq name="v3.menu_action" value="CrmMenuL">
+
+														<span><li>{$v3.menu_name} </li></span>
+
+														<else/>
+
+														<a href="{:U($v3['menu_action'])}" onclick="feelcrmActive(this,3)" target='CrmBox'><li>{$v3.menu_name}</li></a>
+
+													</eq>
+
+												</div>
+
+											</foreach>
+
+										</div>
+
+									</div>
+
+								</if>
+
+							</foreach>
+
+						</div>
+
+				</if>
+
+			</foreach>
+
+		</div>
+
+		<script type="text/javascript">
+
+			//客户端
+			if ( navigator.userAgent.toLowerCase().indexOf('electron/') > -1)
+			{
+				top.setIframe(document);
+			}
+
+			$(function(){
+
+				$('.feelcrm-menu-first').unbind('click').click(function(){
+
+					if($(this).find('.feelcrm-menu-second').is(":hidden"))
+					{
+						$(this).find('.feelcrm-menu-second').slideDown(300);
+
+						$(this).find('.feelcrm-leftMenu-menu1 .layui-icon').html('&#xe61a;');
+
+					}else
+					{
+						$(this).find('.feelcrm-menu-second').slideUp(300);
+
+						$(this).find('.feelcrm-leftMenu-menu1 .layui-icon').html('&#xe602;');
+					}
+					event.stopPropagation();
+				})
+
+				$('.feelcrm-menu-second').unbind('click').click(function()
+				{
+					if($(this).find('.feelcrm-menu-third').is(":hidden"))
+					{
+						$(this).find('.feelcrm-menu-third').slideDown(300);
+
+						$(this).find('.feelcrm-leftMenu-menu2 .layui-icon').html('&#xe61a;');
+					}
+					else
+					{
+						$(this).find('.feelcrm-menu-third').slideUp(300);
+
+						$(this).find('.feelcrm-leftMenu-menu2 .layui-icon').html('&#xe602;');
+					}
+					event.stopPropagation();
+				})
+
+				$('.first-menu-logo a').click(function(){
+
+					$('.feelcrm-menu-third a').removeClass('feelcrm-leftMenu-menuActive-third');
+
+					$('.feelcrm-menu-second .feelcrm-leftMenu-menu2').removeClass('feelcrm-leftMenu-menuActive-second');
+
+				})
+			})
+
+			function feelcrmActive(obj,type)
+			{
+				if(type == 2)
+				{
+					$('.feelcrm-menu-third a').removeClass('feelcrm-leftMenu-menuActive-third');
+
+					$('.feelcrm-menu-second .feelcrm-leftMenu-menu2').removeClass('feelcrm-leftMenu-menuActive-second');
+
+					$(obj).parent().addClass('feelcrm-leftMenu-menuActive-second');
+				}
+				else if(type == 3)
+				{
+					$('.feelcrm-menu-third a').removeClass('feelcrm-leftMenu-menuActive-third');
+
+					$('.feelcrm-menu-second .feelcrm-leftMenu-menu2').removeClass('feelcrm-leftMenu-menuActive-second');
+
+					$(obj).addClass('feelcrm-leftMenu-menuActive-third');
+				}
+				event.stopPropagation();
+			}
+
+		</script>
+
+    </body>
+
+</html>

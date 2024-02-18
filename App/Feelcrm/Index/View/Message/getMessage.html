@@ -1,0 +1,358 @@
+<include file="Public:header" />
+
+<div class="fd-right-main feelec-message">
+
+    <div class="fd-body pl0">
+
+        <div class="fd-main">
+
+            <div class="fd-right-top">
+
+                <span class="crumb">
+
+                    <a href="javascript:" >{:L('MESSAGE')}</a>
+
+                    <i class="layui-icon">&#xe623;</i>
+
+                    <a class="black6">
+
+                        <cite>
+
+                            <eq name="types" value="all">{:L('ALL_MSG')}</eq>
+
+                            <eq name="types" value="unread">{:L('UN_MSG')}</eq>
+
+                            <eq name="types" value="read">{:L('RE_MSG')}</eq>
+
+                        </cite>
+
+                    </a>
+
+                </span>
+
+            </div>
+
+            <div class="list-main message-wrapper">
+
+                <div class="message-header">
+
+                    <ul>
+
+                        <li><a href="{:U('Message/getMessage',['types'=>'all'])}" class="<eq name='types' value='all'>active</eq>">{:L('ALL_MSG')}</a></li>
+
+                        <li><a href="{:U('Message/getMessage',['types'=>'unread'])}" class="<eq name='types' value='unread'>active</eq>">{:L('UN_MSG')}</a></li>
+
+                        <li><a href="{:U('Message/getMessage',['types'=>'read'])}" class="<eq name='types' value='read'>active</eq>">{:L('RE_MSG')}</a></li>
+
+                    </ul>
+
+                    <div class="message-header-right">
+
+                        <neq name="types" value="read">
+
+                            <a href="javascript:" class="message-btn mr10" mini='message' action="markReadAll"><i class="iconfont icon-read"></i>{:L('ALL_READ')}</a>
+
+                            <a href="javascript:" class="message-btn mr10 msg-disabled" mini='message' action="markRead"><i class="iconfont icon-read"></i>{:L('MARK_READ')}</a>
+
+                        </neq>
+
+                        <a href="javascript:" class="message-btn msg-disabled" mini='message' action="deleteAll"><i class="iconfont icon-del"></i>{:L('DELETE')}</a>
+
+                    </div>
+
+                </div>
+
+                <div class="feeldesk-list-content message-item layui-form">
+
+                    <div class="feeldesk-list-main">
+
+                        <form action="">
+
+                            <table class="layui-table" lay-skin="nob">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th class="left"><span class="ml30">{:L('TITLE')}</span></th>
+
+                                        <th>{:L('CREATE_TIME')}</th>
+
+                                        <th>{:L('OPERATION')}</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="messageList">
+
+                                    <notempty name="message">
+
+                                        <volist name="message" id="vo">
+
+                                            <tr data-id="{$vo.ticket_id|encrypt='TICKET'}" >
+
+                                                <td class="left">
+
+                                                    <input type="checkbox" name="msgIds[]" lay-skin="primary" value="{$vo.msg_id}" lay-filter="ListChoose">
+
+                                                    <div class='message-title-box' data-type="{$types}" data-id="{$vo.msg_id}">
+
+                                                        <i class="iconfont fts19 icon-readed <eq name='vo.read_status' value='1'> icon-unread</eq>"></i>
+
+                                                        <switch name="vo.category" >
+
+                                                            <case value="crm_customer"><a href="javascript:" action="{$vo.msg_url}" mini='msgCustomerDetail'>{$vo.msg_title}</a></case>
+
+                                                            <case value="crm_order"><a href="javascript:" action="{$vo.msg_url}" mini='msgOrderDetail'>{$vo.msg_title}</a></case>
+
+                                                            <case value="crm_contract"><a href="javascript:" action="{$vo.msg_url}" mini='msgContractDetail'>{$vo.msg_title}</a></case>
+
+                                                            <case value="crm_finance"><a href="javascript:" action="{$vo.msg_url}" mini='msgCrmDetail'>{$vo.msg_title}</a></case>
+
+                                                            <case value="crm_clue"><a href="javascript:" action="{$vo.msg_url}" mini='msgCrmDetail'>{$vo.msg_title}</a></case>
+
+                                                            <case value="crm_comment"><a href="javascript:" action="{$vo.msg_url}" mini='msgCrmDetail'>{$vo.msg_title}</a></case>
+
+                                                            <default /> <a href="javascript:" action="{$vo.msg_url}" mini='msgTicketDetail'>{$vo.msg_title}</a>
+
+                                                        </switch>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <td>{$vo.create_time|getDates}</td>
+
+                                                <td class="messageOperate">
+
+                                                    <a href="javascript:showMsgDetail('{$vo.msg_id}')">{:L('DETAIL')}</a>
+
+                                                    <a href="{:U('Message/delete',['ids'=>$vo['msg_id'],'type'=>$types])}" load="async">{:L('DELETE')}</a>
+
+                                                </td>
+
+                                            </tr>
+
+                                        </volist>
+
+                                    <else />
+
+                                        <tr class="nodata center"><td colspan="3">{:L('NO_DATA')}</td></tr>
+
+                                    </notempty>
+
+                                </tbody>
+
+                            </table>
+
+                        </form>
+
+                    </div>
+
+                    <div class="feeldesk-list-footer">
+
+                        <input type="checkbox" name="" lay-skin="primary" lay-filter="ListAllChoose" title="{:L('CHECK_ALL')}">
+
+                        <notempty name="page"><div class="user-page">{$page}</div></notempty>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <script type="text/javascript">
+
+                $(function()
+                {
+                    $("a[mini='message']").on('click',function()
+                    {
+                        if(!$(this).hasClass('msg-disabled'))
+                        {
+                            var ids = [];
+
+                            var url,title,content;
+
+                            var checkBox = $("#messageList").find('input[type="checkbox"]');
+
+                            checkBox.each(function(index, item)
+                            {
+                                if(item.checked) ids.push(item.value);
+                            });
+
+                            var act = $(this).attr('action');
+
+                            if(act === 'deleteAll')
+                            {
+                                url = "{:U('message/delete')}";
+
+                                title = "{:L('DEL_MSG')}";
+
+                                content = "{:L('DEL_MSG_SURE',['num'=>'"+ids.length+"'])}";
+                            }
+                            else if(act === 'markRead')
+                            {
+                                url = "{:U('message/updateMessageStatus')}";
+
+                                title = "{:L('MARK_READ')}";
+
+                                content = "{:L('MARK_MSG_SURE',['num'=>'"+ids.length+"'])}";
+                            }
+                            else if(act === 'markReadAll')
+                            {
+                                url = "{:U('message/updateMessageStatus',['source'=>'read_all'])}";
+
+                                title = "{:L('MARK_READ')}";
+
+                                content = "{:L('MARK_ALL_READ')}";
+                            }
+                            else
+                            {
+                                feelDeskAlert('Error',{});
+                            }
+
+                            if(content.length > 0)
+                            {
+                                layer.confirm(content,{title:title,icon: 3, offset:['100px']},function()
+                                {
+                                    $.post(url,{ids:ids,type:"{$types}"},function(data)
+                                    {
+                                        if(data.status === 2)
+                                        {
+                                            if(act === 'markReadAll')
+                                            {
+                                                window.parent.changeMsg(true);
+                                            }
+
+                                            feelDeskAlert(data.msg,data);
+                                        }
+                                        else
+                                        {
+                                            feelDeskAlert(data.msg);
+                                        }
+
+                                    },'JSON')
+                                });
+                            }
+                        }
+                    });
+
+                    $(".message-title-box").on('click',function()
+                    {
+                        var that = $(this);
+
+                        var ids = [that.data('id')];
+
+                        var type = that.data('type');
+
+                        if(that.find('i.icon-unread').length > 0)
+                        {
+                            $.post("{:U('message/updateMessageStatus')}",{ids:ids,type:type},function(data)
+                            {
+                                if(data.status === 2)
+                                {
+                                    that.find('i').removeClass('icon-unread');
+
+                                    window.parent.changeMsg();
+                                }
+                            });
+                        }
+                    });
+
+                    layui.use('form',function()
+                    {
+                        var form = layui.form;
+
+                        var ListCheckboxLength = 0;
+
+                        form.on('checkbox(ListAllChoose)',function()
+                        {
+                            $("a[action='markRead'],a[action='deleteAll']").removeClass('msg-disabled');
+                        });
+
+                        form.on('checkbox(msg)',function(data)
+                        {
+                            var isChecked = false;
+
+                            var checkbox = $("#messageList").find('td').find('input[type="checkbox"]');
+
+                            if(data.elem.checked)
+                            {
+                                ListCheckboxLength++;
+                            }
+                            else
+                            {
+                                ListCheckboxLength--;
+
+                                if(ListCheckboxLength < 0) ListCheckboxLength = 0;
+                            }
+
+                            if(ListCheckboxLength === checkbox.length)
+                            {
+                                $("input[lay-filter='ListAllChoose']").prop('checked',true);
+                            }
+                            else
+                            {
+                                $("input[lay-filter='ListAllChoose']").prop('checked',false);
+                            }
+
+                            form.render();
+
+                            checkbox.each(function(index, item)
+                            {
+                                if(item.checked) isChecked = true;
+                            });
+
+                            if(isChecked)
+                            {
+                                $("a[action='markRead'],a[action='deleteAll']").removeClass('msg-disabled');
+                            }
+                            else
+                            {
+                                $("a[action='markRead'],a[action='deleteAll']").addClass('msg-disabled');
+                            }
+                        })
+                    });
+                });
+
+                var showMsgDetail = function (id)
+                {
+                    /**
+                    * @param result {Object}
+                    * @param result.msg_content {String}
+                    */
+                    $.get('/Message/getMessage',{msg_id:id},function (result)
+                    {
+                        var content = "<div class='message-content'>"+result.data.msg_content+"</div>";
+
+                        layer.open(
+                        {
+                            type: 1,
+                            content: content,
+                            skin:'message-windows',
+                            offset: ['150px'],
+                            area: ['40%', '300px'],
+                            success:function ()
+                            {
+                                $("div[data-id='"+id+"']").find('i').removeClass('icon-unread');
+
+                                window.parent.changeMsg();
+                            },
+                            cancel: function(index)
+                            {
+                                layer.close(index);
+
+                                return false;
+                            }
+                        });
+                    })
+                };
+
+            </script>
+
+        </div>
+
+    </div>
+
+</div>

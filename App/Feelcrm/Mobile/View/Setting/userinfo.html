@@ -1,0 +1,149 @@
+﻿<include file="Public/header" />
+
+<div class="feeldesk feeldesk-setting bgf" id="formWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="{:U('setting/index',['system'=>$system])}" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('PERSONAL_M')}</div>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <div class="user-item">
+
+            <div class="setting-inline">
+
+                <div class="user-item-name">{:L('PERSONAL_AVATAR')}</div>
+
+                <div class="user-item-right">
+
+                    <img src="{$mobile.face|default='/Attachs/face/face.png'}" alt="" id="uploadLogoAndFace" data-value="face">
+
+                    <form action="{:U('userinfo')}" id="imageForm">
+
+                        <input type="hidden" name="member[face]" value="{$mobile.face}" id="image"/>
+
+                        <input type="hidden" name="member[face_name]" value="{$mobile.face_name}" id="image-name"/>
+
+                        <input type="hidden" name="member[face_url]" id="image-url"/>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="user-item">
+
+            <div class="setting-inline">
+
+                <div class="user-item-name">{:L('ACCOUNT')}</div>
+
+                <div class="user-item-right blue078">{$mobile.account}</div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="user-item to-windows" data-title="{:L('MODIFY_NAME')}" data-name="name" data-value="{$mobile.name}">
+
+            <div class="setting-inline">
+
+                <div class="user-item-name">{:L('NAME')}</div>
+
+                <div class="user-item-right"><span>{$mobile.name}</span> <i class="iconfont icon-back-right"></i></div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="user-item to-windows" data-title="{:L('MODIFY_NICKNAME')}" data-name="nickname" data-value="{$mobile.nickname|default=''}">
+
+            <div class="setting-inline">
+
+                <div class="user-item-name">{:L('NICKNAME')}</div>
+
+                <div class="user-item-right"><span>{$mobile.nickname}</span> <i class="iconfont icon-back-right"></i></div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="user-item to-windows" data-title="{:L('MODIFY_MOBILE')}" data-name="mobile" data-value="{$mobile.mobile|default=''}">
+
+            <div class="setting-inline">
+
+                <div class="user-item-name">{:L('MOBILE')}</div>
+
+                <div class="user-item-right"><span>{$mobile.mobile}</span> <i class="iconfont icon-back-right"></i></div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="user-item to-windows" data-title="{:L('MODIFY_EMAIL')}" data-name="email" data-value="{$mobile.email|default=''}">
+
+            <div class="setting-inline border-none">
+
+                <div class="user-item-name">E-mail</div>
+
+                <div class="user-item-right"><span>{$mobile.email}</span> <i class="iconfont icon-back-right"></i></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="feeldesk" id="userWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="iconfont icon-back-left back" id="userBack"></a>
+
+            <div class="header-title" id="windowTitle"></div>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main user-main">
+
+        <form id="feeldeskForm">
+
+            <div class="user-form-item">
+
+                <input type="text" class="user-input" id="user-input"/>
+
+            </div>
+
+            <a href="javascript:" class="user-submit" id="submitForm">{:L('SAVE')}</a>
+
+        </form>
+
+    </div>
+
+</div>

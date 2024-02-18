@@ -1,0 +1,431 @@
+<extend name="Public:common"/>
+
+<block name="crumb1">{:L('ROLE_MANAGER')}</block>
+
+<block name="content">
+
+    <div class="feeldesk-list">
+
+        <div class="feeldesk-list-header clearfix">
+
+            <div class="header-left">
+
+                <notempty name="data.auth.create">
+
+                    <a href="javascript:" onclick="openFormWindow(this,'{:U(\'create\')}')" class="createBtn" title="{:L('NEW_ROLE')}">
+                        <i class="iconfont icon-xinzeng"></i>{:L('NEW_ROLE')}
+                    </a>
+
+                </notempty>
+
+            </div>
+
+            <div class="header-right">
+
+                <form action="{$controllerAndAction}" method="get" class="fr">
+
+                    <div class="compact-search">
+
+                        <i class="iconfont icon-search"></i>
+
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="{:L('ROLE_NAME')}"/>
+
+                        <a href="javascript:" class="searchBtn">{:L('SEARCH')}</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="feeldesk-list-content">
+
+            <div class="feeldesk-list-main">
+
+                <table class="layui-table" lay-skin="nob">
+
+                    <thead>
+
+                        <tr>
+
+                            <th class="left">{:L('ROLE_NAME')}</th>
+
+                            <th>{:L('STATUS')}</th>
+
+                            <th>{:L('CREATE_TIME')}</th>
+
+                            <th>{:L('OPERATION')}</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <empty name="data.roles">
+
+                            <tr class="nodata center"><td colspan="11">{:L('NO_DATA')}</td></tr>
+
+                        <else />
+
+                            <volist name="data.roles" id="vo">
+
+                                <tr>
+
+                                    <td class="left">
+
+                                        <span>{$vo.role_name}</span>
+
+                                        <eq name="vo.is_supper" value="20"><i class="iconfont icon-admin"></i></eq>
+
+                                        <eq name="vo.is_default" value="10"><i class="iconfont icon-moren"></i></eq>
+
+                                    </td>
+
+                                    <td>
+
+                                        <eq name="vo.closed" value="0">
+
+                                            <span class="open-status enable">{:L('ENABLE')}</span>
+
+                                        <else />
+
+                                            <span class="open-status disable">{:L('DISABLE')}</span>
+
+                                        </eq>
+
+                                    </td>
+
+                                    <td>{$vo.create_time|getDates}</td>
+
+                                    <td class="feeldesk-list-operate">
+
+                                        <i class="iconfont icon-dian"></i>
+
+                                        <div class="operate-panel hidden">
+
+                                            <php>$id = encrypt($vo['role_id'],'ROLE');</php>
+
+                                            <notempty name="data.auth.editor">
+
+                                                <a href='javascript:' title="{:L('EDITOR')}" onclick="openFormWindow(this,'{:U(\'editor\',[\'id\'=>$id])}')">
+                                                    {:L('EDITOR')}
+                                                </a>
+
+                                            </notempty>
+
+                                            <if condition="$data['auth']['auth']">
+
+                                                <a href="{:U('auth',['id'=>$id])}">{:L('ROLE_AUTH')}</a>
+
+                                            </if>
+
+                                            <if condition="$data['auth']['delete'] && $vo['closed'] eq 1 && $vo['is_supper'] neq 20">
+
+                                                <a href="{:U('delete',['id'=>$id])}" load="del-role">{:L('DELETE')}</a>
+
+                                            </if>
+
+                                            <notempty name="data.auth.member">
+
+                                                <a href="{:U('Member/index',['role_id'=>$vo['role_id']])}">{:L('VIEW_USER')}</a>
+
+                                            </notempty>
+
+                                            <a href="javascript:" data-value="{$vo.role_id}" data-name="{$vo.role_name}" class="assign-user">{:L('ASSIGN_USER')}</a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            </volist>
+
+                        </empty>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <gt name="data.auth.delete" value="0">
+
+            <div class="groupItem hidden" id="role-item">
+
+                <form action="" class="layui-form pd20" lay-filter="role">
+
+                    <input type="hidden" name="role[role_id]" value="" id="roleId"/>
+
+                    <div class="mb10">{:L('SELECT_TRANSFER_ROLE')}</div>
+
+                    <div class="layui-form-item">
+
+                        <div class="layui-input-block ml0">
+
+                            <select name="role[update_role_id]" lay-search id="roleItem"></select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <div class="layui-input-block ml0 center">
+
+                            <a href="javascript:" class="layui-btn" lay-submit lay-filter="deleteRoleForm">{:L('SURE')}</a>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </gt>
+
+    </div>
+
+    <gt name="data.auth.delete" value="0">
+
+        <script type="text/javascript">
+
+            $(function ()
+            {
+                layui.use('form',function ()
+                {
+                    var form = layui.form;
+
+                    var roles = JSON.parse('{$data.roleJson}');
+
+                    $("a[load='del-role']").on('click',function(e)
+                    {
+                        e.preventDefault();
+
+                        var role_id = $(this).attr('href').split('/')[4];
+
+                        $('#roleId').val(role_id);
+
+                        var option = "<option value=''>{:L('SELECT_ROLE')}</option>";
+
+                        $.each(roles,function (k,v)
+                        {
+                            if(role_id != v.role_id && v.closed == 0)
+                            {
+                                option += "<option value='"+v.role_id+"'>"+v.role_name+"</option>";
+                            }
+                        });
+
+                        $('#roleItem').html(option);
+
+                        form.render('select','role');
+
+                        layer.open(
+                        {
+                            type: 1,
+                            offset:['100px'],
+                            area:['400px','500px'],
+                            content: $('#role-item')
+                        });
+                    });
+
+                    form.on('submit(deleteRoleForm)',function (data)
+                    {
+                        $.post('/Role/delete',$(data.form).serialize(),function(data)
+                        {
+                            if(data.errcode != 0)
+                            {
+                                feelDeskAlert(data.msg);
+                            }
+                            else
+                            {
+                                data.isReload = 1;
+
+                                feelDeskAlert(data.msg,data);
+                            }
+                        })
+                    })
+                })
+            })
+
+        </script>
+
+    </gt>
+
+    <div class="assign-user-pannel hidden" id="assignUserPannel">
+
+        <header>
+
+            <span class="move-element">{:L('ASSIGN_USER')}</span>
+
+            <div class="assign-search">
+
+                <i class="iconfont icon-search"></i>
+
+                <input type="text" name="keyword" placeholder="{:L('ASSIGN_SEARCH')}" autocomplete="off" id="assignSearch"/>
+
+            </div>
+
+            <i class="iconfont icon-close1 assign-closed"></i>
+
+        </header>
+
+        <form action="" class="layui-form" id="assignUserForm">
+
+            <div class="assign-user-main">
+
+                <div class="assign-main-header">
+
+                    <span>{:L('ROLE_NAME')}：</span><span class="green3" id="assginRoleName"></span>
+
+                    <a href="javascript:" class="assign-user-submit" id="assignSubmit">{:L('SAVE')}</a>
+
+                </div>
+
+                <div class="item-header">
+
+                    <ul><li>{:L('CHOOSE')}</li><li>{:L('NAME')}</li><li>{:L('MOBILE')}</li><li>{:L('EMAIL')}</li></ul>
+
+                </div>
+
+                <div id="assignUserItem"></div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <script type="text/javascript">
+
+        $(function()
+        {
+            layui.use(['form','flow'], function ()
+            {
+                var form = layui.form;
+
+                var flow = layui.flow;
+
+                $('.assign-user').unbind('click').on('click', function ()
+                {
+                    var value = $(this).data('value');
+
+                    var name = $(this).data('name');
+
+                    layer.open(
+                    {
+                        title: false,
+                        type: 1,
+                        content: $('#assignUserPannel'),
+                        closeBtn: 0,
+                        skin: 'assign-members-window',
+                        offset: ['10%'],
+                        move: $('.move-element'),
+                        moveOut: true,
+                        moveType: 0,
+                        area: ['600px', '60%'],
+                        shade: [0.3, '#333'],
+                        success: function (layero, index)
+                        {
+                            $('#assginRoleName').text(name);
+
+                            var searchWidth = parseFloat($('.assign-search').width() / 2 + 100);
+
+                            $('.assign-search').css({left:"calc(50% - "+searchWidth+"px)"});
+
+                            flow.load(
+                            {
+                                elem: '#assignUserItem',
+                                end: "{:L('NO_MORE')}",
+                                done: function (page, next)
+                                {
+                                    $.post("/Role/index?request=assign&p=" + page, function (data)
+                                    {
+                                        var lis = [];
+
+                                        var item = '';
+
+                                        $.each(data.data,function(k,v)
+                                        {
+                                            var isChecked = '';
+
+                                            if(v.role_id == value) isChecked = 'checked';
+
+                                            item += "<div class='assign-user-item'><ul>" +
+                                                    "<li><input type='checkbox' name='userId[]' value='"+v.member_id+"' lay-skin='primary' "+isChecked+"/></li>" +
+                                                    "<li>"+ v.name+"</li><li>"+ v.mobile+"</li><li>"+ v.email+"</li></ul></div>";
+
+                                        });
+
+                                        lis.push(item);
+
+                                        next(lis.join(''), page < data.pages);
+
+                                        form.render('checkbox');
+
+                                    },'JSON');
+                                }
+                            });
+
+                            $('.assign-closed').on('click', function ()
+                            {
+                                layer.close(index);
+
+                                $('#assignUserItem').html('');
+                            });
+
+                            $('#assignSubmit').unbind('click').on('click', function (e)
+                            {
+                                e.stopPropagation();
+
+                                var loading = layer.load(2, {offset: ['15vw']});
+
+                                $.post("{:U('Role/index')}?request=submit&id=" + value, $('#assignUserForm').serialize(), function (data)
+                                {
+                                    if (data.errcode == 0)
+                                    {
+                                        feelDeskAlert(data.msg,data);
+                                    }
+                                    else
+                                    {
+                                        feelDeskAlert(data.msg);
+                                    }
+
+                                    layer.close(loading);
+
+                                }, 'JSON');
+                            })
+                        }
+                    });
+
+
+                    $('#assignSearch').keyup(function ()
+                    {
+                        var value = $(this).val();
+
+                        if(value)
+                        {
+                            $('#assignUserItem').find('.assign-user-item').hide().filter(":contains('" + ($(this).val()) + "')").show();
+
+                            $('#assignUserForm').find('.layui-flow-more').fadeOut('fast');
+                        }
+                        else
+                        {
+                            $('#assignUserItem').find('.assign-user-item').show();
+
+                            $('#assignUserForm').find('.layui-flow-more').fadeIn('fast');
+                        }
+                    });
+                });
+            })
+        });
+
+    </script>
+
+</block>

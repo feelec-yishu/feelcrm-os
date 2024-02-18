@@ -1,0 +1,237 @@
+
+<div class="feeldesk-form-item <neq name='crmsite.regionType' value='world'>hidden</neq>">
+
+	<div class="feeldesk-form-block">
+
+		<eq name='crmsite.regionType' value='world'>
+
+			<eq name="defineForm.is_required" value="0">
+
+				<span class="red required-icon">*</span>
+
+			</eq>
+
+		</eq>
+
+		<select name="{$FormName}[{$form_name}_defaultCountry]" lay-filter="select-country<php>echo $reg;</php>" lay-search>
+
+			<option value="">{$vo.form_description}</option>
+
+			<volist name="country" id="vc">
+
+				<option value="{$vc.code}" <neq name='crmsite.regionType' value='world'><eq name='vc.code' value='1'>selected</eq><else/><eq name='crmsite.defaultCountry' value='$vc.code'>selected</eq></neq>>{$vc.name}</option>
+
+			</volist>
+
+		</select>
+
+	</div>
+
+</div>
+
+<div class="feeldesk-form-item <eq name='crmsite.regionType' value='world'><empty name='crmsite.defaultProv'>hidden</empty></eq>" >
+
+	<div class="feeldesk-form-block">
+
+		<neq name='crmsite.regionType' value='world'>
+
+			<eq name="defineForm.is_required" value="0">
+
+				<span class="red required-icon">*</span>
+
+			</eq>
+
+		</neq>
+
+		<select name="{$FormName}[{$form_name}_defaultProv]" lay-filter="select-province<php>echo $reg;</php>" id="province<php>echo $reg;</php>" lay-search>
+
+			<option value="">{:L('SELECT_PROVINCE')}</option>
+
+			<eq name="crmsite.regionType" value="world">
+
+				<notempty name='crmsite.defaultProv'>
+
+					<volist name="province" id="vc">
+
+						<option c-value="{$vc.country_code}" value="{$vc.code}" <eq name='crmsite.defaultProv' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+					</volist>
+
+				</notempty>
+
+			<else/>
+
+				<volist name="province" id="vc">
+
+					<option c-value="{$vc.country_code}" value="{$vc.code}" <eq name='crmsite.defaultProv' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+				</volist>
+
+			</eq>
+
+		</select>
+
+	</div>
+
+</div>
+
+<div class="feeldesk-form-item <empty name='crmsite.defaultCity'>hidden</empty>" >
+
+	<div class="feeldesk-form-block">
+
+		<select name="{$FormName}[{$form_name}_defaultCity]" lay-filter="select-city<php>echo $reg;</php>" id="city<php>echo $reg;</php>" lay-search>
+
+			<option value="">{:L('SELECT_CITY')}</option>
+
+			<notempty name='crmsite.defaultCity'>
+
+				<volist name="city" id="vc">
+
+					<option c-value="{$vc.country_code}" p-value="{$vc.province_code}" value="{$vc.code}" <eq name='crmsite.defaultCity' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+				</volist>
+
+			</notempty>
+
+		</select>
+
+	</div>
+
+</div>
+
+<div class="feeldesk-form-item <empty name='crmsite.defaultArea'>hidden</empty>" >
+
+	<div class="feeldesk-form-block">
+
+		<select name="{$FormName}[{$form_name}_defaultArea]" lay-filter="select-area<php>echo $reg;</php>" id="area<php>echo $reg;</php>" lay-search>
+
+			<option value="">{:L('SELECT_AREA')}</option>
+
+			<notempty name='crmsite.defaultArea'>
+
+				<volist name="area" id="vc">
+
+					<option value="{$vc.code}" <eq name='crmsite.defaultArea' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+				</volist>
+
+			</notempty>
+
+		</select>
+
+	</div>
+
+</div>
+
+<script type="text/javascript">
+
+	layui.use('form',function()
+	{
+		var form = layui.form;
+
+		form.on('select(select-country<php>echo $reg;</php>)',function(data)
+		{
+			var value = data.value;
+
+			$.post("{:U('AjaxRequest/getRegion')}",{country_id:value,type:'province'},function(data)
+			{
+				if(data.code == 0)
+				{
+					var option = '<option value="">{:L('SELECT_PROVINCE')}</option>';
+
+					if(data.data.length > 0)
+					{
+						$.each(data.data,function(k,v)
+						{
+							option += "<option c-value='"+ v.country_code+"' value='"+v.code+"'>"+v.name+"</option>";
+						});
+
+						$('#province<php>echo $reg;</php>').html(option).parents('.feeldesk-form-item').slideDown('fast');
+					}
+					else
+					{
+						$('#province<php>echo $reg;</php>').html(option).parents('.feeldesk-form-item').slideUp('fast');
+					}
+
+					form.render('select')
+				}
+			});
+
+			$('#city<php>echo $reg;</php>').html('<option value="">{:L('SELECT_CITY')}</option>').parents('.feeldesk-form-item').slideUp('fast');
+
+			$('#area<php>echo $reg;</php>').html('<option value="">{:L('SELECT_AREA')}</option>').parents('.feeldesk-form-item').slideUp('fast');
+
+			form.render('select');
+		});
+
+		form.on('select(select-province<php>echo $reg;</php>)',function(data)
+		{
+			var value = data.value;
+
+			var cValue = $(data.elem).find("option[value='"+data.value+"']").attr('c-value');
+
+			$.post("{:U('AjaxRequest/getRegion')}",{country_id:cValue,province_id:value,type:'city'},function(data)
+			{
+				if(data.code == 0)
+				{
+					var option = '<option value="">{:L('SELECT_CITY')}</option>';
+
+					if(data.data.length > 0)
+					{
+						$.each(data.data,function(k,v)
+						{
+							option += "<option c-value='"+ v.country_code+"' p-value='"+ v.province_code+"' value='"+v.code+"'>"+v.name+"</option>";
+						});
+
+						$('#city<php>echo $reg;</php>').html(option).parents('.feeldesk-form-item').slideDown('fast');
+					}
+					else
+					{
+						$('#city<php>echo $reg;</php>').html(option).parents('.feeldesk-form-item').slideUp('fast');
+					}
+
+					form.render('select')
+				}
+			});
+
+			$('#area<php>echo $reg;</php>').html('<option value="">{:L('SELECT_AREA')}</option>').parents('.feeldesk-form-item').slideUp('fast');
+
+			form.render('select');
+		});
+
+		form.on('select(select-city<php>echo $reg;</php>)',function(data)
+		{
+			var value = data.value;
+
+			var pValue = $(data.elem).find("option[value='"+data.value+"']").attr('p-value');
+
+			var cValue = $(data.elem).find("option[value='"+data.value+"']").attr('c-value');
+
+			$.post("{:U('AjaxRequest/getRegion')}",{country_id:cValue,province_id:pValue,city_id:value,type:'area'},function(data)
+			{
+				if(data.code == 0)
+				{
+					var option = '<option value="">{:L('SELECT_AREA')}</option>';
+
+					if(data.data.length > 0)
+					{
+						$.each(data.data,function(k,v)
+						{
+							option += "<option value='"+v.code+"'>"+v.name+"</option>";
+						});
+
+						$('#area<php>echo $reg;</php>').html(option).parents('.feeldesk-form-item').slideDown('fast');
+					}
+					else
+					{
+						$('#area<php>echo $reg;</php>').html(option).parents('.feeldesk-form-item').slideUp('fast');
+					}
+
+					form.render('select')
+				}
+			});
+		});
+
+	})
+
+</script>

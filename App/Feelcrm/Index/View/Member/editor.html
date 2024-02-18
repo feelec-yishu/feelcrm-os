@@ -1,0 +1,180 @@
+<extend name="Public:window"/>
+
+<block name="window-form">
+
+    <form action="" class="layui-form">
+
+        <div class="form-item">
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('SELECT_SECTOR')}</label>
+
+                <div class="layui-input-inline" id="departments"></div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('ROLE')}</label>
+
+                <div class="layui-input-inline">
+
+                    <select id="content" name="member[role_id]">
+
+                        <option value="0">{:L('SELECT_ROLE')}</option>
+
+                        <foreach name="roles" item="val">
+
+                            <option value="{$val.role_id}" <eq name='val.role_id' value='$detail.role_id'>selected='selected'</eq>>{$val.role_name}</option>
+
+                        </foreach>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('NAME')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="text" name="member[name]" value="{$detail.name}" class="layui-input" placeholder="{:L('NAME')}"/>
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('NICKNAME')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="text" name="member[nickname]" value="{$detail.nickname}" class="layui-input" placeholder="{:L('NICKNAME')}"/>
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('WECHAT_NUMBER')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="text" name="member[wechat]" value="{$detail.wechat}" class="layui-input" placeholder="{:L('ENTER_WECHAT_NUMBER')}" />
+
+                </div>
+
+            </div>
+
+            <notempty name="workphone">
+
+                <div class="layui-form-item">
+
+                    <label class="layui-form-label">AccountSecret</label>
+
+                    <div class="layui-input-inline">
+
+                        <input type="text" name="member[accountsecret]" value="{$detail.accountsecret}" class="layui-input"/>
+
+                    </div>
+
+                </div>
+
+            </notempty>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('EMAIL')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="text" name="member[email]" value="{$detail.email}" class="layui-input" placeholder="{:L('ENTER_EMAIL')}" />
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('MOBILE')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="text" name="member[mobile]" value="{$detail.mobile}" class="layui-input" placeholder="{:L('ENTER_MOBILE')}" />
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('IS_ENABLE')}</label>
+
+                <div class="layui-input-inline w-auto">
+
+                    <input type="radio" name="member[closed]" value="0" title="{:L('ENABLE')}" <eq name="detail.closed" value="0"> checked</eq>>
+
+                    <input type="radio" name="member[closed]" value="1" title="{:L('DISABLE')}" <eq name="detail.closed" value="1"> checked</eq>>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="form-submit">
+
+            <div class="layui-form-item">
+
+                <div class="layui-input-inline">
+
+                    <a href="javascript:" class="layui-btn layui-btn-normal" id="submitForm">{:L('SUBMIT')}</a>
+
+                    <a href="javascript:" class="layui-btn layui-btn-normal cancel-btn" id="cancel-form">{:L('CANCEL')}</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    <script type="text/javascript">
+
+        layui.config({
+            base : '/Public/js/layui/extends/'
+        }).extend({
+            selectN: 'selectM'
+        }).use(['form','selectM'],function()
+        {
+            var form = layui.form;
+
+            var data = JSON.parse('{$jsonDepartmentData}');
+
+            var selected = JSON.parse('{$detail.group_id}');
+
+            layui.selectM(
+            {
+                elem: '#departments',
+                data: data,
+                tips:"{:L('PLEASE_SELECT')}",
+                selected:selected,
+                width:'100%',
+                name:'group_id',
+                field: {idName:'group_id',titleName:'group_name',statusName:'status',levelName:'level',childName:'child'},
+                search:true,
+                searchTips:"{:L('PLEASE_ENTER_KEYWORDS')}",
+                max:100
+            });
+        });
+
+    </script>
+
+</block>

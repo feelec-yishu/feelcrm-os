@@ -1,0 +1,174 @@
+<include file="Public/header" />
+
+<div class="feeldesk">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:goBack()" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">
+
+                <switch name="Think.ACTION_NAME">
+
+                    <case value="myTicket">{:L('MY_TICKET')}</case>
+
+                    <case value="allTicket">{:L('ALL_TICKET')}</case>
+
+                    <case value="disposeTicket">{:L('DEAL_TICKET')}</case>
+
+                    <case value="groupTicket">{:L('GROUP_TICKET')}</case>
+
+                    <case value="waitAuditTicket">{:L('WAIT_AUDIT_TICKET')}</case>
+
+                    <case value="ccTicket">{:L('CC_TICKET')}</case>
+
+                    <case value="waitReplyTicket">{:L('WAIT_TICKET')}</case>
+
+                    <case value="timeoutTicket">{:L('TIMEOUT_TICKET')}</case>
+
+                </switch>
+
+            </div>
+
+            <a href="{:U('Ticket/template')}" class="iconfont icon-create"></a>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main plr2 no-footer-main">
+
+        <div class='feeldesk-item' id='ticketItem'></div>
+
+        <include file="Public/buoy" />
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    layui.use('flow', function()
+    {
+        var flow = layui.flow;
+
+        flow.load(
+        {
+            elem: '#ticketItem',
+            scrollElem:'.feeldesk-main',
+            isAuto:false,
+            done: function(page, next)
+            {
+                var action = "{$Think.ACTION_NAME}";
+
+                var lis = [];
+
+                if(action == 'waitAuditTicket') status_name = "{:L('WAIT_AUDIT')}";
+
+                $.get("{:U('Ticket/'.ACTION_NAME)}?p="+page+"&request=flow", function(data)
+                {
+                    layui.each(data.data, function(index, item)
+                    {
+                        var url = "{:U('Ticket/detail')}?id="+item.ticket_id;
+
+                        var deleteUrl = "{:U('Ticket/delete')}?ticket_id="+item.ticket_id;
+
+                        var isRead = '';
+
+                        if(item.look == 2)
+                        {
+                            isRead = 'ticket-read';
+                        }
+
+                        var items = "<div class='feeldesk-list'>" +
+                            "<a href='"+url+"' class='clearfix ticket-item'>" +
+                            "<div class='feeldesk-list-left'>" +
+                            "<div class='ticket-title ellipsis'><span class='ticket-unread "+isRead+"'></span>"+item.title+"</div>" +
+                            "<div class='ticket-publisher'>{:L('PUBLISHER')}："+item.publish+"</div></div>";
+
+                            if(action == 'waitAuditTicket')
+                            {
+                                if(item.audit_status == 2 || item.audit_status == 5)
+                                {
+                                    items += "<div class='feeldesk-list-right'><span>{:L('WAIT_AUDIT')}</span></div></a>";
+                                }
+                                else if(item.audit_status == 4 || item.audit_status == 6)
+                                {
+                                    items += "<div class='feeldesk-list-right'><span>{:L('REJECTED')}</span></div></a>";
+                                }
+                                else
+                                {
+                                    //正常情况下，不会进入这里
+                                    items += "<div class='feeldesk-list-right'><span>{:L('PASS')}</span></div></a>";
+                                }
+                            }
+                            else
+                            {
+                                items += "<div class='feeldesk-list-right'><span>"+item.status.lang_name+"</span></div></a>";
+                            }
+
+                            items += "<span class='ticket-delete'><a href='"+deleteUrl+"' class='iconfont icon-delete' mini='delete'></a></span></div>";
+
+                        lis.push(items);
+                    });
+
+                    next(lis.join(''), page < data.pages);
+                });
+/*
+                var startX,moveEndX,X;
+
+                $(document).on("touchstart",'.feeldesk-list',function(e)
+                {
+                    startX = e.originalEvent.changedTouches[0].pageX;
+
+                }).on("touchend",'.feeldesk-list',function(e)
+                {
+                    moveEndX = e.originalEvent.changedTouches[0].pageX;
+
+                    X = moveEndX - startX;
+
+                    if ( X > 0 )//左滑
+                    {
+                        $(e.currentTarget).find('.ticket-item').animate({right:'0'},'fast');
+
+                        $(e.currentTarget).find('.ticket-delete').animate({right:'-20vw'},'fast');
+                    }
+                    else if ( X < 0 )//右滑
+                    {
+                        $(e.currentTarget).find('.ticket-item').animate({right:'20vw'},'fast');
+
+                        $(e.currentTarget).find('.ticket-delete').animate({right:'0'},'fast');
+                    }
+                });
+
+                $(document).on('click','.icon-delete',function(e)
+                {
+                    e.preventDefault();
+
+                    var url = $(this).attr('href');
+
+                    layer.confirm(language.SURE_DELETE_TICKET, {icon: 3, title:language.PROMPT,offset:['80px']}, function(index)
+                    {
+                        var loading = layer.load(2,{offset:['80px']});
+
+                        $.post(url,function(data)
+                        {
+                            layer.close(loading);
+
+                            layer.msg(data.msg,{time:1000,offset:['80px']},function()
+                            {
+                                if(data.status == 2) window.location.reload();
+                            });
+                        });
+
+                        layer.close(index);
+                    });
+                })
+*/
+            }
+        });
+    });
+
+</script>

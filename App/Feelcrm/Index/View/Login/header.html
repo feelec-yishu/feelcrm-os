@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<title>{:C('WEB_TITLE')}</title>
+
+		<link rel="stylesheet" href="__PUBLIC__/css/common.css"/>
+
+		<link rel="stylesheet" href="__PUBLIC__/js/layui/css/layui.css"/>
+
+		<link rel="stylesheet" href="INDEX_PUBLIC_CSS/login.css" />
+
+		<link rel="stylesheet" href="{:C('PC_ICON_HTTP')}">
+
+		<script type="text/javascript" >
+
+			const moduleName = "{$Think.MODULE_NAME}";
+
+		</script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.1.min.js"></script>
+
+        <script type="text/javascript" src="__PUBLIC__/js/cookie/jquery.cookie.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/lang/{$Think.cookie.think_language|getStrToLower}.js"></script>
+
+        <script type="text/javascript" src="__PUBLIC__/js/feeldesk.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/layui/layui.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/feeldesk-slide.js"></script>
+
+		<script type="text/javascript" src="INDEX_PUBLIC_JS/login.js"></script>
+
+        <script type="text/javascript">
+
+            try
+            {
+                if (!window.location.hash.match("fromapp"))
+                {
+                    var url= "{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Mobile/u-login";
+
+                    if((navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i)))
+                    {
+                        window.location.href = url;
+                    }
+                }
+            }
+            catch(err)
+            {
+            }
+
+        </script>
+
+	</head>
+
+<body>

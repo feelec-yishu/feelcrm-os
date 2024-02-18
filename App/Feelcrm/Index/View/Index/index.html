@@ -1,0 +1,17 @@
+{:W('Menu/menu')}
+
+<style type="text/css">
+
+	::-webkit-scrollbar {width: 0;height: 10px;}
+
+	::-webkit-scrollbar-thumb {border-radius: 5px;}
+
+</style>
+
+<div class='feeldesk-right-wrap bg-F2F3F8 <notempty name="source_type">feeldesk-right-wrap-noheader</notempty>'>
+
+    <iframe id="right" name="rightMain" src="<eq name='from_type' value='crm'>{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Crm/{$redirect_url}?l={$lang}<else/>{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Crm?l={$lang}</eq>" frameborder="0" width="100%" height="100%" class="feeldesk-right" onload="javascript:switchMain();" ></iframe>
+
+    <iframe id="callcenter" name="callcenterMain" src="" frameborder="0" width="100%" height="99.5%" class="feeldesk-right hidden" ></iframe>
+
+</div>

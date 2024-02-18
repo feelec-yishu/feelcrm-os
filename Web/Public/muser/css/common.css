@@ -1,0 +1,41 @@
+body {font-size: 14px;font-family: "Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑",STHeiti,"WenQuanYi Micro Hei",SimSun,sans-serif;color: #374051;word-break: break-all;}
+
+form,ul,ol,h1,h2,h3,h4,h5,h6,p{margin: 0;padding: 0;list-style: none;}
+
+h2{font-weight: normal;}
+
+h1, h3, h4, h5, h6 {font-weight: normal;font-size: 100%;}
+
+input,textarea,select,button{font-size: 12px;}
+
+img{border: none;}
+
+address,cite,small{color: #999;font-style: normal;font-size: 12px;}
+
+a{color: #333;text-decoration: none;outline: none;}
+
+/* 公共样式 */
+
+::-webkit-scrollbar {width:0;}
+
+.xiayige{display:inline-block;width:30px;height:53px;background: url('../img/xiayige.png') no-repeat center; background-size: 75%;float: right; margin-right: 5px;
+    -webkit-transform:rotate(0deg);
+    -moz-transform:rotate(0deg);
+    transform:rotate(0deg);
+    -webkit-transition: -webkit-transform 0.3s;
+    -moz-transition:  -moz-transform 0.3s;
+    transition: transform 0.3s;
+}
+
+.zhankai{display:inline-block;width:30px;height:53px;background: url('../img/xiayige.png') no-repeat center; background-size: 75%;float: right; margin-right: 5px;
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    transform:rotate(90deg);
+    -webkit-transition: -webkit-transform 0.3s;
+    -moz-transition:  -moz-transform 0.3s;
+    transition: transform 0.3s;
+}
+
+.border-none{border:none !important;}
+
+.shenglue{text-overflow :ellipsis;white-space:nowrap;overflow:hidden;}

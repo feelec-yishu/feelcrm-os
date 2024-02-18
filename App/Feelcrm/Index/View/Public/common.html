@@ -1,0 +1,49 @@
+<include file="Public:header" />
+
+    <div class="fd-right-main">
+
+        <div class="fd-body">
+
+            <div class="fd-main">
+
+                <div class="fd-right-top">
+
+                    <span class="crumb">
+
+                        <if condition="CONTROLLER_NAME neq 'Census' && CONTROLLER_NAME neq 'Ticket'">
+
+                            <php>$href = '/'.CONTROLLER_NAME.'/index';</php>
+
+                        <else />
+
+                            <php>$href = 'javascript:';</php>
+
+                        </if>
+
+                        <a href="{$href}"><block name="crumb1"></block></a>
+
+                        <i class="layui-icon">&#xe623;</i>
+
+                        <a class="black6"><cite><block name="crumb2">{:getViewName()}</block></cite></a>
+
+                        <block name="crumb3"></block>
+
+                    </span>
+
+                    <block name="top-right"></block>
+
+                    <block name="rightHeader"></block>
+
+                </div>
+
+                <block name="content"></block>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </body>
+
+</html>

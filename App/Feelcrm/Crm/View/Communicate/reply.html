@@ -1,0 +1,110 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('SYSTEM')}</block>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0">
+
+        <div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('COMMUNICATION_CONTENT')}</li>
+
+            </ul>
+
+        </div>
+
+		<div class="list-header clearfix">
+
+            <div class="header-left">
+
+                {:FEELCRM('Communicate/add_reply',['id'=>encrypt($cmncate_id,'COMMUNICATE')],L('ADD_COMMUNICATION_CONTENT'),'item-deleteBtn','add','iconfont icon-xinzeng')}
+
+            </div>
+
+        </div>
+
+        <div class="item-list">
+
+            <table class="layui-table" lay-skin="line">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{:L('TYPE')}</th>
+						<th>{:L('CONTENT')}</th>
+						<th>{:L('CREATE_TIME')}</th>
+						<th>{:L('OPERATION')}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <empty name="cmncate_reply">
+
+                        <tr class="nodata center">
+
+                            <td colspan="4">
+
+                                <p><i class="iconfont icon-nothing fts20"></i></p>
+
+                                <p>{:L('NO_DATA')}</p>
+
+                            </td>
+
+                        </tr>
+
+                    <else />
+
+                        <volist name="cmncate_reply" id="vo">
+
+                            <tr>
+
+                                <td>{$vo.cmncate_name}</td>
+
+                               <td>{$vo.reply_content}</td>
+
+                                <td>{$vo.create_time|date="Y-m-d H:i",###}</td>
+
+                                <td class="listOperate">
+
+                                    <i class="iconfont icon-dian"></i>
+
+                                    <div class="operate hidden">
+
+                                        {:FEELCRM('Communicate/edit_reply',['id'=>encrypt($vo['reply_id'],'COMMUNICATE'),'cmncate_id'=>encrypt($vo['cmncate_id'],'COMMUNICATE')],L('EDITOR'),'','edt')}
+
+										{:FEELCRM('Communicate/del_reply',['id'=>encrypt($vo['reply_id'],'COMMUNICATE'),'cmncate_id'=>encrypt($vo['cmncate_id'],'COMMUNICATE')],L('DELETE'),'','async')}
+
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </volist>
+
+                    </empty>
+
+                </tbody>
+
+            </table>
+
+            <div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+        </div>
+
+
+    </div>
+
+    <script type="text/javascript" src="__PUBLIC__/js/submitform.js"></script>
+
+    <include file="Public/footer" />
+
+</block>

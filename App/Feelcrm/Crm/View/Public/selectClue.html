@@ -1,0 +1,264 @@
+
+<div class="hidden hg100 layui-form" id="selectClueCon">
+
+	<div class="feeldesk-form pd0 feelcrm-form ">
+
+		<div class="layui-tab">
+
+			<ul class="layui-tab-title">
+
+				<li class="tab-title-name">{:L('CLUE_LIST')}</li>
+
+				<li class="tab-title-btn">
+
+					<a href="javascript:void(0);" class="layui-btn layui-btn-normal titleSubmit" id="selectClueSubmit">{:l('SUBMIT')}</a>
+
+					<a href="javascript:void(0);" class="layui-btn layui-btn-normal titleCancel" id="selectClueCancel">{:l('CANCEL')}</a>
+
+					<div class="clear"></div>
+
+				</li>
+
+				<form action="" class="fr selectClueForm" method="get">
+
+					<div class="compact-search">
+
+						<i class="iconfont icon-search"></i>
+
+						<input type="text" name="selectClueKeyword" value="" placeholder=""/>
+
+						<input type="text" class="hidden" name="" value="" placeholder=""/>
+
+						<a href="javascript:" class="selectClueBtn">{:L('SEARCH')}</a>
+
+					</div>
+
+				</form>
+
+				<div class="clear"></div>
+
+			</ul>
+
+		</div>
+
+
+
+	</div>
+
+	<div class="feelcrm-list">
+
+		<table class="layui-table" lay-skin="line">
+
+			<thead>
+
+				<tr>
+
+					<th></th><th>{:L('CLUE_NO')}</th><th>{:L('NAME2')}</th><th>{:L('TEL')}</th><th>{:L('COMPANY')}</th><th>{:L('CREATE_TIME')}</th>
+
+				</tr>
+
+			</thead>
+
+			<tbody id="selectClue-detail">
+
+				<empty name="selectClue">
+
+					<tr class="nodata center">
+
+						<td colspan="11">
+
+							<p><i class="iconfont icon-nothing fts20"></i></p>
+
+							<p>{:L('NO_DATA')}</p>
+
+						</td>
+
+					</tr>
+
+				<else />
+
+					<volist name="selectClue" id="vo">
+
+						<tr>
+
+							<td><input type="radio" value="{$vo.clue_id}" data-name="{$vo.detail.name}" name="selectClue" lay-skin="primary" /></td>
+
+							<td>{$vo.clue_prefix}{$vo.clue_no}</td>
+
+							<td>{$vo.detail.name}</td>
+
+							<td>{$vo.detail.phone}</td>
+
+							<td>{$vo.detail.company}</td>
+
+							<td>{$vo.createtime|getDates}</td>
+
+						</tr>
+
+					</volist>
+
+				</empty>
+
+			</tbody>
+
+		</table>
+
+		<div class="right-list-page clearfix"><div class="feeldesk-page">{$selectCluePage}</div></div>
+
+	</div>
+
+</div>
+
+<script>
+
+	var selectClueActionUrl = '/{$Think.CONTROLLER_NAME}/{$Think.ACTION_NAME}';
+
+	var selectClueAction = '{$Think.ACTION_NAME}';
+
+	$('#selectClue').click(function(){
+
+		var wHeight = $(window).height();
+
+		wHeight = wHeight - 180 + 'px';
+
+		var selectClueCon = layer.open({
+			type: 1,
+			title: false,
+			scrollbar:false,
+			area: ['80%',wHeight],
+			closeBtn:0,
+			content: $('#selectClueCon')
+		});
+
+		$('#selectClueCancel').click(function()
+		{
+			layer.close(selectClueCon);
+		})
+
+		$('#selectClueSubmit').click(function()
+		{
+			var clue_id = $('input[name="selectClue"]:checked').val();
+
+			var clue_name = $('input[name="selectClue"]:checked').attr('data-name');
+
+			$('#selectClueInput').val(clue_id);
+
+			$('#selectClueInput').attr('title',clue_name);
+
+			layui.use('form', function() {
+
+				var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+				form.render('radio');
+
+			});
+
+			layer.close(selectClueCon);
+
+		})
+	})
+
+	function selectCluePage(obj,selectActionUrl)
+	{
+		var href = $(obj).attr('href');
+
+		var ajaxhref = href.replace(selectActionUrl, '/AjaxRequest/getClueList');
+
+		$.ajax({
+				url:ajaxhref,
+				type:'POST',
+				async: false,
+				datatype:'json',
+				success:function(data)
+				{
+
+					$('#selectClue-detail').html(data.html);
+
+					$('#selectClueCon .feeldesk-page').html(data.page);
+
+					layui.use('form', function() {
+
+						var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+						form.render();
+
+					});
+
+					$('#selectClueCon .feeldesk-page a').click(function()
+					{
+						selectCluePage(this);
+
+						return false;
+					})
+
+				},
+				error:function()
+				{
+				   layer.msg("{:L('FAILED_TO_GET_CLUES')}");
+				}
+		 });
+	}
+
+	$('#selectClueCon .feeldesk-page a').click(function()
+	{
+		selectCluePage(this,selectClueActionUrl);
+
+		return false;
+	})
+
+	$('input[name="selectClueKeyword"]').keyup(function (e)
+	{
+		if (e.keyCode == 13)
+		{
+			searchClue();
+		}
+	});
+
+	$('.selectClueBtn').unbind('click').bind('click',function(){
+
+		searchClue();
+	})
+
+	function searchClue()
+	{
+		var keyword = $('input[name="selectClueKeyword"]').val();
+
+		$.ajax({
+				url:"{:U('AjaxRequest/getClueList')}",
+				type:'get',
+				data:{'keyword':keyword},
+				async: false,
+				datatype:'json',
+				success:function(data)
+				{
+
+					$('#selectClue-detail').html(data.html);
+
+					$('#selectClueCon .feeldesk-page').html(data.page);
+
+					layui.use('form', function() {
+
+						var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+						form.render();
+
+					});
+
+					$('#selectClueCon .feeldesk-page a').click(function()
+					{
+						selectCluePage(this);
+
+						return false;
+					})
+
+				},
+				error:function()
+				{
+				   layer.msg("{:L('FAILED_TO_GET_CLUES')}");
+				}
+		 });
+
+		return false;
+	}
+
+</script>

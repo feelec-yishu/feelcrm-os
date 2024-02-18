@@ -1,0 +1,153 @@
+﻿<include file="Public/header" />
+
+<neq name="source" value="set-window">
+
+    <div class="feeldesk feeldesk-setting bgf">
+
+        <div class="setting-header">
+
+            <div class="user">
+
+                <div class="user-left">
+
+                    <img src="{$mobile.face|default='__ROOT__/Attachs/face/face.png'}" alt="">
+
+                </div>
+
+                <div class="user-right">
+
+                    <div class="user-name"><span>Hi,</span><span>{$mobile.name}</span></div>
+
+                    <div class="user-tel">Tel : {$mobile.mobile}</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <main class="setting-main">
+
+            <div class="setting-item">
+
+                <a href="{:U('userinfo',['system'=>$system])}">
+
+                    <i class="iconfont icon-userinfo"></i>
+
+                    <span class="item-name">{:L('PERSONAL_M')}</span>
+
+                    <span class="feeldesk-edge-right"></span>
+
+                </a>
+
+            </div>
+
+            <gt name="isUpdateCompanyAuth" value="0">
+
+                <div class="setting-item">
+
+                    <a href="{:U('update_company',['system'=>$system])}">
+
+                        <i class="iconfont icon-company"></i>
+
+                        <span class="item-name">{:L('COMPANY_SETTINGS')}</span>
+
+                        <span class="feeldesk-edge-right"></span>
+
+                    </a>
+
+                </div>
+
+            </gt>
+
+            <div class="setting-item to-windows">
+
+                <a href="{:U('setting/index',['source'=>'set-window','system'=>$system])}">
+
+                    <i class="iconfont icon-setting"></i>
+
+                    <span class="item-name">{:L('SETTINGS')}</span>
+
+                    <span class="feeldesk-edge-right"></span>
+
+                </a>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <include file="Public/footer" />
+
+<else />
+
+    <div class="feeldesk feeldesk-setting bgf">
+
+        <header>
+
+            <div class="menu-header">
+
+                <a href="{:U('setting/index',['system'=>$system])}" class="iconfont icon-back-left back" id="setBack"></a>
+
+                <div class="header-title" id="windowTitle">{:L('SETTINGS')}</div>
+
+            </div>
+
+        </header>
+
+        <main class="setting-main set-main">
+
+            <div class="setting-item">
+
+                <a href="{:U('update_password',['system'=>$system])}">
+
+                    <i class="iconfont icon-set-password"></i>
+
+                    <span class="item-name">{:L('MOD_PASSWORD')}</span>
+
+                    <i class="iconfont icon-back-right fr"></i>
+
+                </a>
+
+            </div>
+
+            <div class="setting-item">
+
+                <a href="{:U('Language/setting_language',['system'=>$system])}">
+
+                    <i class="iconfont icon-set-language"></i>
+
+                    <span class="item-name">{:L('LANGUAGE')}</span>
+
+                    <i class="iconfont icon-back-right fr"></i>
+
+                </a>
+
+            </div>
+
+        </main>
+
+        <div class="set-logout" id="logout">{:L('EXIT')}</div>
+
+    </div>
+
+    <div class="set-footer">
+
+        <div class="footer-top">
+
+            <div class="footer-title"></div>
+
+            <div class="footer-content"><a href="javascript:" class="orange1" data-id="tolink" data-value="{$mobile.member_id}"></a></div>
+
+        </div>
+
+        <div class="footer-cancel">{:L('CANCEL')}</div>
+
+    </div>
+
+    <div class="setting-shade"></div>
+
+</neq>
+
+

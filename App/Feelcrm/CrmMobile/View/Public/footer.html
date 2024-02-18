@@ -1,0 +1,86 @@
+
+<div class="feeldesk-footer">
+
+    <style>
+        .footer-nav li{width:calc(100% / 3) !important;}
+    </style>
+
+    <ul class="footer-nav">
+
+        <li class="fl" >
+
+            <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/{$system}" class="<eq name='Think.CONTROLLER_NAME' value='Index'>active</eq>">
+
+                <i class="iconfont icon-home"></i>
+
+                <p>{:L('WORKBENCH')}</p>
+
+            </a>
+
+        </li>
+
+		<!--<li class="fl">
+
+            <a href="{:U('Customer/index')}" class="<eq name='Think.CONTROLLER_NAME' value='Customer'>active</eq>">
+
+                <i class="iconfont icon-notify"></i>
+
+                <p>{:L('CUSTOMER')}</p>
+
+            </a>
+
+        </li>-->
+
+        <notempty name="mobile.menuAuth.isCenterAuth">
+
+            <li class="fr" id="ispersonal">
+
+                <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Mobile/Setting/index?system={$system}" class="<eq name='Think.CONTROLLER_NAME' value='Setting'>active</eq>">
+
+                    <i class="iconfont icon-my"></i>
+
+                    <p>{:L('PERSONAL')}</p>
+
+                </a>
+
+            </li>
+
+        </notempty>
+
+		<li class="fr relative messageli">
+
+            <a href="{:U('Message/getMessage')}" class="<eq name='Think.CONTROLLER_NAME' value='Message'>active</eq>">
+
+                <i class="iconfont icon-notify"></i>
+
+                <p>{:L('NOTIFY')}</p>
+
+                <notempty name="unReadMessageNum"><span class="message-num"><gt name="unReadMessageNum" value="99">99+<else />{$unReadMessageNum}</gt></span></notempty>
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</div>
+
+<script type="text/javascript">
+
+    $(".transfer").on('click',function()
+    {
+        $(this).find('i').toggleClass('icon-tianjia2');
+
+        $(".transfer-nav").slideToggle('fast');
+
+        $("#ticketPannel").toggleClass('pb120');
+    })
+
+    //整合版：当前页为首页发送消息给整合系统并更改页面样式
+    if (isIframe || isFeelecApp)
+    {
+        $('.footer-nav li').css('cssText', 'width:calc(100% / 2) !important;');
+
+        $('#ispersonal').hide();
+    }
+</script>

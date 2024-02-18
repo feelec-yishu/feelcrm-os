@@ -1,0 +1,585 @@
+<include file="Public/header" />
+
+<div class="welcome">
+
+    <div class="numbers">
+
+        <header>
+
+            <form action="{:U('welcome')}" method="get" id="filterForm">
+
+                <div class="item">
+
+                    <input type="hidden" name='customer_auth' value="{$customer_auth}" />
+					<div class="item-show">
+                    <span>{:L('VIEW_RANGE')}：</span>
+
+                    <eq name='customer_auth' value='all'><span>{:L('WHOLE')}</span></eq>
+
+                    <eq name='customer_auth' value='group'><span>{:L('GROUP')}</span></eq>
+
+                    <eq name='customer_auth' value='own'><span>{:L('OWN')}</span></eq>
+
+                    <i class="layui-icon">&#xe625;</i>
+					</div>
+
+                    <div class="range-menu hidden"  id="auth">
+
+                        <ul>
+
+                            <gt name="isAllViewAuth" value="0">
+
+                                <li class="<eq name='customer_auth' value='all'>item-active</eq>" data-value="all">
+
+                                    <i class="iconfont icon-yuangong"></i> {:L('WHOLE')}
+
+                                </li>
+
+                            </gt>
+
+                            <gt name="isGroupViewAuth" value="0">
+
+                                <li class="<eq name='customer_auth' value='group'>item-active</eq>" data-value="group">
+
+                                    <i class="iconfont icon-weibiaoti101"></i> {:L('GROUP')}
+
+                                </li>
+
+                            </gt>
+
+                            <gt name="isOwnViewAuth" value="0">
+
+                                <li class="<eq name='customer_auth' value='own'>item-active</eq>" data-value="own">
+
+                                    <i class="iconfont icon-personal"></i> {:L('OWN')}
+
+                                </li>
+
+                            </gt>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="item">
+					<div class="item-show">
+                    <input type="hidden" name='time_range' value="{$time_range}" />
+
+					<input type="hidden" name='custom_time' value="" id="customTime" placeholder="yyyy-MM-dd - yyyy-MM-dd"/>
+
+                    <span> {:L('SELECT_TIME')}：</span>
+
+                    <eq name='time_range' value='all'><span>{:L('WHOLE')}</span></eq>
+
+                    <eq name='time_range' value='today'><span>{:L('TODAY')}</span></eq>
+
+                    <eq name='time_range' value='week'><span>{:L('WITHIN_A_WEEK')}</span></eq>
+
+                    <eq name='time_range' value='month'><span>{:L('WITHIN_ONE_MONTH')}</span></eq>
+
+					 <eq name='time_range' value='custom'><span>{$custom_time}</span></eq>
+
+                    <i class="layui-icon">&#xe625;</i>
+					</div>
+
+                    <div class="range-menu hidden"  id="range">
+
+                        <ul>
+
+                            <li class="<eq name='time_range' value='all'>item-active</eq>" data-value="all">{:L('WHOLE')}</li>
+
+                            <li class="<eq name='time_range' value='today'>item-active</eq>" data-value="today">{:L('TODAY')}</li>
+
+                            <li class="<eq name='time_range' value='week'>item-active</eq>" data-value="week">{:L('WITHIN_A_WEEK')}</li>
+
+                            <li class="<eq name='time_range' value='month'>item-active</eq>" data-value="month">{:L('WITHIN_ONE_MONTH')}</li>
+
+							<li class="<eq name='time_range' value='custom'>filter-active</eq>" data-value="custom" id="customDate">{:L('SELECT_DATE')}</li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+				<div class="clear"></div>
+
+            </form>
+
+        </header>
+
+        <main>
+
+            <ul>
+
+                <a href="{:U('Customer/index',['ImemberRole'=>$ImemberRole,'Itime'=>$Itime])}">
+
+					<li>
+
+						<div class="panel panel-customer">
+
+							<i class="iconfont icon-customer1"></i>
+
+							<p class="panel-name">{:L('NUMBER_OF_CUSTOMERS')}</p>
+
+							<p class="panel-number">{:getCount($customer)}</p>
+
+						</div>
+
+					</li>
+
+				</a>
+
+				<a href="{:U('Customer/contacter',['ImemberRole'=>$ImemberRole,'Itime'=>$Itime])}">
+
+					<li>
+
+						<div class="panel panel-contact">
+
+							<i class="iconfont icon-101"></i>
+
+							<p class="panel-name">{:L('CONTACT')}</p>
+
+							<p>{:getCount($contact)}</p>
+
+						</div>
+
+					</li>
+
+				</a>
+
+				<a href="{:U('Customer/followup',['ImemberRole'=>$ImemberRole,'Itime'=>$Itime])}">
+
+					<li>
+
+						<div class="panel panel-recode">
+
+							<i class="iconfont icon-jilu"></i>
+
+							<p class="panel-name">{:L('CONTACT_RECORD')}</p>
+
+							<p>{:getCount($follow)}</p>
+
+						</div>
+
+					</li>
+
+				</a>
+
+				<a href="{:U('Contract/index',['ImemberRole'=>$ImemberRole,'Itime'=>$Itime])}">
+
+					<li>
+
+						<div class="panel panel-order-number">
+
+							<i class="iconfont icon-hetongguanli"></i>
+
+							<p class="panel-name">{:L('CONTRACT')}</p>
+
+							<p>{:getCount($contract)}</p>
+
+						</div>
+
+					</li>
+
+				</a>
+
+				<a href="{:U('Contract/index',['ImemberRole'=>$ImemberRole,'Itime'=>$Itime])}">
+
+					<li>
+
+						<div class="panel panel-order-price">
+
+							<i class="iconfont icon-jine"></i>
+
+							<p class="panel-name">{:L('CONTRACT_AMOUNT')}</p>
+
+							<p>{$contractTotalMoney}</p>
+
+						</div>
+
+					</li>
+
+				</a>
+
+            </ul>
+
+        </main>
+
+    </div>
+
+    <div class="analysis">
+
+        <div class="analysis1-left">
+
+            <header>
+
+                <i class="iconfont icon-rili"></i>
+
+                <span>{:L('CUSTOMERS_FOLLOWED_TODAY')}</span>
+
+            </header>
+
+            <main>
+
+                <div class="analysis-title">
+
+                    <ul>
+
+                        <li class="center">{:L('CUSTOMER_NUMBER')}</li>
+
+                        <li class="center">{:L('CLIENT_NAME')}</li>
+
+                        <li class="center">{:L('TEL')}</li>
+
+                        <li class="center">{:L('CUSTOMER_RESPONSIBLE')}</li>
+
+                    </ul>
+
+                </div>
+
+                <div class="analysis-item">
+
+					<empty name="customers.follow">
+
+                        <ul class="center">
+
+                            <li class="no-data"><i class="iconfont icon-nothing fts20"></i>{:L('NO_DATA')}</li>
+
+                        </ul>
+
+                    <else />
+
+                    <volist name="customers.follow" id="vo">
+
+                        <ul class="center" data-id="{$vo.customer_id|encrypt='CUSTOMER'}">
+
+                            <li class="center" mini='customer' >{$vo.customer_prefix}{$vo.customer_no}</li>
+
+                            <li class="center" mini='customer' title="{$vo.detail.name}">{$vo.detail.name}</li>
+
+                            <li class="center" mini='customer' >{$vo.detail.phone}</li>
+
+                            <li class="center" mini='customer' >{$vo.member_name}</li>
+
+                        </ul>
+
+                    </volist>
+
+					</empty>
+
+                </div>
+
+            </main>
+
+        </div>
+
+        <div class="analysis1-right">
+
+            <header>
+
+                <i class="iconfont icon-huishou"></i>
+
+                <span>{:L('CUSTOMER_RECOVERED_3')}</span>
+
+            </header>
+
+            <main>
+
+                <div class="analysis-title">
+
+                    <ul>
+
+                        <li class="center">{:L('CUSTOMER_NUMBER')}</li>
+
+                        <li class="center">{:L('CLIENT_NAME')}</li>
+
+                        <li class="center">{:L('TEL')}</li>
+
+                        <li class="center">{:L('CUSTOMER_RESPONSIBLE')}</li>
+
+                    </ul>
+
+                </div>
+
+                <div class="analysis-item">
+
+					<empty name="customers.recover">
+
+                        <ul class="center">
+
+                            <li class="no-data"><i class="iconfont icon-nothing fts20"></i>{:L('NO_DATA')}</li>
+
+                        </ul>
+
+                    <else />
+
+                    <volist name="customers.recover" id="vo">
+
+                        <ul data-id="{$vo.customer_id|encrypt='CUSTOMER'}">
+
+                            <li class="center" mini='customer' >{$vo.customer_prefix}{$vo.customer_no}</li>
+
+                            <li class="center" mini='customer' title="{$vo.detail.name}">{$vo.detail.name}</li>
+
+                            <li class="center" mini='customer' >{$vo.detail.phone}</li>
+
+                            <li class="center" mini='customer' >{$vo.member_name}</li>
+
+                        </ul>
+
+                    </volist>
+
+					</empty>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <div class="analysis xingdong plr15">
+
+        <div class="pb25">
+
+            <header>
+
+                <i class="iconfont icon-dongtai"></i>
+
+                <span>{:L('ALL_DYNAMIC')}</span>
+
+            </header>
+
+            <main class="index-left-panel dynamic-panel">
+
+				<fieldset class="layui-elem-field">
+
+					<div class="layui-field-box">
+
+						<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+
+							<div class="layui-tab-content">
+
+								<!-- 我的动态 -->
+								<div class="layui-tab-item layui-show">
+
+									<ul class="layui-timeline myDynamic" id="myDynamic"></ul>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</fieldset>
+
+            </main>
+
+        </div>
+
+
+    </div>
+
+
+    <script type="text/javascript">
+
+        $(function ()
+        {
+            var item = $('.item');
+
+			item.hover(function(){
+
+				$(this).find('.range-menu').stop(true,true).slideDown('fast');
+
+			},function(){
+
+				$(this).find('.range-menu').stop(true,true).slideUp('fast');
+
+			});
+
+            $('#auth').find('li').on('click',function ()
+            {
+                var auth = $(this).data('value');
+
+                $("input[name='customer_auth']").val(auth);
+
+               $('#filterForm').submit();
+            });
+
+            $('#range').find('li').on('click',function ()
+            {
+                var range = $(this).data('value');
+
+				if(range != 'custom')
+				{
+					$("input[name='time_range']").val(range);
+
+					$('#filterForm').submit();
+				}
+            })
+
+			layui.use('laydate',function()
+			{
+				var maxDate = "{$Think.NOW_TIME|getDates='2'}";
+
+				var laydate = layui.laydate;
+
+				var option = {
+					elem:'#customTime',
+					eventElem: '#customDate',
+					range: true,
+					trigger: 'click',
+					max: maxDate,
+					btns: ['clear', 'confirm'],
+					done: function(value)
+					{
+						$("input[name='time_range']").val('custom');
+
+						$("input[name='custom_time']").val(value);
+
+						$('#filterForm').submit();
+					}
+				};
+
+				laydate.render(option);
+			})
+        })
+
+    </script>
+
+	<script type="text/javascript">
+
+		var customer_auth = '{$customer_auth}';
+
+		var Itime = '{$Itime}';
+
+		layui.use('flow', function()
+		{
+			var flow = layui.flow;
+
+			flow.load(
+			{
+				elem: '#myDynamic',
+				isAuto:false,
+				end:"{:L('NO_MORE')}",
+				done: function(page, next)
+				{
+					var lis = [];
+
+					var str = '';
+
+					var l = 0;
+
+					$.get("{:U('Index/index')}?request=flow&source="+customer_auth+"&Itime="+Itime+"&p="+page, function(res)
+					{
+						var dayText = '';
+
+						var dayClass = 'date';
+
+						if(res.data === '' || res.data == null || res.data.length == 0 )
+						{
+							next(lis.join(''), page < res.pages);
+						}
+
+						layui.each(res.data, function(key, val)
+						{
+							l = $("h3[data-create='"+key+"']");
+
+							if(key === "{$nowTime}")
+							{
+								dayText = "{:L('TODAY')}";
+							}
+							else if(key === "{$yesTime}")
+							{
+								dayText = "{:L('YESTERDAY')}";
+							}
+							else
+							{
+								dayText = '&#xe63f;';
+
+								dayClass = '';
+							}
+
+							str ="<li class='layui-timeline-item'>" +
+								"<i class='layui-icon layui-timeline-axis "+dayClass+"'>"+dayText+"</i>" +
+								"<div class='layui-timeline-content layui-text'>" +
+								"<h3 class='layui-timeline-title' data-create="+key+">"+key+"</h3>";
+
+							if(l.length > 0) str = '';
+
+							var log_type_arr = ['follow','comment','analysis','competitor'];
+
+							var operate_type_arr = ['10','13','16'];
+
+							layui.each(val,function(k1,v1)
+							{
+								//str +="<span class='fts14 black6'><i class='iconfont icon-user'></i>"+v1.memberName+"</span>";
+
+								str +="<p class=''><i class='quan ziquan'></i>"+v1.memberName+"</p>";
+
+								str += "<p><i class='quan'></i>"+v1.eventTypeLang;
+								//console.log($.inArray(v1.log_type,log_type_arr));
+								if($.inArray(v1.operate_type,operate_type_arr) === -1 && $.inArray(v1.log_type,log_type_arr) === -1)
+								{
+									if(v1.operate_type == 15)
+									{
+										str += " <a href='javascript:' data-id="+v1.eventId+"> "+v1.log_name+"</a>";
+									}
+									else
+									{
+										if(v1.log_type === 'customer')
+										{
+											str += " <a href='javascript:' mini='customer' data-id="+v1.eventId+"> "+v1.log_name+"</a>";
+										}
+										else if(v1.log_type == 'contract')
+										{
+											str += " <a href='javascript:' mini='contract' data-id="+v1.eventId+"> "+v1.log_name+"</a>";
+										}
+                                        else if(v1.log_type == 'clue')
+                                        {
+                                            str += " <a href='javascript:' onclick=\"clickOpenDetailByA(this,'clue');\" data-id="+v1.eventId+"> "+v1.log_name+"</a>";
+                                        }
+                                        else if(v1.log_type == 'opportunity')
+                                        {
+                                            str += " <a href='javascript:' onclick=\"clickOpenDetailByA(this,'opportunity');\" data-id="+v1.eventId+"> "+v1.log_name+"</a>";
+                                        }
+										else
+										{
+											str += " <a href='javascript:' data-id="+v1.eventId+"> "+v1.log_name+"</a>";
+										}
+									}
+								}
+
+								str += "<span class='fr'>"+v1.create_at+"&nbsp;&nbsp;</span></p>"
+							});
+
+							if(l.length > 0)
+							{
+								l.parent('.layui-text').append(str);
+
+								next('', page < res.pages);
+
+								str = '';
+							}
+
+							lis.push(str);
+						});
+
+						if(l.length === 0)
+						{
+							next(lis.join(''), page < res.pages);
+						}
+					});
+				}
+			});
+		});
+
+	</script>
+
+</div>

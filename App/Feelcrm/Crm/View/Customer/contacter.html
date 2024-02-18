@@ -1,0 +1,235 @@
+<extend name="Public:common"/>
+
+<block name="content">
+
+    <div class="list-main layui-form">
+
+		<div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('CONTACT_LIST')}<span class="page-content">{:L('TOTAL_RECORDS')}：<span>{$pageCount|default='0'}</span> {:L('STRIP')}</span></li>
+
+            </ul>
+
+        </div>
+
+        <!-- 筛选 -->
+        <include file="Public/filterViewRange" />
+
+        <div class="list-header clearfix">
+
+            <div class="header-left">
+
+                {:FEELCRM('Customer/create_contacter','',L('ADD_CONTACTS'),'item-deleteBtn','','iconfont icon-adduser')}
+
+            </div>
+
+            <div class="header-right">
+
+                <notempty name="isExportContacterAuth">
+
+                    <span href="javascript:" class="advanced-searc-btn fr ml10" title="{:L('EXPORT')}" id="startExport"><i class="iconfont icon-export"></i> <span>{:L('EXPORT_DATA')}</span></span>
+
+                </notempty>
+
+                <span class="advanced-searc-btn fr" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i> <span>{:L('ADVANCED_SEARCH')}</span></span>
+
+                <form action="{$controllerAndAction}" method="get" class="fr" id="filterForm">
+
+                    <input type="hidden" name='customer_auth' value="{$customer_auth}" />
+
+                    <include file="Public/searchTimeRange" />
+
+					<div class="compact-menu">
+
+						<!--<notempty name="isExportContacterAuth">
+
+							<a href="javascript:" title="{:L('EXPORT')}" id="startExport"><i class="iconfont icon-export"></i></a>
+
+						</notempty>
+
+						<a href="javascript:" title="{:L('ADVANCED_SEARCH')}" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i></a>-->
+
+					</div>
+
+                    <div class="compact-search">
+
+                        <i class="iconfont icon-search crmSearchBtn"></i>
+
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="{:L('NAME1')}/{:L('PHONE')}/{:L('MAILBOX')}/{:L('WECHAT_NUMBER')}"/>
+
+                        <!--<a href="javascript:" class="searchBtn">{:L('SEARCH')}</a>-->
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+		<div id="advanced-search" class="hidden feelcrm-advanced-search feeldesk-form hg100">
+
+			<form action="{$controllerAndAction}" method="get" id="highSearchForm" class="hg100">
+
+                <input type="hidden" name='customer_auth' value="{$customer_auth}" />
+
+			<include file="Public/highKeywordHeader" />
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('OWNED_CUSTOMER')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<empty name="highKeyword.customer_id" >
+
+								<input type="radio" id="selectCustomerInput" class="layui-input" name="highKeyword[customer_id]" title="{:L('NO_CUSTOMER_SELECTED')}" checked value="" readonly />
+
+							<else/>
+
+								<input type="radio" id="selectCustomerInput" class="layui-input" name="highKeyword[customer_id]" title="{:CrmgetFieldName($highKeyword['customer_id'],'customer')}" checked value="{$highKeyword.customer_id}" readonly />
+
+							</empty>
+
+							<div id="selectCustomer" class="feelcrm-commbtn" >{:L('SELECT_CUSTOMER')}</div>
+
+						</div>
+
+					</div>
+
+					<include file="Public/highKeywordForm" />
+
+				</div>
+
+			</div>
+
+			</form>
+
+		</div>
+
+        <div class="item-list feelcrm-list">
+
+            <table class="layui-table" lay-skin="line">
+
+                <thead>
+
+                    <tr>
+
+                        <volist name="formList" id="vo">
+                            <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+                            <if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+							<th>{$vo.form_description}</th>
+                            </if>
+						</volist>
+
+						<th>{:L('OWNED_CUSTOMER')}</th>
+
+						<th>{:L('OPERATION')}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <empty name="contacter">
+
+                        <tr class="nodata center">
+
+                            <td colspan="11">
+
+                                <p><i class="iconfont icon-nothing fts20"></i></p>
+
+                                <p>{:L('NO_DATA')}</p>
+
+                            </td>
+
+                        </tr>
+
+                    <else />
+
+                        <volist name="contacter" id="vo">
+
+                            <tr data-customer="{$vo.customer_id|encrypt='CUSTOMER'}">
+
+								<volist name="formList" id="v">
+                                    <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+                                    <if condition="!$v['role_id'] || in_array($index['role_id'],explode(',',$v['role_id']))">
+									<td <eq name="v.form_type" value="textarea">title="{$vo['detail'][$v['form_name']]|strip_tags}"</eq>>
+
+										<eq name="v.form_type" value="textarea">{:mb_substr(strip_tags($vo['detail'][$v['form_name']]),0,20)}...<else/>{$vo['detail'][$v['form_name']]}</eq>
+
+										<eq name='v.form_name' value='name'>
+
+											<eq name="vo.contacter_id" value="$vo.first_contact_id"><span class="orange5">({:L('PRIMARY')})</span></eq>
+
+										</eq>
+
+                                        <eq name="v.form_name" value="phone">
+
+                                            <notempty name="vo['detail'][$v['form_name']]">
+                                                <span class="icon-onclickcall"><i class="iconfont icon-boda blue8" onclick="CallUp({$vo['detail'][$v['form_name']]},3);"></i></span>
+                                            </notempty>
+                                        </eq>
+
+									</td>
+                                    </if>
+								</volist>
+
+								<td class="cursor blue8" mini="elseCustomer">{$vo.customer_name}</td>
+
+                                <td class="listOperate">
+
+                                    <i class="iconfont icon-dian"></i>
+
+                                    <div class="operate hidden">
+
+                                        {:FEELCRM('Customer/edit_contacter',['id'=>encrypt($vo['contacter_id'],'CONTACTER')],L('EDITOR'))}
+
+                                        {:FEELCRM('Customer/delete_contacter',['id'=>encrypt($vo['contacter_id'],'CONTACTER')],L('DELETE'),'','async')}
+
+										<neq name="vo.contacter_id" value="$vo.first_contact_id">
+
+											{:FEELCRM('Customer/setFirst_contacter',['id'=>encrypt($vo['contacter_id'],'CONTACTER')],L('SET_PRIMARY_CONTACT'),'','async')}
+
+										</neq>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </volist>
+
+                    </empty>
+
+                </tbody>
+
+            </table>
+
+            <div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+        </div>
+
+    </div>
+
+	<include file="Public/exportpage" />
+
+	<include file="Public/selectCustomer" />
+
+	<script>
+
+		var export_url = "/Customer/export_contacter";
+
+		var export_action = "{$Think.ACTION_NAME}";
+
+	</script>
+
+</block>

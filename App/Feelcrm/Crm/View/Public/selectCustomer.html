@@ -1,0 +1,657 @@
+
+<div class="hidden hg100 layui-form" id="selectCustomerCon">
+
+	<div class="feeldesk-form pd0 feelcrm-form ">
+
+		<div class="layui-tab">
+
+			<ul class="layui-tab-title">
+
+				<li class="tab-title-name">{:L('CUSTOMER_LIST')}</li>
+
+				<li class="tab-title-btn">
+
+					<a href="javascript:void(0);" class="layui-btn layui-btn-normal titleSubmit" id="selectCustomerSubmit">{:l('SUBMIT')}</a>
+
+					<a href="javascript:void(0);" class="layui-btn layui-btn-normal titleCancel" id="selectCustomerCancel">{:l('CANCEL')}</a>
+
+					<div class="clear"></div>
+
+				</li>
+
+				<form action="" class="fr selectCustomerForm" method="get">
+
+					<input type="hidden" name='customer_auth' value="{$customer_view_auth}" />
+
+					<input type="hidden" name='highKeyword[condition]' value="1" />
+
+					<input type="hidden" name='highKeyword[define_form][importance]' />
+
+					<input type="hidden" name='highKeyword[define_form][customer_grade]' />
+
+					<div class="compact-search">
+
+						<i class="iconfont icon-search"></i>
+
+						<input type="text" name="selectCustomerKeyword" value="" placeholder=""/>
+
+						<input type="text" class="hidden" name="" value="" placeholder=""/>
+
+						<a href="javascript:" class="selectCustomerBtn">{:L('SEARCH')}</a>
+
+					</div>
+
+				</form>
+
+				<div class="clear"></div>
+
+			</ul>
+
+		</div>
+
+		<div class="border_b">
+
+			<div class="customer-list-filter select-fiter" data-type="customer_auth">
+
+				<div class="customer-list-filter-tit">{:L('VIEW_RANGE')}</div>
+
+				<notempty name="isCustomerOwnViewAuth"><div class="customer-list-filter-option <eq name='customer_view_auth' value='own'>active</eq>" data-value="own">{:L('PERSONAL')}</div></notempty>
+
+				<notempty name="isCustomerGroupViewAuth"><div class="customer-list-filter-option <eq name='customer_view_auth' value='group'>active</eq>" data-value="group">{:L('GROUP')}</div></notempty>
+
+				<notempty name="isCustomerAllViewAuth"><div class="customer-list-filter-option <eq name='customer_view_auth' value='all'>active</eq>" data-value="all">{:L('WHOLE')}</div></notempty>
+
+			</div>
+
+			<volist name="customerFilterlist" id="vo">
+
+				<div class="customer-list-filter select-fiter" data-type="highKeyword[define_form][{$vo.form_name}]">
+
+					<div class="customer-list-filter-tit">{$vo.form_description}</div>
+
+					<volist name="vo.option" id="v">
+
+						<div class="customer-list-filter-checkbox <if condition="in_array($v,explode(',',$highKeyword['define_form'][$vo['form_name']]))">active</if>" data-value="{$v}"><span class="iconfont <if condition="in_array($v,explode(',',$highKeyword['define_form'][$vo['form_name']]))">icon-square-selected<else/>icon-weixuanzhong</if>"></span>{$v}</div>
+
+					</volist>
+
+				</div>
+
+			</volist>
+
+		</div>
+
+	</div>
+
+	<div class="feelcrm-list">
+
+		<table class="layui-table" lay-skin="line">
+
+			<thead>
+
+				<tr>
+
+					<th></th><th>{:L('CUSTOMER_NUMBER')}</th><th>{:L('CLIENT_NAME')}</th><th>{:L('TEL')}</th><th>{:L('CREATE_TIME')}</th>
+
+				</tr>
+
+			</thead>
+
+			<tbody id="selectCustomer-detail">
+
+				<empty name="selectCustomer">
+
+					<tr class="nodata center">
+
+						<td colspan="11">
+
+							<p><i class="iconfont icon-nothing fts20"></i></p>
+
+							<p>{:L('NO_DATA')}</p>
+
+						</td>
+
+					</tr>
+
+				<else />
+
+					<volist name="selectCustomer" id="vo">
+
+						<tr>
+
+							<td><input type="radio" value="{$vo.customer_id}" data-name="{$vo.detail.name}" name="selectCustomer" lay-skin="primary" /></td>
+
+							<td>{$vo.customer_prefix}{$vo.customer_no}</td>
+
+							<td>{$vo.detail.name}</td>
+
+							<td>{$vo.detail.phone}</td>
+
+							<td>{$vo.createtime|getDates}</td>
+
+						</tr>
+						
+					</volist>
+
+				</empty>
+
+			</tbody>
+
+		</table>
+
+		<div class="right-list-page clearfix"><div class="feeldesk-page">{$selectCustomerPage}</div></div>
+
+	</div>
+
+</div>
+
+<script>
+
+	var selectActionUrl = '/{$Think.CONTROLLER_NAME}/{$Think.ACTION_NAME}';
+
+	var selectAction = '{$Think.ACTION_NAME}';
+
+	$('#selectCustomer').click(function(){
+
+		var wHeight = $(window).height();
+
+		wHeight = wHeight - 180 + 'px';
+
+		var selectCustomercon = layer.open({
+			type: 1,
+			title: false,
+			scrollbar:false,
+			area: ['80%',wHeight],
+			closeBtn:0,
+			content: $('#selectCustomerCon')
+		});
+
+		var custfilternum = $('.customer-list-filter').length;
+
+		var custlistHeight = $('#selectCustomerCon').height();
+
+		if(custfilternum > 0)
+		{
+			var custfilterHeight = 45 * custfilternum;
+
+			var custlistH = custlistHeight - 65 - custfilterHeight + 20;
+
+			if($('.list-header').is(':hidden'))
+			{
+				custlistH = custlistH + 60;
+			}
+
+			$('#selectCustomerCon .feelcrm-list').css('height',custlistH - 20 +'px');
+		}
+
+		$('#selectCustomerCancel').click(function()
+		{
+			layer.close(selectCustomercon);
+		})
+
+		$('#selectCustomerSubmit').click(function()
+		{
+			var customer_id = $('input[name="selectCustomer"]:checked').val();
+
+			var customer_name = $('input[name="selectCustomer"]:checked').attr('data-name');
+
+			$('#selectCustomerInput').val(customer_id);
+
+			$('#selectCustomerInput').attr('title',customer_name);
+
+			layui.use('form', function() {
+
+				var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+				form.render('radio');
+
+			});
+
+			if(selectAction == 'create_follow')
+			{
+				$.ajax({
+					url:"{:U('AjaxRequest/getContacter')}",
+					type:'POST',
+					async: false,
+					data:{'customer_id':customer_id},
+					datatype:'json',
+					success:function(data)
+					{
+
+						$('#ContacterList').html(data.html);
+
+						layui.use('form', function() {
+
+							var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+							form.render('select');
+
+						});
+
+						$('#ContacterList').parent().removeClass('hidden');
+					},
+					error:function()
+					{
+
+					}
+				});
+			}
+
+			if(selectAction == 'create_contacter')
+			{
+				$.ajax({
+					url:"{:U('AjaxRequest/getContacter')}",
+					type:'POST',
+					async: false,
+					data:{'customer_id':customer_id},
+					datatype:'json',
+					success:function(data)
+					{
+
+						$('#ContacterList').html(data.html);
+
+						$("#ContacterList").select2();
+					},
+					error:function()
+					{
+
+					}
+				});
+			}
+
+			if(selectActionUrl == '/Contract/create')
+			{
+				$.ajax({
+					url:"{:U('AjaxRequest/getOpportunity')}",
+					type:'POST',
+					async: false,
+					data:{'customer_id':customer_id},
+					datatype:'json',
+					success:function(data)
+					{
+						$('#OpportunityList').html(data.html);
+
+						$("#OpportunityList").select2();
+
+						$("#OpportunityList").change(function ()
+						{
+							var opportunity_id = $(this).val();
+
+							$('#chooseProList').html('');
+
+							//选择商机后，更新合同金额及展示产品
+							$.ajax({
+								url:"{:U('AjaxRequest/selectOpportunity')}",
+								type:'POST',
+								async: false,
+								data:{'opportunity_id':opportunity_id},
+								datatype:'json',
+								success:function(data)
+								{
+									$('#chooseProList').append(data.html);
+
+									$.each($('input[name="product[]'),function(){
+
+										var val = $(this).val();
+
+										if($.inArray(val,data.product) != -1)
+										{
+											$(this).attr("checked","checked");
+
+											layui.form.render();
+										}
+
+									});
+
+									$(".proUnitPrice").bind("change",function(){
+										countPrice(this);
+									})
+
+									$(".proContractNum").bind("change",function(){
+										countPrice(this);
+									})
+
+									proKey = data.proKey;
+								}
+							});
+						})
+					}
+				});
+			}
+
+			if($.inArray(selectActionUrl,['/Account/create','/Receipt/create','/Invoice/create','/Account/index','/Receipt/index','/Invoice/index']) != -1)
+			{
+				$.ajax({
+					url:"{:U('AjaxRequest/getContract')}",
+					type:'POST',
+					async: false,
+					data:{'customer_id':customer_id,'type':'option'},
+					datatype:'json',
+					success:function(data)
+					{
+						$('#contractList').html(data.html);
+
+						layui.use('form', function() {
+
+							var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+							form.render('select');
+
+						});
+					}
+				});
+
+				if(selectActionUrl == '/Invoice/create')
+				{
+					$.ajax({
+						url:"{:U('AjaxRequest/getCustomerInvoiceInfo')}",
+						type:'POST',
+						async: false,
+						data:{'customer_id':customer_id},
+						datatype:'json',
+						success:function(data)
+						{
+							$('#InvoiceInfoList').html(data.html);
+
+							layui.use('form', function() {
+
+								var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+								form.render('select');
+
+							});
+						}
+					});
+				}
+			}
+
+			/*if(selectActionUrl == '/Order/create')
+			{
+				$.ajax({
+					url:"{:U('AjaxRequest/getContract')}",
+					type:'POST',
+					async: false,
+					data:{'customer_id':customer_id},
+					datatype:'json',
+					success:function(data)
+					{
+						$('#selectContract span').html("{:L('SELECT_ASSOCIATED_CONTRACT')}");
+
+						$('#contractList').hide();
+
+						$('#contractList').html(data.html);
+
+						$("#selectContract").unbind('click').on('click',function()
+						{
+							var checkbox = $(this);
+
+							$(this).toggleClass('feeldesk-form-checked').next('.feeldesk-option-panel').slideToggle('fast');
+
+							$(this).parents('.feeldesk-form-item').siblings().find('.feeldesk-input').removeClass('feeldesk-form-checked').next('.feeldesk-option-panel').slideUp('fast');
+
+							$(".checkboxPanel").find('li').on('click',function()
+							{
+								var value = $(this).data('value');
+
+								$(this).find('span.iconfont').toggleClass('icon-xuanze');
+
+								$(this).find('span.iconfont').toggleClass('icon-xuanzhong');
+
+								var oldValue = checkbox.find('span').text();
+
+								var content = '';
+
+								if($(this).find('span.iconfont').hasClass('icon-xuanzhong'))
+								{
+									$(this).find("input").prop('checked',true);
+
+									content = addContent(oldValue,value);
+								}
+								else
+								{
+									$(this).find("input").prop('checked',false);
+
+									content = removeContent(oldValue,value);
+								}
+
+								$(this).parent('.checkboxPanel').prev('.checkbox').find('span').text(content);
+							});
+						});
+
+
+					},
+					error:function()
+					{
+
+					}
+				});
+			}
+
+			if(selectActionUrl == '/Contract/create')
+			{
+				$.ajax({
+					url:"{:U('AjaxRequest/getOrder')}",
+					type:'POST',
+					async: false,
+					data:{'customer_id':customer_id},
+					datatype:'json',
+					success:function(data)
+					{
+						$('#selectOrder span').html('请选择关联订单');
+
+						$('#orderList').hide();
+
+						$('#orderList').html(data.html);
+
+						$("#selectOrder").unbind('click').on('click',function()
+						{
+							var checkbox = $(this);
+
+							$(this).toggleClass('feeldesk-form-checked').next('.feeldesk-option-panel').slideToggle('fast');
+
+							$(this).parents('.feeldesk-form-item').siblings().find('.feeldesk-input').removeClass('feeldesk-form-checked').next('.feeldesk-option-panel').slideUp('fast');
+
+							$(".checkboxPanel").find('li').on('click',function()
+							{
+								var value = $(this).data('value');
+
+								$(this).find('span.iconfont').toggleClass('icon-xuanze');
+
+								$(this).find('span.iconfont').toggleClass('icon-xuanzhong');
+
+								var oldValue = checkbox.find('span').text();
+
+								var content = '';
+
+								if($(this).find('span.iconfont').hasClass('icon-xuanzhong'))
+								{
+									$(this).find("input").prop('checked',true);
+
+									content = addContent(oldValue,value);
+								}
+								else
+								{
+									$(this).find("input").prop('checked',false);
+
+									content = removeContent(oldValue,value);
+								}
+
+								$(this).parent('.checkboxPanel').prev('.checkbox').find('span').text(content);
+							});
+						});
+
+
+					},
+					error:function()
+					{
+
+					}
+				});
+			}*/
+
+			layer.close(selectCustomercon);
+
+		})
+	})
+
+	$('.select-fiter .customer-list-filter-option').on('click',function ()
+	{
+		var type = $(this).parent().data('type');
+
+		var value = $(this).data('value');
+
+		$(this).addClass('active').siblings().removeClass('active');
+
+		$("input[name='"+type+"']").val(value);
+
+		searchCustomer();
+	})
+
+	$('.select-fiter .customer-list-filter-checkbox span').on('click',function ()
+	{
+		var type = $(this).parent().parent().data('type');
+
+		//var value = $(this).parent().data('value');
+
+		if($(this).hasClass('icon-square-selected'))
+		{
+			$(this).removeClass('icon-square-selected').addClass('icon-weixuanzhong');
+			$(this).parent().removeClass('active');
+		}
+		else
+		{
+			$(this).removeClass('icon-weixuanzhong').addClass('icon-square-selected');
+			$(this).parent().addClass('active');
+		}
+
+		var value = [];
+
+		var check = $(this).parent().parent().find('.customer-list-filter-checkbox.active');
+
+		check.each(function()
+		{
+			value.push($(this).attr('data-value'));
+		});
+
+		value = value.toString();
+
+		if(!value) value = '';
+
+		$("input[name='"+type+"']").val(value);
+
+		searchCustomer();
+	})
+
+	function selectCustomerPage(obj,selectActionUrl)
+	{
+		var href = $(obj).attr('href');
+
+		var ajaxhref = href.replace(selectActionUrl, '/AjaxRequest/getCustomerList');
+
+		$.ajax({
+				url:ajaxhref,
+				type:'POST',
+				async: false,
+				datatype:'json',
+				success:function(data)
+				{
+
+					$('#selectCustomer-detail').html(data.html);
+
+					$('#selectCustomerCon .feeldesk-page').html(data.page);
+
+					layui.use('form', function() {
+
+						var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+						form.render();
+
+					});
+
+					$('#selectCustomerCon .feeldesk-page a').click(function()
+					{
+						selectCustomerPage(this);
+
+						return false;
+					})
+
+				},
+				error:function()
+				{
+				   layer.msg("{:L('FAILED_TO_ACQUIRE_CUSTOMERS')}");
+				}
+		 });
+	}
+
+	$('#selectCustomerCon .feeldesk-page a').click(function()
+	{
+		selectCustomerPage(this,selectActionUrl);
+
+		return false;
+	})
+
+	$('input[name="selectCustomerKeyword"]').keyup(function (e)
+	{
+		if (e.keyCode == 13)
+		{
+			searchCustomer();
+		}
+	});
+
+	$('.selectCustomerBtn').unbind('click').bind('click',function(){
+
+		searchCustomer();
+	})
+
+	function searchCustomer()
+	{
+		var keyword = $('input[name="selectCustomerKeyword"]').val();
+
+		var importance = $('input[name="highKeyword[define_form][importance]"]').val();
+
+		var customer_grade = $('input[name="highKeyword[define_form][customer_grade]"]').val();
+
+		var customer_auth = $('input[name="customer_auth"]').val();
+
+		var highKeyword ={
+			'define_form':{'importance':importance,'customer_grade':customer_grade}
+		};
+
+		$.ajax({
+				url:"{:U('AjaxRequest/getCustomerList')}",
+				type:'get',
+				data:{'keyword':keyword,'highKeyword':highKeyword,'customer_auth':customer_auth},
+				async: false,
+				datatype:'json',
+				success:function(data)
+				{
+					$('#selectCustomer-detail').html(data.html);
+
+					$('#selectCustomerCon .feeldesk-page').html(data.page);
+
+					layui.use('form', function() {
+
+						var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+						form.render();
+
+					});
+
+					$('#selectCustomerCon .feeldesk-page a').click(function()
+					{
+						selectCustomerPage(this);
+
+						return false;
+					})
+
+				},
+				error:function()
+				{
+				   layer.msg("{:L('FAILED_TO_ACQUIRE_CUSTOMERS')}");
+				}
+		 });
+
+		return false;
+	}
+
+</script>

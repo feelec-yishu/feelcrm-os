@@ -1,0 +1,161 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('SYSTEM')}</block>
+
+<block name="content">
+
+    <div class="feeldesk-form setting-form">
+
+        <form action="" class="layui-form">
+
+            <div class="form-content">
+
+                <div class="form-item">
+
+                    <div class="layui-form-item logo-item">
+
+                        <label class="layui-form-label">LOGO</label>
+
+                        <div class="layui-input-inline">
+
+                            <img src="{$company.logo|default='/Attachs/logo/unlogo.png'}" alt="" id="avatar">
+
+                            <a href="javascript:" class='upload-btn' id="upload-image">{:L('CLICK_CHANGE')}</a>
+
+                            <input type="hidden" name="company[logo]" value="{$company.logo}" id="logo"/>
+
+                            <input type="hidden" name="company[logo_name]" value="{$company.logo_name}" id="logo-name"/>
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('COMPANY')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="text" name="company[name]" value="{$company.name}" class="layui-input" placeholder="{:L('ENTER_COMPANY_NAME')}" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('COMPANY_ADDRESS')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="text" name="company[address]" value="{$company.address}" class="layui-input" placeholder="{:L('ENTER_COMPANY_ADDRESS')}" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('COMPANY_PHONE')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="text" name="company[tel]" value="{$company.tel}" class="layui-input" placeholder="{:L('ENTER_COMPANY_PHONE')}" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('MOBILE_PHONE')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="text" name="company[mobile]" value="{$company.mobile}" class="layui-input" placeholder="{:L('ENTER_COMPANY_PHONE')}" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label feeldesk-label">{:L('MOBILE_TERMINAL')}</label>
+
+                        <div class="layui-input-inline copy-input">
+
+                            <input id="mobile" value="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Mobile" class="layui-input no-input"  readonly />
+
+                            <div class="layui-form-mid layui-word-aux fts12">{:L('USER_MOBILE_NOTE')}</div>
+
+                        </div>
+
+                        <span class='copy-btn' onclick="copy('{:L(COPY_SUCCESS)}')" data-clipboard-action="copy" data-clipboard-target="#mobile">{:L('COPY')}</span>
+
+                    </div>
+
+                </div>
+
+                <div class="form-submit">
+
+                    <div class="layui-form-item">
+
+                        <div class="layui-input-inline">
+
+                            <a href="javascript:" class="layui-btn layui-btn-normal" id="submitForm">{:L('SUBMIT')}</a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <script type="text/javascript">
+
+        layui.use('upload', function()
+        {
+            var upload = layui.upload;
+
+            var fileLoad;
+
+            upload.render(
+            {
+                elem:"#upload-image",
+
+                url: "{:U('Upload/uploadHeadFile',['type'=>'logo'])}",
+
+                before:function()
+                {
+                    fileLoad = layer.msg("{:L('UPLOADING')}...", {time: 100000, shade: [0.3, '#393D49'], offset: ['150px']});
+                },
+                done: function(data)
+                {
+                    layer.close(fileLoad);
+
+                    if(data.code == 0)
+                    {
+                        $('#avatar').attr('src',data.url);
+
+                        $("input[name='company[logo]']").val(data.url);
+
+                        $("input[name='company[logo_name]']").val(data.face_name);
+                    }
+                    else
+                    {
+                        feelDeskAlert(data.msg);
+                    }
+                }
+            });
+        });
+
+    </script>
+
+    <include file="Public:language" />
+
+</block>

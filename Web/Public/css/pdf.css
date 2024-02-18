@@ -1,0 +1,79 @@
+*{margin:0;padding:0;box-sizing:border-box}
+
+html, body{height:100%}
+
+body {font: 12px/1.5 "PingFang SC","Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+    word-break: break-all;-webkit-text-size-adjust:100%;color:#424958;background-color: #f3f4f5;}
+
+body, ol, ul, li, h1, h2, h3, h4, h5, h6, p, th, td, dl, dd, form, fieldset, legend, input, textarea, select{margin:0;padding:0;list-style: none;}
+
+img{border:0;vertical-align: middle}
+
+a{text-decoration: none}
+
+.blue{color:#138df5 !important;}
+
+.red {color: red !important;}
+
+.orange4{color: #FF7900 !important;}
+
+.clearfix:after{clear:both;overflow:hidden;line-height:0;font-size:0;height:0;float:none;content: "";display: table}
+
+.feeldesk-pdf-wrapper{width: 100%;margin: auto;max-width: 750px}
+
+.feeldesk-pdf-header{height: 120px;line-height: 120px;text-align: center;font-size: 25px;background-color: #fff}
+
+.text-indent2{text-indent: 2em}
+
+.feeldesk-detail-content{color: #424958;background-color: #fff;padding: 0 40px 20px 40px}
+
+.feeldesk-detail-content ul.detail-item{font-size: 0;width: 100%}
+
+.feeldesk-detail-content ul.detail-item li{font-size: 14px;margin-bottom: 15px;border: 1px solid #666;line-height: 40px;color: #40485b;}
+
+.feeldesk-detail-content ul.detail-item li .item-div1{float:left;border-right: 1px solid #666;width: 150px;padding: 0 10px}
+
+.feeldesk-detail-content ul.detail-item li .item-div2{float:right;padding: 0 10px}
+
+.feeldesk-detail-content ul.detail-item li.ticket-image{line-height: normal;border: none;padding: 0;width: 100%;margin-right: 0;}
+
+.feeldesk-detail-content ul.detail-item li.ticket-image .upload-img{float:left;width: 200px;margin-right: 15px;margin-bottom: 15px;vertical-align: text-top;padding: 0;border: none;}
+
+.feeldesk-detail-content ul.detail-item li.ticket-image div.upload-img img{width: 100%;height: 100%;}
+
+.feeldesk-detail-content ul.detail-item li.textarea-form{width:100%;padding: 0}
+
+.feeldesk-detail-content ul.detail-item li.textarea-form .ticket-form-title{line-height: 40px;border-bottom: 1px solid #e3e9ed;padding: 0 10px;font-size: 14px;}
+
+.feeldesk-detail-content ul.detail-item li.textarea-form .ticket-form-content{line-height: 25px;padding: 0 10px}
+
+.feeldesk-detail-content ul.detail-item li.textarea-form div.create-attach .attach-item{height: 30px;line-height: 30px;}
+
+.feeldesk-detail-content ul.detail-item li.textarea-form div.create-attach .attach-item a{color: #138df5;font-size: 13px;text-decoration: none;}
+
+.feeldesk-detail-content ul.detail-item li.textarea-form div.create-attach .attach-item span{color:#333;font-size:12px}
+
+/* 回复内容 */
+.feeldesk-reply-content{margin-top: 20px;background-color: #fff;padding: 0 40px 20px 40px}
+
+.feeldesk-reply-content .reply-title{height: 60px;line-height: 63px;font-size: 16px;border-bottom:1px solid #f5f5f5}
+
+.feeldesk-reply-item .nodata{margin:50px 0;text-align: center;line-height: 30px;}
+
+.feeldesk-reply-item .item{border-bottom:1px solid #f5f5f5;padding: 20px 0}
+
+.feeldesk-reply-item .item:last-child{border-bottom:none}
+
+.feeldesk-reply-item .item .content-header span{display:inline-block;color:#4594d5;font-size:13px;}
+
+.feeldesk-reply-item .item .reply-content{font-size:13px;color:#333;margin-top: 15px;padding-left: 40px;}
+
+.feeldesk-reply-item .item .reply-content img.reply-image{margin-right: 20px !important;}
+
+.feeldesk-reply-item .reply-attach{padding-left: 45px;margin-top: 5px}
+
+.feeldesk-reply-item .attach-item{padding-top: 10px;font-size:12px;color:#537c8d}
+
+.feeldesk-reply-item .attach-item a{color:#128cf6;}
+
+.feeldesk-reply-item .attach-item a i{margin-top: -3px}

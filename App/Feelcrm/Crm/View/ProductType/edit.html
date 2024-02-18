@@ -1,0 +1,134 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('SYSTEM')}</block>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0">
+
+        <div class="layui-tab">
+
+			<form id="web_setting" action="{:U('productType/edit',['id'=>encrypt($type['type_id'],'TYPE')])}" method="post" class="layui-form">
+
+            <ul class="layui-tab-title">
+
+				<li class="tab-title-name">{:L('MODIFY_PRODUCT_CATEGORY')}</li>
+
+				<li class="tab-title-btn">
+
+					<a href="javascript:" id="submitForm" class="layui-btn layui-btn-normal titleSubmit">{:l('SUBMIT')}</a>
+
+					<a href="javascript:closeLayerOpen();" class="layui-btn layui-btn-normal titleCancel">{:l('CANCEL')}</a>
+
+					<div class="clear"></div>
+
+				</li>
+
+            </ul>
+
+            <div class="layui-tab-content form-content pt100">
+
+                <div class="layui-tab-item layui-show">
+
+                        <div class="form-item">
+
+                            <div class="layui-form-item">
+
+                                <label class="layui-form-label">{:L('CATEGORY_NAME')}</label>
+
+                                <div class="layui-input-inline">
+
+                                    <input type="text" name="productType[type_name]" value="{$type.type_name}"  placeholder="{:L('ENTER_CATEGORY_NAME')}" class="layui-input">
+
+                                </div>
+
+                            </div>
+
+                            <eq name="langAuth['en_auth']" value="10">
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">English name</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <input type="text" name="productType[name_en]" value="{$type.name_en}"  placeholder="{:L('ENTER_CATEGORY_NAME')}" class="layui-input">
+
+                                    </div>
+
+                                </div>
+
+                            </eq>
+
+                            <eq name="langAuth['jp_auth']" value="10">
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">日本語名</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <input type="text" name="productType[name_jp]" value="{$type.name_jp}"  placeholder="{:L('ENTER_CATEGORY_NAME')}" class="layui-input">
+
+                                    </div>
+
+                                </div>
+
+                            </eq>
+
+                            <div class="layui-form-item">
+
+								<label class="layui-form-label">{:L('PARENT_CATEGORY')}</label>
+
+								<div class="layui-input-inline">
+
+									<select name="productType[parent_id]" lay-filter="level">
+
+										<option value="">{:L('TOP_CLASSIFICATION')}</option>
+
+										<foreach name="product_type_h" item="vo">
+
+											{$vo}
+
+										</foreach>
+
+									</select>
+
+
+								</div>
+
+							</div>
+
+                            <div class="layui-form-item">
+
+                                <label class="layui-form-label">{:L('CLASSIFICATION_DESCRIPTION')}</label>
+
+                                <div class="layui-input-inline">
+
+                                    <textarea class="layui-input" name="productType[type_describe]" >{$type.type_describe}</textarea>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                </div>
+
+            </div>
+
+			</form>
+
+        </div>
+
+
+
+    </div>
+
+    <script type="text/javascript" src="__PUBLIC__/js/submitform.js"></script>
+
+    <include file="Public/footer" />
+
+</block>

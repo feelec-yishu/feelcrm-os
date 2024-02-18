@@ -1,0 +1,55 @@
+<style>
+
+	.select-radio li:hover{background:#fff9f5;}
+
+</style>
+
+<div class="select-group relative">
+
+	<input type="hidden" name='customer_auth' value="{$customer_auth}" />
+
+	<a class="layui-form-select select-online">
+
+		<eq name='customer_auth' value='all'>{:L('WHOLE')}</eq>
+
+		<eq name='customer_auth' value='group'>{:L('GROUP')}</eq>
+
+		<eq name='customer_auth' value='own'>{:L('OWN')}</eq>
+
+		<i class="layui-edge"></i>
+
+	</a>
+
+	<ul class="hidden select-radio" >
+
+		<notempty name="isAllViewAuth"><li class="<eq name='customer_auth' value='all'>item-active</eq>"  data-value="all">{:L('WHOLE')}</li></notempty>
+
+		<notempty name="isGroupViewAuth"><li class="<eq name='customer_auth' value='group'>item-active</eq>" data-value="group">{:L('GROUP')}</li></notempty>
+
+		<notempty name="isOwnViewAuth"><li class="<eq name='customer_auth' value='own'>item-active</eq>" data-value="own">{:L('OWN')}</li></notempty>
+
+	</ul>
+
+</div>
+
+<script>
+
+	$(function ()
+	{
+		$('.select-group').hover(function (e)
+		{
+			e.preventDefault();
+
+			$(this).find('ul').slideToggle('fast');
+		})
+
+		$('.select-group').find('li').on('click',function ()
+		{
+			var range = $(this).data('value');
+
+			$("input[name='customer_auth']").val(range);
+
+			$('#filterForm').submit();
+		})
+	})
+</script>

@@ -1,0 +1,629 @@
+<extend name="Public:common"/>
+
+<block name="content">
+
+    <div class="layui-form list-main">
+
+		<div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('CONTACT_RECORD')}<span class="page-content">{:L('TOTAL_RECORDS')}：<span>{$pageCount|default='0'}</span> {:L('STRIP')}</span></li>
+
+            </ul>
+
+        </div>
+
+		<include file="Public/filterViewRange" />
+
+		<volist name="filterlist" id="vo">
+
+			<div class="list-filter select-fiter" data-type="define_form[{$vo.form_name}]">
+
+				<div class="list-filter-tit">{$vo.form_description}</div>
+
+				<div class="list-filter-option" data-value="">{:L('UNLIMITED')}</div>
+
+				<volist name="vo.option" id="v">
+
+					<div class="list-filter-option <eq name="define_form[$vo['form_name']]" value='$v'>active</eq>" data-value="{$v}">{$v}</div>
+
+				</volist>
+
+			</div>
+
+		</volist>
+
+		<div class="list-filter select-fiter" data-type="follow_type">
+
+			<div class="list-filter-tit">{:L('CONTACT_PERSON')}</div>
+
+			<div class="list-filter-option <eq name='follow_type' value='all'>active</eq>" data-value="all">{:L('WHOLE')}</div>
+
+			<div class="list-filter-option <eq name='follow_type' value='customer'>active</eq>" data-value="customer">{:L('CUSTOMER')}</div>
+
+			<div class="list-filter-option <eq name='follow_type' value='customer_pool'>active</eq>" data-value="customer_pool">{:L('CUSTOMER_POOL')}</div>
+
+			<div class="list-filter-option <eq name='follow_type' value='opportunity'>active</eq>" data-value="opportunity">{:L('OPPORTUNITY')}</div>
+
+			<div class="list-filter-option <eq name='follow_type' value='clue'>active</eq>" data-value="clue">{:L('CLUE')}</div>
+
+			<div class="list-filter-option <eq name='follow_type' value='clue_pool'>active</eq>" data-value="clue_pool">{:L('CLUE_POOL')}</div>
+
+		</div>
+
+		<div class="list-filter select-fiter" data-type="sort_by">
+
+			<div class="list-filter-tit">{:L('SORT_BY')}</div>
+
+			<div class="list-filter-option list-filter-sort-by <in name='sort_by' value='createtime-desc,createtime-asc'>active</in>" data-value="createtime-desc">
+				{:L('SORT_BY_CREATION_TIME')}
+				<in name='sort_by' value='createtime-desc,createtime-asc'>
+
+					<eq name="sort_by" value="createtime-asc"><i class="iconfont icon-up" data-value="createtime-desc"></i></eq>
+					<eq name="sort_by" value="createtime-desc"><i class="iconfont icon-downs" data-value="createtime-asc"></i></eq>
+
+					<else/>
+					<i class="iconfont icon-sort-small-copy" data-value="createtime-desc"></i>
+				</in>
+
+			</div>
+
+			<div class="list-filter-option list-filter-sort-by <in name='sort_by' value='contacttime-desc,contacttime-asc'>active</in>" data-value="contacttime-desc">
+				{:L('SORT_BY_NEXT_CONTACT_TIME')}
+				<in name='sort_by' value='contacttime-desc,contacttime-asc'>
+
+					<eq name="sort_by" value="contacttime-asc"><i class="iconfont icon-up" data-value="contacttime-desc"></i></eq>
+					<eq name="sort_by" value="contacttime-desc"><i class="iconfont icon-downs" data-value="contacttime-asc"></i></eq>
+
+					<else/>
+					<i class="iconfont icon-sort-small-copy" data-value="contacttime-desc"></i>
+				</in>
+			</div>
+
+		</div>
+
+		<div class="list-header clearfix">
+
+            <div class="header-left">
+
+                {:FEELCRM('Customer/create_follow','',L('ADD_RECORD'),'item-deleteBtn','','iconfont icon-adduser')}
+
+            </div>
+
+            <div class="header-right">
+
+				<notempty name="isExportFollowAuth">
+
+					<span href="javascript:" class="advanced-searc-btn fr ml10" title="{:L('EXPORT')}" id="startExport"><i class="iconfont icon-export"></i> <span>{:L('EXPORT_DATA')}</span></span>
+
+				</notempty>
+
+				<span class="advanced-searc-btn fr" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i> <span>{:L('ADVANCED_SEARCH')}</span></span>
+
+                <form action="{$controllerAndAction}" method="get" class="fr" id="filterForm">
+
+					<input type="hidden" name='customer_auth' value="{$customer_auth}" />
+
+					<input type="hidden" name='define_form[importance]' value="{$define_form.importance}" />
+
+					<input type="hidden" name="follow_type" value="{$follow_type}">
+
+					<input type="hidden" name='sort_by' value="{$sort_by}" />
+
+					<include file="Public/searchTimeRange" />
+
+					<div class="compact-menu">
+
+						<!--<notempty name="isExportFollowAuth">
+
+							<a href="javascript:" title="{:L('EXPORT')}" id="startExport"><i class="iconfont icon-export"></i></a>
+
+						</notempty>
+
+						<a href="javascript:" title="{:L('ADVANCED_SEARCH')}" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i></a>-->
+
+					</div>
+
+                    <div class="compact-search">
+
+                        <i class="iconfont icon-search crmSearchBtn"></i>
+
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="{:L('CONTACT_CONTENT')}"/>
+
+                        <!--<a href="javascript:" class="searchBtn">{:L('SEARCH')}</a>-->
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+		<div id="advanced-search" class="hidden feelcrm-advanced-search feeldesk-form hg100">
+
+			<form action="{$controllerAndAction}" method="get" id="highSearchForm" class="hg100">
+
+				<input type="hidden" name='customer_auth' value="{$customer_auth}" />
+
+				<input type="hidden" name='define_form[importance]' value="{$define_form.importance}" />
+
+				<input type="hidden" name="follow_type" value="{$follow_type}">
+
+				<input type="hidden" name='sort_by' value="{$sort_by}" />
+
+			<include file="Public/highKeywordHeader" />
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('CONTACT_CONTENT')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							 <input type="text" name="highKeyword[content]" value="{$highKeyword.content}" placeholder="" class="layui-input">
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('SEARCH_FUZZY_QUERY1')}"></i>
+
+					</div>
+
+					<!--<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('CONTACT')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<select name="highKeyword[member_id]" lay-ignore id="kwMemberId">
+
+								<option value="">{:L('SELECT_CONTACT')}</option>
+
+								<volist name="members" id="v">
+
+									<option value="{$v.member_id}" <eq name="highKeyword.member_id" value="$v.member_id">selected</eq>>{$v.name}</option>
+
+								</volist>
+
+							</select>
+
+							<script>
+
+								$("#kwMemberId").select2();
+
+							</script>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>-->
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('OWNED_CUSTOMER')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<empty name="highKeyword.customer_id" >
+
+								<input type="radio" id="selectCustomerInput" class="layui-input" name="highKeyword[customer_id]" title="{:L('NO_CUSTOMER_SELECTED')}" checked value="" readonly />
+
+							<else/>
+
+								<input type="radio" id="selectCustomerInput" class="layui-input" name="highKeyword[customer_id]" title="{:CrmgetFieldName($highKeyword['customer_id'],'customer')}" checked value="{$highKeyword.customer_id}" readonly />
+
+							</empty>
+
+							<div id="selectCustomer" class="feelcrm-commbtn" >{:L('SELECT_CUSTOMER')}</div>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+							{:L('BELONGING_CLUES')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<empty name="highKeyword.clue_id" >
+
+								<input type="radio" id="selectClueInput" class="layui-input" name="highKeyword[clue_id]" title="{:L('NO_CLUE_SELECTED')}" checked value="" readonly />
+
+								<else/>
+
+								<input type="radio" id="selectClueInput" class="layui-input" name="highKeyword[clue_id]" title="{:CrmgetFieldName($highKeyword['clue_id'],'clue')}" checked value="{$highKeyword.clue_id}" readonly />
+
+							</empty>
+
+							<div id="selectClue" class="feelcrm-commbtn" >{:L('SELECT_CLUE')}</div>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('COMMUNICATION_TYPE')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<select name="highKeyword[cmncate_id]" lay-ignore id="kwCmncateId">
+
+								<option value="">{:L('SELECT_COMMUNICATION_TYPE')}</option>
+
+								<volist name="cmncate" id="v">
+
+									<option value="{$v.cmncate_id}" <eq name="highKeyword.cmncate_id" value="$v.cmncate_id">selected</eq>>{$v.cmncate_name}</option>
+
+								</volist>
+
+							</select>
+
+							<script>
+
+								$("#kwCmncateId").select2();
+
+							</script>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			</form>
+
+		</div>
+
+		<div class="item-list feelcrm-list">
+
+            <table class="layui-table" lay-skin="line">
+
+                <thead>
+
+                    <tr>
+
+                        <th class="follow_con_th">{:L('CONTACT_CONTENT')}</th>
+
+                        <th class="follow_con_th">{:L('COMMENT')}</th>
+
+                        <th>{:L('CONTACT_TIME')}</th>
+
+                        <th>{:L('FOUNDER')}</th>
+
+                        <th>{:L('COMMUNICATION_TYPE')}</th>
+
+						<th>{:L('CONTACT_PERSON')}</th>
+
+						<th>{:L('BELONGING_TO')}</th>
+
+						<th>{:L('OPERATION')}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <empty name="follow">
+
+                        <tr class="nodata center">
+
+                            <td colspan="11">
+
+                                <p><i class="iconfont icon-nothing fts20"></i></p>
+
+                                <p>{:L('NO_DATA')}</p>
+
+                            </td>
+
+                        </tr>
+
+                    <else />
+
+                        <volist name="follow" id="vo">
+
+							<empty name="vo.comment">
+
+								<switch name="vo.type">
+
+									<case value="clue">
+
+										<tr data-id="{$vo.clue_id|encrypt='CLUE'}" data-customer="{$vo.customer_id|encrypt='CUSTOMER'}">
+
+									</case>
+
+									<case value="opportunity">
+
+										<tr data-id="{$vo.opportunity_id|encrypt='OPPORTUNITY'}" data-customer="{$vo.customer_id|encrypt='CUSTOMER'}">
+
+									</case>
+
+									<default  />
+
+									<tr data-customer="{$vo.customer_id|encrypt='CUSTOMER'}">
+
+								</switch>
+
+									<td class="follow_con_td" title="{$vo.content}">{$vo.content}</td>
+
+									<td class="follow_con_td">--</td>
+
+									<td>{$vo.createtime|getDates}</td>
+
+									<td>{$vo.member_name}</td>
+
+									<td>{$vo.cmncate_name|default='--'}</td>
+
+									<gt name="vo.clue_id" value="0">
+
+										<td class="orange">{$vo.follow_type|default='--'}</td>
+
+										<td class="cursor blue8" onclick="clickOpenDetail(this,'clue')">{$vo.belong_name|default='--'}</td>
+
+									<else/>
+
+										<gt name="vo.opportunity_id" value="0">
+
+											<td class="blue6">{$vo.follow_type|default='--'}</td>
+
+											<td class="cursor blue8" onclick="clickOpenDetail(this,'opportunity')">{$vo.belong_name|default='--'}</td>
+
+										<else/>
+
+											<td class="green1">{$vo.follow_type|default='--'}</td>
+
+											<td class="cursor blue8" mini='elseCustomer'>{$vo.belong_name|default='--'}</td>
+
+										</gt>
+
+									</gt>
+
+									<td class="listOperate">
+
+										<i class="iconfont icon-dian"></i>
+
+										<div class="operate hidden">
+
+											{:FEELCRM('Customer/edit_follow',['id'=>encrypt($vo['follow_id'],'FOLLOW')],L('EDITOR'))}
+
+											<notempty name="isCommentFollowAuth">
+
+												<a href="javascript:" data-value="{$vo['follow_id']}" class="reply-comment">{:L('COMMENT')}</a>
+
+											</notempty>
+
+											<gt name="vo.clue_id" value="0">
+
+												{:FEELCRM('Customer/delete_follow',['id'=>encrypt($vo['clue_id'],'CLUE'),'follow_id'=>encrypt($vo['follow_id'],'FOLLOW')],L('DELETE'),'','async')}
+
+											<else/>
+
+												{:FEELCRM('Customer/delete_follow',['id'=>encrypt($vo['customer_id'],'CUSTOMER'),'follow_id'=>encrypt($vo['follow_id'],'FOLLOW')],L('DELETE'),'','async')}
+
+											</gt>
+
+
+										</div>
+
+									</td>
+
+								</tr>
+
+							<else/>
+
+								<volist name="vo.comment" id="vc">
+
+									<switch name="vo.type">
+
+										<case value="clue">
+
+											<tr data-id="{$vo.clue_id|encrypt='CLUE'}" data-customer="{$vo.customer_id|encrypt='CUSTOMER'}">
+
+										</case>
+
+										<case value="opportunity">
+
+											<tr data-id="{$vo.opportunity_id|encrypt='OPPORTUNITY'}" data-customer="{$vo.customer_id|encrypt='CUSTOMER'}">
+
+										</case>
+
+										<default  />
+
+										<tr data-customer="{$vo.customer_id|encrypt='CUSTOMER'}">
+
+									</switch>
+
+										<td class="follow_con_td" title="{$vo.content}">{$vo.content}</td>
+
+										<td class="follow_con_td" title="{$vc.content}">{$vc.content}</td>
+
+										<td>{$vo.createtime|getDates}</td>
+
+										<td>{$vo.member_name}</td>
+
+										<td>{$vo.cmncate_name|default='--'}</td>
+
+										<gt name="vo.clue_id" value="0">
+
+											<td class="orange">{$vo.follow_type|default='--'}</td>
+
+											<td class="cursor blue8" onclick="clickOpenDetail(this,'clue')">{$vo.belong_name|default='--'}</td>
+
+										<else/>
+
+											<gt name="vo.opportunity_id" value="0">
+
+												<td class="blue6">{$vo.follow_type|default='--'}</td>
+
+												<td class="cursor blue8" onclick="clickOpenDetail(this,'opportunity')">{$vo.belong_name|default='--'}</td>
+
+												<else/>
+
+												<td class="green1">{$vo.follow_type|default='--'}</td>
+
+												<td class="cursor blue8" mini='elseCustomer'>{$vo.belong_name|default='--'}</td>
+
+											</gt>
+
+										</gt>
+
+										<td class="listOperate">
+
+											<i class="iconfont icon-dian"></i>
+
+											<div class="operate hidden">
+
+												{:FEELCRM('Customer/edit_follow',['id'=>encrypt($vo['follow_id'],'FOLLOW')],L('EDITOR'))}
+
+												<notempty name="isCommentFollowAuth">
+
+													<a href="javascript:" data-value="{$vo['follow_id']}" class="reply-comment">{:L('COMMENT')}</a>
+
+												</notempty>
+												{:FEELCRM('Customer/delete_follow',['id'=>encrypt($vo['customer_id'],'CUSTOMER'),'follow_id'=>encrypt($vo['follow_id'],'FOLLOW')],L('DELETE'),'','async')}
+
+											</div>
+
+										</td>
+
+									</tr>
+
+								</volist>
+
+							</empty>
+
+                        </volist>
+
+                    </empty>
+
+                </tbody>
+
+            </table>
+
+            <div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+        </div>
+
+    </div>
+	<div class="comment-shade"></div>
+
+	<div class="comment-panel hidden" id="comment">
+
+		<header><span>{:L('COMMENT')}</span><i class="iconfont icon-guanbi comment-close" title="{:L('CLOSE')}"></i></header>
+
+		<form action="{:U('commentFollow')}" id="commentForm" class="layui-form">
+
+			<input type="hidden" name="comment[follow_id]" id="commentFollowId"/>
+
+			<textarea id='commentEditor' name="comment[content]" cols="30" rows="10" placeholder="{:L('ENTER_COMMENT_CONTENT')}"></textarea>
+
+			<div class="submit-comment"><a href="javascript:" class="layui-btn">{:L('SUBMIT')}</a></div>
+
+		</form>
+
+	</div>
+	<script type="text/javascript">
+
+		$(function()
+		{
+			layui.use(['layedit','form'], function()
+			{
+				var layedit = layui.layedit;
+
+				var commentEditor = layedit.build('commentEditor',{hideTool:['strong','italic','underline','del','|','left','center','right','link','unlink','image','help'], height:120});
+
+				$('.reply-comment,.comment-close').on('click',function()
+				{
+					$("#comment,.comment-shade").fadeToggle();
+
+					var value = $(this).data('value');
+
+					if(value != undefined)
+					{
+						$('#commentFollowId').val(value);
+					}
+
+					$('.submit-comment a').unbind('click').on('click',function()
+					{
+						layedit.sync(commentEditor);
+
+						layer.load(2,{offset:['150px']});
+
+						$.post("{:U('commentFollow')}",$('#commentForm').serialize(),function(data)
+						{
+							if(data.errcode == 0)
+							{
+								layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+								{
+									window.location.reload();
+								});
+							}
+							else
+							{
+								layer.closeAll('loading');
+
+								layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+							}
+						},'JSON')
+					})
+				})
+			});
+
+			$('.comment-more').on('click',function()
+			{
+				$(this).siblings('.comment-item:gt(2)').slideToggle('fast');
+
+				$(this).find('i').toggleClass('icon-upward');
+			});
+		})
+
+	</script>
+
+	<include file="Public/exportpage" />
+
+	<include file="Public/selectCustomer" />
+
+	<include file="Public/selectClue" />
+
+	<script>
+
+		var export_url = "/Customer/export_follow";
+
+		var export_action = "{$Think.ACTION_NAME}";
+
+	</script>
+
+	<include file="Public:language" />
+
+</block>

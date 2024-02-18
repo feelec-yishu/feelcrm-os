@@ -1,0 +1,14 @@
+@import "../../css/common.css";
+
+@media only screen and (max-width: 1400px){
+    .member-header .header-inner{width: 1150px;}
+    .member-header .header-inner ul.inner-right li a i.icon-username{font-size: 16px;margin-right: 10px;}
+    .member-wrapper{width: 1100px}
+
+}
+
+@media only screen and (max-width: 925px){
+    .member-right-main .homepage-left{width: 555px;}
+    .member-right-main .homepage-right{width:365px;}
+}
+

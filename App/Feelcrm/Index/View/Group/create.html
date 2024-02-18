@@ -1,0 +1,165 @@
+<extend name="Public:window"/>
+
+<block name="window-form">
+
+    <form action="" class="layui-form">
+
+        <div class="form-item">
+
+            <div class="layui-form-item mb0">
+
+                <label class="layui-form-label">{:L('SELECT_PARENT')}</label>
+
+                <div class="layui-input-inline" id="departments"></div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('DEPARTMENT_NAME')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="text" name="data[group_name]"  value="" class="layui-input"/>
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('GROUP_MANAGER')}</label>
+
+                <div class="layui-input-inline">
+
+                    <select name="data[manager_id]" lay-search>
+
+                        <option value="">{:L('SELECT_GROUP_MANAGER')}</option>
+
+                        <volist name="members" id="vo">
+
+                            <option value="{$vo.member_id}">{$vo.name}</option>
+
+                        </volist>
+
+                    </select>
+
+                </div>
+
+                <i class="layui-icon layui-icon-about intro-icon checkbox-intro" data-note="{:L('GROUP_MANAGER_NOTE')}"></i>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('SORT')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="text" name="data[orderby]" value="" class="layui-input" placeholder="" />
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item hidden">
+
+                <label class="layui-form-label">{:L('SYSTEM_AUTH')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="checkbox" name="data[ticket_auth]" lay-skin="primary" title="工单系统" checked >
+
+                    <eq name="systemAuth.crm_auth" value="10">
+
+                        <input type="checkbox" name="data[crm_auth]" lay-skin="primary" title="CRM系统" checked >
+
+                    </eq>
+
+                </div>
+
+                <i class="layui-icon layui-icon-about intro-icon checkbox-intro" data-note="{:L('GROUP_SYSTEM_NOTE')}"></i>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('DEFAULT_GROUP')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="radio" name="data[is_default]" value="20" title="{:L('YES')}">
+
+                    <input type="radio" name="data[is_default]" value="10" title="{:L('NO')}" checked >
+
+                    <i class="layui-icon layui-icon-about intro-icon checkbox-intro" data-note="{:L('DEFAULT_GROUP_NOTE')}"></i>
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('IS_ENABLE')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="radio" name="data[closed]" value="0" title="{:L('ENABLE')}">
+
+                    <input type="radio" name="data[closed]" value="1" title="{:L('DISABLE')}">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="form-submit">
+
+            <div class="layui-form-item">
+
+                <div class="layui-input-inline">
+
+                    <a href="javascript:" class="layui-btn layui-btn-normal" id="submitForm">{:L('SUBMIT')}</a>
+
+                    <a href="javascript:" class="layui-btn layui-btn-normal cancel-btn" id="cancel-form">{:L('CANCEL')}</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+    <script type="text/javascript">
+
+        layui.config({
+            base : '/Public/js/layui/extends/'
+        }).extend({
+            selectN: 'selectN'
+        }).use(['form','selectN'],function()
+        {
+            var form = layui.form;
+
+            var data = JSON.parse('{$jsonDepartmentData}');
+
+            //无限级分类-所有配置
+            layui.selectN(
+            {
+                elem: '#departments',
+                data: data,
+                width:'100%',
+                last:false,
+                tips: "{:L('PLEASE_SELECT')}",
+                filter: '',
+                field:{idName:'group_id',titleName:'group_name',childName:'child'},
+                name: 'parent_id',
+                delimiter: ',',
+                formFilter: null
+            });
+        });
+
+    </script>
+
+</block>

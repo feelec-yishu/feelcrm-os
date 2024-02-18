@@ -1,0 +1,762 @@
+input::-webkit-input-placeholder {color: #b6b6b6 !important;font-size: 0.7vw;}
+
+input::-moz-placeholder {color: #b6b6b6 !important;;font-size: 0.7vw;}
+
+input:-ms-input-placeholder {color: #b6b6b6 !important;;font-size: 0.7vw;}
+
+::-webkit-scrollbar {width: 8px;height: 8px;}
+
+::-webkit-scrollbar-thumb{border-radius: 8px;background-color: rgba(205, 205, 205, 0.42);}
+
+::-webkit-scrollbar-track{border-radius: 0;background: rgba(216,223,240,0.1);}
+
+.faq-header{background-color: #138df5;height: 4.2vw;line-height: 4.2vw}
+
+.search-banner-header{background-color: transparent;position: relative;z-index: 1}
+
+.faq-header .header-inner{width:79.2vw;margin: 0 auto}
+
+.faq-header .header-inner .inner-left{display: inline-block}
+
+.faq-header .header-inner .inner-left img{width: 100%;}
+
+.faq-header .header-inner ul.inner-right{display:inline-block;float:right;font-size: 0}
+
+.faq-header .header-inner ul.inner-right li{display: inline-block;height: 4.2vw;vertical-align: top}
+
+.faq-header .header-inner ul.inner-right li:nth-child(1){margin-right:3.6vw}
+
+.faq-header .header-inner ul.inner-right li a{display:inline-block;color:#fff;font-size: 0.7vw;letter-spacing: 0;}
+
+.faq-header .header-inner ul.inner-right li a:hover{opacity: .8}
+
+.faq-header .header-inner ul.inner-right li a i.icon-username{font-size: 1vw;margin-right: .3vw}
+
+.faq-header .header-inner ul.inner-right li span.faq-split{display: inline-block;margin: 0 10px;font-size: 0.9vw;color:#fff;}
+
+.faq-header .header-inner ul.inner-right li.language{}
+
+.faq-header .header-inner ul.inner-right li.language a{display: inline-block;margin-left: 1vw;}
+
+.faq-header .header-inner ul.inner-right li.language a img{width:1.6vw;height: 1.6vw;border-radius: 1.6vw;}
+
+.faq-header .header-inner ul.inner-right li div.userinfo{position: absolute;top:3.1vw;width:130px;background-color: #fff;box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.12);
+	border-radius: 5px;padding: 10px 0;display: none}
+
+.faq-header .header-inner ul.inner-right li div.userinfo a.userinfo-item{display: block;height: 40px;line-height: 40px;font-size: 12px;color:#333;padding: 0 10px}
+
+.faq-header .header-inner ul.inner-right li div.userinfo a.userinfo-item:hover{background-color: #edf7ff;color:#138df5;}
+
+.faq-header .header-inner ul.inner-right li div.userinfo a img{display:inline-block;width:30px;height: 30px;border-radius: 30px;margin-right: 8px;}
+
+.faq-header .header-inner ul.inner-right li div.userinfo a span{display: inline-block;}
+
+.faq-header .header-inner ul.inner-right li div.userinfo a.logout{width: 110px;text-align: center;background-color: #edf7ff;color:#138df5;font-size: 13px;
+	border-radius: 5px;margin:10px auto 0 auto;height: 35px;line-height: 35px;}
+
+.faq-header .header-inner ul.inner-right li div.userinfo a.logout:hover{background-color: #138df5;color:#fff}
+
+/* FAQ - Search */
+.faq-search{width:100%;height: 17vw;background:url('../../img/faq-banner.png') no-repeat center center;
+	background-blend-mode: normal,normal;position: absolute;top: 0;background-size:100% 100%}
+
+.faq-search .search-box{width: 52.1vw;margin: 0 auto;padding:5.3vw 0}
+
+.faq-search .search-box .search-title{font-size: 1.7vw;text-align: center;color:#fff;margin-bottom: 1.5vw}
+
+.faq-search .search-box .search-form{position:relative;line-height: 2.6vw;}
+
+.faq-search .search-box .search-form .search-input{width: 100%;height: 2.6vw;background-color: #fff;border-radius: 1.3vw;font-size: .8vw;
+	color:#666;border: none;vertical-align: top;padding-left: 1vw;}
+
+.faq-search .search-box .search-form  i{position: absolute;right: 1.5vw;color:#999}
+
+.faq-search .search-result{position:absolute;width:100%;background-color: #fff;max-height: calc(20vw + 2px);margin-top:.5vw;border-radius: 8px;
+	box-shadow:0 0.7vw 1.6vw 0 rgba(0, 18, 36, 0.1);overflow-x:hidden;display: none;}
+
+.faq-search .search-result .search-problem-item{height: 40px;line-height: 40px;border-radius: 8px;}
+
+.faq-search .search-result .search-problem-item a{display: inline-block;width:100%;padding:0 1vw;font-size: .7vw}
+
+.faq-search .search-result .search-problem-item a:hover{background-color: #f0f3f5}
+
+.faq-search .search-result .search-problem-item a span{background-color: transparent !important;color:#138df5}
+
+.faq-search .search-result .no-data{height: 40px;line-height: 40px;}
+
+.faq-search .search-result .no-data a{color:#999;text-align: center}
+
+.faq-search .search-result .no-data a:hover{color:#999;background-color: transparent}
+
+/* FAQ - 首页 - SECTION1*/
+
+.faq-homepage-section1{width: 100%;margin-top: 18vw;background-color: #fff;padding-bottom: 5.2vw;}
+
+.faq-homepage-section1 .ticket-action{font-size: 0;padding: 0 8.3vw;}
+
+.faq-homepage-section1 .ticket-action li{display: inline-block;width:20.8vw;height: 15.6vw;	background-color: #ffffff;
+	box-shadow: 0 0.5vw 1.3vw 0 rgba(0, 26, 74, 0.1);border-radius: 0.5vw;}
+
+.faq-homepage-section1 .ticket-action li:nth-child(1){margin-right: 4.2vw}
+
+.faq-homepage-section1 .ticket-action li a{display: inline-block;width: 100%;height: 100%;text-align: center;padding: 3.1vw 6.5vw}
+
+.faq-homepage-section1 .ticket-action li a img{width:4.2vw;margin-bottom: 1.9vw}
+
+.faq-homepage-section1 .ticket-action li a p{width: 7.8vw;height: 2.6vw;background-color: #edf7ff;border-radius: 1.3vw;
+	color: #7eb4e3;font-size: .8vw;line-height: 2.6vw}
+
+.faq-homepage-section1 .ticket-action li a p i.iconfont{font-size: .85vw;margin-right:.3vw}
+
+.faq-homepage-section1 .ticket-action li a:hover p{background-color: #138df5;color:#fff;}
+
+
+/* FAQ - 首页 - SECTION2*/
+
+.faq-homepage-section2{width: 100%;background-color: #fafafa;padding: 2.6vw 0}
+
+.faq-homepage-section2 .crumb{height: 2vw;line-height: 2vw;font-size: 1.1vw;color:#221815;letter-spacing: 0;}
+
+.faq-homepage-section2 .crumb i{font-size: 1vw;float:left;color:#138df5;margin-right: .5vw;}
+
+.faq-homepage-section2 .faq-directory-box{font-size: 0}
+
+.faq-homepage-section2 .faq-directory-box li{display: inline-block;width:calc(50% - 1.5vw);height: 4.2vw;border-radius: 0.3vw;
+	line-height: 4.2vw;margin-top:2vw;background-color: #fff}
+
+.faq-homepage-section2 .faq-directory-box li:nth-child(2n-1){margin-right: 3vw}
+
+.faq-homepage-section2 .faq-directory-box li a{display: inline-block;width:100%;font-size: 0.8vw;letter-spacing: 0;color: #333;
+	padding: 0 1vw}
+
+.faq-homepage-section2 .faq-directory-box li a i.icon-faq2{color:#ffba00;font-size: 1vw;margin-right: .5vw;float: left;}
+
+.faq-homepage-section2 .faq-directory-box li a i.icon-faq-more{color:#dfdfdf;font-size: 1vw;float: right}
+
+.faq-homepage-section2 .faq-directory-box li a:hover,.faq-homepage-section2 .faq-directory-box li a:hover i.icon-faq-more{color:#138df5}
+
+
+/* FAQ - 首页 - SECTION3*/
+
+.faq-homepage-section3{width: 100%;background-color: #fff;padding: 2.6vw 0}
+
+.faq-homepage-section3 .crumb{height: 2vw;line-height: 2vw;font-size: 1.1vw;color:#221815;letter-spacing: 0;}
+
+.faq-homepage-section3 .crumb i{font-size: 1vw;float:left;color:#138df5;margin-right: .5vw;}
+
+.faq-homepage-section3 .faq-problem-box{margin-top:2vw}
+
+.faq-homepage-section3 .faq-problem-box a{display: block;height: 3.2vw;line-height: 3.2vw;font-size: 0.7vw;color:#666;}
+
+.faq-homepage-section3 .faq-problem-box a i.icon-faq-right{color:#aab6d4;float: left;margin-right:.6vw;font-size: .5vw}
+
+.faq-homepage-section3 .faq-problem-box a span.problem-date{float: right;}
+
+.faq-homepage-section3 .faq-problem-box a:hover,.faq-homepage-section3 .faq-problem-box a:hover i.icon-faq-right{color:#138df5}
+
+/* FAQ - 面包屑 */
+
+.faq-wrapper{background-color:#f0f3f5;padding-bottom: 5.2vw}
+
+.faq-main{width:62.5vw;margin:0 auto;}
+
+.faq-crumb{height: 5.2vw;line-height: 5.2vw;}
+
+.faq-crumb a{color:#666;font-size: 0.7vw;letter-spacing: 0}
+
+.faq-crumb i{color:#999;margin:0 .6vw;}
+
+.faq-crumb a:hover{color:#138df5}
+
+.faq-no-data{margin:6vw auto;text-align: center}
+
+.faq-no-data img{font-size: 3.5vw;color:#999;margin-bottom: 1vw;width:4vw}
+
+.faq-no-data p{font-size: .5vw;color:#999}
+
+/* FAQ - 问题页 - 左侧 */
+
+.faq-dir-main{margin-top: 12.8vw}
+
+.faq-dir-section{height: 52.1vw;font-size: 0;}
+
+.faq-dir-section .section-left{display:inline-block;background-color: #fff;width:13vw;height:100%;vertical-align: text-top}
+
+.faq-dir-section .left-crumb{height: 3.1vw;line-height: 3.1vw;font-size: .8vw;letter-spacing: 0;color: #221815;padding: 0 1vw;margin-bottom: .5vw}
+
+.faq-dir-section .left-crumb .crumb-content{border-bottom:1px solid #eee;}
+
+.faq-dir-section .left-crumb i {float: left;margin-right: .5vw;color:#138df5}
+
+.faq-dir-section .left-dir-tree li i.layui-icon {color:#999;font-size: .3vw;margin-right:.4vw;margin-top: 0;}
+
+.faq-dir-section .left-dir-tree li i.iconfont
+{color:#ffcd2c;font-size: .7vw;margin-right:.4vw;margin-top: -2px;}
+
+.faq-dir-section .left-dir-tree li i.icon-dir-close.color-ffe792{color:#ffe792;}
+
+.faq-dir-section .left-dir-tree li div.category-name{height: 2.1vw;line-height: 2.1vw;font-size: .6vw;cursor: pointer;padding:0 1vw;white-space: normal;
+	overflow-y: hidden;}
+
+.faq-dir-section .left-dir-tree li div.category-name::-webkit-scrollbar {width: 0;height: 0;}
+
+.faq-dir-section .left-dir-tree li div.current{color:#138df5;background-color: #f3f7ff}
+
+.faq-dir-section .left-dir-tree li ul{display: none}
+
+.faq-dir-section .left-dir-tree li div i{margin-right: 5px}
+
+.faq-dir-section .left-dir-tree li.category-level2 div.category-name{padding-left: 2vw;height: 2.1vw;line-height: 2.1vw;}
+
+.faq-dir-section .left-dir-tree li.category-level3 div.category-name{padding-left: 3.2vw;height: 2.1vw;line-height: 2.1vw;}
+
+.faq-dir-section .left-dir-tree li.category-level4 div.category-name{padding-left: 4.4vw;height: 2.1vw;line-height: 2.1vw;}
+
+/* FAQ - 问题页 - 右侧 */
+
+.faq-dir-section .section-right{display:inline-block;width: calc(100% - 13.3vw);height: 100%;margin-left: .3vw;background-color: #fff;vertical-align: text-top}
+
+.faq-dir-section .right-crumb{height: 3.1vw;line-height: 3.1vw;font-size: .8vw;letter-spacing: 0;color: #221815;padding: 0 1vw;margin-bottom: .5vw}
+
+.faq-dir-section .right-crumb .crumb-content{border-bottom:1px solid #eee;}
+
+.faq-dir-section .right-crumb i{float: left;margin-right: .5vw;color:#138df5}
+
+.faq-dir-section .right-crumb .crumb-content a{float: right;font-size: .6vw}
+
+.faq-dir-section .right-crumb .crumb-content a span{display:inline-block;margin:0 .1vw;color:#138df5}
+
+.faq-dir-section .right-crumb .crumb-content a:hover span{color:#2c6ee5}
+
+.faq-dir-section .section-right .right-problem-box{height:calc(100% - 3.6vw);overflow-x: hidden}
+
+.faq-dir-section .section-right .right-problem-box::-webkit-scrollbar {width: 5px;height: 5px;}
+
+.faq-dir-section .section-right .right-problem-box::-webkit-scrollbar-thumb {border-radius: 5px;background: #cecece;}
+
+.faq-dir-section .section-right .right-problem-box::-webkit-scrollbar-track {border-radius: 0;background: rgba(0,0,0,0.1);}
+
+.faq-dir-section .section-right .problem-item{height: 2.9vw;line-height:2.9vw;}
+
+.faq-dir-section .section-right .problem-item a{display:inline-block;width:100%;font-size: .6vw;color:#333;padding: 0 1vw;}
+
+.faq-dir-section .section-right .problem-item a span.edge{display:inline-block;width: .2vw;height: .2vw;border-radius: 3px;background-color: #666;
+	margin-right: .5vw;vertical-align: middle;margin-top: -2px}
+
+.faq-dir-section .section-right .problem-item a:hover{color:#138df5}
+
+.faq-dir-section .section-right .problem-item a:hover span.edge{background-color:#138df5}
+
+.faq-dir-section .section-right .layui-flow-more{font-size: 0}
+
+.faq-dir-section .section-right .layui-flow-more a{display: inline-block;width: 100%;}
+
+.faq-dir-section .section-right .layui-flow-more a i.layui-anim{margin: 6vw 0}
+
+.faq-dir-section .section-right .layui-flow-more a cite{display: inline-block;width: 100%;background-color: #fff;}
+
+.faq-dir-section .section-right .layui-flow-more a cite:hover{background-color: #fafafa}
+
+.faq-dir-section .section-right .layui-flow-more a cite i {font-size: .9vw;}
+
+.faq-dir-section .section-right .problem-crumb{height: 4.7vw;line-height: normal;}
+
+.faq-dir-section .section-right .problem-crumb .crumb-content{padding: 1vw 0 1.2vw 0}
+
+.faq-dir-section .section-right .problem-title{font-size: 0.8vw;color:#333;margin-bottom:.7vw;}
+
+.faq-dir-section .section-right .problem-date{font-size: .6vw;color:#999}
+
+.faq-dir-section .section-right .problem-content{height:calc(100% - 1.75vw);overflow-x: hidden;line-height: 30px;font-size: .6vw;color:#333;padding: 0 1vw}
+
+.faq-dir-section .section-right .problem-content img{width:80%;}
+
+.faq-dir-section .section-right .problem-content::-webkit-scrollbar {width: 5px;height: 5px;}
+
+.faq-dir-section .section-right .problem-content::-webkit-scrollbar-thumb {border-radius: 5px;background: #cecece;}
+
+.faq-dir-section .section-right .problem-content::-webkit-scrollbar-track {border-radius: 0;background: rgba(0,0,0,0.1);}
+
+.faq-dir-section .section-right .entry-attachment{border-top:1px solid #e3e9ed;margin-top: 1vw;font-size: .6vw;margin-bottom:1vw;padding: .5vw 0}
+
+.faq-dir-section .section-right .entry-attachment .attach-item{color: #537c8d;height: 1.5vw;line-height: 1.5vw;font-size: .6vw;}
+
+.faq-dir-section .section-right .entry-attachment .attach-item span{vertical-align: middle;margin: 0 .5vw;}
+
+.faq-dir-section .section-right .entry-attachment .attach-item a{color:#128cf6;font-size:.9vw;}
+
+/* FAQ - 文章详情 */
+.faq-problem-main{width: 100%;}
+
+.faq-problem-section{width: 100%;height: 52.1vw;font-size: 0;background-color: #fff;}
+
+.faq-problem-section .problem-title{height: 5vw;line-height: 5vw;font-size: 1.3vw;text-align: left;border-bottom: 1px solid #eee;padding: 0 2vw;}
+
+.faq-problem-section .problem-content{width: 100%;height:calc(100% - 7vw);overflow-x:hidden;line-height: 30px;font-size: 13px;padding: .5vw 2vw;margin: 1vw 0}
+
+.faq-problem-section .problem-content img{margin: 15px 0;}
+
+.faq-problem-section .problem-attachments{border-top:1px solid #e3e9ed;font-size: .6vw;padding: 1vw 0}
+
+.faq-problem-section .problem-attachments .attach-item{color: #537c8d;height: 2vw;line-height: 2vw;font-size: .6vw;}
+
+.faq-problem-section .problem-attachments .attach-item span{vertical-align: middle;margin: 0 .5vw;}
+
+.faq-problem-section .problem-attachments .attach-item a{color:#128cf6;font-size:.9vw;}
+
+
+
+
+
+/* FAQ - 提交工单 */
+
+.faq-tmp-section{height: 52.1vw;font-size: 0;}
+
+.faq-tmp-section .section-left{display:inline-block;background-color: #fff;width:13vw;height:100%;vertical-align: text-top}
+
+.faq-tmp-section .left-crumb{height: 3.1vw;line-height: 3.1vw;font-size: .8vw;letter-spacing: 0;color: #221815;padding: 0 1vw;margin-bottom: .5vw}
+
+.faq-tmp-section .left-crumb .crumb-content{border-bottom:1px solid #eee;}
+
+.faq-tmp-section .left-crumb i {float: left;margin-right: .5vw;color:#138df5}
+
+.faq-tmp-section .template-box li{height: 2.5vw;line-height: 2.5vw;}
+
+.faq-tmp-section .template-box li a{display: inline-block;width: 100%;font-size: 0.8vw;padding: 0 1vw}
+
+.faq-tmp-section .template-box li a:hover{color:#138df5}
+
+.faq-tmp-section .template-box li a.current{background-color: #f3f7ff;color:#138df5}
+
+.faq-tmp-section .section-right{display:inline-block;width: calc(100% - 13.3vw);height: 100%;margin-left: .3vw;background-color: #fff;vertical-align: text-top}
+
+.faq-tmp-section .right-crumb{height: 3.1vw;line-height: 3.1vw;font-size: .8vw;letter-spacing: 0;color: #221815;padding: 0 1vw;margin-bottom: .5vw}
+
+.faq-tmp-section .right-crumb .crumb-content{border-bottom:1px solid #eee;}
+
+.faq-tmp-section .right-crumb i{float: left;margin-right: .5vw;color:#138df5}
+
+
+
+/* FAQ - 工单表单 */
+
+.faq-tmp-section .template-form{height:calc(100% - 3.6vw);overflow-x: hidden}
+
+.visitor-form{padding-bottom:5vw}
+
+.visitor-form .layui-form-item{padding: 0 10vw;margin-bottom: 0;margin-top: 3.2vw}
+
+.visitor-form .layui-form-item .layui-form-label{width:13vw;margin-right:1vw;height:3.7vw;line-height:3.7vw;padding: 0}
+
+.visitor-form .layui-form-item .layui-form-label .required{color:red}
+
+.visitor-form .layui-form-item .layui-input-inline{width:calc(100% - 21vw);margin-right: 0}
+
+.visitor-form .layui-input{width:100%;height:3.7vw;background-color: #ffffff;border-radius: 3px;border: solid 0.1vw #eee;}
+
+.layui-input:hover,.layui-input:focus,.layui-select:hover,.layui-layedit:hover,.layui-layedit:focus,.layui-layedit:hover .layui-layedit-tool,
+select:hover, .layui-textarea:hover, .layui-textarea:focus {border-color:#ccdeff !important;}
+
+.visitor-form .area-item .layui-input-inline{width:calc((100% - 23vw) / 3);margin-right:1vw}
+
+.visitor-form .layui-form-select dl{width: 100%}
+
+.visitor-form .layui-form-select dl::-webkit-scrollbar {width: 5px;height: 5px;}
+
+.visitor-form .layui-form-select dl::-webkit-scrollbar-thumb{border-radius: 5px;background-color: rgba(205, 205, 205, 0.42);}
+
+.visitor-form .layui-form-select dl::-webkit-scrollbar-track{border-radius: 0;background: rgba(216,223,240,0.1);}
+
+.visitor-form .layui-form-checkbox[lay-skin=primary]{margin-top: 0;height: 3.7vw;line-height: 3.7vw;padding-left:2.5vw}
+
+.visitor-form .layui-form-checkbox[lay-skin=primary] span{line-height: 3.7vw;padding-right: 2.5vw;font-size: 1.4vw}
+
+.visitor-form .layui-form-checkbox[lay-skin=primary] i{top: .9vw;width: 1.7vw;height: 1.7vw;line-height: 1.7vw;}
+
+.visitor-form  .layui-form-checked[lay-skin=primary] i {border-color: #138df5;background-color: #138df5;color: #fff;}
+
+.visitor-form .layui-form-checkbox[lay-skin=primary]:hover i{border-color: #138df5;}
+
+.layui-form-radio>i:hover, .layui-form-radioed>i{color:#138df5}
+
+.visitor-form .layui-form-radio{height: 3.7vw;line-height: 3.7vw;margin:0 2.5vw 0 0;padding-right: 0}
+
+.visitor-form .layui-form-radio>i{margin-right: .8vw;font-size: 1.9vw;margin-top: -1px;}
+
+.visitor-form .layui-form-radio div{font-size: 1.4vw}
+
+.visitor-form .layui-form-select .layui-edge{border-width: .4vw;}
+
+.visitor-form .layui-form-selected .layui-edge{margin-top: -6px}
+
+.visitor-form .image-item{position: relative}
+
+.visitor-form .layui-upload-drag{padding: 10px;width: calc((100% - 10px) / 2);margin: 0 10px 10px 0;float: left;text-align: center;border-radius: 3px;
+	height: 16vw;}
+
+.visitor-form .image-item .layui-upload-drag:nth-child(2n){margin-right: 0}
+
+.visitor-form .layui-upload-drag img {width: 100%;height: 100%;}
+
+.visitor-form .layui-upload-drag div {position: relative;top: 3vw;}
+
+.visitor-form .layui-upload-drag .layui-icon {color: #1e9fff;line-height: normal;font-size: 4.5vw;}
+
+.visitor-form .layui-upload-drag .cancel {position: absolute;color: #666;font-size: 12px;top: 0;}
+
+.visitor-form .attach-item .layui-btn{height: 3.7vw;line-height: 3.7vw;font-size: 1.5vw;}
+
+.visitor-form .attach-item .layui-btn .layui-icon{font-size: 1.8vw}
+
+.visitor-form .attach-item .layui-btn-primary:hover{border-color:#ccdeff}
+
+.visitor-form .attach-item li{margin-bottom: 5px;color:#537c8d;font-size: 12px;}
+
+.visitor-form .attach-item li:first-child{margin-top: 20px;}
+
+.visitor-form .attach-item i.icon-fujian{color:#484e5f;font-size: 15px;}
+
+.visitor-form .attach-item span.closed{margin-left: 5px;font-size: 14px;}
+
+.visitor-form .layui-btn-normal{background-color: #2c6ee5;min-width: 80px;width:8.5vw;border-radius: 3px;height: 3.7vw;line-height: 3.7vw;color:#fff;
+	letter-spacing: 0.3px;font-size: 1.4vw}
+
+.visitor-form .layui-btn-normal:hover{opacity: .8}
+
+.visitor-form .visitor-success{text-align: center;margin:25vw 0}
+
+.visitor-form .visitor-success img{width: 10vw;}
+
+.visitor-form .visitor-success p{font-size: 1.5vw;margin:2.5vw 0;color:#2c6ee5}
+
+.visitor-form .visitor-success a{display: block;width: 18vw;height: 3.5vw;line-height:3.5vw;background-color: #138df5;border-radius: 0.2vw;font-size: 1vw;
+	text-align: center;margin: 0 auto;color:#fff;}
+
+.visitor-form .visitor-success a:hover{color:#fff;opacity: .8}
+
+/* FAQ - 我发布的 */
+
+.faq-ticket{background-color: #fff;width:100%;padding: 8.5vw 0;}
+
+/* FAQ - 工单列表 */
+
+.faq-ticket-list{background-color: #fff;width:100%;height: 37.5vw;}
+
+.faq-ticket-list .faq-ticket-crumb{height: 3.1vw;line-height: 3.1vw;padding-left: 1.1vw;font-size: .8vw}
+
+.faq-ticket-list .faq-ticket-crumb span{color:#138df5}
+
+.faq-ticket-list .ticket-tab{background-color: #fafafa;font-size: 0;padding: 0 1.1vw;height: 2.9vw;line-height: 2.9vw}
+
+.faq-ticket-list .ticket-tab li{display: inline-block;font-size: 0.6vw;letter-spacing: 0;}
+
+.faq-ticket-list .ticket-tab li:first-child{width:80%}
+
+.faq-ticket-list .ticket-tab li:last-child{width:20%}
+
+.faq-ticket-list .ticket-no-data{text-align: center;padding-top: 12vw;color:#999;font-size: .6vw}
+
+.faq-ticket-list .ticket-no-data img{width:4.5vw;margin-bottom:.6vw}
+
+.faq-ticket-list .ticket-item a{display: inline-block;width:100%;height: 2.9vw;line-height: 2.9vw;font-size:0;letter-spacing: 0;padding: 0 1.1vw}
+
+.faq-ticket-list .ticket-item a span:first-child{display:inline-block;font-size: 0.6vw;width: 80%}
+
+.faq-ticket-list .ticket-item a span:last-child{display:inline-block;font-size: 0.6vw;width: 20%}
+
+.faq-ticket-list .ticket-item a:hover{background-color: #f3f7ff;color: #138df5;}
+
+/* FAQ - 工单详情 */
+.faq-ticket-detail{}
+
+.faq-ticket-detail .no-data{text-align: center;font-size: .7vw;color:#999;padding: 5vw 0 4vw 0;}
+
+.faq-ticket-detail .no-data img{margin-bottom:.7vw;width:4vw}
+
+.faq-ticket-detail .ticket-detail-title{width:100%;height: 3.1vw;line-height: 3.1vw;background-color: #fafafa;font-size:14px;letter-spacing: 0;padding:0 1.1vw}
+
+.faq-ticket-detail .ticket-detail-content{position:relative;height:100%;background-color: #fff;}
+
+.faq-ticket-detail .detail-header{width:100%;height: 3.6vw;line-height: 3.6vw;}
+
+.faq-ticket-detail .detail-header ul{padding:0 1.1vw;}
+
+.faq-ticket-detail .detail-header>ul>li{display:inline-block;border:1px solid #eee;height:1.6vw;line-height:1.6vw;border-radius: .8vw;
+	padding: 0 .8vw;color:#172b4d;font-size: .6vw;margin-right: .5vw;}
+
+.faq-ticket-detail .detail-main{margin: 0;border: 0;height: calc(100% - 120px);overflow-y: auto;border-radius: 0;}
+
+.faq-ticket-detail .detail-content .ticket-title{line-height: 3.1vw;font-size: 14px;background-color: #fafafa;padding:0 1.1vw}
+
+.faq-ticket-detail .detail-content .ticket-form{position: relative;font-size: 0;padding:1vw 1.1vw}
+
+.faq-ticket-detail .ticket-form .ticket-form-icon{position: absolute;top: 15px;right: -20px;font-size: 20px;cursor: pointer}
+
+.faq-ticket-detail .ticket-form .ticket-form-icon:hover{color:#23b7e5}
+
+.faq-ticket-detail .ticket-form-item{border:1px solid #ebebeb;margin-bottom: 20px;}
+
+.faq-ticket-detail .ticket-form-item .ticket-form-name{margin: 0 .8vw;line-height: 2.7vw;font-size: 12px;color:#537c8d;border-bottom:1px dashed #ebebeb}
+
+.faq-ticket-detail .ticket-form-item .ticket-option-form{padding: 0 .8vw;line-height: 2.7vw;font-size: 12px;color:#537c8d}
+
+.faq-ticket-detail .ticket-form-item .ticket-option-form .ticket-option-content{color:#333;font-weight: normal;}
+
+.faq-ticket-detail .ticket-form-item .text-form-content{min-height: 2.7vw;padding: .7vw .8vw;font-size: .7vw;color:#333;}
+
+.faq-ticket-detail .ticket-form-item .ticket-textarea-form{line-height: 30px;word-break: break-word}
+
+.faq-ticket-detail .ticket-file{border-bottom:1px solid #dedede;}
+
+.faq-ticket-detail .ticket-file .ticket-attach{line-height: 3.1vw;font-size: 14px;font-weight: normal !important;background-color: #fafafa;padding: 0 1.1vw}
+
+.faq-ticket-detail .ticket-file .ticket-attach span{padding-right: 5px;vertical-align:middle;}
+
+.faq-ticket-detail .ticket-file ul{padding:0 1.1vw .8vw 1.1vw}
+
+.faq-ticket-detail .ticket-file ul li{padding-top:.8vw;color:#537c8d;font-size: 12px;}
+
+.faq-ticket-detail .ticket-file ul li i.icon-xiazai{margin-top: -3px}
+
+.faq-ticket-detail .ticket-file ul li > a{color:#138df5;}
+
+.faq-ticket-detail .ticket-image{padding:1vw 1.1vw;}
+
+.faq-ticket-detail .ticket-image ul{font-size: 0}
+
+.faq-ticket-detail .ticket-image ul li.center-item{margin-left: 1vw;margin-right: 1vw;}
+
+.faq-ticket-detail .ticket-image ul li{display:inline-block;width:calc((100% - 2vw)/3);margin-bottom: 1vw;}
+
+.faq-ticket-detail .ticket-image ul li img{display: inline-block;width: 100%;max-height:200px;border-radius: 5px}
+
+.faq-ticket-detail .ticket-satisfy{}
+
+.faq-ticket-detail .ticket-satisfy .satisfy-header{font-size: 14px;background-color: #fafafa;padding: 0 1.1vw;line-height: 3.1vw;}
+
+.faq-ticket-detail .ticket-satisfy .ticket-satisfy-content{padding:0 1.1vw;margin:1vw 0 1.5vw 0}
+
+.faq-ticket-detail .ticket-satisfy .ticket-satisfy-content .layui-rate{padding:0;margin-top: -3px;}
+
+.faq-ticket-detail .ticket-satisfy .ticket-satisfy-content span{vertical-align: middle;font-size: 12px;margin-right: 5px}
+
+.faq-ticket-detail .ticket-satisfy .ticket-satisfy-content .layui-rate li i.layui-icon{font-size:15px}
+
+.faq-ticket-detail .ticket-satisfy .ticket-satisfy-label{padding:0 1.1vw;margin-bottom:1.5vw}
+
+.faq-ticket-detail .ticket-satisfy .ticket-satisfy-label li.label-item{display: inline-block;margin-right: 5px;border:1px solid #e3e9ed;height: 25px;
+	line-height: 25px;padding: 0 10px;font-size: 12px;color:#666;}
+
+.faq-ticket-detail .ticket-satisfy .satisfy-advise{padding:0 1.1vw;font-size: 12px;margin-bottom:1vw}
+
+/* FAQ - 工单详情 - 回复 */
+
+.faq-ticket-detail .detail-reply{padding-bottom: 20px;}
+
+.faq-ticket-detail .reply-header{line-height: 3.1vw;font-size: 14px;background-color: #fafafa;padding: 0 1.1vw;}
+
+.faq-ticket-detail .reply-item{}
+
+.faq-ticket-detail .reply-item .item{border-bottom:1px solid #eee;padding: 1vw 0}
+
+.faq-ticket-detail .reply-item .item:last-child{border:none}
+
+.faq-ticket-detail .reply-item .item .content-header{padding:0 1.1vw}
+
+.faq-ticket-detail .reply-item .item .content-header .face{width:1.5vw;height:1.5vw;border-radius: 50%;margin-right:.3vw;}
+
+.faq-ticket-detail .reply-item .item .content-header span:nth-child(2){color:#537c8d;font-size:12px;}
+
+.faq-ticket-detail .reply-item .item .content-header span:nth-child(3){color:#32465d;font-size:12px;}
+
+.faq-ticket-detail .reply-item .item .content-header span:nth-child(4){font-size: 12px;color:#666}
+
+.faq-ticket-detail .reply-item .item .reply-content{color:#333;margin-top: .5vw;padding-left: 3vw;font-size: 12px;line-height: 30px;}
+
+.faq-ticket-detail .reply-item .item .reply-content img{margin-right: .5vw !important;border-radius: 5px}
+
+.faq-ticket-detail .reply-item .reply-attach{padding:.5vw 0 0 3vw;}
+
+.faq-ticket-detail .reply-item .attach-item{padding-top: .5vw;font-size:12px;color:#537c8d}
+
+.faq-ticket-detail .reply-item .attach-item a{color:#138df5;margin-left: 5px}
+
+/* FAQ - 表单 */
+
+.faq-form{width: 23.4vw;margin:0 auto;padding:2.6vw;background-color: #fff;box-shadow: 0 0.7vw 1.6vw 0 rgba(0, 18, 36, 0.1);}
+
+.faq-form .form-crumb{font-size: 0.7vw;letter-spacing: 0;color:#333;text-align: center}
+
+.faq-form .faq-form-item{position:relative;margin-top:1.6vw;}
+
+.faq-form .faq-form-item i.iconfont{position: absolute;top:.55vw;left: .6vw;color:#c0c0c0}
+
+.faq-form .faq-form-item input{width:100%;height: 2.1vw;line-height:2.1vw;border: solid 1px #e3e3e3;border-radius: 3px;padding-left: 2vw;}
+
+.faq-form .faq-form-item input:hover,.faq-form .faq-form-item input:focus{border-color:#ccdeff;box-shadow: 0 0 7px #ccdeff;-moz-box-shadow: 0 0 7px #ccdeff;
+	-webkit-box-shadow: 0 0 7px #ccdeff;}
+
+.faq-form .faq-form-item .verify-btn{position: absolute;right:0;width:4.9vw;height: 2.1vw;line-height:2.2vw;color:#fff;background-color: #138df5;
+	text-align: center;font-size: .7vw;border-radius: 0 3px 3px 0;border:none;padding-left: 0;cursor: pointer}
+
+.faq-form .faq-form-item .verify-btn:hover,.faq-form .faq-form-item .verify-btn:focus{border:none;box-shadow: none;-moz-box-shadow:none;-webkit-box-shadow:none}
+
+.faq-form .faq-form-item .verify-btn:hover{opacity: .8}
+
+.faq-form .faq-form-item .submit-btn{display:inline-block;width:100%;height: 2.1vw;line-height:2.1vw;background-color: #138df5;color:#fff;text-align: center;
+	border-radius: 3px;font-size: .8vw}
+
+.faq-form .faq-form-item:last-child a{font-size: .7vw}
+
+/* FAQ - 登录 */
+.faq-shade{position:fixed;top:0;left:0;width: 100%;height: 100%;background-color: #191919;opacity: .7;z-index:3;display: none}
+
+.faq-login{position: absolute;top:13.9vw;left:calc(50% - 11.7vw);z-index: 4;display: none}
+
+.faq-login .faq-login-crumb{position: relative;margin: -.9vw -1.1vw 0 -1.1vw;line-height: 25px;}
+
+.faq-login .faq-login-crumb span{color:#138df5;font-size: 1vw;letter-spacing: 0}
+
+.faq-login .faq-login-crumb i{position:absolute;color:#9eb2d0;right:0;cursor: pointer}
+
+.login-tips .layui-layer-content{box-shadow:none !important;line-height: 5px !important;color:#f56c6c !important;;padding:0 !important;
+	background-color: transparent !important;}
+
+.login-tips i.layui-layer-TipsB{border-right-color: transparent !important;}
+
+
+/* FAQ - 注册 */
+.faq-register{background-color: #fff;}
+
+.faq-register .faq-form{width:26vw;margin: 0 auto;box-shadow: none;padding:2.6vw 0}
+
+
+/* FAQ - 找回密码 - 方式 */
+.faq-reset{background-color: #fff;padding: 3.1vw 6.2vw 2.9vw 6.2vw;min-height: 37.5vw}
+
+.faq-reset-tab{position:relative;font-size: 0;margin-bottom:7vw}
+
+.faq-reset-tab .line{display:inline-block;height: .1vw;background-color: #bad0f7;width:25vw}
+
+.faq-reset-tab .line.current{background-color: #138df5}
+
+.faq-reset-tab .tab-item{position:absolute;text-align: center;}
+
+.faq-reset-tab .tab-item span{display: inline-block;font-size: 1vw;background-color:#a2bbe8;color:#fff;width:1.6vw;height: 1.6vw;border-radius: 1.6vw;
+	line-height: 1.6vw;}
+
+.faq-reset-tab .tab-item p{font-size: .7vw;color:#a2bbe8;margin-top: .6vw;}
+
+.faq-reset-tab .tab-item.current span{background-color:#138df5;}
+
+.faq-reset-tab .tab-item.current p{color:#138df5;}
+
+.faq-reset-tab .tab-item:nth-child(1){left: -2.9vw;top:-.8vw;}
+
+.faq-reset-tab .tab-item:nth-child(3){left: 24vw;top:-.7vw;}
+
+.faq-reset-tab .tab-item:nth-child(5){right: -2.9vw;top:-.7vw;}
+
+/* FAQ - 找回密码 - 设置 */
+.faq-reset-way{padding: 0 14.1vw 11.2vw 14.1vw;}
+
+.faq-reset-way .way-item{display: block;height: 6.3vw;line-height: 6.3vw;border-radius: 0.3vw;font-size: 1vw;padding: 0 0 0 4.2vw;
+	background-color: #f3f7ff;color:#138df5;letter-spacing: 0;width: 23.5vw;border:1px solid #bad0f7}
+
+.faq-reset-way .way-item i{color:#ffbf25;font-size: 1.5vw;margin-right: .5vw;}
+
+.faq-reset-way .way-item:nth-child(1){margin-bottom:2.7vw}
+
+.faq-reset-way .way-item:nth-child(2) i{color:#00cea0}
+
+.faq-reset-way .way-item:hover{background-color: #138df5;color:#fff;}
+
+.faq-reset-form .faq-form .faq-form-item:first-child{margin:0}
+
+.faq-reset-success{text-align: center}
+
+.faq-reset-success img{width: 5.7vw;}
+
+.faq-reset-success p{font-size: 0.8vw;margin:1.6vw 0}
+
+.faq-reset-success a{display: block;width: 13vw;height: 2.1vw;line-height:2.1vw;background-color: #138df5;border-radius: 0.2vw;font-size: 0.8vw;
+	text-align: center;margin: 0 auto;color:#fff;}
+
+@media only screen and (max-width: 590px) {
+
+	.visitor-form .layui-form-checkbox[lay-skin=primary] i {top: 1.6vw !important;width: 2.1vw !important;height: 2.1vw !important;line-height: 2.1vw !important;}
+}
+
+@media only screen and (max-width: 689px){
+
+	.visitor-form .layui-form-item .layui-form-label{height:30px;line-height:30px;}
+
+	.visitor-form .layui-input{height: 30px;font-size: 12px;}
+
+	.visitor-form .layui-btn-normal{background-color: #2c6ee5;width:8.5vw;border-radius: 3px;height: 30px;line-height: 30px;color:#fff;}
+
+	.visitor-form .layui-form-checkbox[lay-skin=primary]{height:30px;line-height:30px;padding-left: 3.5vw;}
+
+	.visitor-form .layui-form-checkbox[lay-skin=primary] span{line-height: 30px;}
+
+	.visitor-form .layui-form-radio{height:30px;line-height:30px;}
+
+	.visitor-form .layui-form-checkbox[lay-skin=primary] i {top: 1.2vw;width: 2vw;height: 2vw;line-height: 2vw;}
+
+	.visitor-form .layui-form-radio>i{font-size: 2.5vw}
+
+	.visitor-form .layui-form-select .layui-edge{border-width: .6vw;}
+
+	.visitor-form .layui-upload-drag{height: 19vw;}
+
+	.visitor-form .attach-item .layui-btn{height: 30px;line-height: 30px;}
+
+	.visitor-form .attach-item .layui-btn .layui-icon{font-size: 2.5vw}
+
+	.visitor-form .visitor-success img{width: 15vw;}
+
+	.visitor-form .visitor-success a{height: 30px;line-height: 30px;width:25vw}
+
+	.slide-verify{height: 30px;}
+
+	.slide-verify .fix-tips, .verify-msg{height: 30px;line-height: 30px;}
+
+	.slide-verify .drag-btn{height: 30px;background: #fff url(/Public/img/verify-slide-1.png) no-repeat center center;}
+
+	.slide-verify .suc-drag-btn {height: 30px;background: #fff url(/Public/img/verify-done-1.png) no-repeat center center;}
+
+	.slide-verify .drag-progress{height: 30px;line-height: 30px}
+}
+
+@media only screen and (max-width: 1400px){
+
+	.faq-form .faq-form-item i.iconfont{top:.5vw}
+
+	.faq-form .faq-form-item input{height: 30px;line-height:30px;padding-left: 2.5vw;font-size: 12px;}
+
+	.faq-form .faq-form-item .verify-btn{height: 30px;line-height:30px;width:7vw}
+
+	.faq-form .faq-form-item{margin-top: 25px}
+
+	.slide-verify{height: 30px;}
+
+	.slide-verify .fix-tips, .verify-msg{height: 30px;line-height: 30px;}
+
+	.slide-verify .drag-btn{height: 30px;background: #fff url(/Public/img/verify-slide-1.png) no-repeat center center;}
+
+	.slide-verify .suc-drag-btn {height: 30px;background: #fff url(/Public/img/verify-done-1.png) no-repeat center center;}
+
+	.slide-verify .drag-progress{height: 30px;line-height: 30px}
+
+	.faq-form .faq-form-item .submit-btn{height: 30px;line-height: 30px}
+
+	.faq-ticket-detail .ticket-detail-title{height: 4vw;line-height: 4vw;}
+
+	.faq-ticket-detail .detail-header{height: 5vw;line-height: 5vw;}
+
+	.faq-ticket-detail .detail-header>ul>li{height: 30px;line-height: 30px;border-radius: 15px;margin-right:10px;padding:0 10px;font-size: 12px}
+}
+
+
+/* FAQ - 底部 */
+.faq-footer{background-color: #3e464f;height: 4.2vw;line-height: 4.2vw;text-align: center;color:#fff;font-size: 0.7vw;letter-spacing: 0;}

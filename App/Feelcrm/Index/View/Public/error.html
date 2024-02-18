@@ -1,0 +1,50 @@
+<!-- 头部 -->
+<include file="Public/header" /> 
+
+<?php 
+	
+	$waitSecond = $waitSecond ? $waitSecond : 3;
+
+?>
+
+<script type="text/javascript"> 
+
+	var t = "<?php echo($waitSecond-1); ?>";
+
+	var url = "<?php echo($jumpUrl); ?>";
+
+	setInterval("refer()",1000); //启动1秒定时 
+
+	function refer()
+	{
+		if(t == 0)
+		{
+			window.parent.location.href = url; //#设定跳转的链接地址
+		}
+
+		document.getElementById('time').innerHTML = t; // 显示倒计时 
+
+		t--; // 计数器递减 
+	}
+
+</script>
+
+<div class="feeldesk-error">
+
+	<div class="feeldesk-error-div1">
+
+		<span></span>
+
+		<div>
+
+			<p><img src="__PUBLIC__/img/error.png" alt=""></p>
+
+			<p class="feeldesk-error-message">{:L('ERROR1')}：<?php echo $error?></p>
+
+			<p class="feeldesk-error-jump">{:L('ERROR2')} <span class="orange1" id="time"><?php echo $waitSecond;?></span> {:L('ERROR3')}! <a href="<?php echo($jumpUrl); ?>" id="jump" target="_parent">{:L('ERROR4')}</a></p>
+
+		</div>
+	
+	</div>
+
+</div>

@@ -1,0 +1,44 @@
+<!-- 头部 -->
+<include file="Public/header" /> 
+
+<script type="text/javascript"> 
+
+	var t = 2;
+
+	var url = "<?php echo($jumpUrl); ?>";
+
+	setInterval("refer()",1000); //启动1秒定时 
+
+	function refer()
+	{
+		if(t == 0)
+		{
+			window.parent.location.href = url; //#设定跳转的链接地址 
+		}
+
+		document.getElementById('time').innerHTML = t; // 显示倒计时 
+
+		t--; // 计数器递减 
+	}
+
+</script>
+
+<div class="feeldesk-success">
+
+	<div class="feeldesk-success-div1">
+
+		<span></span>
+
+		<div>
+
+			<p><img src="__PUBLIC__/img/success.png" alt=""></p>
+
+			<p class="feeldesk-success-message"><?php echo $message?></p>
+
+			<p class="feeldesk-success-jump">{:L('ERROR2')} <span class="orange1" id="time">3</span> {:L('ERROR3')}! <a href="<?php echo($jumpUrl); ?>" id="jump" target="_parent">{:L('ERROR4')}</a></p>
+
+		</div>
+	
+	</div>
+
+</div>

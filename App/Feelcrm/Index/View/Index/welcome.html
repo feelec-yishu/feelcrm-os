@@ -1,0 +1,463 @@
+<!-- 头部 -->
+<include file="Public/header" />
+
+<div class="fd-right-main bg-F2F3F8">
+
+    <div class="fd-body">
+
+        <div class="welcome">
+
+            <div class="welcome-left">
+
+                <!-- 工单信息 -->
+                <ul class="welcome-ticket">
+
+                    <if condition="$ticket['auth']['wait_reply']">
+
+                        <li>
+
+                            <a href="{:U('Ticket/waitReplyTicket')}">
+
+                                <div class="ticket-icon"><i class="iconfont icon-waitReplyTicket"></i></div>
+
+                                <div class="ticket-info"><p>{$ticket['number']['wait_reply']}</p><p>{:L('WAIT_TICKET')}</p></div>
+
+                            </a>
+
+                        </li>
+
+                    </if>
+
+                    <if condition="$ticket['auth']['timeout']">
+
+                        <li>
+
+                            <a href="{:U('Ticket/timeoutTicket')}">
+
+                                <div class="ticket-icon"><i class="iconfont icon-timeoutTicket"></i></div>
+
+                                <div class="ticket-info"><p>{$ticket['number']['timeout']}</p><p>{:L('TIMEOUT_TICKET')}</p></div>
+
+                            </a>
+
+                        </li>
+
+                    </if>
+
+                    <if condition="$ticket['auth']['wait_audit']">
+
+                        <li>
+
+                            <a href="{:U('Ticket/waitAuditTicket')}">
+
+                                <div class="ticket-icon"><i class="iconfont icon-waitAuditTicket"></i></div>
+
+                                <div class="ticket-info"><p>{$ticket['number']['wait_audit']}</p><p>{:L('WAIT_PENDING_TICKET')}</p></div>
+
+                            </a>
+
+                        </li>
+
+                    </if>
+
+                    <if condition="$ticket['auth']['department']">
+
+                        <li>
+
+                            <a href="{:U('Ticket/groupTicket')}">
+
+                                <div class="ticket-icon"><i class="iconfont icon-groupTicket"></i></div>
+
+                                <div class="ticket-info"><p>{$ticket['number']['department']}</p><p>{:L('GROUP_TICKET')}</p></div>
+
+                            </a>
+
+                        </li>
+
+                    </if>
+
+                </ul>
+
+                <!-- 公告信息 -->
+                <div class="welcome-notice">
+
+                    <div class="notice-header"><i class="iconfont icon-welcome-notice"></i> {:L('NOTICE')}</div>
+
+                    <div class="notice-main">
+
+                        <notempty name="notice">
+
+                            <volist name="notice" id="vo">
+
+                                <a href="javascript:openNoticeDetail('{:encrypt($vo[notice_id],NOTICE)}')" class="notice-item ellipsis">
+                                    <i></i>
+                                    <span>{$vo.notice_title}</span>
+                                </a>
+
+                            </volist>
+
+                        <else />
+
+                            <div class="welcome-no-data">{:L('NO_DATA')}</div>
+
+                        </notempty>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="welcome-right">
+
+                <!-- 数据分析 -->
+                <div class="welcome-analysis">
+
+                    <form action="" id="analysis-form">
+
+                        <input type="hidden" name='select_auth_range' value="{$select_auth_range}" />
+
+                        <input type="hidden" name='custom_time' value="{$custom_time}" />
+
+                        <div class="analysis-header">
+
+                            <div class="analysis-auth-filter">
+
+                                <a href="javascript:" data-value='all' class="<eq name='select_auth_range' value='all'>current</eq>">{:L('WHOLE')}</a>
+
+                                <a href="javascript:" data-value='group' class="<eq name='select_auth_range' value='group'>current</eq>">{:L('GROUP')}</a>
+
+                                <a href="javascript:" data-value='own' class="<eq name='select_auth_range' value='own'>current</eq>">{:L('OWN')}</a>
+
+                            </div>
+
+                            <div class="analysis-time-filter layui-form">
+
+                                <select name="select_time_range" lay-filter="time-range">
+
+                                    <option value="today" <eq name="select_time_range" value="today">selected</eq>>{:L('IN_ONE_DAY')}</option>
+
+                                    <option value="week" <eq name="select_time_range" value="week">selected</eq>>{:L('WITHIN_A_WEEK')}</option>
+
+                                    <option value="month" <eq name="select_time_range" value="month">selected</eq>>{:L('WITHIN_ONE_MONTH')}</option>
+
+                                    <option value="datetime" <eq name="select_time_range" value="datetime">selected</eq>>{:L('CUSTOM')}</option>
+
+                                </select>
+
+                                <input type="text" name='custom_time' value="{$custom_time}" id="custom-time" placeholder="{:L('START_END')}"
+                                       class="custom-time layui-input <empty name='custom_time'>hidden</empty>"/>
+
+                            </div>
+
+                        </div>
+
+                        <div class="analysis-main" id="analysis-main"></div>
+
+                    </form>
+
+                    <script type="text/javascript">
+
+                        $(function ()
+                        {
+                            layui.use(['form','laydate'],function()
+                            {
+                                var form = layui.form;
+
+                                $('.analysis-auth-filter a').on('click',function()
+                                {
+                                    var value = $(this).data('value');
+
+                                    $("input[name='select_auth_range']").val(value);
+
+                                    $('#analysis-form').submit();
+                                });
+
+                                form.on('select(time-range)',function (data)
+                                {
+                                    if(data.value === 'datetime')
+                                    {
+                                        $('#custom-time').removeClass('hidden');
+                                    }
+                                    else
+                                    {
+                                        $('#custom-time').addClass('hidden');
+
+                                        $('#analysis-form').submit();
+                                    }
+                                });
+
+                                var maxDate = "{$Think.NOW_TIME|getDates='2'}";
+
+                                var laydate = layui.laydate;
+
+                                var option = {
+                                    elem:'#custom-time',
+                                    range: '~',
+                                    trigger: 'click',
+                                    max: maxDate,
+                                    btns: ['clear', 'confirm'],
+                                    done: function(value)
+                                    {
+                                        if(value)
+                                        {
+                                            $("input[name='custom_time']").val(value);
+
+                                            $('#analysis-form').submit();
+                                        }
+                                    }
+                                };
+
+                                laydate.render(option);
+                            })
+                        })
+
+                    </script>
+
+                </div>
+
+                <!-- 我处理的 -->
+                <div class="welcome-handler">
+
+                    <div class="handler-header">
+
+                        <i class="iconfont icon-welcome-handler"></i>{:L('DEAL_TICKET')}
+
+                        <div class="handler-header-right">
+
+                            <div class="header-tab current" id='ticket-tab' onclick="changeHandlerTab('ticket-tab')">{:L('TICKET')}</div>
+
+                            <div class="header-tab" id='sub-ticket-tab' onclick="changeHandlerTab('sub-ticket-tab')">{:L('SUB_TICKET')}</div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="handler-main" data-tab="ticket-tab">
+
+                        <notempty name="ticketData.ticket">
+
+                            <volist name="ticketData.ticket" id="vo">
+
+                                <a href="javascript:" data-id="{:encrypt($vo['ticket_id'],'TICKET')}" class="process-item" mini="ticketDetail">
+
+                                    <span class="process-status" style="background-color:{$ticket_status[$vo['status_id']]['status_color']}">{$ticket_status[$vo['status_id']]['lang_name']}</span>
+
+                                    <span class="process-priority {$priority['color'][$vo['priority']]}">{$priority['data'][$vo['priority']]}</span>
+
+                                    <span class="ticket-title ellipsis">{$vo.title}</span>
+
+                                    <div class="process-item-right">
+                                        {$members[$vo['member_id']]['name']}
+                                        <img src="{$members[$ticket['member_id']]['face']|default='/Attachs/face/face.png'}" alt="">
+                                    </div>
+
+                                </a>
+
+                            </volist>
+
+                        <else />
+
+                            <div class="welcome-no-data">{:L('NO_DATA')}</div>
+
+                        </notempty>
+
+                    </div>
+
+                    <div class="handler-main hidden" data-tab="sub-ticket-tab">
+
+                        <notempty name="ticketData.subTicket">
+
+                            <volist name="ticketData.subTicket" id="vo">
+
+                                <a href="javascript:" data-id="{:encrypt($vo['ticket_id'],'SUB_TICKET')}" class="process-item" mini="subTicket">
+
+                                    <if condition="$vo['status_id'] eq 10">
+
+                                        <span class='process-status bg-ff2e4b'>{:L('WAIT_PROCESS')}</span>
+
+                                    <else />
+
+                                        <span class='process-status bg-85D654'>{:L('COMPLETED')}</span>
+
+                                    </if>
+
+                                    <span>{$vo.title}</span>
+
+                                    <div class="process-item-right">
+                                        {$members[$vo['member_id']]['name']}
+                                        <img src="{$members[$ticket['member_id']]['face']|default='/Attachs/face/face.png'}" alt="">
+                                    </div>
+
+                                </a>
+
+                            </volist>
+
+                        <else />
+
+                            <div class="welcome-no-data">{:L('NO_DATA')}</div>
+
+                        </notempty>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="__PUBLIC__/js/echarts/echarts.min.js"></script>
+
+<script type="text/javascript">
+
+    var changeHandlerTab = function(id)
+    {
+        $('#'+id).addClass('current').siblings().removeClass('current');
+
+        $(".handler-main[data-tab='"+id+"']").removeClass('hidden').siblings('.handler-main').addClass('hidden');
+    };
+
+    var charts = echarts.init(document.getElementById('analysis-main'));
+
+    var option =
+    {
+        color:['#938dfd','#4397ff','#2c6ee5'],
+        tooltip:
+        {
+            trigger: 'axis',
+            //鼠标移入后的指示器
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#eee',
+                    shadowColor:'#eee',
+                    color:'#666'
+                },
+                lineStyle:{
+                    color:'#eee'
+                }
+            }
+        },
+        legend: {
+            textStyle:{
+                color:'#666',
+                padding:[0,30,-3,3]
+            },
+            icon:'circle',
+            itemWidth :11,
+            itemHeight:11,
+            data: ["{:L('SERIES2')}","{:L('SERIES1')}","{:L('SERIES3')}"]
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: 0,
+            right: '2%',
+            bottom: '4%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                axisTick: {           //去掉坐标轴刻线
+                    show: false
+                },
+                //坐标轴线
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#eee'
+                    }
+                },
+                axisLabel:{
+                    color:'#666'
+                },
+                //坐标轴内的区域分割线
+                splitLine:{
+                    lineStyle:{
+                        color:'#eee'
+                    }
+                },
+                data: JSON.parse('{$dateTimes}')
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisTick: {           //去掉坐标轴刻度线
+                    show: false
+                },
+                minInterval:1,
+                //坐标轴线
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#eee'
+                    }
+                },
+                axisLabel:{
+                    color:'#666'
+                },
+                //坐标轴内的区域分割线
+                splitLine:{
+                    lineStyle:{
+                        color:'#eee'
+                    }
+                }
+            }
+        ],
+        series: [
+            {
+                name: "{:L('SERIES2')}",//当日发布工单数
+                type: 'line',
+                stack: "{:L('TOTAL1')}",
+                lineStyle:{
+                    color:'#938dfd',
+                    width:1
+                },
+                areaStyle: {
+                    color:'#e9e8ff'
+                },
+                data: JSON.parse('{$releaseNumbers}')
+            },
+            {
+                name: "{:L('SERIES1')}",//当日处理工单数
+                type: 'line',
+                stack: "{:L('TOTAL1')}",
+                lineStyle:{
+                    color:'#4397ff',
+                    width:1
+                },
+                areaStyle: {
+                    color:'#d9eaff'
+                },
+                data: JSON.parse('{$handleNumbers}')
+            },
+            {
+                name: "{:L('SERIES3')}",//当日完成工单数
+                type: 'line',
+                stack: "{:L('TOTAL1')}",
+                lineStyle:{
+                    color:'#2c6ee5',
+                    width:1
+                },
+                areaStyle: {
+                    color:'#d0f4f5'
+                },
+                data: JSON.parse('{$completeNumbers}')
+            }
+        ]
+    };
+
+    charts.setOption(option);
+
+</script>

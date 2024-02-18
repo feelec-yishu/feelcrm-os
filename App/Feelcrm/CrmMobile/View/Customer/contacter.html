@@ -1,0 +1,115 @@
+<include file="Public/header" />
+
+<div class="feeldesk">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1);location.replace(document.referrer)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('CUSTOMER_CONTACT')}</div>
+
+			<notempty name="isCreateContacterAuth">
+
+				<a href="{:U('Customer/create_contacter')}" class="header-right">{:L('ADD')}</a>
+
+			</notempty>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main plr2 feelcrm-footer-list">
+
+        <div class='feeldesk-item' id='customerItem'>
+
+
+
+        </div>
+
+        <include file="Public/buoy" />
+
+    </div>
+
+</div>
+
+<include file="Public/footer" />
+
+<script type="text/javascript">
+
+    layui.use('flow', function()
+    {
+        var flow = layui.flow;
+
+		var isDeleteContacterAuth = '{$isDeleteContacterAuth}';
+
+        flow.load(
+        {
+            elem: '#customerItem',
+            scrollElem:'.feeldesk-main',
+            isAuto:false,
+            done: function(page, next)
+            {
+                var url = "{$Think.ACTION_NAME}";
+
+                var lis = [];
+
+                $.get("{:U('customer/'.ACTION_NAME)}?p="+page+"&request=flow", function(data)
+                {
+                    layui.each(data.data, function(index, item)
+                    {
+                        var url = "{:U('Customer/edit_contacter')}?id="+item.contacter_id;
+
+                        var deleteUrl = "{:U('Customer/delete_contacter')}?id="+item.contacter_id;
+
+                        var customerUrl = "{:U('Customer/detail')}?id="+item.customer_id;
+
+                        var isRead = '';
+
+                        if(item.look == 2)
+                        {
+                            isRead = 'ticket-read';
+                        }
+
+						if(item.contacter_id == item.first_contact_id)
+						{
+							 var items = "<div class='feeldesk-list feelcrm-mobile-list'>" +
+                                 "<a href='"+url+"' class='clearfix customer-item'>" +
+                                     "<div class='feeldesk-list-left'>" +
+                                        "<div class='customer-name ellipsis'>"+item.detail.name+"<span class='customer-first'>({:L('PRIMARY')})</span></div>" +
+                                        "<div class='customer-server'>{:L('CONTACT_WAY')}："+item.detail.phone+"</div>" +
+                                        "<div class='customer-server ellipsis'>{:L('OWNED_CUSTOMER')}：<span class='blue8' onclick='tocrmdetail(\""+customerUrl+"\")'>"+item.customer_name+"</span></div>" +
+                                    "</div>" +
+                                     "<div class='feeldesk-list-right'><span >"+item.member_name+"</span></div>" +
+                                     "<div class='clear'></div>" +
+                                 "</a>" +
+                                 "<span class='customer-delete'><a href='"+deleteUrl+"' class='iconfont icon-delete' mini='delete'></a></span></div>";
+						}
+						else
+						{
+							 var items = "<div class='feeldesk-list feelcrm-mobile-list'>" +
+                                 "<a href='"+url+"' class='clearfix customer-item'>" +
+                                    "<div class='feeldesk-list-left'>" +
+                                        "<div class='customer-name ellipsis'>"+item.detail.name+"</div>" +
+                                        "<div class='customer-server'>{:L('CONTACT_WAY')}："+item.detail.phone+"</div>" +
+                                        "<div class='customer-server ellipsis'>{:L('OWNED_CUSTOMER')}：<span class='blue8' onclick='tocrmdetail(\""+customerUrl+"\")'>"+item.customer_name+"</span></div>" +
+                                    "</div>" +
+                                    "<div class='feeldesk-list-right'><span >"+item.member_name+"</span></div>" +
+                                    "<div class='clear'></div>" +
+                                 "</a>" +
+                                 "<span class='customer-delete'><a href='"+deleteUrl+"' class='iconfont icon-delete' mini='delete'></a></span></div>";
+						}
+
+
+                        lis.push(items);
+                    });
+
+                    next(lis.join(''), page < data.pages);
+                });
+
+            }
+        });
+    });
+
+</script>

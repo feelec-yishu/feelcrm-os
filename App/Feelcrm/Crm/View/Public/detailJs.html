@@ -1,0 +1,35 @@
+<script type="text/javascript">
+
+	$('body').find('#closeCustomerDetail').click(function()
+	{
+		window.parent.postMessage('closeDetail','*');
+	});
+
+	window.addEventListener('message', function(e)
+	{
+		if(e.data)
+		{
+			window.formCustomer = 1;
+		}
+	}, false)
+	
+	$(function(){
+		
+		var Awidth = $('.form-nav').width();
+	
+		var linum = $('.form-nav ul').children("li").length;
+		
+		var liwidth = 130 * linum;
+		
+		if(Awidth > liwidth)
+		{
+			$('.form-nav ul').css('min-width',Awidth+'px');
+		}
+		else
+		{
+			$('.form-nav ul').css('min-width',liwidth+'px');
+		}
+		
+	})
+	
+</script>

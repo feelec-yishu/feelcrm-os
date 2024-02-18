@@ -1,0 +1,69 @@
+﻿<include file="Public/header" />
+
+<div class="feeldesk feeldesk-setting">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="{:U('setting/index',['source'=>'set-window','system'=>$system])}" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('LANGUAGE')}</div>
+
+            <a href="javascript:" class="header-right" id="submitForm" action="Language">{:L('COMPLETE')}</a>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <form id="feeldeskForm" class="bgf">
+
+            <input type="hidden" name="lang" value="{$lang}" id="lang">
+
+            <div class="language-item">
+
+                <volist name="language" id="vo">
+
+                    <div class="setting-inline" data-value="{$vo.lang}">
+
+                        <eq name="vo.id" value="1"><img src="__PUBLIC__/img/china.png"  /></eq>
+
+                        <eq name="vo.id" value="2"><img src="__PUBLIC__/img/english.png"  /></eq>
+
+                        <eq name="vo.id" value="3"><img src="__PUBLIC__/img/japan.png"  /></eq>
+
+                        <div class="language-item-name">{$vo.text}</div>
+
+                        <div class="language-item-right iconfont <eq name='lang' value='$vo[lang]'>icon-checked</eq>"></div>
+
+                    </div>
+
+                </volist>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(function()
+    {
+        $('.setting-inline').unbind('click').on('click',function()
+        {
+            var value = $(this).data('value');
+
+            $('.language-item-right').removeClass('icon-checked');
+
+            $(this).find('div.iconfont').addClass('icon-checked');
+
+            $('#lang').val(value);
+        })
+    })
+
+</script>

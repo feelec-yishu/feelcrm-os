@@ -1,0 +1,123 @@
+<div class="sClue" id="sClue">
+
+	<div class="sClue-shade"></div>
+
+	<div class="sClue-content">
+
+		<header>
+
+			<a href="javascript:" class="sClue-cancel" id="sClueCancel">{:L('CANCEL')}</a>
+
+			<div class="sClue-search">
+
+				<i class="iconfont icon-search"></i>
+
+				<input type="text" name='' id="sClueSearch" placeholder="{:L('CLIENT_NAME')}">
+
+			</div>
+
+			<a href="javascript:" class="sClue-ensure" id="sClueDone">{:L('COMPLETE')}</a>
+
+		</header>
+
+		<main id="sClueItem"><div class="no-match">{:L('NO_MATCH')}</div></main>
+
+	</div>
+
+</div>
+
+<script>
+
+	var no_more = "{:L('NO_MORE')}";
+
+	var selectActionUrl = '/{$Think.CONTROLLER_NAME}/{$Think.ACTION_NAME}';
+
+	var selectAction = '{$Think.ACTION_NAME}';
+
+	$('#selectClue').click(function()
+	{
+		var company_id = '{$mobile.company_id}';
+
+		$('#sClue').toggleClass('sClue-show');
+
+		if($('.sClue-show').length > 0)
+		{
+			togetClueList();
+		}
+
+		$('#sClueCancel').unbind('click').on('click',function()
+		{
+			$('#sClue').toggleClass('sClue-show');
+		});
+
+		$('#sClueSearch').keyup(function ()
+		{
+			var value = $(this).val();
+
+			if(value)
+			{
+				togetClueList(value);
+			}
+			else
+			{
+				togetClueList();
+			}
+		});
+	})
+
+	function togetClueList(keyword='')
+	{
+		$("#sClueItem").empty();
+
+		layui.use('flow', function ()
+		{
+			var flow = layui.flow;
+
+			flow.load(
+			{
+				elem: '#sClueItem',
+				end: no_more,
+				done: function (page, next)
+				{
+					$.post("{:U('AjaxRequest/getClueList')}?request=sClue&keyword="+keyword+"&p=" + page, function (data)
+					{
+						var lis = [];
+
+						var item = '';
+
+						$.each(data.data,function(k,v)
+						{
+							item +="<div class='sClue-item' data-value='"+v.clue_id+"' data-name='"+v.detail.name+"'>" +
+								"<span class='ticket-title ellipsis'>"+ v.detail.name+"</span>" +
+								"<span class='iconfont icon-check'></span></div>"
+						});
+
+						lis.push(item);
+
+						next(lis.join(''), page < data.pages);
+
+						$('.sClue-item').unbind('click').on('click',function()
+						{
+							$(this).find('span.iconfont').addClass('icon-radio-checked').parent().siblings().find('span').removeClass('icon-radio-checked');
+						})
+
+					},'JSON');
+				}
+			});
+		});
+
+		$('#sClueDone').unbind('click').on('click',function()
+		{
+			var clue_id = $('.sClue-item').find('span.icon-radio-checked').parent().data('value');
+
+			var clue_name = $('.sClue-item').find('span.icon-radio-checked').parent().data('name');
+
+			$('#sClueInput').val(clue_id);
+
+			$('#sClueName').html(clue_name);
+
+			$('#sClue').toggleClass('sClue-show');
+		})
+	}
+
+</script>

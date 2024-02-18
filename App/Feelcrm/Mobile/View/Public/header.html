@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <!-- 移动端视口说明 -->
+		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+		<title>{:C('WEB_TITLE')}</title>
+
+		<link rel="stylesheet" href="__PUBLIC__/css/common.css"/>
+
+		<link rel="stylesheet" href="__PUBLIC__/js/layui/css/layui.css"/>
+
+        <link rel="stylesheet prefetch" href="__PUBLIC__/js/photoswipe/photoswipe.css">
+
+        <link rel="stylesheet prefetch" href="__PUBLIC__/js/photoswipe/default-skin/default-skin.css">
+
+        <link rel="stylesheet" href="MOBILE_PUBLIC_CSS/mobile-terminal.css"/>
+
+        <link rel="stylesheet" href="{:C('MOBILE_ICON_HTTP')}"/>
+
+		<link rel="stylesheet" href="__PUBLIC__/js/mobileSelect/mobileSelect.css">
+
+		<link rel="stylesheet" href="__PUBLIC__/js/mobile-date/mobile-date.css">
+
+		<if condition="$is_app eq 1">
+
+			<link rel="stylesheet" href="MOBILE_PUBLIC_CSS/app.css"/>
+
+		</if>
+
+		<link rel="stylesheet" href="__PUBLIC__/js/jeDate/skin/jedate.css">
+
+		<script type="text/javascript" >
+
+			const moduleName = "{$Think.MODULE_NAME}";
+
+		</script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.1.min.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/cookie/jquery.cookie.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/lang/{$Think.cookie.think_language|getStrToLower}.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/layui/layui.js"></script>
+
+		<!-- uni 的 SDK -->
+		<script type="text/javascript" src="__PUBLIC__/js/uni.webview.1.5.2.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/WeChat/wechatglobal.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/WeChat/wechatupload.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/photoswipe/photoswipe.min.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/photoswipe/photoswipe-ui-default.min.js"></script>
+
+        <script type="text/javascript" src="__PUBLIC__/js/WeChat/iscroll.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/mobile-date/mobile-date.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/jeDate/src/jedate.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/feeldesk-slide.js"></script>
+
+		<script type="text/javascript" src='__PUBLIC__/js/socket.io.js'></script>
+
+		<script type="text/javascript">
+
+			var socketUrl = "{:C('SOCKET_IO_URL')}";
+
+			document.addEventListener('UniAppJSBridgeReady', function()
+			{
+				uni.getEnv(function(res)
+				{
+					if (res.plus)//res.h5
+					{
+						isApp = true;
+
+						if($('#login-trigger').length > 0)
+						{
+							document.querySelector('#login-trigger').addEventListener('click', function(e)
+							{
+								var target = e.target;
+
+								uni.postMessage({
+									data: {
+										uid: $(target).data('value'),
+										cid: $(target).data('c-value')
+									}
+								})
+							});
+						}
+					}
+				});
+			});
+
+		</script>
+
+		<style type="text/css">
+
+            body{background-color: #fafafa}
+
+        </style>
+
+	</head>
+
+    <body>
+

@@ -1,0 +1,21 @@
+<div class="list-filter select-fiter" data-type="customer_auth">
+
+	<div class="list-filter-tit">{:L('VIEW_RANGE')}</div>
+
+	<notempty name="isCreaterView">
+
+		<notempty name="isOwnViewAuth"><div class="list-filter-option <eq name='customer_auth' value='own-charge'>active</eq>" data-value="own-charge">{:L('MY_CHARGE')}</div></notempty>
+
+		<notempty name="isOwnViewAuth"><div class="list-filter-option <eq name='customer_auth' value='own-create'>active</eq>" data-value="own-create">{:L('MY_CREATED')}</div></notempty>
+
+	<else/>
+
+		<notempty name="isOwnViewAuth"><div class="list-filter-option <eq name='customer_auth' value='own'>active</eq>" data-value="own">{:L('PERSONAL')}</div></notempty>
+
+	</notempty>
+
+	<notempty name="isGroupViewAuth"><div class="list-filter-option <eq name='customer_auth' value='group'>active</eq>" data-value="group">{:L('GROUP')}</div></notempty>
+
+	<notempty name="isAllViewAuth"><div class="list-filter-option <eq name='customer_auth' value='all'>active</eq>" data-value="all">{:L('WHOLE')}</div></notempty>
+
+</div>

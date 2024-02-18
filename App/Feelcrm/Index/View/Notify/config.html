@@ -1,0 +1,481 @@
+<extend name="Public:common"/>
+
+<block name="crumb1">{:L('NOTIFY_MANAGER')}</block>
+
+<block name="content">
+
+    <div class="list-main notify-config">
+
+        <form class='layui-form'>
+
+            <div class="feeldesk-form relative hg100">
+
+                <div class="layui-tab mt0 hg100">
+
+                    <ul class="layui-tab-title">
+
+                        <eq name="systemAuth.crm_auth" value="10"><li class="layui-this">CRM</li></eq>
+
+                    </ul>
+
+                    <div class="layui-tab-content">
+
+                        <eq name="systemAuth.crm_auth" value="10">
+
+                            <div class="layui-tab-item layui-show">
+
+                                <div class="notice-item-content" style="height: calc(100% - 50px);">
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-notify-assign"></i>{:L('CLUE_ASSIGNMENT_NOTICE')}</div>
+
+                                        <div class="notify-switch">
+
+                                            <div class="layui-form-item">
+
+                                                <div class="layui-input-block">
+
+                                                    <input type="checkbox" name="crmConfig[allot_clue_notify]" lay-skin="switch" <eq name='crmConfig.allot_clue_notify' value='10'>checked</eq> <empty name='crmConfig.allot_clue_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-lingqurenwu"></i>{:L('CLUE_COLLECTION_NOTICE')}</div>
+
+                                        <div class="notify-switch">
+
+                                            <div class="layui-form-item">
+
+                                                <div class="layui-input-block">
+
+                                                    <input type="checkbox" name="crmConfig[draw_clue_notify]" lay-skin="switch" <eq name='crmConfig.draw_clue_notify' value='10'>checked</eq> <empty name='crmConfig.draw_clue_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-fenpei"></i>{:L('CLUE_TRANSFER_NOTICE')}</div>
+
+                                        <div class="notify-switch">
+
+                                            <div class="layui-form-item">
+
+                                                <div class="layui-input-block">
+
+                                                    <input type="checkbox" name="crmConfig[transfer_clue_notify]" lay-skin="switch" <eq name='crmConfig.transfer_clue_notify' value='10'>checked</eq> <empty name='crmConfig.transfer_clue_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-genjin"></i>{:L('CLUE_PENDING_FOLLOW_UP_NOTICE')}</div>
+
+                                        <div class="notify-switch">
+
+                                            <div class="layui-form-item">
+
+                                                <div class="layui-input-block">
+
+                                                    <input type="checkbox" name="crmConfig[follow_clue_notify]" lay-skin="switch" <eq name='crmConfig.follow_clue_notify' value='10'>checked</eq> <empty name='crmConfig.follow_clue_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-xinkehu"></i>{:L('NEW_CLUE_NOTIFICATION')}</div>
+
+                                        <div class="notify-switch form-content">
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-inline mar0" id="clue_notifier"></div>
+
+                                            </div>
+
+                                            <script type="text/javascript">
+
+                                                var clue_follow_customer = {$members};
+
+                                                layui.config({
+                                                    base : '__PUBLIC__/js/layui/extends/'
+                                                }).extend({
+                                                    selectM: 'selectM'
+                                                }).use(['selectM'],function()
+                                                {
+                                                    layui.selectM(
+                                                        {
+                                                            elem: '#clue_notifier',
+                                                            data: clue_follow_customer,
+                                                            selected: [{$crmConfig.clue_notifier}],
+                                                            width:'60%',
+                                                            max:5
+                                                        });
+                                                })
+
+                                            </script>
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-block ml20">
+
+                                                    <input type="checkbox" name="crmConfig[new_clue_notify]" lay-skin="switch" <eq name='crmConfig.new_clue_notify' value='10'>checked</eq> <empty name='crmConfig.new_clue_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-notify-assign"></i>{:L('CUSTOMER_ASSIGNMENT_NOTICE')}</div>
+
+                                        <div class="notify-switch">
+
+                                            <div class="layui-form-item">
+
+                                                <div class="layui-input-block">
+
+                                                    <input type="checkbox" name="crmConfig[allot_notify]" lay-skin="switch" <eq name='crmConfig.allot_notify' value='10'>checked</eq> <empty name='crmConfig.allot_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-lingqurenwu"></i>{:L('CUSTOMER_COLLECTION_NOTICE')}</div>
+
+                                        <div class="notify-switch">
+
+                                            <div class="layui-form-item">
+
+                                                <div class="layui-input-block">
+
+                                                    <input type="checkbox" name="crmConfig[draw_notify]" lay-skin="switch" <eq name='crmConfig.draw_notify' value='10'>checked</eq> <empty name='crmConfig.draw_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-fenpei"></i>{:L('CUSTOMER_TRANSFER_NOTICE')}</div>
+
+                                        <div class="notify-switch">
+
+                                            <div class="layui-form-item">
+
+                                                <div class="layui-input-block">
+
+                                                    <input type="checkbox" name="crmConfig[transfer_notify]" lay-skin="switch" <eq name='crmConfig.transfer_notify' value='10'>checked</eq> <empty name='crmConfig.transfer_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-genjin"></i>{:L('CUSTOMER_PENDING_FOLLOW_UP_NOTICE')}</div>
+
+                                        <div class="notify-switch">
+
+                                            <div class="layui-form-item">
+
+                                                <div class="layui-input-block">
+
+                                                    <input type="checkbox" name="crmConfig[follow_notify]" lay-skin="switch" <eq name='crmConfig.follow_notify' value='10'>checked</eq> <empty name='crmConfig.follow_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <style>
+
+                                        .notify-switch .layui-input-inline{float:none;width:100%;min-width:190px;}
+
+                                        .notify-switch .layui-input-inline .multiple{line-height:18px;}
+
+                                        .notify-switch .layui-input-inline .layui-select-title input{height:38px;}
+
+                                        .layui-form-select .layui-anim-upbit i{color: #fff !important;font-size: 12px !important;}
+
+                                    </style>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-xinkehu"></i>{:L('NEW_CUSTOMER_NOTIFICATION')}</div>
+
+                                        <div class="notify-switch form-content">
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-inline mar0" id="customer_notifier"></div>
+
+                                            </div>
+
+                                            <script type="text/javascript">
+
+                                                var follow_customer = {$members};
+
+                                                layui.config({
+                                                    base : '__PUBLIC__/js/layui/extends/'
+                                                }).extend({
+                                                    selectM: 'selectM'
+                                                }).use(['selectM'],function()
+                                                {
+                                                    layui.selectM(
+                                                    {
+                                                        elem: '#customer_notifier',
+                                                        data: follow_customer,
+                                                        selected: [{$crmConfig.customer_notifier}],
+                                                        width:'60%',
+                                                        max:5
+                                                    });
+                                                })
+
+                                            </script>
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-block ml20">
+
+                                                    <input type="checkbox" name="crmConfig[new_customer_notify]" lay-skin="switch" <eq name='crmConfig.new_customer_notify' value='10'>checked</eq> <empty name='crmConfig.new_customer_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item ">
+
+                                        <div class="ui-block"><i class="iconfont icon-xinkehu"></i>{:L('CUSTOMER_NOT_FOLLOW_UP_NOTICE')}</div>
+
+                                        <div class="notify-switch form-content">
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-inline mar0" id="nofollow_customer_notifier"></div>
+
+                                            </div>
+
+                                            <script type="text/javascript">
+
+                                                var nofollow_customer = {$members};
+
+                                                layui.config({
+                                                    base : '__PUBLIC__/js/layui/extends/'
+                                                }).use(['selectM'],function()
+                                                {
+                                                    layui.selectM(
+                                                    {
+                                                        elem: '#nofollow_customer_notifier',
+                                                        data: nofollow_customer,
+                                                        selected: [{$crmConfig.nofollow_customer_notifier}],
+                                                        width:'60%',
+                                                        max:5
+                                                    });
+                                                })
+
+                                            </script>
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-block ml20">
+
+                                                    <input type="checkbox" name="crmConfig[nofollow_customer_notify]" lay-skin="switch" <eq name='crmConfig.nofollow_customer_notify' value='10'>checked</eq> <empty name='crmConfig.nofollow_customer_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-xinkehu"></i>{:L('CUSTOMER_NON_REVISIT_NOTICE')}</div>
+
+                                        <div class="notify-switch form-content">
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-inline mar0" id="noreturnvisit_customer_notifier"></div>
+
+                                            </div>
+
+                                            <script type="text/javascript">
+
+                                                var noreturnvisit_customer = {$members};
+
+                                                layui.config({
+                                                    base : '__PUBLIC__/js/layui/extends/'
+                                                }).use(['selectM'],function()
+                                                {
+                                                    layui.selectM(
+                                                    {
+                                                        elem: '#noreturnvisit_customer_notifier',
+                                                        data: noreturnvisit_customer,
+                                                        selected: [{$crmConfig.noreturnvisit_customer_notifier}],
+                                                        width:'60%',
+                                                        max:5
+                                                    });
+                                                })
+
+                                            </script>
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-block ml20">
+
+                                                    <input type="checkbox" name="crmConfig[noreturnvisit_customer_notify]" lay-skin="switch" <eq name='crmConfig.noreturnvisit_customer_notify' value='10'>checked</eq> <empty name='crmConfig.noreturnvisit_customer_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item ">
+
+                                        <div class="ui-block"><i class="iconfont icon-dingdan2"></i>{:L('CONTACT_RECORD_COMMENT_NOTIFICATION')}</div>
+
+                                        <div class="notify-switch form-content">
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-block ml20">
+
+                                                    <input type="checkbox" name="crmConfig[follow_comment_notify]" lay-skin="switch" <eq name='crmConfig.follow_comment_notify' value='10'>checked</eq> <empty name='crmConfig.follow_comment_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notify-item">
+
+                                        <div class="ui-block"><i class="iconfont icon-dingdan2"></i>{:L('CONTRACT_EXPIRATION_REMINDER')}</div>
+
+                                        <div class="notify-switch form-content">
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-inline mar0" id="contract_expire_notifier"></div>
+
+                                            </div>
+
+                                            <script type="text/javascript">
+
+                                                var contract_expire_notifier = {$members};
+
+                                                layui.config({
+                                                    base : '__PUBLIC__/js/layui/extends/'
+                                                }).use(['selectM'],function()
+                                                {
+                                                    layui.selectM(
+                                                    {
+                                                        elem: '#contract_expire_notifier',
+                                                        data: contract_expire_notifier,
+                                                        selected: [{$crmConfig.contract_expire_notifier}],
+                                                        width:'60%',
+                                                        max:5
+                                                    });
+                                                })
+
+                                            </script>
+
+
+                                            <div class="layui-form-item ui-block">
+
+                                                <div class="layui-input-block ml20">
+
+                                                    <input type="checkbox" name="crmConfig[contract_expire_notify]" lay-skin="switch" <eq name='crmConfig.contract_expire_notify' value='10'>checked</eq> <empty name='crmConfig.contract_expire_notify'>checked</empty> />
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+								<div class="notify-submit">
+
+                                    <a href="javascript:" class="layui-btn layui-btn-normal" id="submitForm">{:L('SUBMIT')}</a>
+
+                                </div>
+
+                            </div>
+
+                        </eq>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <include file="Public:language" />
+
+</block>

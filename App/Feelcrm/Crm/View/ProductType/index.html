@@ -1,0 +1,88 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('SYSTEM')}</block>
+
+<block name="content">
+
+    <div class="list-main pd0">
+
+        <div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('PRODUCT_CATEGORY')}</li>
+
+            </ul>
+
+        </div>
+
+		<div class="list-header clearfix">
+
+            <div class="header-left">
+
+                {:FEELCRM('productType/create','',L('ADD_PRODUCT_CATEGORY'),'item-deleteBtn','add','iconfont icon-xinzeng')}
+
+            </div>
+
+        </div>
+
+        <div class="item-list feelcrm-list">
+
+            <table class="layui-table" lay-skin="line">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{:L('CATEGORY_NAME')}</th>
+
+						<th>{:L('DESCRIPTION')}</th>
+
+						<th>{:L('OPERATION')}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <empty name="product_type_h">
+
+                        <tr class="nodata center">
+
+                            <td colspan="6">
+
+                                <p><i class="iconfont icon-nothing fts20"></i></p>
+
+                                <p>{:L('NO_DATA')}</p>
+
+                            </td>
+
+                        </tr>
+
+                    <else />
+
+						<foreach name="product_type_h" item="vo">
+
+							{$vo}
+
+						</foreach>
+
+                    </empty>
+
+                </tbody>
+
+            </table>
+
+            <div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+        </div>
+
+
+    </div>
+
+    <script type="text/javascript" src="__PUBLIC__/js/submitform.js"></script>
+
+    <include file="Public/footer" />
+
+</block>

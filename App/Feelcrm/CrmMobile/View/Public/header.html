@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <!-- 移动端视口说明 -->
+		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+		<title>{:C('WEB_TITLE')}</title>
+
+		<link rel="stylesheet" href="__PUBLIC__/css/common.css"/>
+
+		<link rel="stylesheet" href="__PUBLIC__/js/layui/css/layui.css"/>
+
+        <link rel="stylesheet prefetch" href="__PUBLIC__/js/photoswipe/photoswipe.css">
+
+        <link rel="stylesheet prefetch" href="__PUBLIC__/js/photoswipe/default-skin/default-skin.css">
+
+		<link rel="stylesheet" href="MOBILE_PUBLIC_CSS/crm-mobile-terminal.css"/>
+		<link rel="stylesheet" href="__PUBLIC__/js/jeDate/skin/jedate.css">
+		<link rel="stylesheet" href="__PUBLIC__/js/mobile-date/mobile-date.css">
+		<link rel="stylesheet" href="__PUBLIC__/js/mobileSelect/mobileSelect.css">
+
+        <link rel="stylesheet" href="{:C('MOBILE_ICON_HTTP')}"/>
+
+		<script type="text/javascript" >
+
+			const moduleName = "{$Think.MODULE_NAME}";
+
+		</script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.1.min.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/cookie/jquery.cookie.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/lang/{$Think.cookie.think_language|getStrToLower}.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/layui/layui.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/WeChat/wechatglobal.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/WeChat/wechatupload.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/photoswipe/photoswipe.min.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/photoswipe/photoswipe-ui-default.min.js"></script>
+
+        <script type="text/javascript" src="__PUBLIC__/js/WeChat/iscroll.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/mobile-date/mobile-date.js"></script>
+		
+		<script type="text/javascript" src="__PUBLIC__/js/jeDate/src/jedate.js"></script>
+		
+		<script type="text/javascript" src="__PUBLIC__/mobile/js/crm-window.js"></script>
+		
+		<script type="text/javascript" src="__PUBLIC__/js/feeldesk-slide.js"></script>
+
+		<script type="text/javascript" src="__PUBLIC__/js/photoswipe/photohtml.js"></script>
+
+		<style type="text/css">
+
+            body{background-color: #fafafa}
+
+        </style>
+
+		<script type="text/javascript" src="__PUBLIC__/js/uni.webview.1.5.2.js"></script>
+
+		<script type="text/javascript">
+
+			//整合版：当前页为首页发送消息给整合系统并更改页面样式
+			if(self!=top)
+			{
+				var isIframe=true;
+			}
+
+			var isFeelecApp = false;
+
+			if(isIframe)
+			{
+				document.addEventListener("UniAppJSBridgeReady", function ()
+				{
+					uniPostHome();
+				});
+			}
+
+			document.addEventListener('UniAppJSBridgeReady', function()
+			{
+				uni.getEnv(function(res)
+				{
+					if (res.plus)//res.h5
+					{
+						isFeelecApp = true;
+
+						uniPostHome();
+					}
+				});
+			});
+
+			function uniPostHome()
+			{
+				var think_controller = "{$Think.CONTROLLER_NAME}";
+				var think_action = "{$Think.ACTION_NAME}";
+
+				if(think_controller+"/"+think_action == "Index/index")
+				{
+					uni.postMessage({
+						data: {
+							isHome: true
+						}
+					});
+				}
+				else
+				{
+					uni.postMessage({
+						data: {
+							isHome: false
+						}
+					});
+				}
+			}
+
+		</script>
+
+	</head>
+
+    <body>
+

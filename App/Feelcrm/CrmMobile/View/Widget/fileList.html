@@ -1,0 +1,31 @@
+<empty name="files">
+
+	<div class="follow-box center">
+
+		{:L('NO_DATA')}
+
+	</div>
+
+	<else/>
+
+	<div class="item-textarea">
+
+		<div class="item-textarea-content">
+
+			<volist name="files" id="vo">
+
+				<div class="attach-item">
+
+					<span class="gray4">{$vo.create_time|getDates}</span> {$vo.file_name|getFileName}.{$vo.file_type} <span class="gray4">({$vo.file_size|getFileSize}) </span>
+
+					<a href="{$vo.file_link}" title="{$vo.file_name}" download="{$vo.file_name}" class="iconfont icon-download blue0787f6"></a>
+
+				</div>
+
+			</volist>
+
+		</div>
+
+	</div>
+
+</empty>

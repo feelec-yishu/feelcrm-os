@@ -1,0 +1,298 @@
+<extend name="Public:base"/>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0">
+
+		<form action="{:U('shipment/edit',['id'=>encrypt($shipment['shipment_id'],'SHIPMENT'),'detailtype'=>encrypt($detailtype,'SHIPMENT')])}" class="layui-form" method="post" enctype="multipart/form-data">
+
+        <div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('MODIFY_SHIPPING_INFORMATION')}</li>
+
+				<div class="form-submit">
+
+					<a href="javascript:" class="layui-btn layui-btn-normal submitForm">{:l('SUBMIT')}</a>
+
+					<notempty name="detailtype"><a href="javascript:history.go(-1);" class="layui-btn layui-btn-normal feelcrm-cancleBtn">{:L('CANCEL')}</a></notempty>
+
+				</div>
+
+            </ul>
+
+        </div>
+
+        <div class="form-content pt50 wd100">
+		<php>
+			$t = 0;
+			$ft = 0;
+			$reg = 0;
+		</php>
+
+				 <div class="form-item">
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+							<span class="red">*</span>
+
+							{:L('PRODUCT_NUMBER')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<select name="shipment[product_id]" lay-search>
+
+								<option value="">{:L('SELECT_PRODUCT')}</option>
+
+								<volist name="product" id="v">
+
+									<option value="{$v.product_id}" <eq name="shipment.product_id" value="$v.product_id">selected</eq>>{$v.name}</option>
+
+								</volist>
+
+							</select>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+							<span class="red">*</span>
+
+							{:L('NUMBER')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<input type="number" name="shipment[num]" placeholder="{:L('ENTER_SHIPPING_QUANTITY')}" value="{$shipment.num}" class="layui-input">
+
+						</div>
+
+					</div>
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+							<span class="red">*</span>
+
+							{:L('TOTAL_AMOUNT_ORDERS')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<input type="number" name="shipment[money]" placeholder="{:L('SELECT_TOTAL_AMOUNT_ORDERS')}" value="{$shipment.money}" class="layui-input">
+
+						</div>
+
+					</div>
+
+				   <volist name="shipmentform" id="vo">
+
+					   <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+					   <if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+					   <!-- 字段未设置编辑权限或当前用户在编辑权限内 -->
+					   <if condition="!$vo['member_id'] || in_array($index['member_id'],explode(',',$vo['member_id']))">
+
+                        <div class="layui-form-item">
+
+                            <label class="layui-form-label">
+
+                                <eq name="vo.is_required" value="0"><span class="red">*</span> </eq>
+
+                                {$vo.form_description}
+
+                            </label>
+
+							<eq name="vo.form_type" value="region">
+
+								<php>
+									$reg++;
+								</php>
+
+								{:W('Region/getRegionEdit',['shipment_form',$vo['form_name'],$reg,$shipment])}
+
+							<else/>
+
+                            <div class="layui-input-inline">
+
+                                <eq name="vo.form_type" value="text">
+
+                                    <!-- 单行文本框 -->
+                                    <input type="text" name="shipment_form[{$vo.form_name}]" value="{$shipment[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="phone">
+
+                                    <!-- {:L('CELL_PHONE')} -->
+                                    <input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="shipment_form[{$vo.form_name}]" value="{$shipment[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="email">
+
+                                    <!-- {:L('MAILBOX')} -->
+                                    <input type="text" name="shipment_form[{$vo.form_name}]" value="{$shipment[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="number">
+
+                                    <!-- {:L('DIGITAL')} -->
+                                    <input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="shipment_form[{$vo.form_name}]" value="{$shipment[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								<eq name="vo.form_type" value="decimal">
+
+                                    <!-- 小数 -->
+                                    <input type="text" name="shipment_form[{$vo.form_name}]" value="{$shipment[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="select">
+
+                                    <!-- 下拉菜单 -->
+                                    <select name="shipment_form[{$vo.form_name}]">
+
+                                        <option value="">{$vo.form_description}</option>
+
+                                        <foreach name="vo.option" item="op">
+
+                                            <option value="{$op}" <eq name="shipment[$vo[form_name]]" value="$op" >selected</eq>>{$op}</option>
+
+                                        </foreach>
+
+                                    </select>
+
+                                </eq>
+								
+								<eq name="vo.form_type" value="select_text">
+
+									<php>
+										$st++;
+									</php>
+									<!-- 下拉填写 -->
+									{:W('Update/selectTextForm',['shipment',$vo,$st,$shipment])}
+
+								</eq>
+
+                                <!-- 时间控件 -->
+                                <eq name="vo.form_type" value="date">
+
+									<php>
+										$ft++;
+									</php>
+
+                                    <input type='text' name="shipment_form[{$vo.form_name}]" value="{$shipment['detail'][$vo['form_name']]}" class="layui-input cursor layui-form-time" id="form_time<php>echo $ft;</php>" placeholder="{:L('SELECT_TIME')}" >
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="checkbox">
+
+                                    <!-- 复选框 -->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="checkbox" name="shipment_form[{$vo.form_name}][]" <in name="op" value="$shipment[$vo[form_name]]">checked</in> lay-skin="primary" title="{$op}" value="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="radio">
+
+                                    <!-- 单选框-->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="radio" name="shipment_form[{$vo.form_name}]" <eq name="shipment[$vo[form_name]]" value="$op" >checked</eq> value="{$op}" title="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <!-- 文本域 -->
+                                <eq name="vo.form_type" value="textarea">
+
+									<php>
+										$t++
+									</php>
+
+                                    <textarea class="layui-textarea layui-hide ticket-textarea" name="shipment_form[{$vo.form_name}]" id="ticketEditor<php>echo $t;</php>">{$shipment[$vo['form_name']]}</textarea>
+
+                                </eq>
+
+                            </div>
+
+							</eq>
+
+                            <notempty name="vo.form_explain">
+
+                                <i class="layui-icon layui-icon-about intro-icon" data-note="{$vo.form_explain}"></i>
+
+                            </notempty>
+
+                        </div>
+
+					   <else/>
+
+						   <eq name="vo.form_type" value="region">
+
+							   <input type="hidden" name="shipment_form[{$vo.form_name}_defaultCountry]" value="{$shipment[$vo['form_name']]['defaultCountry']}" >
+							   <input type="hidden" name="shipment_form[{$vo.form_name}_defaultProv]" value="{$shipment[$vo['form_name']]['defaultProv']}" >
+							   <input type="hidden" name="shipment_form[{$vo.form_name}_defaultCity]" value="{$shipment[$vo['form_name']]['defaultCity']}" >
+							   <input type="hidden" name="shipment_form[{$vo.form_name}_defaultArea]" value="{$shipment[$vo['form_name']]['defaultArea']}" >
+
+							   <else/>
+
+							   <input type="hidden" name="shipment_form[{$vo.form_name}]" value="{$shipment[$vo['form_name']]}" >
+
+						   </eq>
+
+					   </if>
+
+						   <else/>
+
+						   <eq name="vo.form_type" value="region">
+
+							   <input type="hidden" name="shipment_form[{$vo.form_name}_defaultCountry]" value="{$shipment[$vo['form_name']]['defaultCountry']}" >
+							   <input type="hidden" name="shipment_form[{$vo.form_name}_defaultProv]" value="{$shipment[$vo['form_name']]['defaultProv']}" >
+							   <input type="hidden" name="shipment_form[{$vo.form_name}_defaultCity]" value="{$shipment[$vo['form_name']]['defaultCity']}" >
+							   <input type="hidden" name="shipment_form[{$vo.form_name}_defaultArea]" value="{$shipment[$vo['form_name']]['defaultArea']}" >
+
+							   <else/>
+
+							   <input type="hidden" name="shipment_form[{$vo.form_name}]" value="{$shipment[$vo['form_name']]}" >
+
+						   </eq>
+
+					   </if>
+
+                    </volist>
+
+				</div>
+
+        </div>
+
+		<div class="clear"></div>
+
+		</form>
+
+    </div>
+
+    <include file="Public:language" />
+
+</block>

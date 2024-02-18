@@ -1,0 +1,211 @@
+<div class="feeldesk-form pd0 feelcrm-form">
+
+				<div class="layui-tab">
+
+					<ul class="layui-tab-title">
+
+						<li class="tab-title-name">{:L('ADVANCED_SEARCH')}</li>
+
+						<li class="tab-title-btn">
+
+							<a href="javascript:highSearch();" class="layui-btn layui-btn-normal titleSubmit">{:l('SEARCH')}</a>
+
+							<a href="javascript:closeLayerAll();" class="layui-btn layui-btn-normal titleCancel">{:l('CANCEL')}</a>
+
+							<div class="clear"></div>
+
+						</li>
+
+					</ul>
+
+				</div>
+
+			</div>
+
+
+			<div class="form-content">
+
+                <div class="form-item pb25 pt50 create-both-end">
+
+					<input type="hidden" name="highKeyword[start_time]" value="{$highKeyword.start_time}" >
+
+					<input type="hidden" name="highKeyword[end_time]" value="{$highKeyword.end_time}" >
+
+					<input type="hidden" name="highKeyword[time_range_type]" value="{$highKeyword.time_range_type}" >
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+							{:L('MEET_CONDITIONS')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<input type="radio" name="highKeyword[condition]" value="1" <eq name="highKeyword.condition" value="1">checked</eq> <empty name="highKeyword.condition">checked</empty> title="{:L('ALL_SATISFIED')}">
+
+							<input type="radio" name="highKeyword[condition]" value="2" <eq name="highKeyword.condition" value="2">checked</eq> title="{:L('PARTIALLY_SATISFIED')}">
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('HIGH_FILTER_REMARK')}"></i>
+
+					</div>
+
+					<if condition="ACTION_NAME neq 'product' && CONTROLLER_NAME neq 'Product'">
+
+						<neq name="customer_auth" value="own">
+
+							<div class="layui-form-item">
+
+								<label class="layui-form-label mt5">{:L('SELECT_SECTOR')}</label>
+
+								<div class="layui-input-inline" id="highKeywordGroupId"></div>
+
+							</div>
+
+						</neq>
+
+					<div class="layui-form-item">
+
+						<if condition="in_array(CONTROLLER_NAME.'/'.ACTION_NAME,['Clue/pool','Customer/pool','Customer/followup','Recover/follow'])" >
+
+							<label class="layui-form-label mt5">{:L('FOUNDER')}</label>
+
+						<else/>
+
+							<label class="layui-form-label mt5">{:L('LEADER')}</label>
+
+						</if>
+
+						<div class="layui-input-inline" id="highKeywordMemberId"></div>
+
+					</div>
+
+					<if condition="!in_array(CONTROLLER_NAME.'/'.ACTION_NAME,['Clue/pool','Customer/pool','Customer/followup','Recover/follow']) && $isCreaterView" >
+
+						<div class="layui-form-item">
+
+							<label class="layui-form-label mt5">{:L('FOUNDER')}</label>
+
+							<div class="layui-input-inline" id="highKeywordCreateId"></div>
+
+						</div>
+
+					</if>
+
+					<script type="text/javascript">
+
+						var highKeywordGroups = {$highKeywordGroups};
+
+						var highKeywordMembers = {$highKeywordMembers};
+
+						var highKeywordCurrMembers = '{$highKeywordCurrMembers}';
+
+						if(!highKeywordCurrMembers)
+						{
+							highKeywordCurrMembers = highKeywordMembers;
+						}
+						else
+						{
+							highKeywordCurrMembers = JSON.parse(highKeywordCurrMembers);
+						}
+
+						var highKeywordGroupId = '{$highKeywordGroupId}';
+
+						var highKeywordMemberId = '{$highKeywordMemberId}';
+
+						var highKeywordCreateId = '{$highKeywordCreateId}';
+
+						var is_loaded = 1;
+
+						layui.config({
+							base : '__PUBLIC__/js/layui/extends/'
+						}).use(['selectM'],function()
+						{
+							var list = layui.selectM(
+							{
+								elem: '#highKeywordMemberId',
+								tips: '{:L("PLEASE_SELECT")}',
+								data: highKeywordCurrMembers,
+								selected: highKeywordMemberId.split(','),
+								width:'60%',
+								max:100,
+							});
+
+							if($("#highKeywordCreateId").size()>0)
+							{
+								var list2 = layui.selectM(
+								{
+									elem: '#highKeywordCreateId',
+									tips: '{:L("PLEASE_SELECT")}',
+									data: highKeywordCurrMembers,
+									selected: highKeywordCreateId.split(','),
+									width:'60%',
+									max:100,
+								});
+							}
+
+							layui.selectM(
+							{
+								elem: '#highKeywordGroupId',
+								data: highKeywordGroups,
+								selected: highKeywordGroupId.split(','),
+								tips: '{:L("PLEASE_SELECT")}',
+								width:'60%',
+								max:100,
+								callback:function (values)
+								{
+									var groups = values;
+
+									if(groups && is_loaded != 1)
+									{
+										if(groups.length == 0)
+										{
+											list.config.data = highKeywordMembers;
+											list.render();
+											list.render();
+
+											if($("#highKeywordCreateId").size()>0)
+											{
+												list2.config.data = highKeywordMembers;
+												list2.render();
+												list2.render();
+											}
+										}
+										else
+										{
+											$.ajax({
+												url:"{:U('AjaxRequest/getMemberByGroups')}",
+												type:'POST',
+												async: false,
+												data:{'groups':groups},
+												datatype:'json',
+												success:function(data)
+												{
+													if(data)
+													{
+														list.config.data = data.data;
+														list.render();
+														list.render();
+
+														if($("#highKeywordCreateId").size()>0)
+														{
+															list2.config.data = data.data;
+															list2.render();
+															list2.render();
+														}
+													}
+												}
+											});
+										}
+									}
+									is_loaded = 0;
+								}
+							});
+						})
+
+					</script>
+
+					</if>

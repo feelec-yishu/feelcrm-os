@@ -1,0 +1,910 @@
+<extend name="Public:base"/>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0">
+
+		<form action="{:U('contract/edit',['id'=>encrypt($contract['contract_id'],'CONTRACT'),'detailtype'=>encrypt($detailtype,'CONTRACT')])}" class="layui-form" method="post" enctype="multipart/form-data">
+
+        <div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('MODIFY_CONTRACT')}</li>
+
+				<div class="form-submit">
+
+					<a href="javascript:" class="layui-btn layui-btn-normal submitForm" data-no="{$contract.contract_prefix}{$contract.contract_no}">{:l('SUBMIT')}</a>
+
+					<notempty name="detailtype"><a href="javascript:history.go(-1);" class="layui-btn layui-btn-normal feelcrm-cancleBtn">{:L('CANCEL')}</a></notempty>
+
+				</div>
+
+            </ul>
+
+        </div>
+
+        <div class="form-content pt50 wd50 fl border_r">
+		<php>
+			$t = 0;
+			$ft = 0;
+			$reg = 0;
+		</php>
+
+				 <div class="form-item">
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+							<span class="red">*</span>
+
+						   {:L('LEADER')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<select name="contract[member_id]" lay-ignore id="select2">
+
+								<option value="">{:L('CONTRACT_RESPONSIBLE')}</option>
+
+								<volist name="member" id="v">
+
+									<option value="{$v.member_id}" <eq name="contract.member_id" value="$v.member_id" >selected</eq>>{$v.name}</option>
+
+								</volist>
+
+							</select>
+
+							<script>
+
+								$("#select2").select2();
+
+							</script>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>
+
+					<!--<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   关联订单
+
+						</label>
+
+						<div class="layui-input-inline" id="order_relation">
+
+							<div class="feeldesk-input feeldesk-form-check checkbox" id="selectOrder">
+
+								<span class='gray9'>请选择关联订单</span>
+
+								<i class="feeldesk-edge"></i>
+
+							</div>
+
+							<ul class="feeldesk-option-panel hidden checkboxPanel" id="orderList">
+
+								<empty name="order">
+
+									<li><span class="feeldesk-option-title">{:L('NO_DATA')}</span></li>
+
+								<else/>
+
+									<volist name="order" id="op">
+
+										<li data-value="{$op.name}">
+
+											<input type="checkbox" name="order_relation[]" <in name="op.id" value="$contract['order_id']">checked</in> value="{$op.id}"/>
+
+											<div class="feeldesk-option">
+
+												<span class="feeldesk-option-title">{$op.name}</span>
+
+												<span class="iconfont <in name="op.id" value="$contract['order_id']">icon-xuanzhong<else/>icon-xuanze</in>"></span>
+
+											</div>
+
+										</li>
+
+									</volist>
+
+								</empty>
+
+							</ul>
+
+						</div>
+
+					</div>-->
+
+					<script>
+
+						$("#selectOrder").unbind('click').on('click',function()
+							{
+								var checkbox = $(this);
+
+								$(this).toggleClass('feeldesk-form-checked').next('.feeldesk-option-panel').slideToggle('fast');
+
+								$(this).parents('.feeldesk-form-item').siblings().find('.feeldesk-input').removeClass('feeldesk-form-checked').next('.feeldesk-option-panel').slideUp('fast');
+
+								$(".checkboxPanel").find('li').on('click',function()
+								{
+									var value = $(this).data('value');
+
+									$(this).find('span.iconfont').toggleClass('icon-xuanze');
+
+									$(this).find('span.iconfont').toggleClass('icon-xuanzhong');
+
+									var oldValue = checkbox.find('span').text();
+
+									var content = '';
+
+									if($(this).find('span.iconfont').hasClass('icon-xuanzhong'))
+									{
+										$(this).find("input").prop('checked',true);
+
+										content = addContent(oldValue,value);
+									}
+									else
+									{
+										$(this).find("input").prop('checked',false);
+
+										content = removeContent(oldValue,value);
+									}
+
+									$(this).parent('.checkboxPanel').prev('.checkbox').find('span').text(content);
+								});
+							});
+
+					</script>
+
+					 <volist name="contractform" id="vo">
+
+					   <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+					   <if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+					   <!-- 字段未设置编辑权限或当前用户在编辑权限内 -->
+					   <if condition="!$vo['member_id'] || in_array($index['member_id'],explode(',',$vo['member_id']))">
+
+                        <div class="layui-form-item">
+
+                            <label class="layui-form-label">
+
+                                <eq name="vo.is_required" value="0"><span class="red">*</span> </eq>
+
+                                {$vo.form_description}
+
+                            </label>
+
+							<eq name="vo.form_type" value="region">
+
+								<php>
+									$reg++;
+								</php>
+
+								{:W('Region/getRegionEdit',['contract_form',$vo['form_name'],$reg,$contract])}
+
+							<else/>
+
+                            <div class="layui-input-inline">
+
+                                <eq name="vo.form_type" value="text">
+
+                                    <!-- 单行文本框 -->
+                                    <input type="text" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="phone">
+
+                                    <!-- {:L('CELL_PHONE')} -->
+                                    <input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="email">
+
+                                    <!-- {:L('MAILBOX')} -->
+                                    <input type="text" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="number">
+
+                                    <!-- {:L('DIGITAL')} -->
+                                    <input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								<eq name="vo.form_type" value="decimal">
+
+                                    <!-- 小数 -->
+                                    <input type="text" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="select">
+
+                                    <!-- 下拉菜单 -->
+                                    <select name="contract_form[{$vo.form_name}]">
+
+                                        <option value="">{$vo.form_description}</option>
+
+                                        <foreach name="vo.option" item="op">
+
+                                            <option value="{$op}" <eq name="contract[$vo[form_name]]" value="$op" >selected</eq>>{$op}</option>
+
+                                        </foreach>
+
+                                    </select>
+
+                                </eq>
+								
+								<eq name="vo.form_type" value="select_text">
+
+									<php>
+										$st++;
+									</php>
+									<!-- 下拉填写 -->
+									{:W('Update/selectTextForm',['contract',$vo,$st,$contract])}
+
+								</eq>
+
+                                <!-- 时间控件 -->
+                                <eq name="vo.form_type" value="date">
+
+									<php>
+										$ft++;
+									</php>
+
+                                    <input type='text' name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" class="layui-input cursor layui-form-time" id="form_time<php>echo $ft;</php>" placeholder="{:L('SELECT_TIME')}" >
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="checkbox">
+
+                                    <!-- 复选框 -->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="checkbox" name="contract_form[{$vo.form_name}][]" <in name="op" value="$contract[$vo[form_name]]">checked</in> lay-skin="primary" title="{$op}" value="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="radio">
+
+                                    <!-- 单选框-->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="radio" name="contract_form[{$vo.form_name}]" <eq name="contract[$vo[form_name]]" value="$op" >checked</eq> value="{$op}" title="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <!-- 文本域 -->
+                                <eq name="vo.form_type" value="textarea">
+
+									<php>
+										$t++
+									</php>
+
+                                    <textarea class="layui-textarea layui-hide ticket-textarea" name="contract_form[{$vo.form_name}]" id="ticketEditor<php>echo $t;</php>">{$contract[$vo['form_name']]}</textarea>
+
+                                </eq>
+
+                            </div>
+
+							</eq>
+
+                            <notempty name="vo.form_explain">
+
+                                <i class="layui-icon layui-icon-about intro-icon" data-note="{$vo.form_explain}"></i>
+
+                            </notempty>
+
+                        </div>
+
+					   <else/>
+
+						   <eq name="vo.form_type" value="region">
+
+							   <input type="hidden" name="contract_form[{$vo.form_name}_defaultCountry]" value="{$contract[$vo['form_name']]['defaultCountry']}" >
+							   <input type="hidden" name="contract_form[{$vo.form_name}_defaultProv]" value="{$contract[$vo['form_name']]['defaultProv']}" >
+							   <input type="hidden" name="contract_form[{$vo.form_name}_defaultCity]" value="{$contract[$vo['form_name']]['defaultCity']}" >
+							   <input type="hidden" name="contract_form[{$vo.form_name}_defaultArea]" value="{$contract[$vo['form_name']]['defaultArea']}" >
+
+							   <else/>
+
+							   <input type="hidden" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" >
+
+						   </eq>
+
+					   </if>
+
+					   <else/>
+
+						   <eq name="vo.form_type" value="region">
+
+							   <input type="hidden" name="contract_form[{$vo.form_name}_defaultCountry]" value="{$contract[$vo['form_name']]['defaultCountry']}" >
+							   <input type="hidden" name="contract_form[{$vo.form_name}_defaultProv]" value="{$contract[$vo['form_name']]['defaultProv']}" >
+							   <input type="hidden" name="contract_form[{$vo.form_name}_defaultCity]" value="{$contract[$vo['form_name']]['defaultCity']}" >
+							   <input type="hidden" name="contract_form[{$vo.form_name}_defaultArea]" value="{$contract[$vo['form_name']]['defaultArea']}" >
+
+							   <else/>
+
+							   <input type="hidden" name="contract_form[{$vo.form_name}]" value="{$contract[$vo['form_name']]}" >
+
+						   </eq>
+
+					   </if>
+
+                    </volist>
+
+					 <!-- 图片上传 -->
+					<div class="layui-form-item relative contractImg">
+
+						<label class="layui-form-label">{:L('SCANNED_COPY_OF_CONTRACT')}</label>
+
+						<div class="layui-input-inline flex flex-wrap">
+
+							<div class="contractImgList"></div>
+
+
+							<volist name="contract.contract_img" id="vo">
+
+								<div class="layui-upload-drag ">
+
+									<img src="{$vo}">
+
+									<a href="javascript:void(0);" class="cancel" data-name="{:str_replace(C('HTTP_PROTOCOL').'://'.C('HOST_DOMAIN'),'.',$vo)}" title="{:L('DELETE_PICTURE')}">X</a>
+
+									<input type="hidden" name="photo[]" value="{$vo}">
+
+								</div>
+
+							</volist>
+
+
+
+							<div class="layui-upload-drag uploadImg">
+
+								<div>
+
+									<i class="layui-icon"></i>
+
+									<p>{:L('UPLOAD_PICTURES')}</p>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+					<!-- 附件上传 -->
+					<div class="layui-form-item relative">
+
+						<label class="layui-form-label">{:L('UPLOAD_ATTACHMENTS')}</label>
+
+						<div class="layui-input-inline">
+
+							<button type="button" class="layui-btn layui-btn-primary uploadFile" id="uploadFile"><i class="layui-icon"></i>{:L('UPLOAD_ATTACHMENTS')}</button>
+
+							<ul id="attachments" class="attach-item mt10">
+
+								<volist name="contract.createFiles" id="vo">
+
+									<li>
+
+										<i class="iconfont icon-fujian"></i>
+
+										<span>{$vo['file_name']}</span>
+
+										<span class="iconfont icon-close2 closed" style="cursor: pointer" data-name="{:getQiniuFileName('http://'.$contract['qiniu_domain'].'/',$vo['file_link'])}"
+											  onclick="editDeleteFile(this);"></span>
+
+										<input type="hidden" name="file[saves][]" value="{$vo['save_name']}">
+
+										<input type="hidden" name="file[links][]" value="{$vo['file_link']}">
+
+										<input type="hidden" name="file[names][]" value="{$vo['file_name']}">
+
+										<input type="hidden" name="file[sizes][]" value="{$vo['file_size']}">
+
+										<input type="hidden" name="file[types][]" value="{$vo['file_type']}">
+
+									</li>
+
+								</volist>
+
+							</ul>
+
+						</div>
+
+					</div>
+
+				</div>
+
+        </div>
+
+		<div class="form-content wd50 fl">
+
+			<div class="form-item pb25">
+
+				<div class="list-header clearfix">
+
+					<div class="header-left">
+
+						<a href="javascript:" class="item-deleteBtn choosepro"><i class="iconfont icon-xinzeng"></i>{:L('ADD_PRODUCT')}</a>
+
+					</div>
+
+				</div>
+
+				 <div class="item-list">
+
+					<table class="layui-table" lay-skin="line">
+
+						<thead>
+
+							<tr>
+
+								<th>{:L('PRODUCT_NAME')}</th><th>{:L('PRODUCT_CATEGORY')}</th><th>{:L('PRICE')}</th><th>{:L('SELLING_PRICE')}</th><th>{:L('NUMBER')}</th><th>{:L('TOTAL')}</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody id="chooseProList">
+
+							<php> $proKey = 1;</php>
+
+							<volist name="contractPro" id="vo">
+
+								<tr data-id="{$vo['product_id']}" class="checkedPro">
+
+									<input type="hidden" name="contractPro[{$key}][product_id]" value="{:encrypt($vo['product_id'],'PRODUCT')}" />
+
+									<input type="hidden" name="contractPro[{$key}][customer_id]" value="{:encrypt($contract['customer_id'],'CUSTOMER')}" />
+
+									<td>{$vo.product_name}</td>
+
+									<td>{$vo.type_name}</td>
+
+									<td>{$vo.list_price}</td>
+
+									<td><input type="number" value="{$vo.unit_price}" name="contractPro[{$key}][unit_price]" class="w50 proInput proUnitPrice" onkeyup="value=value.replace(/[^\d.]/g,'')" /></td>
+
+									<td><input type="number" value="{$vo.num}" name="contractPro[{$key}][num]" class="w50 proInput proContractNum" onkeyup="this.value=this.value.replace(/\D/g,\'\')" onafterpaste="this.value=this.value.replace(/\D/g,\'\')" /></td>
+
+									<td><span class="proTotalPrice">{$vo.total_price}</span><input type="hidden" value="{$vo.total_price}" class="proTotalPrice" name="contractPro[{$key}][total_price]"/></td>
+
+								</tr>
+
+								<php>$proKey ++;</php>
+
+							</volist>
+
+						</tbody>
+
+						<tbody>
+
+							<tr>
+
+								<td colspan="8">{:L('TOTAL')}：<span class="contractTotalPrice">{$contract['money']}</span></td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+            </div>
+
+		</div>
+
+		<div class="clear"></div>
+
+		</form>
+
+    </div>
+
+	<div class="hidden hg100" id="productlist">
+
+		<div class="feeldesk-form pd0 feelcrm-form">
+
+			<div class="layui-tab">
+
+				<ul class="layui-tab-title">
+
+					<li class="tab-title-name">{:L('ADD_PRODUCT')}</li>
+
+					<li class="tab-title-btn">
+
+						<a href="javascript:chooseProduct()" class="layui-btn layui-btn-normal titleSubmit">{:l('SUBMIT')}</a>
+
+						<a href="javascript:closeChoosepro();" class="layui-btn layui-btn-normal titleCancel">{:l('CANCEL')}</a>
+
+						<div class="clear"></div>
+
+					</li>
+
+					<form action="" class="fr searchProForm" method="get">
+
+						<div class="compact-search">
+
+							<i class="iconfont icon-search"></i>
+
+							<input type="text" name="proKeyword" value="" placeholder=""/>
+
+							<input type="text" class="hidden" name="" value="" placeholder=""/>
+
+							<a href="javascript:" class="searchProBtn">{:L('SEARCH')}</a>
+
+						</div>
+
+					</form>
+
+					<div class="clear"></div>
+
+				</ul>
+
+			</div>
+
+		</div>
+
+		<div class="product-tree fl">
+
+			<div class="protree protree-1 protree-default">
+
+				<foreach name="product_type_h" item="vo">
+
+					{$vo}
+
+				</foreach>
+
+			</div>
+
+        </div>
+
+		<div class="item-list">
+
+			<table class="layui-table" lay-skin="line">
+
+				<thead>
+
+					<tr>
+
+						<th></th><th>{:L('PRODUCT_CATEGORY')}</th><th>{:L('IMAGES')}</th><th>{:L('PRODUCT_NAME')}</th><th>{:L('PRODUCT_NUM')}</th><th>{:L('PRICE')}</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody id="product-detail">
+
+					<empty name="product">
+
+						<tr class="nodata center">
+
+							<td colspan="11">
+
+								<p><i class="iconfont icon-nothing fts20"></i></p>
+
+								<p>{:L('NO_DATA')}</p>
+
+							</td>
+
+						</tr>
+
+					<else />
+
+						<volist name="product" id="vo">
+
+							<tr>
+
+								<td><input type="checkbox" value="{$vo.product_id}" <eq name="vo.contract_pro" value="1" >checked</eq> name="product[]" /></td>
+
+								<td>{$vo.type_name}</td>
+
+								<td><img src="{$vo.product_img|default='__PUBLIC__/crm/img/default_pro.png'}" width="40" height="40" /></td>
+
+								<td>{$vo.name}</td>
+
+								<td>{$vo.product_num}</td>
+
+								<td>{$vo.list_price}</td>
+
+							</tr>
+
+						</volist>
+
+					</empty>
+
+				</tbody>
+
+			</table>
+
+			<div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+		</div>
+
+	</div>
+
+    <include file="Public:language" />
+
+
+    <script>
+
+		var proKey = '{$proKey}';
+
+		$(function(){
+			$('.choosepro').click(function(){
+
+				var index = layer.open({
+				  type: 1,
+				  title: false,
+				  scrollbar:false,
+				  area: ['80%','600px'],
+				  closeBtn:0,
+				  content: $('#productlist')
+				});
+
+			})
+
+			$('.feeldesk-page a').click(function(){
+
+				pageclick(this);
+
+				return false;
+			})
+
+			$('.protree-node a').click(function(){
+
+				pageclick(this);
+
+				$('.product-tree li a').css('background','none');
+
+				$(this).css('background','#e1f6ff');
+
+				return false;
+
+			})
+
+			$('input[name="product[]"]').click(function(){
+
+				var val = $(this).val();
+
+				if(!$(this).is(':checked'))
+				{
+					$('.checkedPro[data-id="'+val+'"]').remove();
+				}
+
+			})
+
+			$(".proUnitPrice").bind("change",function(){
+				countPrice(this);
+			})
+
+			$(".proContractNum").bind("change",function(){
+				countPrice(this);
+			})
+		})
+
+		function pageclick(obj)
+		{
+			var href = $(obj).attr('href');
+
+			var ajaxhref = href.replace('/Contract/edit', '/AjaxRequest/getProductList');
+
+			var contract_id = "{:encrypt($contract['contract_id'],'CONTRACT')}";
+
+			var checkedPro = [];
+
+			$.each($('.checkedPro'),function(){
+
+				checkedPro.push($(this).data('id'));
+
+            });
+
+			var keyword = $('input[name="proKeyword"]').val();
+
+			$.ajax({
+					url:ajaxhref,
+					type:'POST',
+					data:{'checkedPro':checkedPro,'keyword':keyword},
+					async: false,
+					datatype:'json',
+					success:function(data)
+					{
+						//console.log(11);return false;
+						$('#product-detail').html(data.html);
+
+						$('.feeldesk-page').html(data.page);
+
+						$('.feeldesk-page a').click(function(){
+
+							pageclick(this);
+
+							return false;
+						})
+
+						$('input[name="product[]"]').click(function(){
+
+							var val = $(this).val();
+
+							if(!$(this).is(':checked'))
+							{
+								$('.checkedPro[data-id="'+val+'"]').remove();
+							}
+
+						})
+					},
+					error:function()
+					{
+					   layer.msg("{:L('FAILED_TO_GET_PRODUCT')}");
+					}
+			 });
+		}
+
+		$('.searchProBtn').unbind('click').bind('click',function(){
+
+			searchPro();
+		});
+
+		function searchPro()
+		{
+			var checkedPro = [];
+
+			$.each($('.checkedPro'),function(){
+
+				checkedPro.push($(this).data('id'));
+
+			});
+
+			var keyword = $('input[name="proKeyword"]').val();
+
+			var ajaxhref = "{:U('AjaxRequest/getProductList')}";
+
+			$.ajax({
+				url:ajaxhref,
+				type:'post',
+				data:{'checkedPro':checkedPro,'keyword':keyword},
+				async: false,
+				datatype:'json',
+				success:function(data)
+				{
+					$('#product-detail').html(data.html);
+
+					$('#productlist .feeldesk-page').html(data.page);
+
+					$('#productlist .feeldesk-page a').click(function(){
+
+						pageclick(this);
+
+						return false;
+					});
+
+					$('input[name="product[]"]').click(function(){
+
+						var val = $(this).val();
+
+						if(!$(this).is(':checked'))
+						{
+							$('.checkedPro[data-id="'+val+'"]').remove();
+						}
+
+					});
+				},
+				error:function()
+				{
+					layer.msg("{:L('FAILED_TO_GET_PRODUCT')}");
+				}
+			});
+
+			$('.product-tree li a').css('background','none');
+
+			return false;
+		}
+
+		function closeChoosepro()
+		{
+			layer.close(layer.index);
+		}
+
+		function chooseProduct()
+		{
+			var product = [];
+
+			var contract_id = "{:encrypt($contract['contract_id'],'CONTRACT')}";
+
+			var checkedPro = [];
+
+			$.each($('input[name="product[]"]:checked'),function(){
+
+				product.push($(this).val());
+
+            });
+
+			$.each($('.checkedPro'),function(){
+
+				checkedPro.push($(this).data('id'));
+
+            });
+
+			$.ajax({
+					url:"{:U('AjaxRequest/addContractProduct')}",
+					type:'POST',
+					data:{'product':product,'contract_id':contract_id,'checkedPro':checkedPro,'proKey':proKey},
+					async: false,
+					datatype:'json',
+					success:function(data)
+					{
+						$('#chooseProList').append(data.html);
+						//$('#chooseProList').html(data.html);
+
+						$(".proUnitPrice").bind("change",function(){
+							countPrice(this);
+						})
+
+						$(".proContractNum").bind("change",function(){
+							countPrice(this);
+						})
+
+						proKey = data.proKey;
+					},
+					error:function()
+					{
+					   layer.msg("{:L('FAILED_TO_ADD_PRODUCT')}");
+					}
+			});
+
+			layer.close(layer.index);
+		}
+
+		function countPrice(obj)
+		{
+			var price = $(obj).parent().parent().find('.proUnitPrice').val();
+
+			var num = $(obj).parent().parent().find('.proContractNum').val();
+
+			var totalPrice = price * Math.floor(num);
+
+			totalPrice = totalPrice.toFixed(2);
+
+			$(obj).parent().parent().find('.proTotalPrice').val(totalPrice).html(totalPrice);
+
+			var contractTotalPrice='';
+
+			$('.proUnitPrice').each(function(){
+
+				var contractPrice = $(this).parent().parent().find('.proUnitPrice').val();
+
+				var contractNum = $(this).parent().parent().find('.proContractNum').val();
+
+				proTotalPrice = contractPrice * Math.floor(contractNum);
+
+				contractTotalPrice = Number(contractTotalPrice)+Number(proTotalPrice);
+
+			});
+
+			contractTotalPrice = contractTotalPrice.toFixed(2);
+
+			$('.contractTotalPrice').html(contractTotalPrice);
+
+			$('input[name="contract_form[money]"]').val(contractTotalPrice);
+
+		}
+
+	</script>
+
+</block>

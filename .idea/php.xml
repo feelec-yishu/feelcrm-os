@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MessDetectorOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCSFixerOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCodeSnifferOptionsConfiguration">
+    <option name="highlightLevel" value="WARNING" />
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/App/vendor/composer" />
+      <path value="$PROJECT_DIR$/App/vendor/nategood/httpful" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/Library/WorkWeixin/vendor/nategood/httpful" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/Library/WorkWeixin/vendor/composer" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/vendor/composer" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/vendor/flc/alidayu" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/Library/Ding/vendor/composer" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/Library/Ding/vendor/nategood/httpful" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/Library/Vendor/WebMsgSender/vendor/composer" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/Library/Vendor/WebMsgSender/vendor/workerman/channel" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/Library/Vendor/WebMsgSender/vendor/workerman/phpsocket.io" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/Library/Vendor/WebMsgSender/vendor/workerman/mysql" />
+      <path value="$PROJECT_DIR$/App/ThinkPHP/Library/Vendor/WebMsgSender/vendor/workerman/workerman" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
+  <component name="PhpStanOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PsalmOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+</project>

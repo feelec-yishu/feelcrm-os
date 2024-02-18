@@ -1,0 +1,75 @@
+/* notice 提醒  */
+.layui-notice{
+    margin-left: 15px;
+    z-index: 9999;
+    position: absolute;
+    top: 5vh;
+}
+
+.layui-notice-right{
+    margin-left: 0px;
+    margin-right: 15px;
+}
+
+.notice {
+    position: relative;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    padding: .75rem 1.25rem;
+    top: 5vh;
+}
+
+.notice i {
+    margin-right: 5px;
+}
+
+.notice a {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.notice a:hover {
+    color: white;
+}
+
+.notice .has-border {
+    border: 1px solid #ecedf2 !important;
+}
+
+/* 字体居中 */
+.notice .text-left {
+    text-align: left;
+}
+
+.notice .text-right {
+    text-align: right;
+}
+
+.notice .text-center {
+    text-align: center;
+}
+
+/* 浮动 */
+.notice .pull-left {
+    float: left;
+}
+
+.notice .pull-right {
+    float: right;
+}
+
+/* 辅助器 */
+.has-radius {
+    border-radius: 5px !important;
+}
+
+.layui-bg-green2 {
+    background-color: #52c41a !important;
+}
+
+.layui-bg-yellow {
+    background-color: #FFB800 !important;
+}
+
+.layui-bg-grey {
+    background-color: #768093 !important;
+}

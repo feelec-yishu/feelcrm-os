@@ -1,0 +1,82 @@
+<include file="Public/header" />
+
+<div class="feeldesk">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1);location.replace(document.referrer)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('CONTACT_RECORD')}</div>
+
+            <a href="{:U('Customer/create_follow')}" class="header-right">{:L('ADD')}</a>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main plr2 feelcrm-footer-list">
+
+        <div class='feeldesk-item' id='customerItem'>
+
+
+
+        </div>
+
+        <include file="Public/buoy" />
+
+    </div>
+
+</div>
+
+<include file="Public/footer" />
+
+<script type="text/javascript">
+
+    layui.use('flow', function()
+    {
+        var flow = layui.flow;
+
+        flow.load(
+        {
+            elem: '#customerItem',
+            scrollElem:'.feeldesk-main',
+            isAuto:false,
+            done: function(page, next)
+            {
+                var url = "{$Think.ACTION_NAME}";
+
+                var lis = [];
+
+                $.get("{:U('Customer/'.ACTION_NAME)}?p="+page+"&request=flow", function(data)
+                {
+                    layui.each(data.data, function(index, item)
+                    {
+                        var url = "{:U('Customer/edit_follow')}?id="+item.follow_id;
+
+                        if(item.clue_id && item.clue_id != '0')
+                        {
+                            var detailUrl = "{:U('Clue/detail')}?id="+item.clue_id;
+                        }
+                        else if(item.opportunity_id && item.opportunity_id != '0')
+                        {
+                            var detailUrl = "{:U('Opportunity/detail')}?id="+item.opportunity_id;
+                        }
+                        else
+                        {
+                            var detailUrl = "{:U('Customer/detail')}?id="+item.customer_id;
+                        }
+
+                        var items = "<div class='feeldesk-list feelcrm-mobile-list'><a href='"+url+"' class='clearfix customer-item'><div class='feeldesk-list-left'><div class='customer-name ellipsis'>"+item.content+"</div><div class='customer-server'>{:L('CONTACT_TIME')}："+item.createtime+"</div><div class='customer-server ellipsis'>"+item.follow_type+"：<span class='blue8' onclick='tocrmdetail(\""+detailUrl+"\")'>"+item.belong_name+"</span></div></div><div class='feeldesk-list-right'><span>"+item.member_name+"</span></div></a></div>";
+
+                        lis.push(items);
+                    });
+
+                    next(lis.join(''), page < data.pages);
+                });
+            }
+        });
+    });
+
+</script>

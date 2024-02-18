@@ -1,0 +1,108 @@
+<div class="layui-tab-item layui-show ">
+
+	<div class="form-item">
+
+		<div class="layui-form-item">
+
+			<div class="layui-input-inline wd100">
+
+				<textarea class="layui-input" name="follow[content]" id="follow_content"></textarea>
+
+			</div>
+
+		</div>
+
+		<!-- 附件上传 -->
+		<div class="layui-form-item relative">
+
+			<div class="layui-input-inline">
+
+				<button type="button" class="layui-btn layui-btn-primary uploadFile" id="uploadFile"><i class="layui-icon"></i>{:L('UPLOAD_ATTACHMENTS')}</button>
+
+				<ul id="attachments" class="attach-item mt10"></ul>
+
+			</div>
+
+		</div>
+
+		<div class="layui-form-item">
+
+			<neq name="Think.CONTROLLER_NAME" value="Clue">
+
+				<div class="layui-input-inline w200 mb10">
+
+					<select name="follow[contacter_id]">
+
+						<option value="">{:L('CONTACT')}</option>
+
+						<volist name="contacter" id="vo">
+
+							<option value="{$vo.contacter_id}" <eq name="vo.contacter_id" value="$customer['first_contact_id']">selected</eq>>{$vo.detail.name}</option>
+
+						</volist>
+
+					</select>
+
+				</div>
+
+			</neq>
+
+			<div class="layui-input-inline w200 mb10">
+
+				<select name="follow[cmncate_id]" lay-filter="getCmncateReply">
+
+					<option value="">{:L('COMMUNICATION_TYPE')}</option>
+
+					<volist name="cmncate" id="vo">
+
+						<option value="{$vo.cmncate_id}">{$vo.cmncate_name}</option>
+
+					</volist>
+
+				</select>
+
+			</div>
+
+			<div class="layui-input-inline w200 mb10 hidden">
+
+				<select name="follow[reply_id]" id="cmncate_reply" lay-filter="ReplyContent">
+
+					<option value="">{:L('CUSTOM_REPLY')}</option>
+
+
+
+				</select>
+
+			</div>
+
+			<div class="layui-input-inline w200 mb10">
+
+				<input type='text' name="follow[nextcontacttime]" class="layui-input cursor layui-form-time" id="form_contacttime" placeholder="{:L('NEXT_CONTACT_TIME')}" readonly>
+
+			</div>
+
+			<div class="layui-input-inline w200 mb10 savefollow">
+
+				<input type="checkbox" name="reply" lay-skin="primary" value="1">
+
+				<span>{:L('SAVE_AS_FOLLOW-UP_TEMPLATE')}</span>
+
+			</div>
+
+			<div class="fr">
+
+				<div class="layui-input-inline w100 right mr0 mb10">
+
+					<a href="javascript:" class="layui-btn layui-btn-normal submitForm createfollow">{:L('ADD_RECORD')}</a>
+
+				</div>
+
+			</div>
+
+			<div class="clear"></div>
+
+		</div>
+
+	</div>
+
+</div>

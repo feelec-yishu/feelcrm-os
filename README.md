@@ -1,0 +1,82 @@
+# FeelCRM客户管理系统
+
+# 开源项目介绍
+
+* FeelCRM客户管理系统，符合中小企业业务流程；支持线索管理、客户管理、商机管理、合同管理、审核管理等多个模块；希望能为广大中小企业以及开发者们提供一个更多的可能性；
+* 本版本是我公司跨语言迭代前的版本，经历过多年的实际运营，非Beta类产品；
+* 为什么跨语言迭代：根据发展情况，由项目类型转型为了SAAS型，故将新版本语言设立为了微服务的JAVA语言，但是原有的成熟系统，我们更希望它继续发光发热；
+* 开源的一小步是我们对开源事业的支持，您对我们的支持也将使我们未来迈出更大一步！呼吁广大开发者，尊重和支持开源项目！
+
+开源版技术框架
+| <img width=75/>技术<img width=75/> | <img width=10/>版本<img width=75/> | <img width=75/>说明<img width=75/> |
+| :--------------------------------: | :--------------------------------: | :--------------------------------: |
+|                PHP                |               7.2.18               |              开发语言              |
+|               Nginx               |               1.20.2               |             Web服务器             |
+|               Mysql               |                5.7                |               数据库               |
+|               Redis               |                5.0                |             缓存数据库             |
+|              ThinkPHP              |               3.2.3               |              开发框架              |
+|               Layui               |                2.x                |              前端框架              |
+
+# 开源版项目允许
+* 个人学习使用，包括用于学习、毕设等非营利应用，但$\color{red}{必须保留版权信息}$；
+* 禁止将修改后和衍生的代码作为闭源的软件进行发布和销售；
+* 获取项目第一时间更新，同时也是对项目最好的支持；
+* FeelCRM 团队拥有对本项目开源协议的最终解释权。
+
+# 商用说明
+* 企业用户在取得商用授权后可使用，并去除所有限制；
+<br />商用授权版本，也是全功能多商户版本； 适用于系统集成商或客户技术团队，可以通过二次开发与自己的系统无缝集成，为用户提供更全面的系统和服务；
+
+# 开源项目部署文档
+
+[FeelCRM开源版安装部署文档](https://wiki.feelec.com.cn/zyplayer-doc-manage/doc-wiki#/page/share/view?pageId=297&space=f5d0a27926d64cafbe69190174cbef64)
+
+- $\color{red}{按安装文档操作即可，已无数次成功安装，不成功请检查自己的安装步骤}$
+- $\color{red}{由于项目较多，无法回应大家的安装类问题；}$
+# 体验FeelCRM
+* 网站地址：https://www.feelcrm.cn
+* 开源版测试账号以及商用授权： https://app.feelec.com.cn/   公司ID：feeltest  用户名：crmtest  密码：123456 ；
+* 推荐大家使用SAAS版本，包含了更多功能：企微助手、工作手机、CRM、工单等
+* SAAS地址：https://www.bihuanyun.com/
+
+# 功能图片
+- 首页
+
+   <br />
+
+  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E9%A6%96%E9%A1%B5.jpg" alt="" align=center/>
+
+
+- 线索管理
+
+   <br />
+
+  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E7%BA%BF%E7%B4%A2%E7%AE%A1%E7%90%86.jpg" alt="" align=center/>
+
+
+- 客户管理
+
+   <br />
+
+  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E5%AE%A2%E6%88%B7%E7%AE%A1%E7%90%86.jpg" alt="" align=center/>
+
+
+- 商机管理
+
+   <br />
+
+  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E5%95%86%E6%9C%BA.jpg" alt="" align=center/>
+
+
+- 系统设置
+
+   <br />
+
+  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE.jpg" alt="" align=center/>
+
+
+- 自定义字段
+
+   <br />
+
+  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AD%97%E6%AE%B5.jpg" alt="" align=center/>

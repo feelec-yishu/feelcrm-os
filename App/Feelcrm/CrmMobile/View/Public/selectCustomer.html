@@ -1,0 +1,299 @@
+<div class="sCustomer" id="sCustomer">
+
+	<div class="sCustomer-shade"></div>
+
+	<div class="sCustomer-content">
+
+		<header>
+
+			<a href="javascript:" class="sCustomer-cancel" id="sCustomerCancel">{:L('CANCEL')}</a>
+
+			<div class="sCustomer-search">
+
+				<i class="iconfont icon-search"></i>
+
+				<input type="text" name='' id="sCustomerSearch" placeholder="{:L('CLIENT_NAME')}">
+
+			</div>
+
+			<a href="javascript:" class="sCustomer-ensure" id="sCustomerDone">{:L('COMPLETE')}</a>
+
+		</header>
+
+		<main id="sCustomerItem"><div class="no-match">{:L('NO_MATCH')}</div></main>
+
+	</div>
+
+</div>
+
+<script>
+
+	var no_more = "{:L('NO_MORE')}";
+
+	var selectActionUrl = '/{$Think.CONTROLLER_NAME}/{$Think.ACTION_NAME}';
+
+	var selectAction = '{$Think.ACTION_NAME}';
+
+	$('#selectCustomer').click(function()
+	{
+		var company_id = '{$mobile.company_id}';
+
+		$('#sCustomer').toggleClass('sCustomer-show');
+
+		if($('.sCustomer-show').length > 0)
+		{
+			togetCustomerList();
+		}
+
+		$('#sCustomerCancel').unbind('click').on('click',function()
+		{
+			$('#sCustomer').toggleClass('sCustomer-show');
+		});
+
+		$('#sCustomerSearch').keyup(function ()
+		{
+			var value = $(this).val();
+
+			var sCustomer = $('.sCustomer-item');
+
+			var sCustomerItem = $('#sCustomerItem');
+
+			if(value)
+			{
+				togetCustomerList(value);
+			}
+			else
+			{
+				togetCustomerList();
+			}
+		});
+	})
+
+	function togetCustomerList(keyword='')
+	{
+		$("#sCustomerItem").empty();
+
+		layui.use('flow', function ()
+		{
+			var flow = layui.flow;
+
+			flow.load(
+			{
+				elem: '#sCustomerItem',
+				end: no_more,
+				done: function (page, next)
+				{
+					$.post("{:U('AjaxRequest/getCustomerList')}?request=sCustomer&keyword="+keyword+"&p=" + page, function (data)
+					{
+						var lis = [];
+
+						var item = '';
+
+						$.each(data.data,function(k,v)
+						{
+							item +="<div class='sCustomer-item' data-value='"+v.customer_id+"' data-name='"+v.detail.name+"'>" +
+								"<span class='ticket-title ellipsis'>"+ v.detail.name+"</span>" +
+								"<span class='iconfont icon-check'></span></div>"
+						});
+
+						lis.push(item);
+
+						next(lis.join(''), page < data.pages);
+
+						$('.sCustomer-item').unbind('click').on('click',function()
+						{
+							$(this).find('span.iconfont').addClass('icon-radio-checked').parent().siblings().find('span').removeClass('icon-radio-checked');
+						})
+
+					},'JSON');
+				}
+			});
+		});
+
+		$('#sCustomerDone').unbind('click').on('click',function()
+		{
+			var customer_id = $('.sCustomer-item').find('span.icon-radio-checked').parent().data('value');
+
+			var customer_name = $('.sCustomer-item').find('span.icon-radio-checked').parent().data('name');
+
+			$('#sCustomerInput').val(customer_id);
+
+			$('#sCustomerName').html(customer_name);
+
+			if(selectAction == 'create_follow')
+			{
+				$.ajax(
+				{
+					url:"{:U('AjaxRequest/getContacter')}",
+
+					type:'POST',
+
+					async: false,
+
+					data:{'customer_id':customer_id},
+
+					datatype:'json',
+
+					success:function(data)
+					{
+						$('#ContacterList').html(data.html);
+
+						layui.use('form', function() {
+
+							var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+							form.render('select');
+
+						});
+
+						$('#ContacterList').parents('.feeldesk-form-item').removeClass('hidden');
+					},
+					error:function()
+					{
+					   //layer.msg('保存排序异常');
+					}
+				});
+			}
+
+			if($.inArray(selectActionUrl,['/Account/create','/Receipt/create','/Invoice/create']) != -1)
+			{
+				$.ajax({
+					url:"{:U('AjaxRequest/getContract')}",
+					type:'POST',
+					async: false,
+					data:{'customer_id':customer_id,'type':'option'},
+					datatype:'json',
+					success:function(data)
+					{
+						$('#contractList').html(data.html);
+
+						layui.use('form', function() {
+
+							var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+							form.render('select');
+
+						});
+					}
+				});
+
+				if(selectActionUrl == '/Invoice/create')
+				{
+					$.ajax({
+						url:"{:U('AjaxRequest/getCustomerInvoiceInfo')}",
+						type:'POST',
+						async: false,
+						data:{'customer_id':customer_id},
+						datatype:'json',
+						success:function(data)
+						{
+							$('#InvoiceInfoList').html(data.html);
+
+							layui.use('form', function() {
+
+								var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+								form.render('select');
+
+							});
+						}
+					});
+				}
+			}
+
+			/*if(selectActionUrl == '/Order/create')
+			{
+				$.ajax({
+					url:"{:U('AjaxRequest/getContract')}",
+					type:'POST',
+					async: false,
+					data:{'customer_id':customer_id},
+					datatype:'json',
+					success:function(data)
+					{
+						$('#selectContract span').html('{:L('ASSOCIATED_CONTRACT')}');
+
+						$('#sContractList').hide();
+
+						$('#sContractList').html(data.html);
+
+						checkboxClick();
+
+					},
+					error:function()
+					{
+
+					}
+				});
+			}*/
+
+			if(selectActionUrl == '/Contract/create')
+			{
+				$.ajax({
+					url:"{:U('AjaxRequest/getOpportunity')}",
+					type:'POST',
+					async: false,
+					data:{'customer_id':customer_id},
+					datatype:'json',
+					success:function(data)
+					{
+						$('#sOpportunitySelect').html(data.html);
+
+						layui.use('form', function() {
+
+							var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+							form.render('select');
+
+						});
+					},
+					error:function()
+					{
+
+					}
+				});
+			}
+
+			$('#sCustomer').toggleClass('sCustomer-show');
+		})
+	}
+
+	function checkboxClick()
+	{
+		$(".checkbox").unbind('click').on('click',function()
+		{
+			var checkbox = $(this);
+
+			$(this).toggleClass('feeldesk-form-checked').next('.feeldesk-option-panel').slideToggle('fast');
+
+			$(this).parents('.feeldesk-form-item').siblings().find('.feeldesk-input').removeClass('feeldesk-form-checked').next('.feeldesk-option-panel').slideUp('fast');
+
+			$(".checkboxPanel").find('li').on('click',function()
+			{
+				var value = $(this).data('value');
+
+				$(this).find('span.iconfont').toggleClass('icon-checkbox-checked');
+
+				var oldValue = checkbox.find('span').text();
+
+				var content = '';
+
+				if($(this).find('span.iconfont').hasClass('icon-checkbox-checked'))
+				{
+					$(this).find("input").prop('checked',true);
+
+					content = addContent(oldValue,value);
+				}
+				else
+				{
+					$(this).find("input").prop('checked',false);
+
+					content = removeContent(oldValue,value);
+				}
+
+				$(this).parent('.checkboxPanel').prev('.checkbox').find('span').text(content);
+			});
+		});
+	}
+
+</script>

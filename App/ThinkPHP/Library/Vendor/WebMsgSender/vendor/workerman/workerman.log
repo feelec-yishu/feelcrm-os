@@ -1,0 +1,148 @@
+2019-12-24 15:28:48 pid:1 Worker process terminated with ERROR: E_ERROR "Uncaught ArgumentCountError: Too few arguments to function {closure}(), 1 passed and exactly 2 expected in E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php:28
+Stack trace:
+#0 [internal function]: {closure}('2')
+#1 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Object(Closure), Array)
+#2 [internal function]: PHPSocketIO\Event\Emitter->emit('login', '2')
+#3 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(307): call_user_func_array(Array, Array)
+#4 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(269): PHPSocketIO\Socket->onevent(Array)
+#5 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Client.php(202): PHPSocketIO\Socket->onpacket(Array)
+#6 [internal function]: PHPSocketIO\Client->ondecoded(Array)
+#7 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\ in E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php on line 28"
+2019-12-24 15:34:33 pid:1 Worker process terminated
+2019-12-24 15:34:52 pid:1 Error: Class 'Think\Cache\Driver\Redis' not found in E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php:62
+Stack trace:
+#0 [internal function]: {closure}(Array)
+#1 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Object(Closure), Array)
+#2 [internal function]: PHPSocketIO\Event\Emitter->emit('login', Array)
+#3 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(307): call_user_func_array(Array, Array)
+#4 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(269): PHPSocketIO\Socket->onevent(Array)
+#5 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Client.php(202): PHPSocketIO\Socket->onpacket(Array)
+#6 [internal function]: PHPSocketIO\Client->ondecoded(Array)
+#7 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Array, Array)
+#8 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Parser\Decoder.php(34): PHPSocketIO\Event\Emitter->emit('decoded', Array)
+#9 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Client.php(182): PHPSocketIO\Parser\Decoder->add('2["login",{"uid...')
+#10 [internal function]: PHPSocketIO\Client->ondata('2["login",{"uid...')
+#11 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Array, Array)
+#12 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Socket.php(187): PHPSocketIO\Event\Emitter->emit('data', '2["login",{"uid...')
+#13 [internal function]: PHPSocketIO\Engine\Socket->onPacket(Array)
+#14 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Array, Array)
+#15 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Transport.php(56): PHPSocketIO\Event\Emitter->emit('packet', Array)
+#16 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Transport.php(61): PHPSocketIO\Engine\Transport->onPacket(Array)
+#17 [internal function]: PHPSocketIO\Engine\Transport->onData('42["login",{"ui...')
+#18 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Transports\WebSocket.php(26): call_user_func(Array, '42["login",{"ui...')
+#19 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Connection\TcpConnection.php(658): PHPSocketIO\Engine\Transports\WebSocket->onData2(Object(Workerman\Connection\TcpConnection), '42["login",{"ui...')
+#20 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Events\Select.php(294): Workerman\Connection\TcpConnection->baseRead(Resource id #89)
+#21 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(2382): Workerman\Events\Select->loop()
+#22 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(1353): Workerman\Worker->run()
+#23 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(1296): Workerman\Worker::forkWorkersForWindows()
+#24 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(509): Workerman\Worker::forkWorkers()
+#25 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php(178): Workerman\Worker::runAll()
+#26 {main}
+2019-12-24 15:34:52 pid:1 Worker process terminated
+2019-12-24 15:35:51 pid:1 Worker process terminated
+2019-12-24 15:36:01 pid:1 Worker process terminated
+2019-12-24 15:36:19 pid:1 Worker process terminated
+2019-12-24 15:36:40 pid:1 Worker process terminated
+2019-12-24 15:37:03 pid:1 Worker process terminated
+2019-12-24 15:37:17 pid:1 Worker process terminated
+2019-12-24 15:37:35 pid:1 Worker process terminated
+2019-12-24 15:37:54 pid:1 Worker process terminated
+2019-12-24 15:45:18 pid:1 Error: Class 'Think\Cache\Driver\Redis' not found in E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php:60
+Stack trace:
+#0 [internal function]: {closure}(Array)
+#1 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Object(Closure), Array)
+#2 [internal function]: PHPSocketIO\Event\Emitter->emit('login', Array)
+#3 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(307): call_user_func_array(Array, Array)
+#4 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(269): PHPSocketIO\Socket->onevent(Array)
+#5 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Client.php(202): PHPSocketIO\Socket->onpacket(Array)
+#6 [internal function]: PHPSocketIO\Client->ondecoded(Array)
+#7 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Array, Array)
+#8 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Parser\Decoder.php(34): PHPSocketIO\Event\Emitter->emit('decoded', Array)
+#9 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Client.php(182): PHPSocketIO\Parser\Decoder->add('2["login",{"uid...')
+#10 [internal function]: PHPSocketIO\Client->ondata('2["login",{"uid...')
+#11 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Array, Array)
+#12 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Socket.php(187): PHPSocketIO\Event\Emitter->emit('data', '2["login",{"uid...')
+#13 [internal function]: PHPSocketIO\Engine\Socket->onPacket(Array)
+#14 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Array, Array)
+#15 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Transport.php(56): PHPSocketIO\Event\Emitter->emit('packet', Array)
+#16 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Transports\Polling.php(151): PHPSocketIO\Engine\Transport->onPacket(Array)
+#17 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Transports\Polling.php(120): PHPSocketIO\Engine\Transports\Polling->onData('33:42["login",{...')
+#18 [internal function]: PHPSocketIO\Engine\Transports\Polling->dataRequestOnEnd(Object(PHPSocketIO\Engine\Protocols\Http\Request))
+#19 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Protocols\SocketIO.php(177): call_user_func(Array, Object(PHPSocketIO\Engine\Protocols\Http\Request))
+#20 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Protocols\SocketIO.php(89): PHPSocketIO\Engine\Protocols\SocketIO::emitEnd(Object(Workerman\Connection\TcpConnection), Object(PHPSocketIO\Engine\Protocols\Http\Request))
+#21 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Connection\TcpConnection.php(658): PHPSocketIO\Engine\Protocols\SocketIO::onData(Object(Workerman\Connection\TcpConnection), '33:42["login",{...')
+#22 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Events\Select.php(294): Workerman\Connection\TcpConnection->baseRead(Resource id #52)
+#23 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(2382): Workerman\Events\Select->loop()
+#24 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(1353): Workerman\Worker->run()
+#25 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(1296): Workerman\Worker::forkWorkersForWindows()
+#26 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(509): Workerman\Worker::forkWorkers()
+#27 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php(168): Workerman\Worker::runAll()
+#28 {main}
+2019-12-24 15:45:18 pid:1 Worker process terminated
+2019-12-24 15:45:40 pid:1 Worker process terminated with ERROR: E_ERROR "Uncaught Error: Class 'Think\Cache\Driver\Redis' not found in E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php:60
+Stack trace:
+#0 [internal function]: {closure}('2')
+#1 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Object(Closure), Array)
+#2 [internal function]: PHPSocketIO\Event\Emitter->emit('login', '2')
+#3 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(307): call_user_func_array(Array, Array)
+#4 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(269): PHPSocketIO\Socket->onevent(Array)
+#5 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Client.php(202): PHPSocketIO\Socket->onpacket(Array)
+#6 [internal function]: PHPSocketIO\Client->ondecoded(Array)
+#7 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitt in E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php on line 60"
+2019-12-24 15:48:25 pid:1 Error: Class 'Think\Cache\Driver\Redis' not found in E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php:62
+Stack trace:
+#0 [internal function]: {closure}(Array)
+#1 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Object(Closure), Array)
+#2 [internal function]: PHPSocketIO\Event\Emitter->emit('login', Array)
+#3 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(307): call_user_func_array(Array, Array)
+#4 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Socket.php(269): PHPSocketIO\Socket->onevent(Array)
+#5 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Client.php(202): PHPSocketIO\Socket->onpacket(Array)
+#6 [internal function]: PHPSocketIO\Client->ondecoded(Array)
+#7 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Array, Array)
+#8 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Parser\Decoder.php(34): PHPSocketIO\Event\Emitter->emit('decoded', Array)
+#9 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Client.php(182): PHPSocketIO\Parser\Decoder->add('2["login",{"uid...')
+#10 [internal function]: PHPSocketIO\Client->ondata('2["login",{"uid...')
+#11 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Array, Array)
+#12 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Socket.php(187): PHPSocketIO\Event\Emitter->emit('data', '2["login",{"uid...')
+#13 [internal function]: PHPSocketIO\Engine\Socket->onPacket(Array)
+#14 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Event\Emitter.php(93): call_user_func_array(Array, Array)
+#15 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Transport.php(56): PHPSocketIO\Event\Emitter->emit('packet', Array)
+#16 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Transport.php(61): PHPSocketIO\Engine\Transport->onPacket(Array)
+#17 [internal function]: PHPSocketIO\Engine\Transport->onData('42["login",{"ui...')
+#18 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\phpsocket.io\src\Engine\Transports\WebSocket.php(26): call_user_func(Array, '42["login",{"ui...')
+#19 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Connection\TcpConnection.php(658): PHPSocketIO\Engine\Transports\WebSocket->onData2(Object(Workerman\Connection\TcpConnection), '42["login",{"ui...')
+#20 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Events\Select.php(294): Workerman\Connection\TcpConnection->baseRead(Resource id #79)
+#21 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(2382): Workerman\Events\Select->loop()
+#22 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(1353): Workerman\Worker->run()
+#23 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(1296): Workerman\Worker::forkWorkersForWindows()
+#24 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(509): Workerman\Worker::forkWorkers()
+#25 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\start_io.php(170): Workerman\Worker::runAll()
+#26 {main}
+2019-12-24 15:48:25 pid:1 Worker process terminated
+2019-12-30 19:11:53 pid:1 Worker process terminated
+2019-12-30 19:12:16 pid:1 Worker process terminated
+2019-12-30 19:29:28 pid:1 Worker process terminated
+2019-12-30 19:30:30 pid:1 Worker process terminated
+2019-12-31 09:21:13 pid:1 Worker process terminated
+2019-12-31 09:23:52 pid:1 Worker process terminated
+2019-12-31 09:25:29 pid:1 Worker process terminated
+2019-12-31 09:27:44 pid:1 Worker process terminated
+2019-12-31 11:59:25 pid:1 ArgumentCountError: Too few arguments to function Cli\Controller\ServerController::getTicketHtml(), 1 passed in E:\Project\feeldesk\Feeldesk\Cli\Controller\ServerController.class.php on line 160 and exactly 2 expected in E:\Project\feeldesk\Feeldesk\Cli\Controller\ServerController.class.php:188
+Stack trace:
+#0 E:\Project\feeldesk\Feeldesk\Cli\Controller\ServerController.class.php(160): Cli\Controller\ServerController->getTicketHtml('{"ticket_no":"F...')
+#1 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Connection\TcpConnection.php(658): Cli\Controller\ServerController->Cli\Controller\{closure}(Object(Workerman\Connection\TcpConnection), Array)
+#2 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Events\Select.php(294): Workerman\Connection\TcpConnection->baseRead(Resource id #85)
+#3 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(2398): Workerman\Events\Select->loop()
+#4 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(1369): Workerman\Worker->run()
+#5 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(1312): Workerman\Worker::forkWorkersForWindows()
+#6 E:\Project\feeldesk\ThinkPHP\Library\Vendor\WebMsgSender\vendor\workerman\workerman\Worker.php(509): Workerman\Worker::forkWorkers()
+#7 E:\Project\feeldesk\Feeldesk\Cli\Controller\ServerController.class.php(184): Workerman\Worker::runAll()
+#8 [internal function]: Cli\Controller\ServerController->index()
+#9 E:\Project\feeldesk\Feeldesk\Runtime\cli~runtime.php(1): ReflectionMethod->invoke(Object(Cli\Controller\ServerController))
+#10 E:\Project\feeldesk\Feeldesk\Runtime\cli~runtime.php(1): Think\App::invokeAction(Object(Cli\Controller\ServerController), 'index')
+#11 E:\Project\feeldesk\Feeldesk\Runtime\cli~runtime.php(1): Think\App::exec()
+#12 E:\Project\feeldesk\ThinkPHP\Library\Think\Think.class.php(120): Think\App::run()
+#13 E:\Project\feeldesk\ThinkPHP\ThinkPHP.php(97): Think\Think::start()
+#14 E:\Project\feeldesk\cli.php(31): require('E:\\Project\\feel...')
+#15 {main}
+2019-12-31 11:59:25 pid:1 Worker process terminated

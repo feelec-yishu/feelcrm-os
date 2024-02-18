@@ -1,0 +1,245 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('SYSTEM')}</block>
+
+<block name="content">
+
+    <div class="layui-tab member-tab">
+
+        <ul class="layui-tab-title"><li class="layui-this">{:L('PERSONAL_CENTER')}</li><li>{:L('EDIT_PASSWORD')}</li></ul>
+
+        <div class="layui-tab-content">
+
+            <div class="layui-tab-item layui-show">
+
+                <div class="feeldesk-form setting-form">
+
+                    <form action="" class="layui-form">
+
+                        <div class="form-content">
+
+                            <div class="form-item">
+
+                                <div class="layui-form-item avatar-item">
+
+                                    <label class="layui-form-label">{:L('AVATAR')}</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <img src="{$member.face|default='/Attachs/face/face.png'}" alt="" id="avatar">
+
+                                        <a href="javascript:" class='upload-btn' id="upload-image">{:L('CLICK_CHANGE')}</a>
+
+                                        <input type="hidden" name="member[face]" value="{$member.face}">
+
+                                        <input type="hidden" name="member[face_name]" value="{$member.face_name}">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">{:L('ACCOUNT')}</label>
+
+                                    <span class="member-name">{$member.account}</span>
+
+                                </div>
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">UUID</label>
+
+                                    <div class="layui-input-inline copy-input">
+
+                                        <div class="feeldesk-disabled" id='uuid'>{$member.employee_id}</div>
+
+                                    </div>
+
+                                    <span class='copy-btn' onclick="copy('{:L(COPY_SUCCESS)}')" data-clipboard-action="copy" data-clipboard-target="#uuid">{:L('COPY')}</span>
+
+                                </div>
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">{:L('NAME')}</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <input type="text" name="member[name]" value="{$member.name}" class="layui-input" placeholder="{:L('ENTER_NAME')}" />
+
+                                    </div>
+
+                                </div>
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">{:L('NICKNAME')}</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <input type="text" name="member[nickname]" value="{$member.nickname}" class="layui-input" placeholder="{:L('ENTER_NICKNAME')}" />
+
+                                    </div>
+
+                                </div>
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">{:L('EMAIL')}</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <input type="text" name="member[email]" value="{$member.email}" class="layui-input" placeholder="{:L('ENTER_EMAIL')}" />
+
+                                    </div>
+
+                                </div>
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">{:L('MOBILE')}</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <input type="text" name="member[mobile]" value="{$member.mobile}" class="layui-input" placeholder="{:L('MOBILE_NOTE')}" />
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-submit">
+
+                                <div class="layui-form-item">
+
+                                    <div class="layui-input-inline">
+
+                                        <a href="javascript:" class="layui-btn layui-btn-normal" id="submitForm">{:L('SUBMIT')}</a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="layui-tab-item">
+
+                <div class="feeldesk-form setting-form">
+
+                    <form action="{:U('update_password')}">
+
+                        <div class="form-content">
+
+                            <div class="form-item">
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">{:L('OLD_PASSWORD')}</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <input type="password" name="member[old]" placeholder="{:L('ENTER_OLD_PASSWORD')}" class="layui-input">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">{:L('NEW_PASSWORD')}</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <input type="password" name="member[new]" placeholder="{:L('CODE_NOTE')}" class="layui-input">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">{:L('CONFIRM_PASSWORD')}</label>
+
+                                    <div class="layui-input-inline">
+
+                                        <input type="password" name="member[sure]" placeholder="{:L('CODE_NOTE')}" class="layui-input">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-submit">
+
+                                <div class="layui-form-item">
+
+                                    <div class="layui-input-inline">
+
+                                        <a href="javascript:" class="layui-btn layui-btn-normal" id="submitForm2">{:L('SUBMIT')}</a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+
+        layui.use('upload', function()
+        {
+            var upload = layui.upload;
+
+            upload.render(
+            {
+                elem:'#upload-image',
+
+                url: "{:U('Upload/uploadHeadFile')}",
+
+                before:function()
+                {
+                    layer.msg("{:L('UPLOADING')}...", {time: 100000, shade: [0.3, '#393D49'], offset: ['15vw']});
+                },
+                done: function(data)
+                {
+                    layer.msg(data.msg,{time:1000,offset:['15vw']});
+
+                    if(data.code == 0)
+                    {
+                        $('#avatar').attr('src', data.url);
+
+                        $("input[name='member[face]']").val(data.url);
+
+                        $("input[name='member[face_name]']").val(data.face_name);
+                    }
+                }
+            })
+        });
+
+    </script>
+
+    <include file="Public:language" />
+
+</block>

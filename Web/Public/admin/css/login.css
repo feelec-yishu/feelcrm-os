@@ -1,0 +1,33 @@
+/* 登录页面样式 */
+
+	.login{width:100%;height:100%;line-height:100%;background: url('../img/login_bg.png') no-repeat center;background-size: 100% 100%;}
+
+	.login_content{width:100%;height:100%;margin:0 auto}
+
+	.login_content form{float: right;/*background: url('../img/form_bg.png') no-repeat top center;*/padding: 16px 50px 0;border-radius: 5px;position: absolute;top:25%;left: 37%;width:488px;height:436px}
+
+	.login_content form h3{background:url('../img/form_logo.png') no-repeat center center;width:100%;height:100px;text-align: center;font-size: 22px;color: #f9f9f9;font-weight: normal;}
+
+	.login_content form input.user,.login_content form input.pwd{display: block;width:300px;height: 40px;margin: 0 auto 12px auto;padding-left: 40px;/*border: 1px solid #d2d2d2;*/border:none;font-size: 14px;border-radius: 3px;color: #666;/*opacity: 0.45;*/}
+
+	.login_content form input.user{background:#fff /*#626262*/ url('../img/username.png') no-repeat 5px center;}
+
+	.login_content form input.pwd{background:#fff /*#626262*/ url('../img/password.png') no-repeat 5px center;}
+
+	.login_content form input:focus{-webkit-box-shadow: #57c5f7 0 0 10px; -moz-box-shadow: #57c5f7 0 0 10px; box-shadow: #fff 0 0 10px;}
+
+	.login_content form a.submit{display: block;width: 300px;background: #0da8db;color: #fff;margin:0 auto;border: none;height: 40px;line-height:40px;text-align:center;text-decoration:none;font-size:16px;border-radius:4px;}
+
+	.login_content form a.submit:hover{opacity:0.8;color:#FFF}
+
+	.code-label{display:block;background-color:#FFF;width:300px;height:40px;line-height:40px;border-radius:4px;margin: 0 auto 50px auto;}
+
+	.code-label .code_box{display:inline-block;width:190px;height:30px;border:none;border-right:1px solid #e2e2e2;vertical-align:middle;font-size:14px;color:#666;padding-left:10px}
+
+	::-webkit-input-placeholder {color: #ddd; } 
+
+	:-moz-placeholder  {color: #ddd; }
+
+	::-moz-placeholder {color: #ddd; } 
+
+	:-ms-input-placeholder {color: #ddd; } 

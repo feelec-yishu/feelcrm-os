@@ -1,0 +1,21 @@
+.feeldesk header{height:20vw;line-height:28vw}
+
+.feeldesk-main {height: calc(100% - 35vw);overflow-x: hidden;}
+
+.feeldesk-notify header {position: relative;height: auto;min-height: 38vw;}
+
+.feeldesk-notify .one-tab-item{line-height: 13vw;padding: 0 0 1vw 0;}
+
+.feeldesk-setting .set-main {margin-top: 0;height: calc(100% - 32vw);}
+
+.no-footer-main {height: calc(100% - 20vw);}
+
+.ticket-detail header {height: auto;line-height: 13vw;}
+
+.ticket-detail header .menu-header{height:20vw;line-height:28vw}
+
+.ticket-detail header .header-menu{top:20vw}
+
+.ticket-detail .ticket-main{position:relative;z-index:1}
+
+.pswp__counter,.pswp__preloader,.pswp__button{top:6vw}

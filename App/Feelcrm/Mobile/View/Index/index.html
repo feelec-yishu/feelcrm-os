@@ -1,0 +1,104 @@
+<include file="Public/header" />
+
+<div class="feeldesk">
+
+    <header>
+
+        <if condition="$groupSystemAuth['ticket_auth'] && $groupSystemAuth['crm_auth']">
+
+            <!-- 全部 -->
+            <div class="header-tab header-two-tab fts0">
+
+                <div class="tab <eq name='Think.MODULE_NAME' value='Mobile'>tab-this</eq>">
+
+                    <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Mobile?l={$lang}">{:L('TICKET')}</a>
+
+                </div>
+
+                <div class="tab <eq name='Think.MODULE_NAME' value='CrmMobile'>tab-this</eq>">
+
+                    <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/CrmMobile?l={$lang}">CRM</a>
+
+                </div>
+
+            </div>
+
+        <elseif condition="$groupSystemAuth['ticket_auth'] && !$groupSystemAuth['crm_auth']" />
+
+            <!-- 工单 -->
+            <div class="header-tab header-one-tab fts0">
+
+                <div class="tab tab-this">
+
+                    <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Mobile?l={$lang}">{:L('TICKET')}</a>
+
+                </div>
+
+            </div>
+
+        <elseif condition="!$groupSystemAuth['ticket_auth'] && $groupSystemAuth['crm_auth']" />
+
+            <!-- CRM -->
+            <div class="header-tab header-one-tab fts0">
+
+                <div class="tab tab-this">
+
+                    <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/CrmMobile?l={$lang}">CRM</a>
+
+                </div>
+
+            </div>
+
+        </if>
+
+    </header>
+
+    <div class="feeldesk-main">
+
+        <div class="index-analysis">
+
+            <div id="container" class="container"></div>
+
+        </div>
+
+        <div class="feeldesk-ticket-item">
+
+            <ul id="ticketPannel">
+
+                <volist name="ticket" id="vo">
+
+                    <li>
+
+                        <a href="{$vo.action}">
+
+                            <i class="iconfont {$vo.icon}"></i>
+
+                            <span>{$vo.name}</span>
+
+                            <span class="fr">{$vo.number}</span>
+
+                        </a>
+
+                    </li>
+
+                </volist>
+
+            </ul>
+            
+        </div>
+
+    </div>
+
+    <include file="Public/buoy" />
+
+</div>
+
+<include file="Public/footer" />
+
+<script type="text/javascript">
+
+    var releaseNumber = '{$releaseNumber}';var handleNumber = '{$handleNumber}';var completeNumber = '{$completeNumber}';
+
+</script>
+
+<script type="text/javascript" src="MOBILE_PUBLIC_JS/analysis.js"></script>

@@ -1,0 +1,154 @@
+﻿<include file="Public/header" />
+
+<div class="feeldesk">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="{:U('Message/getMessage')}" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('NOTIFY_DETAIL')}</div>
+
+            <a href="javascript:" class="header-right" id="delete"><i class="iconfont icon-delete"></i></a>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <div class="message-detail-main">
+
+            <div class="message-detail-top">
+
+                <i class="iconfont icon-ticket-tab"></i>
+
+                <div class="message-title">{$detail.msg_title}</div>
+
+            </div>
+
+            <div class="message-detail-info">
+
+                <div class="message-detail-item">
+
+                    <span>{:L('CREATE_TIME')}</span>
+
+                    <span>{$detail.create_time|getDates}</span>
+
+                </div>
+
+                <neq name="detail.msg_type" value="timeout_ticket">
+
+                    <div class="message-detail-item">
+
+                        <span>{:L('TICKET_TITLE')}</span>
+
+                        <a href="{$detail.msg_url}" class="blue078 fr">{$ticket.title}</a>
+
+                    </div>
+
+                    <div class="message-detail-item">
+
+                        <span>{:L('TICKET_ID')}</span>
+
+                        <span>{$ticket.ticket_no}</span>
+
+                    </div>
+
+                </neq>
+
+                <div class="detail-content">
+
+                    <div>{:L('MSG_CONTENT')}</div>
+
+                    <div class="message-content">{:getHtml($detail['msg_content'])}</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<neq name="detail.msg_type" value="timeout_ticket">
+
+    <script type="text/javascript">
+
+        $(function ()
+        {
+            $('.message-content a').unbind('click').on('click',function()
+            {
+                window.location.href = "/"+moduleName+$(this).attr('action');
+            })
+        })
+
+    </script>
+
+<else />
+
+    <script type="text/javascript">
+
+        $(function ()
+        {
+            $('.message-content a').each(function(k,v)
+            {
+                $(this).attr('href',"{:U('Ticket/timeoutTicket')}");
+            })
+        })
+
+    </script>
+
+</neq>
+
+<script type="text/javascript">
+
+    $(function()
+    {
+        $('#delete').unbind('click').on('click',function()
+        {
+            layer.confirm(language.SURE_DELETE_MESSAGE,
+            {
+                skin:'msg-window',
+                title:false,
+                closeBtn:false,
+                offset:['40%'],
+                btnAlign: 'c',
+                btn:["{:L('CANCEL')}","{:L('SURE')}"],
+                yes:function(index, layero)
+                {
+                    layer.close(index);
+                },
+                btn2:function(index, layero)
+                {
+                    var id = "{$detail.msg_id}";
+
+                    var loading = layer.load(2,{offset:['40%']});
+
+                    $.post("{:U('Message/delete')}",{id:id},function(data)
+                    {
+                        if(data.errcode == 0)
+                        {
+                            layer.msg(data.msg,{time:1000,offset:['40%']},function()
+                            {
+                                window.location.href = data.url;
+                            });
+                        }
+                        else
+                        {
+                            layer.close(loading);
+
+                            layer.msg(data.msg,{time:1500,offset:['40%']});
+                        }
+                    });
+
+                    return false
+                }
+            });
+        });
+    })
+
+</script>

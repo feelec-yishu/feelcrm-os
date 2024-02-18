@@ -1,0 +1,258 @@
+<include file="Public/header" />
+
+<div class="feeldesk" id="formWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('ADD_CONTACT_RECORD')}</div>
+
+            <a href="javascript:" class="header-right" id="submitForm">{:L('COMPLETE')}</a>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <eq name="sourcetype" value="clue">
+
+            <form action="{:U('Customer/create_follow',['id'=>encrypt($clue_id,'CLUE'),'detailtype'=>encrypt($detailtype,'CLUE'),'sourcetype'=>$sourcetype])}" id="feeldeskForm" method="post" class="layui-form">
+
+        <else/>
+
+            <eq name="sourcetype" value="opportunity">
+
+                <form action="{:U('Customer/create_follow',['id'=>encrypt($opportunity_id,'OPPORTUNITY'),'detailtype'=>encrypt($detailtype,'OPPORTUNITY'),'sourcetype'=>$sourcetype])}" id="feeldeskForm" method="post" class="layui-form">
+
+                <else/>
+
+                <form action="{:U('Customer/create_follow',['id'=>encrypt($customer_id,'CUSTOMER'),'detailtype'=>encrypt($detailtype,'CUSTOMER'),'sourcetype'=>$sourcetype])}" id="feeldeskForm" method="post" class="layui-form">
+
+            </eq>
+
+        </eq>
+
+            <div class="feeldesk-form pd5">
+
+                <div class="feeldesk-form-item">
+
+                    <div class="feeldesk-form-block">
+
+                        <span class="red required-icon">*</span>
+
+                        <textarea name="follow[content]" class="feeldesk-input feeldesk-textarea" placeholder="{:L('ENTER_CONTACT_RECORD')}" id="follow_content"></textarea>
+
+                    </div>
+
+                </div>
+
+                <neq name="sourcetype" value="clue">
+
+                    <neq name="sourcetype" value="opportunity">
+
+                        <div class="feeldesk-form-item <empty name='customer_id' >mb0</empty>" >
+
+                            <div class="feeldesk-form-block">
+
+                                <input type="hidden" name="follow[customer_id]" value="{$customer_id}" id="sCustomerInput" />
+
+                                <empty name="customer_id" >
+
+                                    <span class="sCustomerName" id="sCustomerName"></span>
+
+                                    <span class="selectCustomerBtn" id="selectCustomer"> + {:L('SELECT_CUSTOMER')}</span>
+
+                                </empty>
+
+                            </div>
+
+                        </div>
+
+                        <empty name="customer_id" >
+
+                            <div class="feeldesk-form-item" >
+
+                                <div class="feeldesk-form-block">
+
+                                    <input type="hidden" name="follow[clue_id]" value="{$clue_id}" id="sClueInput" />
+
+                                    <span class="sCustomerName" id="sClueName"></span>
+
+                                    <span class="selectCustomerBtn" id="selectClue"> + {:L('SELECT_CLUE')}</span>
+
+                                </div>
+
+                            </div>
+
+                        </empty>
+
+                        <div class="feeldesk-form-item <empty name='contacter'>hidden</empty>" >
+
+                            <div class="feeldesk-form-block">
+
+                                <select name="follow[contacter_id]" id="ContacterList" lay-filter="ContacterList">
+
+                                    <volist name="contacter" id="vo">
+
+                                        <option value="{$vo.contacter_id}" >{$vo.detail.name}</option>
+
+                                    </volist>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    <else/>
+
+                        <input type="hidden" name="follow[opportunity_id]" value="{$opportunity_id}" />
+
+                    </neq>
+
+                <else/>
+
+                    <div class="feeldesk-form-item" >
+
+                        <div class="feeldesk-form-block">
+
+                            <input type="hidden" name="follow[clue_id]" value="{$clue_id}" />
+
+                        </div>
+
+                    </div>
+
+                </neq>
+
+                <div class="feeldesk-form-item">
+
+                    <div class="feeldesk-form-block">
+
+                        <select name="follow[cmncate_id]" lay-filter="getCmncateReply">
+
+							<option value="">{:L('COMMUNICATION_TYPE')}</option>
+
+                            <volist name="cmncate" id="vo">
+
+								<option value="{$vo.cmncate_id}" >{$vo.cmncate_name}</option>
+
+							</volist>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+				<div class="feeldesk-form-item hidden">
+
+                    <div class="feeldesk-form-block">
+
+                        <select name="follow[reply_id]" id="cmncate_reply" lay-filter="ReplyContent">
+
+                            <option value="">{:L('CUSTOM_REPLY')}</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="feeldesk-form-item">
+
+                    <div class="feeldesk-form-block">
+
+                        <input type="text" name="follow[nextcontacttime]" value="" placeholder="{:L('NEXT_CONTACT_TIME')}" id="follow-date" class="feeldesk-input" readonly />
+
+                        <script type="text/javascript">
+
+                            $(function()
+                            {
+                                var minDate = "{:getDates(NOW_TIME,2)}";
+
+                                jeDate("#follow-date",{
+                                    minDate:minDate,              //最小日期
+                                    maxDate:"2099-12-31 23:59:59",              //最大日期
+                                    method:{
+                                        choose:function (params) {
+
+                                        }
+                                    },
+                                    format: "YYYY-MM-DD hh:mm:ss"
+                                });
+                            })
+
+                        </script>
+
+                    </div>
+
+                </div>
+
+                <div class="feeldesk-form-item relative">
+
+                    <div class="feeldesk-form-block">
+
+                        <!-- 单选 -->
+                        <div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{:L('WHETHER_SAVE_FOLLOW_UP_TEMPLATE')}</span><i class="feeldesk-edge"></i></div>
+
+                        <ul class="feeldesk-option-panel radioPanel hidden">
+
+                            <input type="hidden" name="reply" value=""/>
+
+                            <li data-name="{:L('YES')}" data-value="1">
+
+                                <div class="feeldesk-option">
+
+                                    <span class="feeldesk-option-title">{:L('YES')}</span>
+
+                                    <span class="iconfont icon-check"></span>
+
+                                </div>
+
+                            </li>
+
+                            <li data-name="{:L('NO')}" data-value="2">
+
+                                <div class="feeldesk-option">
+
+                                    <span class="feeldesk-option-title">{:L('NO')}</span>
+
+                                    <span class="iconfont icon-check"></span>
+
+                                </div>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="feeldesk-form-item relative">
+
+                    <div class="feeldesk-form-block">
+
+                        <button type="button" class="layui-btn layui-btn-primary uploadFile"><i class="layui-icon"></i>{:L('UPLOAD_ATTACHMENTS')}</button>
+
+                        <ul id="attachments" class="attach-item mt10"></ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<include file="Public/selectCustomer" />
+
+<include file="Public/selectClue" />

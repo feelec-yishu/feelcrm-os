@@ -1,0 +1,169 @@
+<extend name="Public:common"/>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0 feelcrm-form">
+
+		<div class="form-nav">
+
+            <ul>
+
+                <li><a href="javascript:" class="form-tab active">{:L('MODIFY_CONTACT_RECORDS')}</a></li>
+
+				<notempty name="detailtype"><a href="javascript:history.go(-1);" class="feelcrm-cancleBtn fr mt5 mr30">{:L('CANCEL')}</a></notempty>
+
+            </ul>
+
+        </div>
+
+        <div class="layui-tab-content form-content pb0 follow-tocreate">
+
+			<form action="{:U('customer/edit_follow',['id'=>encrypt($followup['follow_id'],'FOLLOW'),'detailtype'=>encrypt($detailtype,$detailsource)])}" class="layui-form" method="post" enctype="multipart/form-data">
+
+                <div class="layui-tab-item layui-show ">
+
+					 <div class="form-item">
+
+						<div class="layui-form-item">
+
+							<div class="layui-input-inline wd100">
+
+								<textarea class="layui-input" name="follow[content]" id="follow_content">{$followup.content}</textarea>
+
+							</div>
+
+						</div>
+
+						 <div class="layui-form-item relative">
+
+							 <div class="layui-input-inline">
+
+								 <button type="button" class="layui-btn layui-btn-primary uploadFile" id="uploadFile"><i class="layui-icon"></i>{:L('UPLOAD_ATTACHMENTS')}</button>
+
+								 <ul id="attachments" class="attach-item mt10">
+
+									 <volist name="followup.createFiles" id="vo">
+
+										 <li>
+
+											 <i class="iconfont icon-fujian"></i>
+
+											 <span>{$vo['file_name']}</span>
+
+											 <span class="iconfont icon-close2 closed" style="cursor: pointer" data-name="{:getQiniuFileName('http://'.$followup['qiniu_domain'].'/',$vo['file_link'])}"
+												   onclick="editDeleteFile(this);"></span>
+
+											 <input type="hidden" name="file[saves][]" value="{$vo['save_name']}">
+
+											 <input type="hidden" name="file[links][]" value="{$vo['file_link']}">
+
+											 <input type="hidden" name="file[names][]" value="{$vo['file_name']}">
+
+											 <input type="hidden" name="file[sizes][]" value="{$vo['file_size']}">
+
+											 <input type="hidden" name="file[types][]" value="{$vo['file_type']}">
+
+										 </li>
+
+									 </volist>
+
+								 </ul>
+
+							 </div>
+
+						 </div>
+
+						<div class="layui-form-item">
+
+							<empty name="followup.clue_id">
+
+								<div class="layui-input-inline w200 mb10">
+
+									<select name="follow[contacter_id]">
+
+										<option value="">{:L('CONTACT')}</option>
+
+										<volist name="contacter" id="vo">
+
+											<option value="{$vo.contacter_id}" <eq name="vo.contacter_id" value="$followup['contacter_id']">selected</eq>>{$vo.detail.name}</option>
+
+										</volist>
+
+									</select>
+
+								</div>
+
+							</empty>
+
+							<div class="layui-input-inline w200 mb10">
+
+								<select name="follow[cmncate_id]" lay-filter="getCmncateReply">
+
+									<option value="">{:L('COMMUNICATION_TYPE')}</option>
+
+									<volist name="cmncate" id="vo">
+
+										<option value="{$vo.cmncate_id}" <eq name="followup.cmncate_id" value="$vo['cmncate_id']">selected</eq>>{$vo.cmncate_name}</option>
+
+									</volist>
+
+								</select>
+
+							</div>
+
+							<div class="layui-input-inline w200 mb10 <empty name='reply'>hidden</empty>">
+
+								<select name="follow[reply_id]" id="cmncate_reply" lay-filter="ReplyContent">
+
+									<option value="">{:L('CUSTOM_REPLY')}</option>
+
+									<volist name="reply" id="vo">
+
+										<option value="{$vo.reply_id}" <eq name="followup.reply_id" value="$vo['reply_id']">selected</eq>>{$vo.reply_content}</option>
+
+									</volist>
+
+								</select>
+
+							</div>
+
+							<div class="layui-input-inline w200 mb10">
+
+								 <input type='text' name="follow[nextcontacttime]" readonly class="layui-input cursor layui-form-time" <notempty name="followup.nextcontacttime">value="{$followup.nextcontacttime|date='Y-m-d H:i:s',###}"</notempty> id="form_contacttime" placeholder="{:L('NEXT_CONTACT_TIME')}" >
+
+							</div>
+
+							<div class="layui-input-inline w200 mb10 savefollow">
+
+								<input type="checkbox" name="reply" lay-skin="primary" value="1">
+
+								<span>{:L('SAVE_AS_FOLLOW-UP_TEMPLATE')}</span>
+
+							</div>
+
+							<div class="fr">
+
+								<div class="layui-input-inline w100 right mr0 mb10">
+
+									<a href="javascript:" class="layui-btn layui-btn-normal submitForm createfollow">{:L('EDITOR_RECORD')}</a>
+
+								</div>
+
+							</div>
+
+						</div>
+
+
+					 </div>
+
+				</div>
+
+			</form>
+
+		</div>
+
+    </div>
+
+	<include file="Public:language" />
+
+</block>

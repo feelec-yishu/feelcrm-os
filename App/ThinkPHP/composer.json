@@ -1,0 +1,14 @@
+{
+    "require": {
+      "ext-mbstring":"*",
+      "ext-curl":"*",
+      "ext-iconv":"*",
+      "ext-json": "*",
+      "ext-imap": "*",
+      "ext-openssl": "*",
+      "ext-redis": "*",
+      "ext-apc": "*",
+      "ext-apcu": "*",
+      "ext-pdo": "*"
+    }
+}

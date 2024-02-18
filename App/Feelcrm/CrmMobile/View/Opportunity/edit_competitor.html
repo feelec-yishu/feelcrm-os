@@ -1,0 +1,367 @@
+<include file="Public/header" />
+
+<div class="feeldesk" id="formWrapper">
+
+	<form action="{:U('Opportunity/edit_competitor',['id'=>encrypt($competitor['competitor_id'],'OPPORTUNITY'),'opportunity_id'=>encrypt($opportunity_id,'OPPORTUNITY'),'detailtype'=>encrypt($detailtype,'OPPORTUNITY'),'detail_source'=>'crm'])}" id="competitorForm" method="post" class="layui-form">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('COMPETITOR_DETAILS')}</div>
+
+			<notempty name="isEditCompetitorAuth">
+
+				<a href="javascript:showForm('opponent-edit','opponent-save','opponent-detail','opponent-edit-form')" class="header-right" id="opponent-edit">{:L('EDITOR')}</a>
+
+				<a href="javascript:" class="header-right hidden" id="opponent-save">{:L('SAVE')}</a>
+
+			</notempty>
+
+        </div>
+
+    </header>
+
+	 <!-- {:L('COMPETITOR')} —— 详情 -->
+    <div class="feeldesk-main no-footer-main pd0" id="opponent-detail">
+
+		<volist name="competitorform1" id="vo">
+
+			<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+			<if condition="!$v['role_id'] || in_array($mobile['role_id'],explode(',',$v['role_id']))">
+
+			<div class="crm-detail-item"><span>{$vo.form_description}</span><div class="assign-ticket mr0">{$competitor['detail'][$vo['form_name']]|default='--'}</div></div>
+
+			</if>
+
+		</volist>
+
+		<volist name="competitorform2" id="vo">
+
+			<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+			<if condition="!$v['role_id'] || in_array($mobile['role_id'],explode(',',$v['role_id']))">
+
+			<div class="item-textarea">
+
+				<div class="item-textarea-title">{$vo.form_description}</div>
+
+				<div class="item-textarea-content textareaImg" id="textareaImages">{$competitor['detail'][$vo['form_name']]|default='--'}</div>
+
+			</div>
+
+			</if>
+
+		</volist>
+		
+		<script type="text/javascript">
+
+			$(function ()
+			{
+				var textareaImg = $(".textareaImg");
+
+				textareaImg.find('img').each(function(k,v)
+				{
+					$(this).attr('onclick',"openPhotoSwipe("+k+",'textareaImages')");
+				})
+			})
+
+		</script>
+
+    </div>
+	<notempty name="isEditCompetitorAuth">
+    <!-- {:L('COMPETITOR')} —— 编辑 -->
+    <div class="feeldesk-main no-footer-main pd0 hidden" id="opponent-edit-form">
+
+            <div class="feeldesk-form pd5">
+
+                 <volist name="competitorform" id="vo">
+
+					 <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+					 <if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+					 <!-- 字段未设置编辑权限或当前用户在编辑权限内 -->
+					 <if condition="!$vo['member_id'] || in_array($mobile['member_id'],explode(',',$vo['member_id']))">
+
+					<eq name="vo.form_type" value="region">
+
+						<php>
+							$reg++;
+						</php>
+
+						{:W('Region/getRegionEdit',['competitor_form',$vo,$reg,$competitor])}
+
+					<else/>
+
+					 <div class="feeldesk-form-item relative">
+
+						<div class="feeldesk-form-block">
+
+							<eq name="vo.is_required" value="0">
+
+								<span class="red required-icon">*</span>
+
+							</eq>
+
+							<eq name="vo.form_type" value="text">
+
+								<!-- 单行文本框 -->
+								<input type="text" name="competitor_form[{$vo.form_name}]" value="{$competitor['detail'][$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="phone">
+
+								<!-- 手机 -->
+								<input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="competitor_form[{$vo.form_name}]" value="{$competitor['detail'][$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="email">
+
+								<!-- 邮箱 -->
+								<input type="text" name="competitor_form[{$vo.form_name}]" value="{$competitor['detail'][$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="number">
+
+								<!-- 数字 -->
+								<input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="competitor_form[{$vo.form_name}]" value="{$competitor['detail'][$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="decimal">
+
+								<!-- 小数 -->
+								<input type="text" name="competitor_form[{$vo.form_name}]" value="{$competitor['detail'][$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="select">
+
+								<!-- 下拉菜单 -->
+								<select name="competitor_form[{$vo.form_name}]" lay-filter="">
+
+									<option value="">{$vo.form_description}</option>
+
+									<foreach name="vo.option" item="op">
+
+										<option value="{$op}" <eq name="competitor['detail'][$vo[form_name]]" value="$op" >selected</eq>>{$op}</option>
+
+									</foreach>
+
+								</select>
+
+							</eq>
+							
+							<eq name="vo.form_type" value="select_text">
+
+								<php>
+									$st++;
+								</php>
+								<!-- 下拉填写 -->
+								{:W('Update/selectTextForm',['competitor',$vo,$st,$competitor])}
+
+							</eq>
+
+							<eq name="vo.form_type" value="checkbox">
+
+								<!-- 多选 -->
+								<div class="feeldesk-input feeldesk-form-check checkbox">
+
+									<span class='gray9'>{$vo.form_description}</span>
+
+									<i class="feeldesk-edge"></i>
+
+								</div>
+
+								<ul class="feeldesk-option-panel hidden checkboxPanel">
+
+									<volist name="vo.option" id="op">
+
+										<li data-value="{$op}">
+
+											<input type="checkbox" name="competitor_form[{$vo.form_name}][]" <in name="op" value="$competitor['detail'][$vo[form_name]]">checked</in> value="{$op}"/>
+
+											<div class="feeldesk-option">
+
+												<span class="feeldesk-option-title">{$op}</span>
+
+												<span class="iconfont icon-check <in name="op" value="$competitor['detail'][$vo[form_name]]">icon-checkbox-checked</in>"></span>
+
+											</div>
+
+										</li>
+
+									</volist>
+
+								</ul>
+
+							</eq>
+
+							<eq name="vo.form_type" value="radio">
+
+								 <!-- 单选 -->
+								<div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{$vo.form_description}</span><i class="feeldesk-edge"></i></div>
+
+								<ul class="feeldesk-option-panel radioPanel hidden">
+
+									<input type="hidden" name="competitor_form[{$vo.form_name}]" value="{$competitor['detail'][$vo['form_name']]}"/>
+
+									<volist name="vo.option" id="op">
+
+									<li data-name="{$op}" data-value="{$op}">
+
+										<div class="feeldesk-option">
+
+											<span class="feeldesk-option-title">{$op}</span>
+
+											<span class="iconfont icon-check <eq name='competitor[detail][$vo[form_name]]' value='$op' >icon-radio-checked</eq>"></span>
+
+										</div>
+
+									</li>
+
+									</volist>
+
+								</ul>
+
+							</eq>
+
+							<!-- 文本域 -->
+							<eq name="vo.form_type" value="textarea">
+
+								<textarea name="competitor_form[{$vo.form_name}]" class="feeldesk-input feeldesk-textarea" placeholder="{$vo.form_description}">{$competitor['detail'][$vo['form_name']]}</textarea>
+
+							</eq>
+
+							<!-- 时间控件 -->
+							<eq name="vo.form_type" value="date">
+
+								<php>
+									$ft++;
+								</php>
+
+								<input type="text" name="competitor_form[{$vo.form_name}]" value="{$competitor['detail'][$vo['form_name']]}" placeholder="{$vo.form_description}" id="datetime<php>echo $ft;</php>" class="feeldesk-input" readonly />
+
+								<script type="text/javascript">
+
+									$(function()
+									{
+										jeDate("#datetime<php>echo $ft;</php>",{
+											minDate:"1900-01-01",              //最小日期
+											maxDate:"2099-12-31",              //最大日期
+											method:{
+												choose:function (params) {
+
+												}
+											},
+											format: "YYYY-MM-DD hh:mm:ss"
+										});
+									})
+
+								</script>
+
+							</eq>
+
+						</div>
+
+					</div>
+
+					</eq>
+
+					 <else/>
+
+						 <eq name="vo.form_type" value="region">
+
+							 <input type="hidden" name="competitor_form[{$vo.form_name}_defaultCountry]" value="{$competitor[$vo['form_name']]['defaultCountry']}" >
+							 <input type="hidden" name="competitor_form[{$vo.form_name}_defaultProv]" value="{$competitor[$vo['form_name']]['defaultProv']}" >
+							 <input type="hidden" name="competitor_form[{$vo.form_name}_defaultCity]" value="{$competitor[$vo['form_name']]['defaultCity']}" >
+							 <input type="hidden" name="competitor_form[{$vo.form_name}_defaultArea]" value="{$competitor[$vo['form_name']]['defaultArea']}" >
+
+							 <else/>
+
+							 <input type="hidden" name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" >
+
+						 </eq>
+
+					 </if>
+
+						 <else/>
+
+						 <eq name="vo.form_type" value="region">
+
+							 <input type="hidden" name="competitor_form[{$vo.form_name}_defaultCountry]" value="{$competitor[$vo['form_name']]['defaultCountry']}" >
+							 <input type="hidden" name="competitor_form[{$vo.form_name}_defaultProv]" value="{$competitor[$vo['form_name']]['defaultProv']}" >
+							 <input type="hidden" name="competitor_form[{$vo.form_name}_defaultCity]" value="{$competitor[$vo['form_name']]['defaultCity']}" >
+							 <input type="hidden" name="competitor_form[{$vo.form_name}_defaultArea]" value="{$competitor[$vo['form_name']]['defaultArea']}" >
+
+							 <else/>
+
+							 <input type="hidden" name="competitor_form[{$vo.form_name}]" value="{$competitor[$vo['form_name']]}" >
+
+						 </eq>
+
+					 </if>
+
+				</volist>
+
+            </div>
+
+
+
+    </div>
+
+	</notempty>
+
+	</form>
+
+</div>
+
+<script>
+
+	function showForm(edit,done,list,form)
+    {
+        $('#'+edit).addClass('hidden');
+
+        $('#'+list).addClass('hidden');
+
+        $("#"+done+",#"+form).removeClass('hidden');
+
+        $("#"+done).prev('#opponent-cancel').removeClass('hidden');
+    }
+
+	$(function(){
+
+		$('#opponent-save').on('click',function()
+        {
+            var loading = layer.load(2);
+
+			var formObj = $(this).parents('form');
+
+			var action = formObj.attr('action');
+
+			$.post(action,formObj.serialize(),function(data)
+            {
+                if(data.status == 2)
+                {
+                   layer.msg(data.msg,{time:1000},function()
+					{
+						window.location = data.url;
+					});
+
+                }
+                else
+                {
+                    layer.msg(data.msg,{time:1000});
+                }
+
+                layer.close(loading);
+            });
+        });
+
+	})
+
+</script>

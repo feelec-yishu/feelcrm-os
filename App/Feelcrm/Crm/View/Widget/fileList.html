@@ -1,0 +1,31 @@
+<volist name="files" id="v">
+
+	<div class="mt20 mb20">
+
+		<div class="gray1">
+
+			<span class="gray4">{$v.create_time|getDates}&nbsp;&nbsp;</span>
+
+			<span >
+
+				<in name="v.file_type" value="pdf,txt,doc,docx,xlsx,xls,jpeg,png,gif,jpg,ppt,pptx">
+
+					<a class="cursor blue5" href="{:openFile($v['file_link'],$v['file_type'])}" target="_blank">{$v.file_name|getFileName}.{$v.file_type}</a>
+
+				<else/>
+
+					{$v.file_name|getFileName}.{$v.file_type}
+
+				</in>
+
+			</span>
+
+			<span class="gray4"> ({$v.file_size|getFileSize})</span>
+
+			<a href="{$v.file_link}" title="{$v.file_name}" download="{$v.file_name}" class="blue8"><i class="iconfont icon-xiazai fts20" ></i></a>
+
+		</div>
+
+	</div>
+
+</volist>

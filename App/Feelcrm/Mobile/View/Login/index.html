@@ -1,0 +1,43 @@
+<include file="Public/header" />
+
+<div class="user-wrapper">
+
+    <div class="login-header">
+
+        <div class="header-top"></div>
+
+        <div class="header-logo"><!--<img src="__PUBLIC__/img/mobile-login-logo.png" alt="">--></div>
+
+    </div>
+
+    <div class="user-form-main">
+
+        <form action="" id="login-form">
+
+            <div class="user-form-item" id="username">
+
+                <i class="iconfont icon-account"></i>
+
+                <input type="text" name="data[username]" placeholder="{:L('USERNAME_NOTE')}" autocomplete="off">
+
+            </div>
+
+            <div class="user-form-item">
+
+                <i class="iconfont icon-password"></i>
+
+                <input type="password" name="data[password]" placeholder="{:L('ENTER_PASSWORD')}" autocomplete="off">
+
+            </div>
+
+            <div class="user-form-item slide-item"><div class="slide-verify" id="slide-verify"></div></div>
+
+            <div class="user-form-item login-item"><a href="javascript:" class="submit-btn" onclick="login()">{:L('LOGIN')}</a></div>
+
+            <div class="hidden" id="login-trigger" data-value=""></div>
+
+        </form>
+
+    </div>
+
+</div>

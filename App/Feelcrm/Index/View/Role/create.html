@@ -1,0 +1,83 @@
+<extend name="Public:window"/>
+
+<block name="window-form">
+
+    <form action="" class="layui-form">
+
+        <div class="form-item">
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('ROLE_NAME')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="text" name="role[role_name]" value="" class="layui-input" placeholder="{:L('ENTER_ROLE_NAME')}" />
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('SET_SUPPER_ROLE')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="checkbox" name="role[is_supper]" lay-skin="switch">
+
+                    <i class="layui-icon layui-icon-about intro-icon checkbox-intro" data-note="{:L('SUPPER_ROLE_NOTE')}"></i>
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('DEFAULT_ROLE')}</label>
+
+                <div class="layui-input-inline w-auto">
+
+                    <input type="radio" name="role[is_default]" value="10" title="{:L('YES')}">
+
+                    <input type="radio" name="role[is_default]" value="20" title="{:L('NO')}">
+
+                </div>
+
+                <i class="layui-icon layui-icon-about intro-icon" data-note="{:L('DEFAULT_ROLE_NOTE')}"></i>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('IS_ENABLE')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="checkbox" name="role[closed]" lay-skin="switch" checked>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="form-submit">
+
+            <div class="layui-form-item">
+
+                <div class="layui-input-inline">
+
+                    <a href="javascript:" class="layui-btn layui-btn-normal" id="submitForm">{:L('SUBMIT')}</a>
+
+                    <a href="javascript:" class="layui-btn layui-btn-normal cancel-btn" id="cancel-form">{:L('CANCEL')}</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</block>

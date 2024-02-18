@@ -1,0 +1,529 @@
+<include file="Public/header" />
+
+<div class="feeldesk" id="formWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('ADD_CUSTOMER')}</div>
+
+            <a href="javascript:" class="header-right" id="submitForm">{:L('COMPLETE')}</a>
+
+        </div>
+
+    </header>
+
+    <div class="customer-label hidden">
+
+        <div class="current" data-value="1">{:L('BASIC_INFORMATION')}</div>
+
+        <div data-value="2">{:L('PRIMARY_CONTACT')}</div>
+
+    </div>
+
+    <div class="feeldesk-main no-footer-main pd0" style="height: calc(100% -  16vw)" >
+
+        <form action="" id="feeldeskForm" method="post" class="layui-form">
+
+			<php>
+				$ft = 0;
+				$reg = 0;
+			</php>
+
+            <div class="feeldesk-form pd5" id="customer-label1">
+
+                <div class="feeldesk-form-item">
+
+                    <div class="feeldesk-form-block">
+
+                        <select name="customer[member_id]" lay-filter="">
+
+                            <option value="0">{:L('SELECT_CUSTOMER_RESPONSIBLE')}</option>
+
+                            <volist name="members" id="v">
+
+								<option value="{$v.member_id}" <empty name="type"><eq name="thisMember.member_id" value="$v.member_id" >selected</eq></empty>>{$v.name}</option>
+
+							</volist>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+				<input type="hidden" name="customer[from_type]" value="{$fromType}"/>
+
+				<input type="hidden" name="customer[originalId]" value="{$apiData.originalId}"/>
+
+				<if condition="$crmsite['customerReseller'] == 1">
+
+				<div class="feeldesk-form-item relative">
+
+					<div class="feeldesk-form-block">
+
+						<span class="red required-icon">*</span>
+
+						<div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{:L('CUSTOMER_TYPE')}</span><i class="feeldesk-edge"></i></div>
+
+						<ul class="feeldesk-option-panel radioPanel hidden">
+
+							<input type="hidden" name="customer[customer_type]" value="customer"/>
+
+							<li data-name="{:L('ORDINARY_CUSTOMER')}" data-value="customer">
+
+								<div class="feeldesk-option">
+
+									<span class="feeldesk-option-title">{:L('ORDINARY_CUSTOMER')}</span>
+
+									<span class="iconfont icon-check icon-radio-checked"></span>
+
+								</div>
+
+							</li>
+
+							<li data-name="{:L('DEALER')}" data-value="agent">
+
+								<div class="feeldesk-option">
+
+									<span class="feeldesk-option-title">{:L('DEALER')}</span>
+
+									<span class="iconfont icon-check"></span>
+
+								</div>
+
+							</li>
+
+						</ul>
+
+					</div>
+
+                </div>
+
+				</if>
+
+				<volist name="customerform" id="vo">
+
+				<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+				<if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+					<eq name="vo.form_type" value="region">
+
+						<php>
+							$reg++;
+						</php>
+
+						{:W('Region/getRegion',['customer_form',$vo,$reg])}
+
+					<else/>
+
+					 <div class="feeldesk-form-item relative">
+
+						<div class="feeldesk-form-block">
+
+							<eq name="vo.is_required" value="0">
+
+								<span class="red required-icon">*</span>
+
+							</eq>
+
+							<eq name="vo.form_type" value="text">
+
+								<!-- 单行文本框 -->
+								<input type="text" name="customer_form[{$vo.form_name}]" value="{$customerData[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="phone">
+
+								<!-- 手机 -->
+								<input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="customer_form[{$vo.form_name}]" value="{$customerData[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="email">
+
+								<!-- 邮箱 -->
+								<input type="text" name="customer_form[{$vo.form_name}]" value="{$customerData[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="number">
+
+								<!-- 数字 -->
+								<input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="customer_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="decimal">
+
+								<!-- 小数 -->
+								<input type="text" name="customer_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="select">
+
+								<!-- 下拉菜单 -->
+								<select name="customer_form[{$vo.form_name}]" lay-filter="">
+
+									<option value="">{$vo.form_description}</option>
+
+									<foreach name="vo.option" item="op">
+
+										<option value="{$op}">{$op}</option>
+
+									</foreach>
+
+								</select>
+
+							</eq>
+
+							<eq name="vo.form_type" value="select_text">
+
+								<php>
+									$st++;
+								</php>
+								<!-- 下拉填写 -->
+								{:W('Update/selectTextForm',['customer',$vo,$st])}
+
+							</eq>
+
+							<eq name="vo.form_type" value="checkbox">
+
+								<!-- 多选 -->
+                                <div class="feeldesk-input feeldesk-form-check checkbox">
+
+                                    <span class='gray9'>{$vo.form_description}</span>
+
+                                    <i class="feeldesk-edge"></i>
+
+                                </div>
+
+                                <ul class="feeldesk-option-panel hidden checkboxPanel">
+
+                                    <volist name="vo.option" id="op">
+
+                                        <li data-value="{$op}">
+
+                                            <input type="checkbox" name="customer_form[{$vo.form_name}][]" value="{$op}"/>
+
+                                            <div class="feeldesk-option">
+
+                                                <span class="feeldesk-option-title">{$op}</span>
+
+                                                <span class="iconfont icon-check"></span>
+
+                                            </div>
+
+                                        </li>
+
+                                    </volist>
+
+                                </ul>
+
+							</eq>
+
+							<eq name="vo.form_type" value="radio">
+
+								 <!-- 单选 -->
+								<div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{$vo.form_description}</span><i class="feeldesk-edge"></i></div>
+
+								<ul class="feeldesk-option-panel radioPanel hidden">
+
+									<input type="hidden" name="customer_form[{$vo.form_name}]" value=""/>
+
+									<volist name="vo.option" id="op">
+
+									<li data-name="{$op}" data-value="{$op}">
+
+										<div class="feeldesk-option">
+
+											<span class="feeldesk-option-title">{$op}</span>
+
+											<span class="iconfont icon-check"></span>
+
+										</div>
+
+									</li>
+
+									</volist>
+
+								</ul>
+
+							</eq>
+
+							<!-- 文本域 -->
+							<eq name="vo.form_type" value="textarea">
+
+								<textarea name="customer_form[{$vo.form_name}]" class="feeldesk-input feeldesk-textarea" placeholder="{$vo.form_description}"></textarea>
+
+							</eq>
+
+							<!-- 时间控件 -->
+							<eq name="vo.form_type" value="date">
+
+								<php>
+									$ft++;
+								</php>
+
+								<input type="text" name="customer_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" id="datetime<php>echo $ft;</php>" class="feeldesk-input" readonly />
+
+                                <script type="text/javascript">
+
+                                    $(function()
+                                    {
+                                        jeDate("#datetime<php>echo $ft;</php>",{
+											minDate:"1900-01-01",              //最小日期
+											maxDate:"2099-12-31",              //最大日期
+											method:{
+												choose:function (params) {
+
+												}
+											},
+											format: "YYYY-MM-DD hh:mm:ss"
+										});
+                                    })
+
+                                </script>
+
+							</eq>
+
+						</div>
+
+					</div>
+
+					</eq>
+
+				</if>
+
+				</volist>
+
+            </div>
+
+            <!-- {:L('PRIMARY_CONTACT')} -->
+            <div class="feeldesk-form pd5 hidden" id="customer-label2">
+
+                <volist name="contacterform" id="vo">
+
+				<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+				<if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+					<eq name="vo.form_type" value="region">
+
+						<php>
+							$reg++;
+						</php>
+
+						{:W('Region/getRegion',['contacter_form',$vo,$reg])}
+
+					<else/>
+
+					 <div class="feeldesk-form-item relative">
+
+						<div class="feeldesk-form-block">
+
+							<eq name="vo.is_required" value="0">
+
+								<span class="red required-icon">*</span>
+
+							</eq>
+
+							<eq name="vo.form_type" value="text">
+
+								<!-- 单行文本框 -->
+								<input type="text" name="contacter_form[{$vo.form_name}]" value="{$contacterData[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="phone">
+
+								<!-- 手机 -->
+								<input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="contacter_form[{$vo.form_name}]" value="{$contacterData[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="email">
+
+								<!-- 邮箱 -->
+								<input type="text" name="contacter_form[{$vo.form_name}]" value="{$contacterData[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="number">
+
+								<!-- 数字 -->
+								<input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="contacter_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="decimal">
+
+								<!-- 小数 -->
+								<input type="text" name="contacter_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="select">
+
+								<!-- 下拉菜单 -->
+								<select name="contacter_form[{$vo.form_name}]" lay-filter="">
+
+									<option value="">{$vo.form_description}</option>
+
+									<foreach name="vo.option" item="op">
+
+										<option value="{$op}">{$op}</option>
+
+									</foreach>
+
+								</select>
+
+							</eq>
+							
+							<eq name="vo.form_type" value="select_text">
+
+								<php>
+									$st++;
+								</php>
+								<!-- 下拉填写 -->
+								{:W('Update/selectTextForm',['contacter',$vo,$st])}
+
+							</eq>
+
+							<eq name="vo.form_type" value="checkbox">
+
+								<!-- 多选 -->
+                                <div class="feeldesk-input feeldesk-form-check checkbox">
+
+                                    <span class='gray9'>{$vo.form_description}</span>
+
+                                    <i class="feeldesk-edge"></i>
+
+                                </div>
+
+                                <ul class="feeldesk-option-panel hidden checkboxPanel">
+
+                                    <volist name="vo.option" id="op">
+
+                                        <li data-value="{$op}">
+
+                                            <input type="checkbox" name="contacter_form[{$vo.form_name}][]" value="{$op}"/>
+
+                                            <div class="feeldesk-option">
+
+                                                <span class="feeldesk-option-title">{$op}</span>
+
+                                                <span class="iconfont icon-check"></span>
+
+                                            </div>
+
+                                        </li>
+
+                                    </volist>
+
+                                </ul>
+
+							</eq>
+
+							<eq name="vo.form_type" value="radio">
+
+								 <!-- 单选 -->
+								<div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{$vo.form_description}</span><i class="feeldesk-edge"></i></div>
+
+								<ul class="feeldesk-option-panel radioPanel hidden">
+
+									<input type="hidden" name="contacter_form[{$vo.form_name}]" value=""/>
+
+									<volist name="vo.option" id="op">
+
+									<li data-name="{$op}" data-value="{$op}">
+
+										<div class="feeldesk-option">
+
+											<span class="feeldesk-option-title">{$op}</span>
+
+											<span class="iconfont icon-check"></span>
+
+										</div>
+
+									</li>
+
+									</volist>
+
+								</ul>
+
+							</eq>
+
+							<!-- 文本域 -->
+							<eq name="vo.form_type" value="textarea">
+
+								<textarea name="contacter_form[{$vo.form_name}]" class="feeldesk-input feeldesk-textarea" placeholder="{$vo.form_description}"></textarea>
+
+							</eq>
+
+							<!-- 时间控件 -->
+							<eq name="vo.form_type" value="date">
+
+								<php>
+									$ft++;
+								</php>
+
+								<input type="text" name="contacter_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" id="datetime<php>echo $ft;</php>" class="feeldesk-input" readonly />
+
+                                <script type="text/javascript">
+
+                                    $(function()
+                                    {
+                                        jeDate("#datetime<php>echo $ft;</php>",{
+											minDate:"1900-01-01",              //最小日期
+											maxDate:"2099-12-31",              //最大日期
+											method:{
+												choose:function (params) {
+
+												}
+											},
+											format: "YYYY-MM-DD hh:mm:ss"
+										});
+                                    })
+
+                                </script>
+
+							</eq>
+
+						</div>
+
+					</div>
+
+					</eq>
+
+				</if>
+
+				</volist>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <script type="text/javascript">
+
+        $(function()
+        {
+           $('.customer-label').find('div').on('click',function()
+           {
+               var value= $(this).data('value');
+
+               $(this).addClass('current').siblings().removeClass('current');
+
+                $('#customer-label'+value).show().siblings('.feeldesk-form').hide();
+           })
+        })
+
+    </script>
+
+</div>

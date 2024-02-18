@@ -1,0 +1,18 @@
+body{padding: 0;margin: 0;background: #fff;font-size: 14px;color: #333;}
+
+form,ul,ol,h1,h2,h3,h4,h5,h6,p{margin: 0;padding: 0;list-style: none;}
+
+input,textarea,select,button{font-size: 12px;}
+
+img{border: none;}
+
+address,cite,small{color: #999;font-style: normal;font-size: 12px;}
+
+a{color: #333;text-decoration: none;}
+
+/* 底部样式 */
+.footer_content{text-align: center;padding: 20px;border-top: 1px solid #ddd;}
+
+.footer_content p{font-size: 12px;color: #a8a8a8;}
+
+.footer_content a{color: #38adff;padding: 0 5px;}

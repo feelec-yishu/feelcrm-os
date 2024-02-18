@@ -1,0 +1,2145 @@
+<extend name="Public:base" xmlns="http://www.w3.org/1999/html"/>
+
+<block name="content">
+
+	<include file="Public/selectMember" />
+
+	<script>
+
+		$(function(){
+
+			$('#Memberlist .feeldesk-page a').click(function(){
+
+				pageclick(this,'/Customer/detail');
+
+				return false;
+			})
+
+		})
+
+	</script>
+
+	<include file="Public/toPool" />
+
+	<div class="comment-shade"></div>
+
+	<div class="comment-panel hidden" id="comment">
+
+		<header><span>{:L('COMMENT')}</span><i class="iconfont icon-guanbi comment-close" title="{:L('CLOSE')}"></i></header>
+
+		<form action="{:U('commentFollow')}" id="commentForm" class="layui-form">
+
+			<input type="hidden" name="comment[follow_id]" id="commentFollowId"/>
+
+			<textarea id='commentEditor' name="comment[content]" cols="30" rows="10" placeholder="{:L('ENTER_COMMENT_CONTENT')}"></textarea>
+
+			<div class="submit-comment"><a href="javascript:" class="layui-btn">{:L('SUBMIT')}</a></div>
+
+		</form>
+
+	</div>
+
+
+	<div class="hidden hg100 div-layerframe feeldesk-form layui-form" id="LoseCust">
+
+		<div class="feeldesk-form pd0 feelcrm-form">
+
+			<div class="layui-tab">
+
+				<ul class="layui-tab-title">
+
+					<li class="tab-title-name">{:L('CUSTOMER_LOST_ORDER')}</li>
+
+					<li class="tab-title-btn">
+
+						<a href="javascript:loseCustomer('{:U(\'customer/lose\')}','{:L(\'LOST_ORDER\')}','{:encrypt($customer[\'customer_id\'],\'CUSTOMER\')}')" class="layui-btn layui-btn-normal titleSubmit">{:l('SUBMIT')}</a>
+
+						<a href="javascript:closeLayerAll();" class="layui-btn layui-btn-normal titleCancel">{:l('CANCEL')}</a>
+
+						<div class="clear"></div>
+
+					</li>
+
+				</ul>
+
+			</div>
+
+		</div>
+
+		<div class="form-content">
+
+			<div class="form-item pb25 pt50 create-both-end">
+
+				<div class="layui-form-item">
+
+					<label class="layui-form-label">
+
+						{:L('REASON_FOR_LOSS')}
+
+					</label>
+
+					<div class="layui-input-inline">
+
+						<select name="lose_id" id="lose_id" lay-ignore>
+
+							<option value="">{:L('REASON_FOR_LOSS')}</option>
+
+							<volist name="loses" id="v">
+
+								<option value="{$v.lose_id}" title="{$v.lose_name}">{$v.lose_name}</option>
+
+							</volist>
+
+						</select>
+
+						<script>
+
+							$("#lose_id").select2();
+
+						</script>
+
+					</div>
+
+					<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+				</div>
+
+				<div class="layui-form-item">
+
+					<label class="layui-form-label">
+
+						{:L('COMPETITOR')}
+
+					</label>
+
+					<div class="layui-input-inline">
+
+						<select name="competitor_id" id="competitor_id" lay-ignore>
+
+							<option value="">{:L('CHOOSE')}{:L('COMPETITOR')}</option>
+
+							<volist name="competitor" id="v">
+
+								<option value="{$v.competitor_id}" title="{$v.detail.name}">{$v.detail.name}</option>
+
+							</volist>
+
+						</select>
+
+						<script>
+
+							$("#competitor_id").select2();
+
+						</script>
+
+					</div>
+
+					<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+				</div>
+
+				<div class="layui-form-item">
+
+					<label class="layui-form-label">
+
+						{:L('PUT_CUSTOMER_POOL')}
+
+					</label>
+
+					<div class="layui-input-inline">
+
+						<input type="checkbox" name="lose_closed" id="lose_closed" lay-skin="switch" value="1" >
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="customer-detail feeldesk-form pd0 feelcrm-form">
+
+		<div class="customer-detail-content">
+
+			<div class="detail-sidebar sidebar" id="closeCustomerDetail"><i class="iconfont icon-right"></i></div>
+
+			<div class="customer-header h-auto">
+
+				<div class="customer-header-name">{$customer.detail.name}</div>
+
+				<div class="customer-header-right">
+
+					<in name="detailtype" value="index,analysis">
+
+						<eq name="customer.isvalid" value="1">
+
+							<if condition="$customer['member_id'] gt 0">
+
+								<notempty name="isLoseCustomerAuth">
+
+									<neq name="customer.is_losed" value="1">
+
+										<neq name="customer.is_trade" value="1">
+
+											<a href="javascript:" class="feelcrm-commbtn ml5" data-id="{:encrypt($customer['customer_id'],'CUSTOMER')}" data-href="{:U('Customer/lose')}" data-name="{:L('LOST_ORDER')}" id="loseCustomer">{:L('LOST_ORDER')}</a>
+
+										</neq>
+
+									</neq>
+
+								</notempty>
+
+								<notempty name="istransferCustomerAuth">
+
+									<a href="javascript:" class="chooseMemberDetail feelcrm-commbtn ml5" data-id="{:encrypt($customer['customer_id'],'CUSTOMER')}" data-href="{:U('Customer/transfer')}" data-name="{:L('TRANSFER')}" id="transferCustomer">{:L('TRANSFER')}</a>
+
+								</notempty>
+
+								<notempty name="istoPoolCustomerAuth">
+
+									<a href="javascript:" class="feelcrm-commbtn ml5" data-id="{:encrypt($customer['customer_id'],'CUSTOMER')}" data-href="{:U('Customer/toPool')}" data-name="{:L('GIVE_UP_CUSTOMERS')}" id="toPoolCustomer">{:L('GIVE_UP')}</a>
+
+								</notempty>
+
+								{:FEELCRM('Customer/delete',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'type'=>encrypt('index','CUSTOMER')],L('DELETE'),'feelcrm-commbtn ml5','trash')}
+
+								<else/>
+
+								<notempty name="isDrawCustomerAuth">
+
+									<a href="javascript:" class="feelcrm-commbtn ml5" data-id="{:encrypt($customer['customer_id'],'CUSTOMER')}" data-href="{:U('Customer/draw')}" data-name="{:L('RECEIVE')}" id="drawCustomer">{:L('RECEIVE')}</a>
+
+								</notempty>
+
+								<notempty name="isAllotCustomerAuth">
+
+									<a href="javascript:" class="chooseMemberDetail feelcrm-commbtn ml5" data-id="{:encrypt($customer['customer_id'],'CUSTOMER')}" data-href="{:U('Customer/allot')}" data-name="{:L('DISTRIBUTION')}" id="allotCustomer">{:L('DISTRIBUTION')}</a>
+
+								</notempty>
+
+								<notempty name="isLoseCustomerAuth">
+
+									<neq name="customer.is_losed" value="1">
+
+										<a href="javascript:" class="feelcrm-commbtn ml5" data-id="{:encrypt($customer['customer_id'],'CUSTOMER')}" data-href="{:U('Customer/lose')}" data-name="{:L('LOST_ORDER')}" id="loseCustomer">{:L('LOST_ORDER')}</a>
+
+									</neq>
+
+								</notempty>
+
+								{:FEELCRM('Customer/delete',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'type'=>encrypt('pool','CUSTOMER')],L('DELETE'),'feelcrm-commbtn ml5','trash')}
+
+							</if>
+
+						<else/>
+
+							{:FEELCRM('Recover/re_customer',['id'=>encrypt($customer['customer_id'],'CUSTOMER')],L('RECOVERY'),'feelcrm-commbtn ml5','batch')}
+
+							{:FEELCRM('Customer/delete',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'type'=>encrypt('index','CUSTOMER')],L('DELETE'),'feelcrm-commbtn ml5','trash')}
+
+						</eq>
+
+					</in>
+
+					<eq name="customer.isvalid" value="1">
+
+						<eq name="detailtype" value="contacter">
+
+							{:FEELCRM('Customer/create_contacter',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('contacter','CUSTOMER')],L('ADD_CONTACTS'),'feelcrm-commbtn')}
+
+						</eq>
+
+						<eq name="detailtype" value="opportunity">
+
+							<if condition="$customer['member_id'] gt 0">
+
+								{:FEELCRM('Opportunity/create',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('opportunity','CUSTOMER')],L('ADD_OPPORTUNITY'),'feelcrm-commbtn')}
+
+							</if>
+
+						</eq>
+
+						<eq name="detailtype" value="contract">
+
+							{:FEELCRM('Contract/create',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('contract','CUSTOMER')],L('ADD_CONTRACT'),'feelcrm-commbtn')}
+
+						</eq>
+
+					</eq>
+
+				</div>
+
+				<div class="clear"></div>
+
+				<div class="customer-system-info">
+
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('SUBORDINATE_SECTOR')}</p><p class="system-nav-con">{:CrmgetMemberGroupName($groupList,$customer['group_id'])}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('LEADER')}</p><p class="system-nav-con blue8">{$customer.member_name|default='<span class="iconfont icon-nothing gray1"></span>'}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('FINAL_FOLLOW-UP')}</p><p class="system-nav-con">{$customer.lastfollowtime|getDates}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('NEXT_CONTACT_TIME')}</p><p class="system-nav-con">{$customer.nextcontacttime|getDates}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('CREATE_TIME')}</p><p class="system-nav-con">{$customer.createtime|getDates}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('FOUNDER')}</p><p class="system-nav-con">{:getCustomerCreateName($customer['creater_id'],$customer['creater_name'])}</p></div>
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('INFORMATION_COMPLETENESS')}</p><p class="system-nav-con">{$customer.percent}</p></div>
+					<!--<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('IS_LOSE_ORDER')}</p><p class="system-nav-con"><eq name="customer.is_losed" value="1"><span class="red1">{:L('YES')}</span><else/><span class="green4">{:L('NO')}</span></eq></p></div>-->
+					<div class="fl customer-system-info-nav" ><p class="system-nav-tit">{:L('ENTRY_METHOD')}</p><p class="system-nav-con">{:getCrmEntryMethod($customer['entry_method'])}</p></div>
+
+				</div>
+
+				<div class="clear"></div>
+
+			</div>
+
+			<div class="form-nav" id="detail-nav">
+
+				<ul>
+
+					<notempty name="isDetailAuthView">
+
+						<li><a href="{:U('customer/detail',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('index','CUSTOMER'),'detail_source'=>$detail_source])}" class="form-tab <in name='detailtype' value='index,follow,analysis'>active</in>">{:L('CUSTOMER_DETAIL')}</a></li>
+
+					</notempty>
+
+					<eq name="customer.isvalid" value="1">
+
+						<notempty name="isContacterAuthView">
+
+							<li><a href="{:U('customer/detail',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('contacter','CUSTOMER'),'detail_source'=>$detail_source])}" class="form-tab <eq name='detailtype' value='contacter'>active</eq>">{:L('CONTACT')}({$contacterCount})</a></li>
+
+						</notempty>
+
+						<notempty name="isOpportunityAuthView">
+
+							<li><a href="{:U('customer/detail',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('opportunity','CUSTOMER'),'detail_source'=>$detail_source])}" class="form-tab <eq name='detailtype' value='opportunity'>active</eq>">{:L('OPPORTUNITY')}({$opportunityCount})</a></li>
+
+						</notempty>
+
+						<notempty name="isContractAuthView">
+
+							<li><a href="{:U('customer/detail',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('contract','CUSTOMER'),'detail_source'=>$detail_source])}" class="form-tab <eq name='detailtype' value='contract'>active</eq>">{:L('CONTRACT')}({$contractCount})</a></li>
+
+						</notempty>
+
+						<if condition="$crmsite['customerReseller'] == 1">
+
+							<notempty name="isShipmentAuthView">
+
+								<eq name="customer.customer_type" value="agent">
+
+									<!--<li><a href="{:U('customer/detail',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('shipment','CUSTOMER'),'detail_source'=>$detail_source])}" class="form-tab <eq name='detailtype' value='shipment'>active</eq>">{:L('INVOICING')}</a></li>-->
+
+								</eq>
+
+							</notempty>
+
+						</if>
+
+					</eq>
+
+					<div class="clear"></div>
+
+				</ul>
+
+			</div>
+
+			<!--{:L('CUSTOMER_DETAIL')}-->
+			<!--<form class="layui-form">-->
+
+			<div class="form-content form-content1 relative <notin name='detailtype' value='index,follow,analysis'>hidden</notin>" style="overflow:inherit">
+
+				<div class="<notin name='detailtype' value='index,analysis'>hidden</notin>" >
+
+					<div class="form-item pb25 pt10 ">
+
+						<form class="layui-form" action="{:U('customer/edit',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'type'=>encrypt('detail','CUSTOMER'),'detailtype'=>encrypt('index','CUSTOMER')])}">
+
+							<eq name="customer.isvalid" value="1">
+
+								<a href="javascript:" class="feelcrm-commbtn fr edit-customer-detail" >{:L('EDITOR')}</a>
+
+								<a href="javascript:" class="feelcrm-commbtn fr finish-customer-detail" data-no="{$customer.customer_prefix}{$customer.customer_no}">{:L('COMPLETE')}</a>
+
+							</eq>
+
+							<div class="clear"></div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">{:L('CUSTOMER_NUMBER')}</label>
+
+								<div class="layui-input-inline">{$customer.customer_prefix}{$customer.customer_no}</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<php>
+								$t = 0;
+								$ft = 0;
+								$reg = 0;
+							</php>
+
+
+
+							<eq name="crmsite.customerReseller" value="1">
+
+								<div class="layui-form-item mb10 wd50 fl">
+
+									<label class="layui-form-label">{:L('CUSTOMER_TYPE')}</label>
+
+									<div class="layui-input-inline <notempty name='isEditCustomerAuth'>pd0 detail-update-form</notempty>">
+
+										<div class="layui-detail-edit-default" >
+
+											<eq name="customer.customer_type" value="agent">{:L('DEALER')}<else/>{:L('ORDINARY_CUSTOMER')}</eq>
+
+										</div>
+
+										<notempty name="isEditCustomerAuth">
+
+											<div class="hidden layui-detail-edit-form">
+
+												<input type="radio" name="customer[customer_type]" <eq name="customer['customer_type']" value="customer" >checked</eq> value="customer" title="{:L('ORDINARY_CUSTOMER')}" lay-filter="radio-customer-type">
+
+												<input type="radio" name="customer[customer_type]" <eq name="customer['customer_type']" value="agent" >checked</eq> value="agent" title="{:L('DEALER')}" lay-filter="radio-customer-type">
+
+											</div>
+
+											<i class="i-update-success iconfont icon-system-success hidden"></i>
+
+										</notempty>
+
+									</div>
+
+									<div class="clear"></div>
+
+								</div>
+
+							</eq>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('TRANSACTION_STATUS')}
+
+								</label>
+
+								<div class="layui-input-inline <notempty name='isEditCustomerAuth'>pd0 detail-update-form</notempty>">
+
+									<div class="layui-detail-edit-default" >
+
+										<eq name="customer.is_trade" value="1">
+
+											<span class="blue8">{:L('DEAL_DONE')}</span>
+
+											<else/>
+
+											<span class="red1">{:L('UNSOLD')}</span>
+
+										</eq>
+
+									</div>
+
+									<notempty name="isEditCustomerAuth">
+
+										<div class="hidden layui-detail-edit-form">
+
+											<notempty name="isUpdateTradeAuth">
+
+												<input type="radio" name="customer[is_trade]" <eq name="customer['is_trade']" value="0" >checked</eq> value="0" title="{:L('UNSOLD')}" lay-filter="radio-customer-trade">
+
+												<input type="radio" name="customer[is_trade]" <eq name="customer['is_trade']" value="1" >checked</eq> value="1" title="{:L('DEAL_DONE')}" lay-filter="radio-customer-trade">
+
+											<else/>
+
+												<eq name="customer.is_trade" value="1">
+
+													<span class="blue8">{:L('DEAL_DONE')}</span>
+
+													<else/>
+
+													<span class="red1">{:L('UNSOLD')}</span>
+
+												</eq>
+
+											</notempty>
+
+										</div>
+
+										<i class="i-update-success iconfont icon-system-success hidden"></i>
+
+									</notempty>
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<volist name="customerform" id="vo">
+
+							<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+							<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+								<div class="layui-form-item mb10 wd50 fl">
+
+									<label class="layui-form-label">{$vo.form_description}</label>
+
+									<div class="layui-input-inline <notempty name='isEditCustomerAuth'>pd0 detail-update-form</notempty>">
+
+										<div class="layui-detail-edit-default" >
+
+											<span class="fl">{$customer['detail'][$vo['form_name']]|default='--'}</span>
+
+											<!--<if condition="$vo['form_name'] eq 'phone' && $customer['detail'][$vo['form_name']] && $callcenterAuth eq 1">
+
+												<span class="fl icon-onclickcall"><i class="iconfont icon-boda blue8" onclick="OnclickCall({$customer['detail'][$vo['form_name']]});"></i></span>
+
+											</if>-->
+
+											<if condition="$vo['form_name'] eq 'phone' && $customer['detail'][$vo['form_name']]">
+
+												<span class="fl icon-onclickcall"><i class="iconfont icon-boda blue8" onclick="CallUp({$customer['detail'][$vo['form_name']]},4);"></i></span>
+
+											</if>
+
+											<div class="clear"></div>
+
+										</div>
+
+										<notempty name="isEditCustomerAuth">
+
+											<div class="hidden layui-detail-edit-form">
+
+												<eq name="vo.form_type" value="date">
+													<php>$ft++;</php>
+												</eq>
+
+												<eq name="vo.form_type" value="region">
+													<php>$reg++;</php>
+												</eq>
+
+												<php>$t++;</php>
+
+												{:W('Update/updateFormContent',[$customer,$customer['customer_id'],$vo,'customer',$t,$ft,$reg])}
+
+											</div>
+
+											<i class="i-update-success iconfont icon-system-success hidden"></i>
+
+										</notempty>
+
+									</div>
+
+									<div class="clear"></div>
+
+								</div>
+
+							<else/>
+
+								<eq name="vo.form_type" value="region">
+
+									<input type="hidden" name="customer_form[{$vo.form_name}_defaultCountry]" value="{$customer[$vo['form_name']]['defaultCountry']}" >
+									<input type="hidden" name="customer_form[{$vo.form_name}_defaultProv]" value="{$customer[$vo['form_name']]['defaultProv']}" >
+									<input type="hidden" name="customer_form[{$vo.form_name}_defaultCity]" value="{$customer[$vo['form_name']]['defaultCity']}" >
+									<input type="hidden" name="customer_form[{$vo.form_name}_defaultArea]" value="{$customer[$vo['form_name']]['defaultArea']}" >
+
+									<else/>
+
+									<input type="hidden" name="customer_form[{$vo.form_name}]" value="{$customer['detail'][$vo['form_name']]}" >
+
+								</eq>
+
+							</if>
+							</volist>
+
+							<php>$tx = 0;</php>
+
+							<volist name="customerform2" id="vo">
+							<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+							<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+								<div class="layui-form-item mb10 wd100 layui-form-item-textarea fl">
+
+									<label class="layui-form-label">
+
+										{$vo.form_description}
+
+									</label>
+
+									<div class="layui-input-inline <notempty name='isEditCustomerAuth'>pd0 detail-update-form</notempty>">
+
+										<div class="layui-detail-edit-default textareaImg">
+
+											{$customer['detail'][$vo['form_name']]|default='--'}
+
+										</div>
+
+										<notempty name="isEditCustomerAuth">
+
+											<php>$tx++;</php>
+
+											<div class="hidden layui-detail-edit-form">
+
+												<textarea class="layui-textarea layui-hide ticket-textarea" name="customer_form[{$vo.form_name}]" id="crmEditor{$tx}">{$customer['detail'][$vo['form_name']]}</textarea>
+
+
+											</div>
+
+											<i class="i-update-success iconfont icon-system-success hidden"></i>
+
+										</notempty>
+
+									</div>
+
+									<div class="clear"></div>
+
+								</div>
+							<else/>
+
+								<input type="hidden" name="customer_form[{$vo.form_name}]" value="{$customer['detail'][$vo['form_name']]}" >
+
+							</if>
+							</volist>
+
+							<div class="clear"></div>
+
+						</form>
+
+					</div>
+
+				</div>
+
+
+
+				<div class="form-nav pd0" id="customer-detail-nav">
+
+					<ul>
+
+						<eq name="customer.isvalid" value="1">
+
+							<notempty name="isFollowAuthView">
+
+								<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,1)" <eq name="detailtype" value="index">class="active"</eq>>{:L('CONTACT_RECORD')}</a></li>
+
+							</notempty>
+
+							<if condition="$isFollowAuthView || $isContractAuthView">
+
+								<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,9)" >{:L('ATTACHMENT')}</a></li>
+
+							</if>
+
+							<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,4)" <eq name="detailtype" value="index"><empty name='isFollowAuthView'>class="active"</empty></eq>>{:L('OPERATION_RECORD')}</a></li>
+
+							<!--<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,5)" <eq name="detailtype" value="analysis">class="active"</eq>>{:L('CLIENT_ANALYSIS')}</a></li>
+
+							<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,6)">{:L('COMPETITOR')}</a></li>-->
+
+							<else/>
+
+							<li><a href="javascript:void(0);" onclick="switchCustomerContent(this,4)" class="active">{:L('OPERATION_RECORD')}</a></li>
+
+						</eq>
+
+					</ul>
+
+				</div>
+
+				<eq name="customer.isvalid" value="1">
+
+					<notempty name="isFollowAuthView">
+
+						<!--{:L('CONTACT_RECORD')}-->
+						<div class="customerDetailContent <neq name='detailtype' value='index'>hidden</neq>" id="customer-detail-content1">
+
+							<div class="form-content">
+
+								<div class="layui-tab-content pb0 follow-default">
+
+									<div class="layui-tab-item layui-show ">
+
+										<div class="form-item">
+
+											<div class="layui-form-item">
+
+												<div class="layui-input-inline wd100">
+
+													<input type="text" class="layui-input" placeholder="{:L('ADD_CONTACT_RECORD')}" name="" id="follow-entry">
+
+												</div>
+
+											</div>
+
+										</div>
+
+									</div>
+
+								</div>
+
+								<div class="layui-tab-content pb0 follow-tocreate hidden">
+
+									<form action="{:U('customer/create_follow',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('index','CUSTOMER')])}" class="layui-form" method="post" enctype="multipart/form-data">
+
+										{:W('Follow/createFollow')}
+
+									</form>
+
+								</div>
+
+								<div class="feelcrm-follow-nav" >
+
+									<div class="follow-nav-list active" onclick="switchFollowContent(this,1)">{:L('WHOLE')}</div>
+									<div class="follow-nav-list" onclick="switchFollowContent(this,2)">{:L('CUSTOMER')}</div>
+									<div class="follow-nav-list" onclick="switchFollowContent(this,3)">{:L('OPPORTUNITY')}</div>
+									<div class="follow-nav-list" onclick="switchFollowContent(this,4)">{:L('CLUE')}</div>
+									<div class="clear"></div>
+
+								</div>
+
+								<!-- 全部跟进记录 -->
+								<div class="feelcrm-follow border-none followContent" id="followContent1">
+
+									{:W('Follow/followList',[$follow,$customer,'customer'])}
+
+								</div>
+
+								<!--客户联系记录-->
+								<div class="feelcrm-follow border-none followContent hidden" id="followContent2">
+
+									{:W('Follow/followList',[$customer_follow,$customer,'customer'])}
+
+								</div>
+
+								<!--客户联系记录-->
+								<div class="feelcrm-follow border-none followContent hidden" id="followContent3">
+
+									{:W('Follow/followList',[$opportunity_follow,$customer,'customer'])}
+
+								</div>
+
+								<!--客户联系记录-->
+								<div class="feelcrm-follow border-none followContent hidden" id="followContent4">
+
+									{:W('Follow/followList',[$clue_follow,$customer,'customer'])}
+
+								</div>
+
+							</div>
+
+							<script>
+
+								$(function(){
+
+									$('#follow-entry').click(function(){
+
+										$('.follow-default').addClass('hidden');
+
+										$('.follow-tocreate').show();
+
+									})
+								})
+
+								function switchFollowContent(obj,i)
+								{
+									$(obj).siblings().removeClass('active');
+
+									$(obj).parent().siblings('.followContent').hide();
+
+									$(obj).addClass('active');
+
+									$('#followContent'+i).show();
+								}
+
+							</script>
+
+							<script type="text/javascript">
+
+								$(function()
+								{
+									layui.use(['layedit','form'], function()
+									{
+										var layedit = layui.layedit;
+
+										var commentEditor = layedit.build('commentEditor',{hideTool:['strong','italic','underline','del','|','left','center','right','link','unlink','image','help'], height:120});
+
+										$('.reply-comment,.comment-close').on('click',function()
+										{
+											$("#comment,.comment-shade").fadeToggle();
+
+											var value = $(this).data('value');
+
+											if(value != undefined)
+											{
+												$('#commentFollowId').val(value);
+											}
+
+											$('.submit-comment a').unbind('click').on('click',function()
+											{
+												layedit.sync(commentEditor);
+
+												layer.load(2,{offset:['150px']});
+
+												$.post("{:U('commentFollow')}",$('#commentForm').serialize(),function(data)
+												{
+													if(data.errcode == 0)
+													{
+														layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+														{
+															window.location.reload();
+														});
+													}
+													else
+													{
+														layer.closeAll('loading');
+
+														layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+													}
+												},'JSON')
+											})
+										})
+									});
+
+									$('.comment-more').on('click',function()
+									{
+										$(this).siblings('.comment-item:gt(2)').slideToggle('fast');
+
+										$(this).find('i').toggleClass('icon-upward');
+									});
+								})
+
+							</script>
+
+						</div>
+
+					</notempty>
+
+					<if condition="$isFollowAuthView || $isContractAuthView">
+
+						<div class="customerDetailContent hidden" id="customer-detail-content9">
+
+							<div class="feelcrm-follow-nav" >
+
+								<div class="follow-nav-list active" onclick="switchFollowContent(this,11)">{:L('WHOLE')}</div>
+
+								<notempty name="isFollowAuthView">
+									<div class="follow-nav-list" onclick="switchFollowContent(this,22)">{:L('CUSTOMER')}</div>
+									<div class="follow-nav-list" onclick="switchFollowContent(this,33)">{:L('OPPORTUNITY')}</div>
+									<div class="follow-nav-list" onclick="switchFollowContent(this,44)">{:L('CLUE')}</div>
+								</notempty>
+
+								<notempty name="isContractAuthView">
+									<div class="follow-nav-list" onclick="switchFollowContent(this,55)">{:L('CONTRACT')}</div>
+								</notempty>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="feelcrm-follow border-none followContent" id="followContent11">
+
+								{:W('Follow/fileList',[$files])}
+
+							</div>
+
+							<notempty name="isFollowAuthView">
+
+								<div class="feelcrm-follow border-none followContent hidden" id="followContent22">
+
+									{:W('Follow/fileList',[$file_customer])}
+
+								</div>
+
+								<div class="feelcrm-follow border-none followContent hidden" id="followContent33">
+
+									{:W('Follow/fileList',[$file_opportunity])}
+
+								</div>
+
+								<div class="feelcrm-follow border-none followContent hidden" id="followContent44">
+
+									{:W('Follow/fileList',[$file_clue])}
+
+								</div>
+
+							</notempty>
+
+							<notempty name="isContractAuthView">
+
+								<div class="feelcrm-follow border-none followContent hidden" id="followContent55">
+
+									{:W('Follow/fileList',[$file_contract])}
+
+								</div>
+
+							</notempty>
+
+						</div>
+
+					</if>
+
+					<!--{:L('OPERATION_RECORD')}-->
+					<div class="customerDetailContent <notempty name='isFollowAuthView'>hidden</notempty><neq name='detailtype' value='index'>hidden</neq>" id="customer-detail-content4">
+
+						<notempty name="abandon_log">
+
+							<!--<div class="customer-detail-title" >
+
+								<span>{:L('GIVE_UP_CUSTOMERS')}</span>
+
+							</div>-->
+
+							<div class="item-list wd100 pl0 pr0 border_b">
+
+								<table class="layui-table mar0" lay-skin="line">
+
+									<thead>
+
+									<tr>
+
+										<th class="common_con_th">{:L('REASON_FOR_GIVING_UP')}</th><th>{:L('CUSTOMER_HANDLER')}</th><th>{:L('OPERATOR')}</th><th>{:L('TIME')}</th>
+
+									</tr>
+
+									</thead>
+
+									<tbody>
+
+									<volist name="abandon_log" id="vo">
+
+										<tr>
+
+											<td class="common_con_td" title="{$vo.abandon_name}">{$vo.abandon_name}</td>
+
+											<td>{$vo.member_name}</td>
+
+											<td>{$vo.operator_name}</td>
+
+											<td>{$vo.createtime|getDates}</td>
+										</tr>
+
+									</volist>
+
+									</tbody>
+
+								</table>
+
+							</div>
+
+						</notempty>
+
+						<notempty name="lose_log">
+
+							<!--<div class="customer-detail-title pd0" ><span>{:L('CUSTOMER_LOST_ORDER')}</span></div>-->
+
+							<div class="item-list wd100 pl0 pr0 mt15 border_b">
+
+								<table class="layui-table mar0" lay-skin="line">
+
+									<thead>
+
+									<tr>
+
+										<th class="common_con_th">{:L('REASON_FOR_LOSS')}</th><th class="common_con_th">{:L('COMPETITOR')}</th><th>{:L('OPPORTUNITY_NAME')}</th><th>{:L('OPERATOR')}</th><th>{:L('TIME')}</th>
+
+									</tr>
+
+									</thead>
+
+									<tbody>
+
+									<volist name="lose_log" id="vo">
+
+										<tr>
+
+											<td class="common_con_td" title="{$vo.lose_name}">{$vo.lose_name}</td>
+
+											<td class="common_con_td" title="{$vo.competitor_name}">{$vo.competitor_name}</td>
+
+											<td>{$vo.opportunity_name|default='<span class="iconfont icon-nothing"></span>'}</td>
+
+											<td>{$vo.operator_name}</td>
+
+											<td>{$vo.createtime|getDates}</td>
+										</tr>
+
+									</volist>
+
+									</tbody>
+
+								</table>
+
+							</div>
+
+						</notempty>
+
+						<div class="operate-info" id="CrmLogBox">
+
+
+						</div>
+
+						<script>
+
+							layui.use('flow', function()
+							{
+								var flow = layui.flow;
+
+								flow.load(
+								{
+									elem: '#CrmLogBox',
+									scrollElem:'.feeldesk-main',
+									isAuto:false,
+									done: function(page, next)
+									{
+										var url = "{$Think.ACTION_NAME}";
+
+										var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+										var detailtype = "{:encrypt($detailtype,'CUSTOMER')}";
+
+										var lis = [];
+
+										$.get("{:U('customer/'.ACTION_NAME)}?id="+customer_id+"&detailtype="+detailtype+"&p="+page+"&request=crmlog", function(data)
+										{
+											if(data.data)
+											{
+												if (data.data.length > 0) {
+													layui.each(data.data, function (index, item) {
+														var items = '<div class="operate-list">';
+
+														if (item.member.face) {
+															items += '<img src="' + item.member.face + '" alt="">';
+														} else {
+															items += '<img src="/Attachs/face/face.png" alt="">';
+														}
+														items += '&nbsp;&nbsp;&nbsp;<span class="blue8">' + item.member.name + '</span>';
+
+														items += '<span class="gray9 fts12">&nbsp;• ' + item.createtime + '&nbsp;</span>';
+
+														items += '<span>' + item.content + '</span>';
+
+														items += '</div>';
+
+														lis.push(items);
+													});
+
+													next(lis.join(''), page < data.pages);
+												} else {
+													var items = "";
+
+													lis.push(items);
+
+													next(lis.join(''), page < data.pages);
+												}
+											}
+										});
+
+									}
+								});
+							});
+
+						</script>
+
+					</div>
+
+					<!--{:L('CLIENT_ANALYSIS')}-->
+					<!--<div class="customerDetailContent <neq name='detailtype' value='analysis'>hidden</neq>" id="customer-detail-content5">
+
+						<div class="form-item pb25 pt10">
+
+							<div class="wd100"></div>
+
+							<form class="layui-form" action="{:U('customer/edit_analysis',['id'=>encrypt($analysis['analysis_id'],'CUSTOMER'),'customer_id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('analysis','CUSTOMER'),'detail_source'=>$detail_source])}">
+
+								<a href="javascript:" class="feelcrm-commbtn fr edit-customer-detail" >{:L('EDITOR')}</a>
+
+								<a href="javascript:" class="feelcrm-commbtn fr finish-customer-detail" >{:L('COMPLETE')}</a>
+
+								<div class="clear"></div>
+
+								<volist name="analysisform" id="vo">
+
+									<div class="layui-form-item mb10 wd50 fl">
+
+										<label class="layui-form-label">{$vo.form_description}</label>
+
+										<div class="layui-input-inline <notempty name='isEditAnalysisAuth'>pd0 detail-update-form</notempty>">
+
+											<div class="layui-detail-edit-default" >
+
+												{$analysis['detail'][$vo['form_name']]|default='&#45;&#45;'}
+
+											</div>
+
+											<notempty name="isEditAnalysisAuth">
+
+												<div class="hidden layui-detail-edit-form">
+
+													<eq name="vo.form_type" value="date">
+														<php>$ft++;</php>
+													</eq>
+
+													<eq name="vo.form_type" value="region">
+														<php>$reg++;</php>
+													</eq>
+
+													<php>$t++;</php>
+
+													{:W('Update/updateFormContent',[$analysis,$analysis['analysis_id'],$vo,'analysis',$t,$ft,$reg])}
+
+												</div>
+
+												<i class="i-update-success iconfont icon-system-success hidden"></i>
+
+											</notempty>
+
+										</div>
+
+										<div class="clear"></div>
+
+									</div>
+
+								</volist>
+
+								<volist name="analysisform2" id="vo">
+
+									<div class="layui-form-item mb10 wd100 layui-form-item-textarea fl">
+
+										<label class="layui-form-label">
+
+											{$vo.form_description}
+
+										</label>
+
+										<div class="layui-input-inline <notempty name='isEditAnalysisAuth'>pd0 detail-update-form</notempty>">
+
+											<div class="layui-detail-edit-default textareaImg">
+
+												{$analysis['detail'][$vo['form_name']]|default='&#45;&#45;'}
+
+											</div>
+
+											<notempty name="isEditAnalysisAuth">
+
+												<php>$tx++;</php>
+
+												<div class="hidden layui-detail-edit-form">
+
+													<textarea class="layui-textarea layui-hide ticket-textarea" name="analysis_form[{$vo.form_name}]" id="crmEditor<php>echo $tx;</php>">{$analysis['detail'][$vo['form_name']]}</textarea>
+
+												</div>
+
+												<i class="i-update-success iconfont icon-system-success hidden"></i>
+
+												<script>
+
+													layui.use(['layedit'],function()
+													{
+														var layedit = layui.layedit;
+
+														crmEditor{$tx} = layedit.build('crmEditor{$tx}',{uploadImage: {url:"/"+moduleName+"/Upload/uploadImageFile?type=editor", type: 'post'},hideTool:['face'],height:200});
+
+														$('.submit-textarea').click(function()
+														{
+															var content = layedit.getContent(crmEditor{$tx});
+
+															updateFormContentAjax('{:U("AjaxRequest/updateFormContent")}','{$analysis["analysis_id"]}','analysis',content,'{$vo.form_name}',$('textarea[name="analysis_form[{$vo.form_name}]"]'),'textarea');
+														})
+
+													})
+
+												</script>
+
+											</notempty>
+
+										</div>
+
+										<div class="clear"></div>
+
+									</div>
+
+								</volist>
+
+
+								<div class="clear"></div>
+
+							</form>
+
+						</div>
+
+					</div>-->
+
+					<!--{:L('COMPETITOR')}-->
+					<!--<div class="customerDetailContent hidden" id="customer-detail-content6">
+
+						<div class="pt20 pb15" >
+
+							{:FEELCRM('Customer/create_competitor',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('index','CUSTOMER')],L('ADD_COMPETITOR'),'feelcrm-commbtn')}
+
+						</div>
+
+						<div class="item-list wd100 pl0 pr0 border_t">
+
+							<table class="layui-table mar0" lay-skin="line">
+
+								<thead>
+
+								<tr>
+
+									<th>{:L('COMPETITOR_NAME')}</th><th>{:L('OPPOSING_STAGE')}</th><th class="follow_con_th">{:L('ADVANTAGE')}</th><th class="follow_con_th">{:L('DISADVANTAGE')}</th><th>{:L('OPERATION')}</th>
+
+								</tr>
+
+								</thead>
+
+								<tbody>
+								<empty name="competitor">
+
+									<tr class="nodata center">
+
+										<td colspan="11">
+
+											<p><i class="iconfont icon-nothing fts20"></i></p>
+
+											<p>{:L('NO_DATA')}</p>
+
+										</td>
+
+									</tr>
+
+									<else />
+
+									<volist name="competitor" id="vo">
+
+										<tr>
+
+											<td>{$vo.detail.name}</td>
+
+											<td>{$vo.detail.stage}</td>
+
+											<td class="follow_con_td" title="{$vo.detail.advantage}">{$vo.detail.advantage}</td>
+
+											<td class="follow_con_td" title="{$vo.detail.inferiority}">{$vo.detail.inferiority}</td>
+
+											<td class="listOperate">
+
+												<i class="iconfont icon-dian"></i>
+
+												<div class="operate hidden">
+
+													{:FEELCRM('Customer/edit_competitor',['id'=>encrypt($vo['competitor_id'],'CUSTOMER'),'customer_id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('index','CUSTOMER'),'detail_source'=>$detail_source],L('EDITOR'))}
+
+													{:FEELCRM('Customer/delete_competitor',['id'=>encrypt($vo['competitor_id'],'CUSTOMER'),'detailtype'=>encrypt('index','CUSTOMER')],L('DELETE'),'','async')}
+
+												</div>
+
+											</td>
+
+										</tr>
+
+									</volist>
+
+								</empty>
+
+								</tbody>
+
+							</table>
+
+							<div class="mt20">
+
+
+							</div>
+
+						</div>
+
+					</div>-->
+
+					<else/>
+
+					<!--{:L('OPERATION_RECORD')}-->
+					<div class="customerDetailContent" id="customer-detail-content4">
+
+
+						<!--<div class="form-item pb25 pt20 ">
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('SUBORDINATE_SECTOR')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{:CrmgetMemberGroupName($groupList,$customer['group_id'])}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('LAST_FOLLOW-UP_TIME')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{$customer.lastfollowtime|getDates}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('CUSTOMER_RESPONSIBLE')}
+
+								</label>
+
+								<div class="layui-input-inline blue6">
+
+									{$customer.member_name}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('NEXT_CONTACT_TIME')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{$customer.nextcontacttime|getDates}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('IS_LOSE_ORDER')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									<eq name="customer.is_losed" value="1">
+
+										<span class="red1">{:L('YES')}</span>
+
+										<else/>
+
+										<span class="green4">{:L('NO')}</span>
+
+									</eq>
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('FOUNDER')}
+
+								</label>
+
+								<div class="layui-input-inline">
+									{:getCustomerCreateName($customer['creater_id'],$customer['creater_name'])}
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="layui-form-item mb10 wd50 fl">
+
+								<label class="layui-form-label">
+
+									{:L('CREATE_TIME')}
+
+								</label>
+
+								<div class="layui-input-inline">
+
+									{$customer.createtime|getDates}
+
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+
+							<div class="clear"></div>
+
+						</div>-->
+
+						<notempty name="abandon_log">
+
+							<!--<div class="customer-detail-title" >
+
+								<span>{:L('GIVE_UP_CUSTOMERS')}</span>
+
+							</div>-->
+
+							<div class="item-list wd100 pl0 pr0 border_b">
+
+								<table class="layui-table mar0" lay-skin="line">
+
+									<thead>
+
+									<tr>
+
+										<th class="common_con_th">{:L('REASON_FOR_GIVING_UP')}</th><th>{:L('CUSTOMER_HANDLER')}</th><th>{:L('OPERATOR')}</th><th>{:L('TIME')}</th>
+
+									</tr>
+
+									</thead>
+
+									<tbody>
+
+									<volist name="abandon_log" id="vo">
+
+										<tr>
+
+											<td class="common_con_td" title="{$vo.abandon_name}">{$vo.abandon_name}</td>
+
+											<td>{$vo.member_name}</td>
+
+											<td>{$vo.operator_name}</td>
+
+											<td>{$vo.createtime|getDates}</td>
+										</tr>
+
+									</volist>
+
+									</tbody>
+
+								</table>
+
+							</div>
+
+						</notempty>
+
+						<notempty name="lose_log">
+
+							<!--<div class="customer-detail-title pd0" ><span>{:L('CUSTOMER_LOST_ORDER')}</span></div>-->
+
+							<div class="item-list wd100 pl0 pr0 mt15 border_b">
+
+								<table class="layui-table mar0" lay-skin="line">
+
+									<thead>
+
+									<tr>
+
+										<th class="common_con_th">{:L('REASON_FOR_LOSS')}</th><th class="common_con_th">{:L('COMPETITOR')}</th><th>{:L('OPPORTUNITY_NAME')}</th><th>{:L('OPERATOR')}</th><th>{:L('TIME')}</th>
+
+									</tr>
+
+									</thead>
+
+									<tbody>
+
+									<volist name="lose_log" id="vo">
+
+										<tr>
+
+											<td class="common_con_td" title="{$vo.lose_name}">{$vo.lose_name}</td>
+
+											<td class="common_con_td" title="{$vo.competitor_name}">{$vo.competitor_name}</td>
+
+											<td>{$vo.opportunity_name|default='<span class="iconfont icon-nothing"></span>'}</td>
+
+											<td>{$vo.operator_name}</td>
+
+											<td>{$vo.createtime|getDates}</td>
+										</tr>
+
+									</volist>
+
+									</tbody>
+
+								</table>
+
+							</div>
+
+						</notempty>
+
+						<div class="operate-info" id="CrmLogBox">
+
+
+						</div>
+
+						<script>
+
+							layui.use('flow', function()
+							{
+								var flow = layui.flow;
+
+								flow.load(
+										{
+											elem: '#CrmLogBox',
+											scrollElem:'.feeldesk-main',
+											isAuto:false,
+											done: function(page, next)
+											{
+												var url = "{$Think.ACTION_NAME}";
+
+												var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+												var detailtype = "{:encrypt($detailtype,'CUSTOMER')}";
+
+												var lis = [];
+
+												$.get("{:U('customer/'.ACTION_NAME)}?id="+customer_id+"&detailtype="+detailtype+"&p="+page+"&request=crmlog", function(data)
+												{
+													if(data.data.length > 0)
+													{
+														layui.each(data.data, function(index, item)
+														{
+															var items ='<div class="operate-list">';
+
+															if(item.member.face)
+															{
+																items += '<img src="' + item.member.face + '" alt="">';
+															}
+															else
+															{
+																items += '<img src="/Attachs/face/face.png" alt="">';
+															}
+															items += '&nbsp;&nbsp;&nbsp;<span class="blue8">'+item.member.name+'</span>';
+
+															items += '<span class="gray9 fts12">&nbsp;• '+item.createtime+'&nbsp;</span>';
+
+															items += '<span>'+item.content+'</span>';
+
+															items += '</div>';
+
+															lis.push(items);
+														});
+
+														next(lis.join(''), page < data.pages);
+													}
+													else
+													{
+														var items = "";
+
+														lis.push(items);
+
+														next(lis.join(''), page < data.pages);
+													}
+												});
+
+											}
+										});
+							});
+
+						</script>
+
+					</div>
+
+				</eq>
+			</div>
+
+			<!--</form>-->
+
+			<eq name="customer.isvalid" value="1">
+
+				<!-- {:L('CONTACT')} -->
+				<div class="form-content form-content3 <neq name='detailtype' value='contacter'>hidden</neq>">
+
+					<div class="item-list feelcrm-list wd100 pl0 pr0">
+
+						<table class="layui-table" lay-skin="line">
+
+							<thead>
+
+							<tr>
+
+								<!--<th>{:L('CONTACT_NAME')}</th><th>{:L('TEL')}</th><th>{:L('MAILBOX')}</th><th>{:L('CHARACTER')}</th><th>{:L('HONORIFIC')}</th>-->
+
+								<volist name="formList" id="vo">
+
+									<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+									<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+									<th>{$vo.form_description}</th>
+
+									</if>
+
+								</volist>
+
+								<th>{:L('OPERATION')}</th>
+
+							</tr>
+
+							</thead>
+
+							<tbody>
+
+							<empty name="contacter">
+
+								<tr class="nodata center">
+
+									<td colspan="11">
+
+										<p><i class="iconfont icon-nothing fts20"></i></p>
+
+										<p>{:L('NO_DATA')}</p>
+
+									</td>
+
+								</tr>
+
+								<else />
+
+								<volist name="contacter" id="vo">
+
+									<tr>
+
+										<volist name="formList" id="v">
+
+											<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+											<if condition="!$v['role_id'] || in_array($index['role_id'],explode(',',$v['role_id']))">
+
+											<td <eq name="v.form_type" value="textarea">title="{$vo['detail'][$v['form_name']]|strip_tags}"</eq>>
+
+											<eq name="v.form_type" value="textarea">{:mb_substr(strip_tags($vo['detail'][$v['form_name']]),0,20)}...<else/>{$vo['detail'][$v['form_name']]}</eq>
+
+											<eq name='v.form_name' value='name'>
+
+												<eq name="vo.contacter_id" value="$customer.first_contact_id"><span class="orange5">({:L('PRIMARY')})</span></eq>
+
+											</eq>
+
+											<if condition="$v['form_name'] eq 'phone' && $customer['detail'][$v['form_name']]">
+
+												<span class="icon-onclickcall" style="margin-left: 5px !important;"><i class="iconfont icon-boda blue8" onclick="CallUp({$customer['detail'][$v['form_name']]},4);"></i></span>
+
+											</if>
+
+											</td>
+
+											</if>
+
+										</volist>
+
+										<td class="listOperate">
+
+											<i class="iconfont icon-dian"></i>
+
+											<div class="operate hidden">
+
+												{:FEELCRM('Customer/edit_contacter',['id'=>encrypt($vo['contacter_id'],'CONTACTER'),'detailtype'=>encrypt('contacter','CUSTOMER')],L('EDITOR'))}
+
+												{:FEELCRM('Customer/delete_contacter',['id'=>encrypt($vo['contacter_id'],'CONTACTER'),'detailtype'=>encrypt('contacter','CUSTOMER')],L('DELETE'),'','async')}
+
+												<neq name="vo.contacter_id" value="$customer.first_contact_id">
+
+													{:FEELCRM('Customer/setFirst_contacter',['id'=>encrypt($vo['contacter_id'],'CONTACTER'),'detailtype'=>encrypt('contacter','CUSTOMER')],L('SET_PRIMARY_CONTACT'),'','async')}
+
+												</neq>
+
+											</div>
+
+										</td>
+
+									</tr>
+
+								</volist>
+
+							</empty>
+
+							</tbody>
+
+						</table>
+
+						<div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+					</div>
+
+				</div>
+
+				<!-- 商机 -->
+				<div class="form-content form-content3 <neq name='detailtype' value='opportunity'>hidden</neq>">
+
+					<div class="item-list feelcrm-list wd100 pl0 pr0">
+
+						<table class="layui-table" lay-skin="line">
+
+							<thead>
+
+							<tr>
+
+								<th>{:L('OPPORTUNITY_NO')}</th>
+
+								<volist name="formList" id="vo">
+
+									<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+									<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+									<th>{$vo.form_description}</th>
+
+									</if>
+
+								</volist>
+
+								<th>{:L('LEADER')}</th>
+
+								<th>{:L('CREATE_TIME')}</th>
+
+								<th>{:L('FOUNDER')}</th>
+
+							</tr>
+
+							</thead>
+
+							<tbody>
+
+							<empty name="opportunity">
+
+								<tr class="nodata center">
+
+									<td colspan="11">
+
+										<p><i class="iconfont icon-nothing fts20"></i></p>
+
+										<p>{:L('NO_DATA')}</p>
+
+									</td>
+
+								</tr>
+
+								<else />
+
+								<volist name="opportunity" id="vo">
+
+									<tr data-id="{$vo.opportunity_id|encrypt='OPPORTUNITY'}" data-type="detailPop">
+
+										<td onclick="clickOpenDetail(this,'opportunity')" >{$vo.opportunity_prefix}{$vo.opportunity_no}</td>
+
+										<volist name="formList" id="v">
+
+											<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+											<if condition="!$v['role_id'] || in_array($index['role_id'],explode(',',$v['role_id']))">
+
+											<td <eq name="v.form_type" value="textarea">title="{$vo['detail'][$v['form_name']]|strip_tags}"</eq>>
+
+											<eq name="v.form_type" value="textarea">{:mb_substr(strip_tags($vo['detail'][$v['form_name']]),0,20)}...<else/>{$vo['detail'][$v['form_name']]}</eq>
+
+											<eq name='v.form_name' value='name'>
+
+												<eq name="vo.contacter_id" value="$customer.first_contact_id"><span class="orange5">({:L('PRIMARY')})</span></eq>
+
+											</eq>
+
+											</td>
+
+											</if>
+
+										</volist>
+
+										<td onclick="clickOpenDetail(this,'opportunity')">{$vo.member_name}</td>
+
+										<td onclick="clickOpenDetail(this,'opportunity')">{$vo.createtime|getDates}</td>
+
+										<td onclick="clickOpenDetail(this,'opportunity')">{$vo.create_name}</td>
+
+									</tr>
+
+								</volist>
+
+							</empty>
+
+							</tbody>
+
+						</table>
+
+						<div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+					</div>
+
+				</div>
+
+				<div class="form-content form-content4 <neq name="detailtype" value="contract">hidden</neq>"> <!--{:L('CONTRACT')}-->
+
+					<div class="item-list feelcrm-list layui-form wd100">
+
+						<table class="layui-table" lay-skin="line">
+
+							<thead>
+
+							<tr>
+
+								<th>{:L('CONTRACT_NO')}</th>
+
+								<volist name="formList" id="vo">
+
+									<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+									<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+									<th>{$vo.form_description}</th>
+
+									</if>
+
+								</volist>
+
+								<th>{:L('LEADER')}</th>
+
+								<th>{:L('CREATE_TIME')}</th><!--<th>{:L('OPERATION')}</th>-->
+
+							</tr>
+
+							</thead>
+
+							<tbody>
+
+							<empty name="contract">
+
+								<tr class="nodata center">
+
+									<td colspan="11">
+
+										<p><i class="iconfont icon-nothing fts20"></i></p>
+
+										<p>{:L('NO_DATA')}</p>
+
+									</td>
+
+								</tr>
+
+								<else />
+
+								<volist name="contract" id="vo">
+
+									<tr data-id="{$vo.contract_id|encrypt='CONTRACT'}" data-type="detailPop">
+
+										<td mini='contract'>{$vo.contract_prefix}{$vo.contract_no}</td>
+
+										<volist name="formList" id="v">
+
+											<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+											<if condition="!$v['role_id'] || in_array($index['role_id'],explode(',',$v['role_id']))">
+
+											<td mini='contract' <eq name="v.form_type" value="textarea">title="{$vo['detail'][$v['form_name']]|strip_tags}"</eq> <eq name='v.form_name' value='price'>class="red"</eq>><eq name="v.form_type" value="textarea">{:mb_substr(strip_tags($vo['detail'][$v['form_name']]),0,20)}...<else/>{$vo['detail'][$v['form_name']]}</eq></td>
+
+											</if>
+
+										</volist>
+
+										<td mini='contract'>{$vo.member_name}</td>
+
+										<td mini='contract' >
+
+											{$vo.createtime|date="Y-m-d H:i:s",###}
+
+										</td>
+
+										<!--<td class="listOperate">
+
+											<i class="iconfont icon-dian"></i>
+
+											<div class="operate hidden">
+
+												{:FEELCRM('contract/ticketTemplate',['id'=>encrypt($vo['contract_id'],'CONTRACT')],L('CREATE_TICKET'))}
+
+											</div>
+
+										</td>-->
+
+									</tr>
+
+								</volist>
+
+							</empty>
+
+							</tbody>
+
+						</table>
+
+						<div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+					</div>
+
+				</div>
+
+				<eq name="crmsite.customerReseller" value="1">
+
+					<div class="form-content form-content5 <neq name='detailtype' value='shipment'>hidden</neq>"> <!--{:L('CONTRACT')}-->
+
+						<div class="item-list feelcrm-list layui-form wd100">
+
+							<div class="form-nav" id="shipmentNav">
+
+								<ul>
+
+									<li><a href="javascript:void(0);" class="active" onclick="switchShipment(this,1)">{:L('IN_STOCK')}</a></li>
+
+									<li><a href="javascript:void(0);" onclick="switchShipment(this,2)">{:L('SHIPMENT')}</a></li>
+
+								</ul>
+
+							</div>
+
+							<div class="shipmentBox" id="shipmentBox1">
+
+								<table class="layui-table" lay-skin="line">
+
+									<thead>
+
+									<tr>
+
+										<th>{:L('PRODUCT_NUMBER')}</th>
+
+										<th>{:L('TOTAL_NUMBER_OF_PRODUCTS')}</th>
+
+										<th>{:L('EXPORT_QUANTITY')}</th>
+
+										<th>{:L('IN_STOCK')}</th>
+
+									</tr>
+
+									</thead>
+
+									<tbody>
+
+									<volist name="productStock" id="vo">
+
+										<tr>
+
+											<td>{$vo.product_name}</td>
+
+											<td>{$vo.num}</td>
+
+											<td>{$vo.shipment_num}</td>
+
+											<td>{$vo.surplus_num}</td>
+
+										</tr>
+
+									</volist>
+
+									</tbody>
+
+								</table>
+
+							</div>
+
+							<div class="shipmentBox hidden" id="shipmentBox2">
+
+								<div class="pt20">
+
+									{:FEELCRM('shipment/create',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('shipment','CUSTOMER')],L('ADD_SHIPPING_INFORMATION'),'feelcrm-commbtn')}
+
+								</div>
+
+								<table class="layui-table" lay-skin="line">
+
+									<thead>
+
+									<tr>
+
+										<th>{:L('DELIVERY_TIME')}</th>
+
+										<th>{:L('PRODUCT_NUMBER')}</th>
+
+										<th>{:L('EXPORT_QUANTITY')}</th>
+
+										<th>{:L('TOTAL_SHIPMENT_AMOUNT')}</th>
+
+										<volist name="formList" id="vo">
+
+											<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+											<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+											<th>{$vo.form_description}</th>
+
+											</if>
+
+										</volist>
+
+										<th>{:L('OPERATION')}</th>
+
+									</tr>
+
+									</thead>
+
+									<tbody>
+
+									<empty name="shipment">
+
+										<tr class="nodata center">
+
+											<td colspan="11">
+
+												<p><i class="iconfont icon-nothing fts20"></i></p>
+
+												<p>{:L('NO_DATA')}</p>
+
+											</td>
+
+										</tr>
+
+										<else />
+
+										<volist name="shipment" id="vo">
+
+											<tr >
+
+												<td >{$vo.createtime|date="Y-m-d H:i:s",###}</td>
+
+												<td >{$vo.product.name}</td>
+
+												<td >{$vo.num}</td>
+
+												<td >{$vo.money}</td>
+
+												<volist name="formList" id="v">
+
+													<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+													<if condition="!$v['role_id'] || in_array($index['role_id'],explode(',',$v['role_id']))">
+
+													<td <eq name="v.form_type" value="textarea">title="{$vo['detail'][$v['form_name']]|strip_tags}"</eq> <eq name='v.form_name' value='price'>class="red"</eq>><eq name="v.form_type" value="textarea">{:mb_substr(strip_tags($vo['detail'][$v['form_name']]),0,20)}...<else/>{$vo['detail'][$v['form_name']]}</eq></td>
+
+													</if>
+
+												</volist>
+
+
+
+												<td class="listOperate">
+
+													<i class="iconfont icon-dian"></i>
+
+													<div class="operate hidden">
+
+														{:FEELCRM('shipment/edit',['id'=>encrypt($vo['shipment_id'],'SHIPMENT'),'detailtype'=>encrypt('shipment','SHIPMENT')],L('EDITOR'))}
+
+														{:FEELCRM('shipment/delete',['id'=>encrypt($vo['shipment_id'],'SHIPMENT'),'detailtype'=>encrypt('shipment','SHIPMENT')],L('DELETE'),'','async')}
+
+													</div>
+
+												</td>
+
+											</tr>
+
+										</volist>
+
+									</empty>
+
+									</tbody>
+
+								</table>
+
+								<div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+							</div>
+
+							<script>
+
+								function switchShipment(obj,i)
+								{
+									$('#shipmentNav li a').removeClass('active');
+
+									$(obj).addClass('active');
+
+									$('.shipmentBox').hide();
+
+									$('#shipmentBox'+i).show();
+								}
+
+							</script>
+
+						</div>
+
+					</div>
+
+				</eq>
+
+	</eq>
+
+	</div>
+
+	</div>
+
+	<script type="text/javascript">
+
+		$('body').find('#closeCustomerDetail').click(function()
+		{
+			window.parent.postMessage('closeDetail','*');
+		});
+
+		window.addEventListener('message', function(e)
+		{
+			if(e.data)
+			{
+				window.formCustomer = 1;
+			}
+		}, false)
+
+		$(function(){
+
+			var Awidth = $('#detail-nav').width();
+
+			var linum = $('#detail-nav ul').children("li").length;
+
+			var liwidth = 130 * linum;
+
+			if(Awidth > liwidth)
+			{
+				$('#detail-nav ul').css('min-width',Awidth+'px');
+			}
+			else
+			{
+				$('#detail-nav ul').css('min-width',liwidth+'px');
+			}
+
+			var Cwidth = $('#customer-detail-nav').width();
+
+			var Clinum = $('#customer-detail-nav ul').children("li").length;
+
+			var Cliwidth = 130 * Clinum;
+
+			if(Cwidth > Cliwidth)
+			{
+				$('#customer-detail-nav ul').css('min-width',Cwidth+'px');
+			}
+			else
+			{
+				$('#customer-detail-nav ul').css('min-width',Cliwidth+'px');
+			}
+		})
+
+	</script>
+
+	<include file="Public:language" />
+
+</block>

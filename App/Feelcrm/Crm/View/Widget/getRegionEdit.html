@@ -1,0 +1,242 @@
+
+<div class="region-input-div wd60 fl">
+
+<div class="layui-input-inline wd100 mb10 layui-form region-item <neq name='crmsite.regionType' value='world'>hidden</neq>" lay-filter="country">
+
+	<select name="{$FormName}[{$form_name}_defaultCountry]" lay-filter="select-country<php>echo $reg;</php>" id="country<php>echo $reg;</php>" lay-ignore>
+
+		<option value="">{:L('PLEASE_SELECT')}</option>
+
+		<volist name="country" id="vc">
+
+			<option value="{$vc.code}" <neq name='crmsite.regionType' value='world'><eq name='vc.code' value='1'>selected</eq><else/><eq name="Datainfo[$form_name]['defaultCountry']" value='$vc.code'>selected</eq></neq>>{$vc.name}</option>
+
+		</volist>
+
+	</select>
+
+</div>
+
+<div class="layui-input-inline wd100 mb10 <empty name="Datainfo[$form_name]['defaultProv']"><eq name='crmsite.regionType' value='world'>hidden</eq></empty> layui-form region-item" lay-filter="province">
+
+	<select  name="{$FormName}[{$form_name}_defaultProv]" lay-filter="select-province<php>echo $reg;</php>" id="province<php>echo $reg;</php>" lay-ignore>
+
+		<option value="">{:L('PLEASE_SELECT')}</option>
+
+	</select>
+
+</div>
+
+<div class="layui-input-inline wd100 mb10 <empty name="Datainfo[$form_name]['defaultCity']">hidden</empty> layui-form region-item" lay-filter="city">
+
+	<select  name="{$FormName}[{$form_name}_defaultCity]" lay-filter="select-city<php>echo $reg;</php>" id="city<php>echo $reg;</php>" lay-ignore>
+
+		<option value="">{:L('PLEASE_SELECT')}</option>
+
+
+	</select>
+
+</div>
+
+<div class="layui-input-inline wd100 mb10 <empty name="Datainfo[$form_name]['defaultArea']">hidden</empty> layui-form region-item" lay-filter="area">
+
+	<select  name="{$FormName}[{$form_name}_defaultArea]" lay-filter="select-area<php>echo $reg;</php>" id="area<php>echo $reg;</php>" lay-ignore>
+
+		<option value="">{:L('PLEASE_SELECT')}</option>
+
+
+	</select>
+
+</div>
+
+</div>
+
+<i class="layui-icon layui-icon-about intro-icon fl blue8 ml10" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+<script type="text/javascript">
+
+	<neq name='crmsite.regionType' value='world'>
+
+		<empty name='crmsite.regionType'>
+
+			var defaultCountry<php>echo $reg;</php> = "{$Datainfo[$form_name]['defaultCountry']}";
+
+		<else/>
+
+			var defaultCountry<php>echo $reg;</php> = "1";
+
+		</empty>
+
+	<else/>
+
+		var defaultCountry<php>echo $reg;</php> = "{$Datainfo[$form_name]['defaultCountry']}";
+
+	</neq>
+
+	<empty name="Datainfo[$form_name]['defaultProv']" >
+
+		<neq name="crmsite.regionType" value="world">
+
+			var defaultProv<php>echo $reg;</php> = "{$province}";
+
+		<else/>
+
+			var defaultProv<php>echo $reg;</php> = "{$Datainfo[$form_name]['defaultProv']}";
+
+		</neq>
+
+	<else/>
+
+		var defaultProv<php>echo $reg;</php> = "{$Datainfo[$form_name]['defaultProv']}";
+
+	</empty>
+
+	var defaultCity<php>echo $reg;</php> = "{$Datainfo[$form_name]['defaultCity']}";
+
+	var defaultArea<php>echo $reg;</php> = "{$Datainfo[$form_name]['defaultArea']}";
+
+	$("#country<php>echo $reg;</php>").select2();
+
+	$("#province<php>echo $reg;</php>").select2();
+
+	$("#city<php>echo $reg;</php>").select2();
+
+	$("#area<php>echo $reg;</php>").select2();
+
+	$("#country<php>echo $reg;</php>").change(function()
+	{
+		selectProvince('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	})
+
+    $("#province<php>echo $reg;</php>").change(function()
+	{
+		selectCity('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	})
+
+    $("#city<php>echo $reg;</php>").change(function()
+	{
+		selectArea('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	})
+
+	if(defaultCountry<php>echo $reg;</php> && defaultProv<php>echo $reg;</php>)
+	{
+		$.post("{:U('AjaxRequest/getRegion')}",{country_id:defaultCountry<php>echo $reg;</php>,type:'province'},function(data)
+		{
+			if(data.code == 0)
+			{
+				var option = '<option value="">{:L(\'SELECT_PROVINCE\')}</option>';
+
+				if(data.data.length > 0)
+				{
+					$.each(data.data,function(k,v)
+					{
+						if(defaultProv<php>echo $reg;</php>==v.code)
+						{
+							option += "<option c-value='"+ v.country_code+"' value='"+v.code+"' selected>"+v.name+"</option>";
+						}
+						else
+						{
+							option += "<option c-value='"+ v.country_code+"' value='"+v.code+"'>"+v.name+"</option>";
+						}
+
+					});
+
+					$('#province<php>echo $reg;</php>').html(option).parents('.region-item').slideDown('fast');
+
+					if(defaultProv<php>echo $reg;</php> && !defaultCity<php>echo $reg;</php>)
+					{
+						selectCity('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+					}
+				}
+				else
+				{
+					$('#province<php>echo $reg;</php>').html(option).parents('.region-item').slideUp('fast');
+				}
+
+				$("#province<php>echo $reg;</php>").select2();
+
+
+			}
+		});
+
+		//$('#city<php>echo $reg;</php>').html('<option value="">{:L(\'SELECT_CITY\')}</option>').parents('.region-item').slideUp('fast');
+	}
+	else
+	{
+		selectProvince('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+	}
+
+	if(defaultCountry<php>echo $reg;</php> && defaultProv<php>echo $reg;</php> && defaultCity<php>echo $reg;</php>)
+	{
+		$.post("{:U('AjaxRequest/getRegion')}",{country_id:defaultCountry<php>echo $reg;</php>,province_id:defaultProv<php>echo $reg;</php>,type:'city'},function(data)
+		{
+			if(data.code == 0)
+			{
+				var option = '<option value="">{:L(\'SELECT_CITY\')}</option>';
+
+				if(data.data.length > 0)
+				{
+					$.each(data.data,function(k,v)
+					{
+						if(defaultCity<php>echo $reg;</php>==v.code)
+						{
+							option += "<option c-value='"+ v.country_code+"' p-value='"+ v.province_code+"' value='"+v.code+"' selected>"+v.name+"</option>";
+						}
+						else
+						{
+							option += "<option c-value='"+ v.country_code+"' p-value='"+ v.province_code+"' value='"+v.code+"'>"+v.name+"</option>";
+						}
+					});
+
+					$('#city<php>echo $reg;</php>').html(option).parents('.region-item').slideDown('fast');
+
+					if(defaultCity<php>echo $reg;</php> && !defaultArea<php>echo $reg;</php>)
+					{
+						selectArea('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+					}
+				}
+				else
+				{
+					$('#city<php>echo $reg;</php>').html(option).parents('.region-item').slideUp('fast');
+				}
+
+				$("#city<php>echo $reg;</php>").select2();
+			}
+		});
+	}
+
+	if(defaultCountry<php>echo $reg;</php> && defaultProv<php>echo $reg;</php> && defaultCity<php>echo $reg;</php> && defaultArea<php>echo $reg;</php>)
+	{
+		$.post("{:U('AjaxRequest/getRegion')}",{country_id:defaultCountry<php>echo $reg;</php>,province_id:defaultProv<php>echo $reg;</php>,city_id:defaultCity<php>echo $reg;</php>,type:'area'},function(data)
+		{
+			if(data.code == 0)
+			{
+				var option = '<option value="">{:L(\'SELECT_AREA\')}</option>';
+
+				if(data.data.length > 0)
+				{
+					$.each(data.data,function(k,v)
+					{
+						if(defaultArea<php>echo $reg;</php>==v.code)
+						{
+							option += "<option value='"+v.code+"' selected>"+v.name+"</option>";
+						}
+						else
+						{
+							option += "<option value='"+v.code+"'>"+v.name+"</option>";
+						}
+					});
+
+					$('#area<php>echo $reg;</php>').html(option).parents('.region-item').slideDown('fast');
+				}
+				else
+				{
+					$('#area<php>echo $reg;</php>').html(option).parents('.region-item').slideUp('fast');
+				}
+
+				$("#area<php>echo $reg;</php>").select2();
+			}
+		});
+	}
+
+</script>

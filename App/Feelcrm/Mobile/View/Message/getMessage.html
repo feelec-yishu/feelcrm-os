@@ -1,0 +1,105 @@
+﻿<include file="Public/header" />
+
+<div class="feeldesk feeldesk-notify bgf" id="notifyCenter">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="header-left" id="all-read" data-type="read">{:L('ALL_READ')}</a>
+
+            <div class="header-title">{:L('NOTIFY')}</div>
+
+            <a href="javascript:" class="header-right" id="all-delete" data-type="delete">{:L('CLEAR_MSG')}</a>
+
+        </div>
+
+        <if condition="$groupSystemAuth['ticket_auth'] && $groupSystemAuth['crm_auth']">
+
+            <!-- 全部 -->
+            <div class="message-tab message-tab-two">
+
+                <div class="tab-item">
+
+                    <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Mobile/Message/getMessage" class="tab-ticket <eq name='Think.MODULE_NAME' value='Mobile'>current</eq>">
+
+                        <i class="iconfont icon-ticket-tab">
+
+                            <gt name="unReadNumber.ticket" value="0"><span><gt name="unReadNumber.ticket" value="99">99<else />{$unReadNumber.ticket}</gt></span></gt>
+
+                        </i>
+
+                        <p>{:L('TICKET')}</p>
+
+                    </a>
+
+                </div>
+
+                <div class="tab-item">
+
+                    <a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/CrmMobile/Message/getMessage?l={$lang}" class="tab-crm  <eq name='Think.MODULE_NAME' value='CrmMobile'>current</eq>">
+
+                        <i class="iconfont icon-crm-tab">
+
+                            <gt name="unReadNumber.crm" value="0"><span><gt name="unReadNumber.crm" value="99">99<else />{$unReadNumber.crm}</gt></span></gt>
+
+                        </i>
+
+                        <p>{:L('CRM')}</p>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        <elseif condition="!$groupSystemAuth['ticket_auth'] && $groupSystemAuth['crm_auth']" />
+
+            <!-- CRM -->
+            <div class="one-tab-item">
+
+                <i class="iconfont icon-crm-tab">
+
+                    <gt name="unReadNumber.crm" value="0"><span><gt name="unReadNumber.crm" value="99">99<else />{$unReadNumber.crm}</gt></span></gt>
+
+                </i>
+
+                <p>{:L('CRM')}</p>
+
+            </div>
+
+        <else />
+
+            <!-- 工单 -->
+            <div class="one-tab-item">
+
+                <i class="iconfont icon-ticket-tab">
+
+                    <gt name="unReadNumber.ticket" value="0"><span><gt name="unReadNumber.ticket" value="99">99<else />{$unReadNumber.ticket}</gt></span></gt>
+
+                </i>
+
+                <p>{:L('TICKET')}</p>
+
+            </div>
+
+        </if>
+
+    </header>
+
+    <div class="feeldesk-main message-main" id="messageItem"></div>
+
+    <div class="message-operate">
+
+        <a href="javascript:" class="message-delete">{:L('DELETE')}</a>
+
+        <a href="javascript:" class="delete-cancel">{:L('CANCEL')}</a>
+
+    </div>
+
+    <div class="message-shade"></div>
+
+</div>
+
+<include file="Public/footer" />
+

@@ -1,0 +1,331 @@
+<extend name="Public:common"/>
+
+<block name="crumb1">{:L('DEPARTMENT')}</block>
+
+<block name="content">
+
+    <div class="feeldesk-list">
+
+        <div class="feeldesk-list-header clearfix">
+
+            <div class="header-left">
+
+                <notempty name="data.auth.create">
+
+                    <a href="javascript:" onclick="openFormWindow(this,'{:U(\'create\')}')" class="createBtn" title="{:L('NEW_SECTOR')}">
+                        <i class="iconfont icon-xinzeng"></i>{:L('NEW_SECTOR')}
+                    </a>
+
+                </notempty>
+
+            </div>
+
+            <div class="header-right">
+
+                <form action="{$controllerAndAction}" method="get" class="fr">
+
+                    <div class="compact-search">
+
+                        <i class="iconfont icon-search"></i>
+
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="{:L('DEPARTMENT_NAME')}"/>
+
+                        <a href="javascript:" class="searchBtn">{:L('SEARCH')}</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="feeldesk-list-content">
+
+            <div class="feeldesk-list-main">
+
+                <div class="department-main">
+
+                    <div class="department-box"><div class="pl20">{:L('DEPARTMENT_NAME')}</div><div class="center">{:L('GROUP_MANAGER')}</div><div class="center">{:L('OPERATION')}</div></div>
+
+                    <notempty name="data.department">{$data.department}<else /><div class="user-no-data">{:L('NO_DATA')}</div></notempty>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <gt name="data.auth.delete" value="0">
+
+            <div class="groupItem hidden" id="group-item">
+
+                <form action="" class="layui-form pd20" lay-filter="group">
+
+                    <input type="hidden" name="group[group_id]" value="" id="groupId"/>
+
+                    <div class="mb10">{:L('SELECT_TRANSFER_DEPARTMENT')}</div>
+
+                    <div class="layui-form-item">
+
+                        <div class="layui-input-block ml0">
+
+                            <select name="group[update_group_id]" lay-search id="groupItem"></select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item update-group-btn">
+
+                        <div class="layui-input-block ml0 center">
+
+                            <a href="javascript:" class="layui-btn" lay-submit lay-filter="deleteGroupForm">{:L('SURE')}</a>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </gt>
+
+    </div>
+
+    <div class="assign-user-pannel hidden" id="assignUserPannel">
+
+        <header>
+
+            <span class="move-element">{:L('ASSIGN_USER')}</span>
+
+            <div class="assign-search">
+
+                <i class="iconfont icon-search"></i>
+
+                <input type="text" name="keyword" placeholder="{:L('ASSIGN_SEARCH')}" autocomplete="off" id="assignSearch"/>
+
+            </div>
+
+            <i class="iconfont icon-close1 assign-closed"></i>
+
+        </header>
+
+        <form action="" class="layui-form" id="assignUserForm">
+
+            <div class="assign-user-main">
+
+                <div class="assign-main-header">
+
+                    <span>{:L('DEPARTMENT_NAME')}：</span><span class="green3" id="assginGroupName"></span>
+
+                    <a href="javascript:" class="assign-user-submit" id="assignSubmit">{:L('SAVE')}</a>
+
+                </div>
+
+                <div class="item-header">
+
+                    <ul><li>{:L('CHOOSE')}</li><li>{:L('NAME')}</li><li>{:L('MOBILE')}</li><li>{:L('EMAIL')}</li></ul>
+
+                </div>
+
+                <div id="assignUserItem"></div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <script type="text/javascript">
+
+        $(function()
+        {
+            layui.use(['form','flow'], function ()
+            {
+                var form = layui.form;
+
+                var flow = layui.flow;
+
+                $('.assign-user').unbind('click').on('click', function ()
+                {
+                    var value = $(this).data('value');
+
+                    var name = $(this).data('name');
+
+                    layer.open(
+                    {
+                        title: false,
+                        type: 1,
+                        content: $('#assignUserPannel'),
+                        closeBtn: 0,
+                        skin: 'assign-members-window',
+                        offset: ['10%'],
+                        move: $('.move-element'),
+                        moveOut: true,
+                        moveType: 0,
+                        area: ['600px', '70%'],
+                        shade: [0.3, '#333'],
+                        success: function (layero, index)
+                        {
+                            $('#assginGroupName').text(name);
+
+                            var searchWidth = parseFloat($('.assign-search').width() / 2 + 100);
+
+                            $('.assign-search').css({left:"calc(50% - "+searchWidth+"px)"});
+
+                            flow.load(
+                            {
+                                elem: '#assignUserItem',
+                                end: "{:L('NO_MORE')}",
+                                done: function (page, next)
+                                {
+                                    $.post("/Group/index?request=assign&p=" + page, function (data)
+                                    {
+                                        var lis = [];
+
+                                        var item = '';
+
+                                        $.each(data.data,function(k,v)
+                                        {
+                                            var isChecked = '';
+
+                                            var ids = v['group_id'].split(',');
+
+                                            if($.inArray(value.toString(),ids) >= 0) isChecked = 'checked';
+
+                                            item += "<div class='assign-user-item'><ul>" +
+                                                    "<li><input type='checkbox' name='userId[]' value='"+v.member_id+"' lay-skin='primary' "+isChecked+"/></li>" +
+                                                    "<li>"+ v.name+"</li><li>"+ v.mobile+"</li><li>"+ v.email+"</li></ul></div>";
+
+                                        });
+
+                                        lis.push(item);
+
+                                        next(lis.join(''), page < data.pages);
+
+                                        form.render('checkbox');
+
+                                    },'JSON');
+                                }
+                            });
+
+                            $('.assign-closed').on('click', function ()
+                            {
+                                layer.close(index);
+
+                                $('#assignUserItem').html('');
+                            });
+
+                            $('#assignSubmit').unbind('click').on('click', function (e)
+                            {
+                                e.stopPropagation();
+
+                                layer.load(2, {offset: ['15vw']});
+
+                                $.post("{:U('Group/index')}?request=submit&id=" + value, $('#assignUserForm').serialize(), function (data)
+                                {
+                                    if (data.errcode == 0)
+                                    {
+                                        feelDeskAlert(data.msg,data);
+                                    }
+                                    else
+                                    {
+                                        feelDeskAlert(data.msg);
+                                    }
+                                }, 'JSON');
+                            })
+                        }
+                    });
+
+
+                    $('#assignSearch').keyup(function ()
+                    {
+                        var value = $(this).val();
+
+                        if(value)
+                        {
+                            $('#assignUserItem').find('.assign-user-item').hide().filter(":contains('" + ($(this).val()) + "')").show();
+
+                            $('#assignUserForm').find('.layui-flow-more').fadeOut('fast');
+                        }
+                        else
+                        {
+                            $('#assignUserItem').find('.assign-user-item').show();
+
+                            $('#assignUserForm').find('.layui-flow-more').fadeIn('fast');
+                        }
+                    });
+                });
+
+                var groups = JSON.parse('{$data.groups}');
+
+                $("a[load='del-group']").on('click',function(e)
+                {
+                    e.preventDefault();
+
+                    e.stopPropagation();
+
+                    var group_id = $(this).attr('href').split('/')[4];
+
+                    $("input[name='group[group_id]']").val(group_id);
+
+                    var option = "<option value=''>{:L('SELECT_SECTOR')}</option>";
+
+                    $.each(groups,function (k,v)
+                    {
+                        if(group_id != v.group_id && v.closed == 0)
+                        {
+                            option += "<option value='"+v.group_id+"'>"+v.group_name+"</option>";
+                        }
+                    });
+
+                    $('#groupItem').html(option);
+
+                    form.render('select','group');
+
+                    layer.open(
+                    {
+                        type: 1,
+                        offset:['100px'],
+                        area:['400px','500px'],
+                        content: $('#group-item')
+                    });
+                });
+
+                form.on('submit(deleteGroupForm)',function (data)
+                {
+                    $.post('/Group/delete',$(data.form).serialize(),function(data)
+                    {
+                        if(data.errcode !== 0)
+                        {
+                            feelDeskAlert(data.msg);
+                        }
+                        else
+                        {
+                            data.isReload = 1;
+
+                            feelDeskAlert(data.msg,data);
+                        }
+                    })
+                })
+            })
+        });
+
+        $('.department-item').unbind('click').on('click',function (e)
+        {
+            e.stopPropagation();
+
+            var that = $(this);
+
+            var id = that.data('id');
+
+            that.find("div.department-item[data-pid='"+id+"']").stop().slideToggle('fast');
+
+            that.find('i.icon-rights').eq(0).toggleClass('icon-downs');
+        })
+
+    </script>
+
+</block>

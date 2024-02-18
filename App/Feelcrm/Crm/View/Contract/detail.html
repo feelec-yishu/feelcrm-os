@@ -1,0 +1,549 @@
+<extend name="Public:base"/>
+
+<block name="content">
+
+<div class="comment-shade"></div>
+
+<div class="comment-panel hidden" id="comment">
+
+	<header><span>{:L('REASON')}（{:L('NOT_REQUIRED')}）</span><i class="iconfont icon-guanbi comment-close" title="{:L('CLOSE')}"></i></header>
+
+	<form action="" id="commentForm" class="layui-form">
+
+		<textarea id='commentEditor' name="reason" cols="30" rows="10" placeholder=""></textarea>
+
+		<div class="submit-comment"><a href="javascript:" class="layui-btn">{:L('SUBMIT')}</a></div>
+
+	</form>
+
+</div>
+
+<div class="customer-detail feeldesk-form pd0 feelcrm-form">
+
+    <div class="customer-detail-content">
+
+        <div class="detail-sidebar sidebar" id="closeCustomerDetail"><i class="iconfont icon-right"></i></div>
+
+		<div class="customer-header">
+
+			<div class="customer-header-name"><span class="iconfont icon-dingdanxiangqing blue8"></span>{$contract.contract_prefix}{$contract.contract_no}</div>
+
+			<div class="customer-header-right">
+
+				<eq name="detailtype" value="index">
+
+					<eq name="contract.isvalid" value="1">
+
+						{:FEELCRM('Contract/edit',['id'=>encrypt($contract['contract_id'],'CONTRACT'),'detailtype'=>encrypt('index','CONTRACT')],L('EDITOR'),'feelcrm-commbtn ml5')}
+
+					<else/>
+
+						{:FEELCRM('Recover/re_contract',['id'=>encrypt($contract['contract_id'],'CONTRACT')],L('RECOVERY'),'feelcrm-commbtn ml5','batch')}
+
+					</eq>
+
+					{:FEELCRM('Contract/delete',['id'=>encrypt($contract['contract_id'],'CONTRACT'),'detailtype'=>encrypt('index','CONTRACT')],L('DELETE'),'feelcrm-commbtn ml5','trash')}
+
+				</eq>
+
+			</div>
+
+		</div>
+
+		<div class="form-nav">
+
+			<ul>
+
+				<notempty name="isDetailAuthView">
+
+					<li><a href="{:U('contract/detail',['id'=>encrypt($contract['contract_id'],'CONTRACT'),'detailtype'=>encrypt('index','CONTRACT'),'detail_source'=>$detail_source])}" class="form-tab <eq name='detailtype' value='index'>active</eq>">{:L('CONTRACT_DETAILS')}</a></li>
+
+				</notempty>
+
+				<notempty name="isProductAuthView">
+
+					<li><a href="{:U('contract/detail',['id'=>encrypt($contract['contract_id'],'CONTRACT'),'detailtype'=>encrypt('product','CONTRACT'),'detail_source'=>$detail_source])}" class="form-tab <eq name='detailtype' value='product'>active</eq>">{:L('PRODUCT_DETAILS')}</a></li>
+
+				</notempty>
+
+				<div class="clear"></div>
+
+			</ul>
+
+		</div>
+
+        <!--{:L('CUSTOMER_DETAIL')}-->
+		<form class="layui-form">
+
+		<div class="form-content form-content1 <neq name='detailtype' value='index'>hidden</neq>">
+
+			<div class="form-item pb25 pt20 border_b">
+
+				<div class="layui-form-item mb10 wd50 fl">
+
+					<label class="layui-form-label">{:L('CONTRACT_NO')}</label>
+
+					<div class="layui-input-inline">{$contract.contract_prefix}{$contract.contract_no}</div>
+
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="layui-form-item mb10 wd50 fl">
+
+					<label class="layui-form-label">{:L('OWNED_CUSTOMER')}</label>
+
+					<div class="layui-input-inline blue8"><a mini='customer' data-id="{$contract.customer_id|encrypt='CUSTOMER'}" data-type="detailPop" class="blue8 cursor" >{$customer['detail']['name']}</a></div>
+
+					<div class="clear"></div>
+
+				</div>
+
+				<notempty name="contract.opportunity_id">
+
+					<div class="layui-form-item mb10 wd50 fl">
+
+						<label class="layui-form-label">{:L('OWNED_OPPORTUNITY')}</label>
+
+						<div class="layui-input-inline blue8"><a href="javascript:;" onclick="clickOpenDetailByA(this,'opportunity');" data-id="{$contract.opportunity_id|encrypt='OPPORTUNITY'}" data-type="detailPop" class="blue8 cursor" >{$opportunity['detail']['name']}</a></div>
+
+						<div class="clear"></div>
+
+					</div>
+
+				</notempty>
+
+				<volist name="contractform" id="vo">
+
+					<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+					<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+					<div class="layui-form-item mb10 wd50 fl">
+
+						<label class="layui-form-label">{$vo.form_description}</label>
+
+						<div class="layui-input-inline">{$contract['detail'][$vo['form_name']]|default='--'}</div>
+
+						<div class="clear"></div>
+
+					</div>
+
+					</if>
+
+				</volist>
+
+				<volist name="contractform2" id="vo">
+
+					<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+					<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+					<div class="layui-form-item mb10 wd100 layui-form-item-textarea fl">
+
+						<label class="layui-form-label">
+
+							{$vo.form_description}
+
+						</label>
+
+						<div class="layui-input-inline textareaImg">
+
+							{$contract['detail'][$vo['form_name']]|default='--'}
+
+						</div>
+
+						<div class="clear"></div>
+
+					</div>
+
+					</if>
+
+				</volist>
+
+				<div class="layui-form-item mb10 wd100 layui-form-item-textarea fl">
+
+					<label class="layui-form-label">{:L('SCANNED_COPY_OF_CONTRACT')}</label>
+
+					<div class="layui-input-inline">
+
+						<div class="contractImg" >
+
+							<volist name="contract.contract_img" id="vo">
+
+								<div class="layui-upload-drag ">
+
+									<img src="{$vo}">
+
+								</div>
+
+							</volist>
+
+						</div>
+
+					</div>
+
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="layui-form-item mb10 wd100 layui-form-item-textarea fl">
+
+					<label class="layui-form-label">{:L('CONTRACT_ATTACHMENT')}</label>
+
+					<div class="layui-input-inline">
+
+						<div class="ticket-file">
+
+							<empty name="contract.createFiles">
+
+								<span>--</span>
+
+							<else/>
+
+								<ul id="attach-ul">
+
+									<volist name="contract.createFiles" id="vo">
+
+										<li>
+
+											<span >
+
+												<in name="vo.file_type" value="pdf,txt,doc,docx,xlsx,xls,jpeg,png,gif,jpg,ppt,pptx">
+
+													<a class="cursor blue5" href="{:openFile($vo['file_link'],$vo['file_type'])}" target="_blank">{$vo.file_name|getFileName}.{$vo.file_type}</a>
+
+												<else/>
+
+													{$vo.file_name|getFileName}.{$vo.file_type}
+
+												</in>
+
+											</span>
+
+											<span class="gray4">({$vo.file_size|getFileSize})</span>
+
+											<a href="{$vo.file_link}" title="{$vo.file_name}" download="{$vo.file_name}" class="blue8"><i class="iconfont icon-xiazai fts20"></i></a>
+
+										</li>
+
+									</volist>
+
+								</ul>
+
+							</empty>
+
+						</div>
+
+					</div>
+
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="clear"></div>
+
+			</div>
+
+			<div class="form-item pb10 pt20">
+
+				<div class="layui-form-item mb10 wd50 fl">
+
+					<label class="layui-form-label">
+
+					   {:L('SUBORDINATE_SECTOR')}
+
+					</label>
+
+					<div class="layui-input-inline">
+
+						{:CrmgetMemberGroupName($groupList,$contract['group_id'])}
+
+					</div>
+
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="layui-form-item mb10 wd50 fl">
+
+					<label class="layui-form-label">
+
+					   {:L('CONTRACT_RESPONSIBLE')}
+
+					</label>
+
+					<div class="layui-input-inline blue8">
+
+						{$contract.member_name}
+
+					</div>
+
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="layui-form-item mb10 wd50 fl">
+
+					<label class="layui-form-label">
+
+					   {:L('FOUNDER')}
+
+					</label>
+
+					<div class="layui-input-inline">
+
+						{$contract.creater_name}
+
+					</div>
+
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="layui-form-item mb10 wd50 fl">
+
+					<label class="layui-form-label">
+
+					   {:L('CREATE_TIME')}
+
+					</label>
+
+					<div class="layui-input-inline">
+
+						{$contract.createtime|getDates}
+
+					</div>
+
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="layui-form-item mb10 wd50 fl">
+
+					<label class="layui-form-label">
+
+						{:L('ENTRY_METHOD')}
+
+					</label>
+
+					<div class="layui-input-inline">
+
+						{:getCrmEntryMethod($contract['entry_method'])}
+
+					</div>
+
+					<div class="clear"></div>
+
+				</div>
+
+				<div class="clear"></div>
+
+			</div>
+
+			<div class="operate-info border_t" id="CrmLogBox">
+
+
+			</div>
+
+			<script>
+
+				layui.use('flow', function()
+				{
+					var flow = layui.flow;
+
+					flow.load(
+					{
+						elem: '#CrmLogBox',
+						scrollElem:'.feeldesk-main',
+						isAuto:false,
+						done: function(page, next)
+						{
+							var url = "{$Think.ACTION_NAME}";
+
+							var contract_id = "{:encrypt($contract['contract_id'],'CONTRACT')}";
+
+							var detailtype = "{:encrypt($detailtype,'CONTRACT')}";
+
+							var lis = [];
+
+							$.get("{:U('contract/'.ACTION_NAME)}?id="+contract_id+"&detailtype="+detailtype+"&p="+page+"&request=crmlog", function(data)
+							{
+								if(data.data  && data.data.length > 0)
+								{
+									layui.each(data.data, function(index, item)
+									{
+										var items ='<div class="operate-list">';
+
+										if(item.member.face)
+										{
+											items += '<img src="' + item.member.face + '" alt="">';
+										}
+										else
+										{
+											items += '<img src="/Attachs/face/face.png" alt="">';
+										}
+										items += '&nbsp;&nbsp;&nbsp;<span class="blue8">'+item.member.name+'</span>';
+
+										items += '<span class="gray9 fts12">&nbsp;• '+item.createtime+'&nbsp;</span>';
+
+										items += '<span>'+item.content+'</span>';
+
+										items += '</div>';
+
+										lis.push(items);
+									});
+
+									next(lis.join(''), page < data.pages);
+								}
+								else
+								{
+									var items = "";
+
+									lis.push(items);
+
+									next(lis.join(''), page < data.pages);
+								}
+							});
+
+						}
+					});
+				});
+
+			</script>
+
+        </div>
+
+		</form>
+
+		<div class="form-content form-content5 <neq name="detailtype" value="product">hidden</neq>"> <!--产品-->
+
+			<div class="item-list wd100">
+
+				<table class="layui-table" lay-skin="line">
+
+					<thead>
+
+						<tr>
+
+							<th>{:L('IMAGES')}</th><th>{:L('PRODUCT_NAME')}</th><th>{:L('PRODUCT_NUM')}</th><th>{:L('PRICE')}</th><th>{:L('SELLING_PRICE')}</th><th>{:L('NUMBER')}</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody>
+
+						<empty name="product">
+
+							<tr class="nodata center">
+
+								<td colspan="11">
+
+									<p><i class="iconfont icon-nothing fts20"></i></p>
+
+									<p>{:L('NO_DATA')}</p>
+
+								</td>
+
+							</tr>
+
+						<else />
+
+							<volist name="product" id="vo">
+
+								<tr>
+
+									<td><img src="{$vo.product_img|default='__PUBLIC__/crm/img/default_pro.png'}" width="40" height="40" /></td>
+
+									<td>{$vo.detail.name}</td>
+
+									<td>{$vo.detail.product_num}</td>
+
+									<td>{$vo.detail.list_price}</td>
+
+									<td>{$vo.unit_price}</td>
+
+									<td>{$vo.num}</td>
+
+								</tr>
+
+							</volist>
+
+						</empty>
+
+					</tbody>
+
+				</table>
+
+				<div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+<script type="text/javascript">
+
+	layer.ready(function()
+	{
+		layer.photos({
+		  photos: '.contractImg',
+		  shift: 5,
+		  shade: [0.8, 'rgba(0,0,0,.8)']
+		});
+
+	})
+
+</script>
+
+<script>
+
+	$(function()
+	{
+		layui.use(['layedit','form'], function()
+		{
+			var layedit = layui.layedit;
+
+			var commentEditor = layedit.build('commentEditor',{hideTool:['strong','italic','underline','del','|','left','center','right','link','unlink','image','help'], height:120});
+
+			$('.reply-comment,.comment-close').on('click',function()
+			{
+				$("#comment,.comment-shade").fadeToggle();
+
+				var url = $(this).data('post');
+
+				$('.submit-comment a').unbind('click').on('click',function()
+				{
+					layedit.sync(commentEditor);
+
+					layer.load(2,{offset:['250px']});
+
+					$.post(url,$('#commentForm').serialize(),function(data)
+					{
+						if(data.status == 2)
+						{
+							layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+							{
+								window.location.reload();
+							});
+						}
+						else
+						{
+							layer.closeAll('loading');
+
+							layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+						}
+					},'JSON')
+				})
+			})
+		});
+	})
+
+</script>
+
+<include file="Public:detailJs" />
+
+<include file="Public:language" />
+
+</block>

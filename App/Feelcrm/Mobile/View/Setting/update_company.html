@@ -1,0 +1,135 @@
+﻿<include file="Public/header" />
+
+<div class="feeldesk feeldesk-setting bgf" id="formWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="{:U('setting/index',['system'=>$system])}" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('COMPANY_SETTINGS')}</div>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <div class="company-item">
+
+            <div class="setting-inline">
+
+                <div class="company-item-name">Logo</div>
+
+                <div class="company-item-right">
+
+                    <img src="{$company.logo|default='__ROOT__/Attachs/logo/default.png'}" alt="" id="uploadLogoAndFace" data-value="logo">
+
+                    <form action="{:U('update_company')}" id="imageForm">
+
+                        <input type="hidden" name="company[logo]" value="{$company.logo}" id="image"/>
+
+                        <input type="hidden" name="company[logo_name]" value="{$company.logo_name}" id="image-name"/>
+
+                        <input type="hidden" name="company[logo_url]" id="image-url"/>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="company-item to-windows" data-title="{:L('COMPANY')}" data-name="name" data-value="{$company.name}">
+
+            <div class="setting-inline">
+
+                <div class="company-item-name to-windows">{:L('COMPANY')}</div>
+
+                <div class="company-item-right"><span>{$company.name}</span> <i class="iconfont icon-back-right"></i></div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="company-item to-windows" data-title="{:L('COMPANY_ADDRESS')}" data-name="address" data-value="{$company.address|default=''}">
+
+            <div class="setting-inline">
+
+                <div class="company-item-name">{:L('COMPANY_ADDRESS')}</div>
+
+                <div class="company-item-right"><span>{$company.address}</span> <i class="iconfont icon-back-right"></i></div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="company-item to-windows" data-title="{:L('FIXED_TEL')}" data-name="tel" data-value="{$company.tel|default=''}">
+
+            <div class="setting-inline">
+
+                <div class="company-item-name">{:L('FIXED_TEL')}</div>
+
+                <div class="company-item-right"><span>{$company.tel}</span> <i class="iconfont icon-back-right"></i></div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="company-item to-windows" data-title="{:L('MOBILE_PHONE')}" data-name="mobile" data-value="{$company.mobile|default=''}">
+
+            <div class="setting-inline border-none">
+
+                <div class="company-item-name">{:L('MOBILE_PHONE')}</div>
+
+                <div class="company-item-right"><span>{$company.mobile}</span> <i class="iconfont icon-back-right"></i></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="feeldesk" id="companyWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="iconfont icon-back-left back" id="companyBack"></a>
+
+            <div class="header-title" id="windowTitle"></div>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main company-main">
+
+        <form id="feeldeskForm">
+
+            <div class="company-form-item">
+
+                <input type="text" class="company-input" id="company-input"/>
+
+            </div>
+
+            <a href="javascript:" class="company-submit" id="submitForm">{:L('SAVE')}</a>
+
+        </form>
+
+    </div>
+
+</div>

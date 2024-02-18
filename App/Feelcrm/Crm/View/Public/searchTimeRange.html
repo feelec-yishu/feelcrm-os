@@ -1,0 +1,129 @@
+<div class="c-datepicker-date-editor  J-datepicker-range-day wit10 bra3">
+	<input placeholder="{:L('STARTING_TIME')}" name="highKeyword[start_time]" class="begin c-datepicker-data-input only-date" value="{$highKeyword.start_time}"  readOnly="readOnly" />
+	<span class="c-datepicker-range-separator">-</span>
+	<input placeholder="{:L('END_TIME')}" name="highKeyword[end_time]"  class="end c-datepicker-data-input only-date" value="{$highKeyword.end_time}" readOnly="readOnly" />
+</div>
+
+<script type="text/javascript">
+
+	$(function()
+	{
+		var DATAPICKERAPI = {
+			// 默认input显示当前月,自己获取后填充
+			activeMonthRange: function () {
+				return {
+					begin: moment().set({ 'date': 1, 'hour': 0, 'minute': 0, 'second': 0 }).format('YYYY-MM-DD HH:mm:ss'),
+					end: moment().set({ 'hour': 23, 'minute': 59, 'second': 59 }).format('YYYY-MM-DD HH:mm:ss')
+				}
+			},
+			shortcutMonth: function () {
+				// 当月
+				var nowDay = moment().get('date');
+				var prevMonthFirstDay = moment().subtract(1, 'months').set({ 'date': 1 });
+				var prevMonthDay = moment().diff(prevMonthFirstDay, 'days');
+				return {
+					now: '-' + nowDay + ',0',
+					prev: '-' + prevMonthDay + ',-' + nowDay
+				}
+			},
+
+			// 快捷选项option
+			rangeShortcutOption1: [
+				{
+					name: "昨天",
+					day: '-1,-1',
+					time: '00:00:00,23:59:59'
+				},
+				{
+					name: "今天",
+					day: '0,0',
+					time: '00:00:00,23:59:59'
+				},
+				{
+					name: "最近三天",
+					day: '-2,0',
+					time: '00:00:00,23:59:59'
+				},{
+					name: "最近一周",
+					day: '-6,0',
+					time: '00:00:00,23:59:59'
+				}, {
+					name: "最近一个月",
+					day: '-29,0',
+					time: '00:00:00,23:59:59'
+				}, {
+					name:"最近三个月",
+					day: '-89, 0',
+					time: '00:00:00,23:59:59'
+				}],
+		};
+
+		var lang = '{$lang}';
+
+		var langTo = 'zh-CN';
+
+		if(lang == 'en-us')
+		{
+			langTo = 'en';
+		}
+
+		if(langTo == 'en')
+		{
+			DATAPICKERAPI.rangeShortcutOption1 = [
+				{
+					name: "Yesterday",
+					day: '-1,-1',
+					time: '00:00:00,23:59:59'
+				},
+				{
+					name: "Today",
+					day: '0,0',
+					time: '00:00:00,23:59:59'
+				},
+				{
+					name: "Last 3 days",
+					day: '-2,0',
+					time: '00:00:00,23:59:59'
+				},{
+					name: "Last 7 days",
+					day: '-6,0',
+					time: '00:00:00,23:59:59'
+				}, {
+					name: "Last Month",
+					day: '-29,0',
+					time: '00:00:00,23:59:59'
+				}, {
+					name:"Last 3 months",
+					day: '-89, 0',
+					time: '00:00:00,23:59:59'
+				}];
+		}
+
+		//年月日范围
+		$('.J-datepicker-range-day').datePicker({
+			hasShortcut: true,
+			format: 'YYYY-MM-DD HH:mm:ss',
+			isRange: true,
+			language: langTo,
+			shortcutOptions: DATAPICKERAPI.rangeShortcutOption1,
+			endDate: moment(new Date()), //设置结束器日期
+			maxDate: moment(new Date()), //设置最大日期
+			hide:function () {
+				var starttime = "{$highKeyword.start_time}";
+				var endtime = "{$highKeyword.end_time}";
+
+				var new_starttime = $("input[name='highKeyword[start_time]']").val();
+				var new_endtime = $("input[name='highKeyword[end_time]']").val();
+
+				if(new_starttime != starttime || new_endtime != endtime)
+				{
+					$("input[name='highKeyword[start_time]']").val(new_starttime);
+					$("input[name='highKeyword[end_time]']").val(new_endtime);
+
+					$("input[name='highKeyword[start_time]']").parents('form').submit();
+				}
+			}
+		});
+	});
+
+</script>

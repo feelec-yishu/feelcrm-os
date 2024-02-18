@@ -1,0 +1,40 @@
+<extend name="Public:widget"/>
+
+<block name="menu">
+
+    <foreach name="settingMenu" item="v1">
+
+        <div class="feeldesk-menu-first">
+
+            <div class="feeldesk-leftMenu-menu feeldesk-leftMenu-menu1 current">
+
+                <i class="iconfont {$v1.menu_icon}"></i>
+
+                <span>{$v1.menu_name}<i class="layui-icon arrow">&#xe61a;</i></span>
+
+            </div>
+
+            <foreach name="v1.childMenu" item="v2">
+
+                <div class="feeldesk-menu-second">
+
+                    <div class="feeldesk-leftMenu-menu feeldesk-leftMenu-menu2">
+
+                        <a href="{:U($v2['menu_action'])}" onclick="feeldeskActive(this,2)" target='ticketRightMain'
+                           class="ticket-second-menu <eq name='v2.menu_action' value='notify/config'>current</eq>">
+
+                            <i></i><span class="middle fts14">{$v2.menu_name}</span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </foreach>
+
+        </div>
+
+    </foreach>
+
+</block>

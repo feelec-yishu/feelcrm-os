@@ -1,0 +1,391 @@
+<include file="Public/header" />
+
+<div class="feeldesk" id="formWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('ADD_OPPORTUNITY')}</div>
+
+            <a href="javascript:" class="header-right" id="submitForm">{:L('COMPLETE')}</a>
+
+        </div>
+
+    </header>
+
+	<php>
+		$t = 0;
+		$ft = 0;
+		$reg = 0;
+	</php>
+
+    <div class="feeldesk-main no-footer-main pd0" >
+
+        <form action="" id="feeldeskForm" method="post" class="layui-form">
+
+            <div class="feeldesk-form pd5" id="customer-label1">
+
+                <empty name="customer_id">
+
+                    <div class="feeldesk-form-item">
+
+                        <div class="feeldesk-form-block">
+
+                            <span class="red required-icon vw6">*</span>
+
+                            <input type="hidden" name="opportunity[customer_id]" value="" id="sCustomerInput" />
+
+                            <span class="sCustomerName" id="sCustomerName"></span>
+
+                            <span class="selectCustomerBtn" id="selectCustomer"> + {:L('SELECT_CUSTOMER')}</span>
+
+                        </div>
+
+                    </div>
+
+                <else/>
+
+                    <input type="hidden" name="opportunity[customer_id]" value="{$customer_id}" />
+
+                </empty>
+
+               <volist name="opportunityform" id="vo">
+
+                   <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+                   <if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+					<eq name="vo.form_type" value="region">
+
+						<php>
+							$reg++;
+						</php>
+
+						{:W('Region/getRegion',['opportunity_form',$vo,$reg])}
+
+					<else/>
+
+					 <div class="feeldesk-form-item relative">
+
+						<div class="feeldesk-form-block">
+
+                            <eq name="vo.is_required" value="0">
+
+                                <span class="red required-icon">*</span>
+
+                            </eq>
+
+							<eq name="vo.form_type" value="text">
+
+								<!-- 单行文本框 -->
+								<input type="text" name="opportunity_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="phone">
+
+								<!-- 手机 -->
+								<input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="opportunity_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="email">
+
+								<!-- 邮箱 -->
+								<input type="text" name="opportunity_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="number">
+
+								<!-- 数字 -->
+								<input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="opportunity_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="decimal">
+
+								<!-- 小数 -->
+								<input type="text" name="opportunity_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+							</eq>
+
+							<eq name="vo.form_type" value="select">
+
+								<!-- 下拉菜单 -->
+								<select name="opportunity_form[{$vo.form_name}]" lay-filter="">
+
+									<option value="">{$vo.form_description}</option>
+
+									<foreach name="vo.option" item="op">
+
+										<option value="{$op}">{$op}</option>
+
+									</foreach>
+
+								</select>
+
+							</eq>
+							
+							<eq name="vo.form_type" value="select_text">
+
+								<php>
+									$st++;
+								</php>
+								<!-- 下拉填写 -->
+								{:W('Update/selectTextForm',['opportunity',$vo,$st])}
+
+							</eq>
+
+							<eq name="vo.form_type" value="checkbox">
+
+								<!-- 多选 -->
+                                <div class="feeldesk-input feeldesk-form-check checkbox">
+
+                                    <span class='gray9'>{$vo.form_description}</span>
+
+                                    <i class="feeldesk-edge"></i>
+
+                                </div>
+
+                                <ul class="feeldesk-option-panel hidden checkboxPanel">
+
+                                    <volist name="vo.option" id="op">
+
+                                        <li data-value="{$op}">
+
+                                            <input type="checkbox" name="opportunity_form[{$vo.form_name}][]" value="{$op}"/>
+
+                                            <div class="feeldesk-option">
+
+                                                <span class="feeldesk-option-title">{$op}</span>
+
+                                                <span class="iconfont icon-check"></span>
+
+                                            </div>
+
+                                        </li>
+
+                                    </volist>
+
+                                </ul>
+
+							</eq>
+
+							<eq name="vo.form_type" value="radio">
+
+								 <!-- 单选 -->
+								<div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{$vo.form_description}</span><i class="feeldesk-edge"></i></div>
+
+								<ul class="feeldesk-option-panel radioPanel hidden">
+
+									<input type="hidden" name="opportunity_form[{$vo.form_name}]" value=""/>
+
+									<volist name="vo.option" id="op">
+
+									<li data-name="{$op}" data-value="{$op}">
+
+										<div class="feeldesk-option">
+
+											<span class="feeldesk-option-title">{$op}</span>
+
+											<span class="iconfont icon-check"></span>
+
+										</div>
+
+									</li>
+
+									</volist>
+
+								</ul>
+
+							</eq>
+
+							<!-- 文本域 -->
+							<eq name="vo.form_type" value="textarea">
+
+								<textarea name="opportunity_form[{$vo.form_name}]" class="feeldesk-input feeldesk-textarea" placeholder="{$vo.form_description}"></textarea>
+
+							</eq>
+
+							<!-- 时间控件 -->
+							<eq name="vo.form_type" value="date">
+
+								<php>
+									$ft++;
+								</php>
+
+								<input type="text" name="opportunity_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" id="datetime<php>echo $ft;</php>" class="feeldesk-input" readonly />
+
+                                <script type="text/javascript">
+
+                                    $(function()
+                                    {
+                                        jeDate("#datetime<php>echo $ft;</php>",{
+											minDate:"1900-01-01",              //最小日期
+											maxDate:"2099-12-31",              //最大日期
+											method:{
+												choose:function (params) {
+
+												}
+											},
+											format: "YYYY-MM-DD hh:mm:ss"
+										});
+                                    })
+
+                                </script>
+
+							</eq>
+
+						</div>
+
+					</div>
+
+					</eq>
+
+                   </if>
+
+				</volist>
+
+				<div class="feeldesk-form-item relative">
+
+                    <div class="feeldesk-form-block" id="product-item">
+
+                        <div class="feeldesk-input" id="select-product-type">
+
+                            <div id="select-product">
+
+                                <span>{:L('SELECT_PRODUCT')} - </span>
+
+                            </div>
+
+                            <div id="select-product-input">
+
+                            </div>
+                        </div>
+
+                        <i class="feeldesk-edge-right"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <script type="text/javascript" src="__PUBLIC__/js/photoswipe/photohtml.js"></script>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(function()
+    {
+        $('.icon-more').unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+            $('.operate-menu').not($(this).next('.operate-menu')).slideUp('fast').prev('.icon-more').removeClass('current');
+
+            $(this).toggleClass('current').next('ul.operate-menu').slideToggle('fast');
+
+            $(document).on('click',function()
+            {
+                $('.operate-menu').slideUp('fast').prev('.icon-more').removeClass('current');
+            })
+        });
+
+        $('.to-child').unbind('click').on('click',function()
+        {
+            $(this).parents('.product-type').next('ul.product-child-item').slideToggle('fast');
+
+            $(this).toggleClass('icon-sub');
+        });
+    })
+
+</script>
+
+<!-- 产品类型 -->
+<div class="feeldesk" id="productTypeWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="iconfont icon-back-left back" id="productTypeBack"></a>
+
+            <div class="header-title">{:L('PRODUCT_CATEGORY')}</div>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <div class="product-type-main" id="product-type-list">
+
+			{$product_type_h}
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--产品-->
+<div class="feeldesk" id="productWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="iconfont icon-back-left back" id="productBack"></a>
+
+            <div class="header-title">{:L('SELECT_PRODUCT')}</div>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <div class="main-search">
+
+            <i class="iconfont icon-search"></i>
+
+            <input type="text" name="keyword" value="" placeholder="{:L('SEARCH')}" id="productSearch">
+
+        </div>
+
+        <div class="product-choose-all hidden" id="productChooseAll">
+
+            <div>{:L('SELECT_ALL')}</div>
+
+            <span class="iconfont icon-check"></span>
+
+        </div>
+
+        <div class="product-main" id="product-list">
+
+            <ul class="product-item">
+
+
+
+            </ul>
+
+			<div class="product-page"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<include file="Public/selectCustomer" />
+
+<script type="text/javascript" src="MOBILE_PUBLIC_JS/crm-window.js"></script>

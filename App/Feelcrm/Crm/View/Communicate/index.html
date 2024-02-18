@@ -1,0 +1,125 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('SYSTEM')}</block>
+
+<block name="content">
+
+    <div class="list-main pd0">
+
+        <div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('COMMUNICATION_TYPE')}</li>
+
+            </ul>
+
+        </div>
+
+		<div class="list-header clearfix">
+
+            <div class="header-left">
+
+                {:FEELCRM('Communicate/create','',L('ADD_COMMUNICATION_TYPE'),'item-deleteBtn','add','iconfont icon-xinzeng')}
+
+            </div>
+
+        </div>
+
+        <div class="item-list feelcrm-list">
+
+            <table class="layui-table" lay-skin="line">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{:L('NAME2')}</th>
+						<th>{:L('STATUS')}</th>
+						<th>{:L('CREATE_TIME')}</th>
+						<th>{:L('OPERATION')}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <empty name="communicate">
+
+                        <tr class="nodata center">
+
+                            <td colspan="4">
+
+                                <p><i class="iconfont icon-nothing fts20"></i></p>
+
+                                <p>{:L('NO_DATA')}</p>
+
+                            </td>
+
+                        </tr>
+
+                    <else />
+
+                        <volist name="communicate" id="vo">
+
+                            <tr>
+
+                                <td>{$vo.cmncate_name}</td>
+
+
+
+                               <td>
+
+                                    <eq name="vo.closed" value="1">
+
+                                        <span class="open-status disable">{:L('DISABLE')}</span>
+
+                                    <else />
+
+                                        <span class="open-status enable">{:L('ENABLE')}</span>
+
+                                    </eq>
+
+                                </td>
+
+                                <td>{$vo.create_time|date="Y-m-d H:i",###}</td>
+
+                                <td class="listOperate">
+
+                                    <i class="iconfont icon-dian"></i>
+
+                                    <div class="operate hidden">
+
+                                        {:FEELCRM('Communicate/edit',['id'=>encrypt($vo['cmncate_id'],'COMMUNICATE')],L('EDITOR'),'','edt')}
+
+										{:FEELCRM('Communicate/delete',['id'=>encrypt($vo['cmncate_id'],'COMMUNICATE')],L('DELETE'),'','async')}
+
+										{:FEELCRM('Communicate/reply',['id'=>encrypt($vo['cmncate_id'],'COMMUNICATE')],L('CUSTOM_REPLY'))}
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </volist>
+
+                    </empty>
+
+                </tbody>
+
+            </table>
+
+            <div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+        </div>
+
+
+    </div>
+
+    <script type="text/javascript" src="__PUBLIC__/js/submitform.js"></script>
+
+    <include file="Public/footer" />
+
+</block>

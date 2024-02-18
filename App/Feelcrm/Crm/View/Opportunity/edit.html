@@ -1,0 +1,635 @@
+<extend name="Public:base"/>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0">
+
+		<form action="{:U('opportunity/edit',['id'=>encrypt($opportunity['opportunity_id'],'OPPORTUNITY'),'detailtype'=>encrypt($detailtype,'OPPORTUNITY')])}" class="layui-form" method="post" enctype="multipart/form-data">
+
+        <div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('MODIFY_OPPORTUNITY')}</li>
+
+				<div class="form-submit">
+
+					<a href="javascript:" class="layui-btn layui-btn-normal submitForm" data-no="{$opportunity.opportunity_prefix}{$opportunity.opportunity_no}">{:l('SUBMIT')}</a>
+
+					<notempty name="detailtype"><a href="javascript:history.go(-1);" class="layui-btn layui-btn-normal feelcrm-cancleBtn">{:L('CANCEL')}</a></notempty>
+
+				</div>
+
+            </ul>
+
+        </div>
+
+        <div class="form-content pt50 wd50 fl border_r">
+		<php>
+			$t = 0;
+			$ft = 0;
+			$reg = 0;
+		</php>
+
+				 <div class="form-item">
+
+				   <volist name="opportunityform" id="vo">
+
+				   <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+				   <if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+				   <!-- 字段未设置编辑权限或当前用户在编辑权限内 -->
+				   <if condition="!$vo['member_id'] || in_array($index['member_id'],explode(',',$vo['member_id']))">
+
+					   <neq name="vo.form_name" value="stage">
+
+                        <div class="layui-form-item">
+
+                            <label class="layui-form-label">
+
+                                <eq name="vo.is_required" value="0"><span class="red">*</span> </eq>
+
+                                {$vo.form_description}
+
+                            </label>
+
+							<eq name="vo.form_type" value="region">
+
+								<php>
+									$reg++;
+								</php>
+
+								{:W('Region/getRegionEdit',['opportunity_form',$vo['form_name'],$reg,$opportunity])}
+
+							<else/>
+
+                            <div class="layui-input-inline">
+
+                                <eq name="vo.form_type" value="text">
+
+                                    <!-- 单行文本框 -->
+                                    <input type="text" name="opportunity_form[{$vo.form_name}]" value="{$opportunity[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="phone">
+
+                                    <!-- {:L('CELL_PHONE')} -->
+                                    <input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="opportunity_form[{$vo.form_name}]" value="{$opportunity[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="email">
+
+                                    <!-- {:L('MAILBOX')} -->
+                                    <input type="text" name="opportunity_form[{$vo.form_name}]" value="{$opportunity[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="number">
+
+                                    <!-- {:L('DIGITAL')} -->
+                                    <input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="opportunity_form[{$vo.form_name}]" value="{$opportunity[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								<eq name="vo.form_type" value="decimal">
+
+                                    <!-- 小数 -->
+                                    <input type="text" name="opportunity_form[{$vo.form_name}]" value="{$opportunity[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="select">
+
+                                    <!-- 下拉菜单 -->
+                                    <select name="opportunity_form[{$vo.form_name}]">
+
+                                        <option value="">{$vo.form_description}</option>
+
+                                        <foreach name="vo.option" item="op">
+
+                                            <option value="{$op}" <eq name="opportunity[$vo[form_name]]" value="$op" >selected</eq>>{$op}</option>
+
+                                        </foreach>
+
+                                    </select>
+
+                                </eq>
+								
+								<eq name="vo.form_type" value="select_text">
+
+									<php>
+										$st++;
+									</php>
+									<!-- 下拉填写 -->
+									{:W('Update/selectTextForm',['opportunity',$vo,$st,$opportunity])}
+
+								</eq>
+
+                                <!-- 时间控件 -->
+                                <eq name="vo.form_type" value="date">
+
+									<php>
+										$ft++;
+									</php>
+
+                                    <input type='text' name="opportunity_form[{$vo.form_name}]" value="{$opportunity[$vo['form_name']]}" class="layui-input cursor layui-form-time" id="form_time<php>echo $ft;</php>" placeholder="{:L('SELECT_TIME')}" >
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="checkbox">
+
+                                    <!-- 复选框 -->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="checkbox" name="opportunity_form[{$vo.form_name}][]" <in name="op" value="$opportunity[$vo[form_name]]">checked</in> lay-skin="primary" title="{$op}" value="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="radio">
+
+                                    <!-- 单选框-->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="radio" name="opportunity_form[{$vo.form_name}]" <eq name="opportunity[$vo[form_name]]" value="$op" >checked</eq> value="{$op}" title="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <!-- 文本域 -->
+                                <eq name="vo.form_type" value="textarea">
+
+									<php>
+										$t++
+									</php>
+
+                                    <textarea class="layui-textarea layui-hide ticket-textarea" name="opportunity_form[{$vo.form_name}]" id="ticketEditor<php>echo $t;</php>">{$opportunity[$vo['form_name']]}</textarea>
+
+                                </eq>
+
+                            </div>
+
+							</eq>
+
+                            <notempty name="vo.form_explain">
+
+                                <i class="layui-icon layui-icon-about intro-icon" data-note="{$vo.form_explain}"></i>
+
+                            </notempty>
+
+                        </div>
+
+					   <else/>
+
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}]" value="{$opportunity[$vo['form_name']]}" />
+
+					   </neq>
+
+				   <else/>
+
+					   <eq name="vo.form_type" value="region">
+
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}_defaultCountry]" value="{$opportunity[$vo['form_name']]['defaultCountry']}" >
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}_defaultProv]" value="{$opportunity[$vo['form_name']]['defaultProv']}" >
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}_defaultCity]" value="{$opportunity[$vo['form_name']]['defaultCity']}" >
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}_defaultArea]" value="{$opportunity[$vo['form_name']]['defaultArea']}" >
+
+						   <else/>
+
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}]" value="{$opportunity[$vo['form_name']]}" >
+
+					   </eq>
+
+				   </if>
+
+				   <else/>
+
+					   <eq name="vo.form_type" value="region">
+
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}_defaultCountry]" value="{$opportunity[$vo['form_name']]['defaultCountry']}" >
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}_defaultProv]" value="{$opportunity[$vo['form_name']]['defaultProv']}" >
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}_defaultCity]" value="{$opportunity[$vo['form_name']]['defaultCity']}" >
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}_defaultArea]" value="{$opportunity[$vo['form_name']]['defaultArea']}" >
+
+						   <else/>
+
+						   <input type="hidden" name="opportunity_form[{$vo.form_name}]" value="{$opportunity[$vo['form_name']]}" >
+
+					   </eq>
+
+				   </if>
+
+                    </volist>
+
+				</div>
+
+        </div>
+
+		<div class="form-content wd50 fl">
+
+			<div class="form-item pb25">
+
+				<div class="list-header clearfix">
+
+					<div class="header-left">
+
+						<a href="javascript:" class="item-deleteBtn choosepro"><i class="iconfont icon-xinzeng"></i>{:L('ADD_PRODUCT')}</a>
+
+					</div>
+
+				</div>
+
+				 <div class="item-list">
+
+					<table class="layui-table" lay-skin="line">
+
+						<thead>
+
+							<tr>
+
+								<th>{:L('PRODUCT_NUM')}</th><th>{:L('PRODUCT_NAME')}</th><th>{:L('PRODUCT_CATEGORY')}</th><th>{:L('PRICE')}</th>
+
+							</tr>
+
+						</thead>
+
+						<tbody id="chooseProList">
+
+							<php> $proKey = 1;</php>
+
+							<volist name="opportunityPro" id="vo">
+
+								<tr data-id="{$vo['product_id']}" class="checkedPro">
+
+									<input type="hidden" name="opportunityPro[{$key}][product_id]" value="{:encrypt($vo['product_id'],'PRODUCT')}" />
+
+									<td>{$vo.detail.product_num}</td>
+
+									<td>{$vo.detail.name}</td>
+
+									<td>{$vo.type_name}</td>
+
+									<td>{:number_format($vo['detail']['list_price'],2)}</td>
+
+								</tr>
+
+								<php>$proKey ++;</php>
+
+							</volist>
+
+						</tbody>
+
+					</table>
+
+				</div>
+
+            </div>
+
+		</div>
+
+		<div class="clear"></div>
+
+		</form>
+
+    </div>
+
+	<div class="hidden hg100" id="productlist">
+
+		<div class="feeldesk-form pd0 feelcrm-form">
+
+			<div class="layui-tab">
+
+				<ul class="layui-tab-title">
+
+					<li class="tab-title-name">{:L('ADD_PRODUCT')}</li>
+
+					<li class="tab-title-btn">
+
+						<a href="javascript:chooseProduct()" class="layui-btn layui-btn-normal titleSubmit">{:l('SUBMIT')}</a>
+
+						<a href="javascript:closeChoosepro();" class="layui-btn layui-btn-normal titleCancel">{:l('CANCEL')}</a>
+
+						<div class="clear"></div>
+
+					</li>
+
+					<form action="" class="fr searchProForm" method="get">
+
+						<div class="compact-search">
+
+							<i class="iconfont icon-search"></i>
+
+							<input type="text" name="proKeyword" value="" placeholder=""/>
+
+							<input type="text" class="hidden" name="" value="" placeholder=""/>
+
+							<a href="javascript:" class="searchProBtn">{:L('SEARCH')}</a>
+
+						</div>
+
+					</form>
+
+					<div class="clear"></div>
+
+				</ul>
+
+			</div>
+
+		</div>
+
+		<div class="product-tree fl">
+
+			<div class="protree protree-1 protree-default">
+
+				<foreach name="product_type_h" item="vo">
+
+					{$vo}
+
+				</foreach>
+
+			</div>
+
+        </div>
+
+		<div class="item-list">
+
+			<table class="layui-table" lay-skin="line">
+
+				<thead>
+
+					<tr>
+
+						<th></th><th>{:L('PRODUCT_CATEGORY')}</th><th>{:L('IMAGES')}</th><th>{:L('PRODUCT_NAME')}</th><th>{:L('PRODUCT_NUM')}</th><th>{:L('PRICE')}</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody id="product-detail">
+
+					<empty name="product">
+
+						<tr class="nodata center">
+
+							<td colspan="11">
+
+								<p><i class="iconfont icon-nothing fts20"></i></p>
+
+								<p>{:L('NO_DATA')}</p>
+
+							</td>
+
+						</tr>
+
+					<else />
+
+						<volist name="product" id="vo">
+
+							<tr>
+
+								<td><input type="checkbox" value="{$vo.product_id}" <eq name="vo.opportunity_pro" value="1" >checked</eq> name="product[]" /></td>
+
+								<td>{$vo.type_name}</td>
+
+								<td><img src="{$vo.product_img|default='__PUBLIC__/crm/img/default_pro.png'}" width="40" height="40" /></td>
+
+								<td>{$vo.name}</td>
+
+								<td>{$vo.product_num}</td>
+
+								<td>{$vo.list_price}</td>
+
+							</tr>
+
+						</volist>
+
+					</empty>
+
+				</tbody>
+
+			</table>
+
+			<div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+		</div>
+
+	</div>
+
+    <include file="Public:language" />
+
+
+    <script>
+
+		var proKey = '{$proKey}';
+
+		$(function(){
+			$('.choosepro').click(function(){
+
+				var index = layer.open({
+				  type: 1,
+				  title: false,
+				  scrollbar:false,
+				  area: ['80%','600px'],
+				  closeBtn:0,
+				  content: $('#productlist')
+				});
+
+			})
+
+			$('.feeldesk-page a').click(function(){
+
+				pageclick(this);
+
+				return false;
+			})
+
+			$('.protree-node a').click(function(){
+
+				pageclick(this);
+
+				$('.product-tree li a').css('background','none');
+
+				$(this).css('background','#e1f6ff');
+
+				return false;
+
+			})
+
+			$('input[name="product[]"]').click(function(){
+
+				var val = $(this).val();
+
+				if(!$(this).is(':checked'))
+				{
+					$('.checkedPro[data-id="'+val+'"]').remove();
+				}
+
+			})
+
+		})
+
+		function pageclick(obj)
+		{
+			var href = $(obj).attr('href');
+
+			var ajaxhref = href.replace('/Opportunity/edit', '/AjaxRequest/getProductList');
+
+			var checkedPro = [];
+
+			$.each($('.checkedPro'),function(){
+
+				checkedPro.push($(this).data('id'));
+
+            });
+
+			var keyword = $('input[name="proKeyword"]').val();
+
+			$.ajax({
+					url:ajaxhref,
+					type:'POST',
+					data:{'checkedPro':checkedPro,'keyword':keyword},
+					async: false,
+					datatype:'json',
+					success:function(data)
+					{
+						//console.log(11);return false;
+						$('#product-detail').html(data.html);
+
+						$('.feeldesk-page').html(data.page);
+
+						$('.feeldesk-page a').click(function(){
+
+							pageclick(this);
+
+							return false;
+						})
+
+						$('input[name="product[]"]').click(function(){
+
+							var val = $(this).val();
+
+							if(!$(this).is(':checked'))
+							{
+								$('.checkedPro[data-id="'+val+'"]').remove();
+							}
+
+						})
+					},
+					error:function()
+					{
+					   layer.msg("{:L('FAILED_TO_GET_PRODUCT')}");
+					}
+			 });
+		}
+
+		$('.searchProBtn').unbind('click').bind('click',function(){
+
+			searchPro();
+		});
+
+		function searchPro()
+		{
+			var checkedPro = [];
+
+			$.each($('.checkedPro'),function(){
+
+				checkedPro.push($(this).data('id'));
+
+			});
+
+			var keyword = $('input[name="proKeyword"]').val();
+
+			var ajaxhref = "{:U('AjaxRequest/getProductList')}";
+
+			$.ajax({
+				url:ajaxhref,
+				type:'post',
+				data:{'checkedPro':checkedPro,'keyword':keyword},
+				async: false,
+				datatype:'json',
+				success:function(data)
+				{
+					$('#product-detail').html(data.html);
+
+					$('#productlist .feeldesk-page').html(data.page);
+
+					$('#productlist .feeldesk-page a').click(function(){
+
+						pageclick(this);
+
+						return false;
+					});
+
+					$('input[name="product[]"]').click(function(){
+
+						var val = $(this).val();
+
+						if(!$(this).is(':checked'))
+						{
+							$('.checkedPro[data-id="'+val+'"]').remove();
+						}
+
+					});
+				},
+				error:function()
+				{
+					layer.msg("{:L('FAILED_TO_GET_PRODUCT')}");
+				}
+			});
+
+			$('.product-tree li a').css('background','none');
+
+			return false;
+		}
+
+		function closeChoosepro()
+		{
+			layer.close(layer.index);
+		}
+
+		function chooseProduct()
+		{
+			var product = [];
+
+			var checkedPro = [];
+
+			$.each($('input[name="product[]"]:checked'),function(){
+
+				product.push($(this).val());
+
+            });
+
+			$.each($('.checkedPro'),function(){
+
+				checkedPro.push($(this).data('id'));
+
+            });
+
+			$.ajax({
+					url:"{:U('AjaxRequest/addOpportunityProduct')}",
+					type:'POST',
+					data:{'product':product,'checkedPro':checkedPro,'proKey':proKey},
+					async: false,
+					datatype:'json',
+					success:function(data)
+					{
+						$('#chooseProList').append(data.html);
+
+						proKey = data.proKey;
+					},
+					error:function()
+					{
+					   layer.msg("{:L('FAILED_TO_ADD_PRODUCT')}");
+					}
+			});
+
+			layer.close(layer.index);
+		}
+
+	</script>
+
+</block>

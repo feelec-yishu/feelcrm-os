@@ -1,0 +1,519 @@
+<extend name="Public:common"/>
+
+<block name="content">
+
+    <div class="list-main layui-form">
+
+		<div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('OPPORTUNITY_LIST')}<span class="page-content">{:L('TOTAL_RECORDS')}：<span>{$pageCount|default='0'}</span> {:L('STRIP')}</span></li>
+
+            </ul>
+
+        </div>
+
+		<!-- 筛选 -->
+		<include file="Public/filterViewRange" />
+
+		<volist name="filterlist" id="vo">
+
+			<eq name="vo.form_name" value="predict_time">
+
+				<!--<div class="list-filter select-fiter" data-type="predict_time">
+
+					<div class="list-filter-tit">{$vo.form_description}</div>
+					<div class="list-filter-option" data-value="">{:L('UNLIMITED')}</div>
+					<div class="list-filter-option <eq name='predict_time' value='yesterday'>active</eq>" data-value="yesterday">{:L('YESTERDAY')}</div>
+					<div class="list-filter-option <eq name='predict_time' value='today'>active</eq>" data-value="today">{:L('NOWADAYS')}</div>
+					<div class="list-filter-option <eq name='predict_time' value='last-week'>active</eq>" data-value="last-week">{:L('LAST_WEEK')}</div>
+					<div class="list-filter-option <eq name='predict_time' value='this-week'>active</eq>" data-value="this-week">{:L('THIS_WEEK')}</div>
+					<div class="list-filter-option <eq name='predict_time' value='prev-month'>active</eq>" data-value="prev-month">{:L('PREV_MONTH')}</div>
+					<div class="list-filter-option <eq name='predict_time' value='this-month'>active</eq>" data-value="this-month">{:L('THIS_MONTH')}</div>
+					<div class="list-filter-option <eq name='predict_time' value='this-season'>active</eq>" data-value="this-season">{:L('THIS_SEASON')}</div>
+					<div class="list-filter-option mr20 <eq name='predict_time' value='this-year'>active</eq>" data-value="this-year">{:L('THIS_YEAR')}</div>
+					<div class="list-filter-time <notempty name='predict_time'><notin name='predict_time' value='yesterday,today,last-week,this-week,prev-month,this-month,this-season,this-year'>active</notin></notempty>" id="customDate">
+						<input type="text" class="w10 border-none white" <notempty name='predict_time'><notin name='predict_time' value='yesterday,today,last-week,this-week,prev-month,this-month,this-season,this-year'>value="{$predict_time}"</notin></notempty> id="predictTime" />
+						{:L('CUSTOM_TIME')}
+					</div>
+
+				</div>
+
+				<script>
+
+					layui.use('laydate',function()
+					{
+						var laydate = layui.laydate;
+
+						var option = {
+							elem:'#predictTime',
+							eventElem: '#customDate',
+							range: true,
+							trigger: 'click',
+							btns: ['clear', 'confirm'],
+							done: function(value)
+							{
+								$("input[name='predict_time']").val(value);
+
+								$('#filterForm').submit();
+							}
+						};
+
+						laydate.render(option);
+					})
+
+				</script>-->
+
+			<else/>
+
+				<div class="list-filter select-fiter" data-type="highKeyword[define_form][{$vo.form_name}]">
+
+					<div class="list-filter-tit">{$vo.form_description}</div>
+
+					<volist name="vo.option" id="v">
+
+						<div class="list-filter-checkbox <if condition="in_array($v,explode(',',$highKeyword['define_form'][$vo['form_name']]))">active</if>" data-value="{$v}"><span class="iconfont <if condition="in_array($v,explode(',',$highKeyword['define_form'][$vo['form_name']]))">icon-square-selected<else/>icon-weixuanzhong</if>"></span>{$v}</div>
+
+					</volist>
+
+				</div>
+
+			</eq>
+
+		</volist>
+
+		<div class="list-filter" data-type="highKeyword[time_range_type]">
+
+			<div class="list-filter-tit">{:L('SELECT_TIME')}</div>
+
+			<include file="Public/searchTimeRange" />
+
+			<div data-value="create_time" class="filter-time-type layui-form-radio mt0 <eq name='highKeyword[time_range_type]' value='create_time'>layui-form-radioed</eq><empty name='highKeyword[time_range_type]'>layui-form-radioed</empty> ml15 fts13 gray6">
+				<i class="iconfont <eq name='highKeyword[time_range_type]' value='create_time'>icon-xuanzhong<else/><empty name='highKeyword[time_range_type]'>icon-xuanzhong<else/>icon-xuanze</empty></eq> fts15"></i>
+				<div>{:L('CREATE_TIME')}</div>
+			</div>
+
+			<div data-value="next_contact_time" class="filter-time-type <eq name='highKeyword[time_range_type]' value='next_contact_time'>layui-form-radioed</eq> layui-form-radio mt0 fts13 gray6">
+				<i class="iconfont <eq name='highKeyword[time_range_type]' value='next_contact_time'>icon-xuanzhong<else/>icon-xuanze</eq> fts15"></i>
+				<div>{:L('NEXT_CONTACT')}</div>
+			</div>
+
+			<div data-value="last_follow_time" class="filter-time-type <eq name='highKeyword[time_range_type]' value='last_follow_time'>layui-form-radioed</eq> layui-form-radio mt0 fts13 gray6">
+				<i class="iconfont <eq name='highKeyword[time_range_type]' value='last_follow_time'>icon-xuanzhong<else/>icon-xuanze</eq> fts15"></i>
+				<div>{:L('FINAL_FOLLOW-UP')}</div>
+			</div>
+
+			<volist name="filterlist" id="vo">
+
+				<eq name="vo.form_type" value="date">
+
+					<div data-value="{$vo.form_name}" class="filter-time-type <eq name='highKeyword[time_range_type]' value='$vo.form_name'>layui-form-radioed</eq> layui-form-radio mt0 fts13 gray6">
+						<i class="iconfont <eq name='highKeyword[time_range_type]' value='$vo.form_name'>icon-xuanzhong<else/>icon-xuanze</eq> fts15"></i>
+						<div>{$vo.form_description}</div>
+					</div>
+
+				</eq>
+
+			</volist>
+
+		</div>
+
+		<include file="Public/filterSortBy" />
+
+        <div class="list-header clearfix">
+
+            <div class="header-left">
+
+                {:FEELCRM('Opportunity/create','',L('ADD_OPPORTUNITY'),'item-deleteBtn','','iconfont icon-xinzeng')}
+
+            </div>
+
+            <div class="header-right">
+
+				<div class="customer-listOperate">
+
+					<div class="listOperate">
+
+						<div class="layui-form">
+
+							<select class="layui-input" disabled><option>{:L('OPERATION')}</option></select>
+
+						</div>
+
+						<div class="operate hidden">
+
+							<!--<notempty name="istransferOpportunityAuth">
+
+								<a href="javascript:" class="chooseMemberDetail" data-id="" data-href="{:U('Opportunity/transfer')}" data-name="{:L('TRANSFER')}" >{:L('OPPORTUNITY_TRANSFER')}</a>
+
+							</notempty>-->
+
+							<notempty name="isDelOpportunityAuth">
+
+								<a href="javascript:" data-href="{:U('Opportunity/delete')}" data-name="{:L('DELETE')}" id="CrmListDelete">{:L('DELETE_OPPORTUNITY')}</a>
+
+							</notempty>
+
+							<notempty name="isExportOpportunityAuth">
+
+								<a href="javascript:" title="{:L('EXPORT')}" id="startExport">{:L('EXPORT_DATA')}</a>
+
+							</notempty>
+
+							<notempty name="isImportOpportunityAuth">
+
+								<a href="javascript:" id="uploadFile">{:L('IMPORT_CUSTOMER')}</a>
+
+								<a href="__ROOT__/{$importTemp}" title="{:L('OPPORTUNITY_IMPORT_TEMPLATE')}" download="{:L('OPPORTUNITY_IMPORT_TEMPLATE')}">{:L('DOWNLOAD_TEMPLATE')}</a>
+
+							</notempty>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<span class="advanced-searc-btn fr" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i> <span>{:L('ADVANCED_SEARCH')}</span></span>
+
+                <form action="{$controllerAndAction}" method="get" class="fr" id="filterForm">
+
+					<input type="hidden" name='customer_auth' value="{$customer_auth}" />
+
+					<input type="hidden" name='sort_by' value="{$sort_by}" />
+
+					<input type="hidden" name='predict_time' value="{$predict_time}" />
+
+					<input type="hidden" name='highKeyword[condition]' value="1" />
+
+					<input type="hidden" name='highKeyword[define_form][stage]' value="{$highKeyword.define_form.stage}" />
+
+					<input type="hidden" name="highKeyword[start_time]"  value="{$highKeyword.start_time}" />
+
+					<input type="hidden" name="highKeyword[end_time]"  value="{$highKeyword.end_time}" />
+
+					<input type="hidden" name="highKeyword[time_range_type]" value="{$highKeyword.time_range_type}" />
+
+					<!--<include file="Public/searchTimeRange" />-->
+
+					<div class="compact-menu">
+
+						<!--<notempty name="isExportOpportunityAuth">
+
+							<a href="javascript:" title="{:L('EXPORT')}" id="startExport"><i class="iconfont icon-export"></i></a>
+
+						</notempty>
+
+						<a href="javascript:" title="{:L('ADVANCED_SEARCH')}" id="advanced-search-btn"><i class="iconfont icon-shaixuan"></i></a>-->
+
+					</div>
+
+                    <div class="compact-search">
+
+                        <i class="iconfont icon-search crmSearchBtn"></i>
+
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="{:L('OPPORTUNITY_NO')}({:L('WITHOUT_PREFIX')})/{:L('OPPORTUNITY_NAME')}" onkeydown="javascript:if (event.keyCode == 13){$(this).parents('form').submit();}" />
+
+                        <!--<a href="javascript:" class="searchBtn">{:L('SEARCH')}</a>-->
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+		<div id="advanced-search" class="hidden feelcrm-advanced-search feeldesk-form hg100">
+
+			<form action="{$controllerAndAction}" method="get" id="highSearchForm" class="hg100">
+
+				<input type="hidden" name='customer_auth' value="{$customer_auth}" />
+
+				<input type="hidden" name='sort_by' value="{$sort_by}" />
+
+				<input type="hidden" name='predict_time' value="{$predict_time}" />
+
+			<include file="Public/highKeywordHeader" />
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('OWNED_CUSTOMER')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<empty name="highKeyword.customer_id" >
+
+								<input type="radio" id="selectCustomerInput" class="layui-input" name="highKeyword[customer_id]" title="{:L('NO_CUSTOMER_SELECTED')}" checked value="" readonly />
+
+							<else/>
+
+								<input type="radio" id="selectCustomerInput" class="layui-input" name="highKeyword[customer_id]" title="{:CrmgetFieldName($highKeyword['customer_id'],'customer')}" checked value="{$highKeyword.customer_id}" readonly />
+
+							</empty>
+
+							<div id="selectCustomer" class="feelcrm-commbtn" >{:L('SELECT_CUSTOMER')}</div>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>
+
+					<!--<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('LEADER')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<select name="highKeyword[member_id]" lay-ignore id="select2" >
+
+								<option value="">{:L('SELECT_LEADER')}</option>
+
+								<volist name="members" id="v">
+
+									<option value="{$v.member_id}" <eq name="highKeyword.member_id" value="$v.member_id">selected</eq>>{$v.name}</option>
+
+								</volist>
+
+							</select>
+
+							<script type="text/javascript">
+
+								$("#select2").select2();
+
+							</script>
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+					</div>-->
+
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+						   {:L('OPPORTUNITY_NO')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							 <input type="text" name="highKeyword[opportunity_no]" value="{$highKeyword.opportunity_no}" placeholder="{:L('NOT_OPPORTUNITY_PREFIX')}" class="layui-input">
+
+						</div>
+
+						<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('SEARCH_FUZZY_QUERY1')}"></i>
+
+					</div>
+
+					<include file="Public/highKeywordForm" />
+
+				</div>
+
+			</div>
+
+			</form>
+
+		</div>
+
+        <div id='list' class="item-list feelcrm-list">
+
+            <table class="layui-table" lay-skin="line">
+
+                <thead>
+
+                    <tr>
+
+						<th class="checkbox"><input type="checkbox" name="" lay-skin="primary" lay-filter="ListAllChoose"></th>
+
+                        <!--<th>{:L('OPPORTUNITY_NO')}</th>-->
+
+						<volist name="formList" id="vo">
+							<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+							<if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+							<th>{$vo.form_description}</th>
+
+							<eq name="vo.form_name" value="name">
+
+								<th>{:L('OWNED_CUSTOMER')}</th>
+
+							</eq>
+							</if>
+						</volist>
+
+						<th>{:L('FINAL_FOLLOW-UP')}</th>
+
+						<th>{:L('NEXT_CONTACT')}</th>
+
+						<th>{:L('CREATE_TIME')}</th>
+
+						<th>{:L('LEADER')}</th>
+
+						<th>{:L('FOUNDER')}</th>
+
+						<th>{:L('ENTRY_METHOD')}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <empty name="opportunity">
+
+                        <tr class="nodata center">
+
+                            <td colspan="11">
+
+                                <p><i class="iconfont icon-nothing fts20"></i></p>
+
+                                <p>{:L('NO_DATA')}</p>
+
+                            </td>
+
+                        </tr>
+
+                    <else />
+
+                        <volist name="opportunity" id="vo">
+
+                            <tr data-id="{$vo.opportunity_id|encrypt='OPPORTUNITY'}" data-customer="{$vo.customer_id|encrypt='CUSTOMER'}" data-no="{$vo.opportunity_prefix}{$vo.opportunity_no}">
+
+								<td class="checkbox relative">
+
+									<input type="checkbox" name="del[]" lay-skin="primary" value="{$vo.opportunity_id|encrypt='OPPORTUNITY'}" >
+
+								</td>
+
+                                <!--<td onclick="clickOpenDetail(this,'opportunity')" class="blue8">{$vo.opportunity_prefix}{$vo.opportunity_no}</td>-->
+
+								<volist name="formList" id="v">
+									<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+									<if condition="!$v['role_id'] || in_array($index['role_id'],explode(',',$v['role_id']))">
+									<td onclick="clickOpenDetail(this,'opportunity')" <eq name="v.form_type" value="textarea">title="{$vo['detail'][$v['form_name']]|strip_tags}"</eq> <eq name='v.form_name' value='name'>class="blue8"</eq> <eq name='v.form_name' value='price'>class="red"</eq>><eq name="v.form_type" value="textarea">{:mb_substr(strip_tags($vo['detail'][$v['form_name']]),0,20)}...<else/>{$vo['detail'][$v['form_name']]}</eq></td>
+
+									<eq name="v.form_name" value="name">
+
+										<td mini='elseCustomer' class="blue8">{$vo.customer_name}</td>
+
+									</eq>
+									</if>
+								</volist>
+
+								<td onclick="clickOpenDetail(this,'opportunity')">{$vo.lastfollowtime|getDates}</td>
+
+								<td onclick="clickOpenDetail(this,'opportunity')">{$vo.nextcontacttime|getDates}</td>
+
+								<td onclick="clickOpenDetail(this,'opportunity')">{$vo.createtime|getDates}</td>
+
+                                <td onclick="clickOpenDetail(this,'opportunity')">{$vo.member_name}</td>
+
+                                <td onclick="clickOpenDetail(this,'opportunity')">{$vo.create_name}</td>
+
+								<td onclick="clickOpenDetail(this,'opportunity')">{:getCrmEntryMethod($vo['entry_method'])}</td>
+
+                            </tr>
+
+                        </volist>
+
+                    </empty>
+
+                </tbody>
+
+            </table>
+
+            <div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+        </div>
+
+        <include file="Public:section" />
+
+    </div>
+
+	<notempty name="istransferOpportunityAuth">
+
+		<include file="Public/selectMember" />
+
+		<script>
+
+			$(function(){
+
+				$('#Memberlist .feeldesk-page a').click(function(){
+
+					pageclick(this,'/Opportunity/index');
+
+					return false;
+				})
+
+			})
+
+		</script>
+
+	</notempty>
+
+	<include file="Public/exportpage" />
+
+	<include file="Public/selectCustomer" />
+
+	<script>
+
+		var export_url = "/Opportunity/export";
+
+		var export_action = "{$Think.ACTION_NAME}";
+
+	</script>
+
+	<script type="text/javascript">
+
+		layui.use('upload', function()
+		{
+			var upload = layui.upload;
+
+			upload.render(
+			{
+				elem:'#uploadFile',
+
+				url: "{:U('Upload/importExcel',['source'=>'opportunity'])}",
+
+				field:'excel',
+
+				exts: 'xlsx|xls',
+
+				accept:'file',
+
+				before:function()
+				{
+					layer.msg("{:L('IMPORT_LOADING')}",{time:1000000,shift:0,offset:['100px']})
+				},
+				done: function(res)
+				{
+					if(res.error == 1)
+					{
+						layer.msg(res.msg,{icon:1,time:1000,shift:0,offset:['60px']},function()
+						{
+							window.location.href = res.url;
+						});
+					}
+					else
+					{
+						layer.msg(res.msg,{icon:2,time:2000,offset:['60px']});
+					}
+				}
+			})
+		});
+
+	</script>
+
+</block>

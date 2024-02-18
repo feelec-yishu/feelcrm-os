@@ -1,0 +1,236 @@
+<include file="Login/header" />
+
+<div id='web' class="login-wrapper user-wrapper hidden">
+
+    <div class="header"><!--<img src="INDEX_IMG/login-logo.png" alt="">--></div>
+
+    <div class="user-main">
+
+        <div class="user-crumb">{:C('LOGIN_TITLE')}</div>
+
+        <div class="user-form ">
+
+            <form action="" id="login-form">
+
+                <div class="user-form-item">
+
+                    <i class="iconfont icon-username"></i>
+
+                    <input type="text" name="data[username]" value="{$login.username}" placeholder="{:L('USERNAME_NOTE')}" id='username' autocomplete="off">
+
+                </div>
+
+                <div class="user-form-item">
+
+                    <i class="iconfont icon-password"></i>
+
+                    <input type="password" name="data[password]" value="{$login.password}" placeholder="{:L('ENTER_PASSWORD')}" id='password' autocomplete="off">
+
+                </div>
+
+                <div class="user-form-item"><div class="slide-verify" id="slide-verify"></div></div>
+
+                <div class="user-form-item layui-form">
+
+                    <input type="checkbox" name="data[remember]" lay-skin="primary" title="{:L('REMEMBER_PASSWORD')}" <eq name="login.remember" value="on">checked</eq>>
+
+                </div>
+
+                <div class="user-form-item"><a href="javascript:login()" class="submit-btn">{:L('LOGIN')}</a></div>
+
+                <div class="user-form-item clearfix">
+
+                    <div class="language relative">
+
+                        <a href="javascript:" class="fl"><volist name="language" id="vo"><eq name="lang" value="$vo['lang']">{$vo['text']}</eq></volist></a>
+
+                        <div class="lang-panel">
+
+                            <volist name="language" id="vo">
+
+                                <neq name="vo.lang" value="$lang"><a href="/u-login?l={$vo['lang']}">{$vo.text}</a></neq>
+
+                            </volist>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!--开源版本需保留版权信息，请谨慎删除；推荐购买商业授权，支持正版-->
+    <div class="beian flex-left">
+        <a class="flex-left mr5" target=" blank" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51019002003649">
+            <img class="mr5" src="__PUBLIC__/img/beian.png" alt=""/> <p>Copyright © 2014 Powered by </p>
+        </a>
+        <a target="_blank" href="https://www.feelcrm.cn/" class="mr10 green3">FeelCRM</a>
+    </div>
+
+    <style>
+
+        .beian {width: 100%;position: absolute;bottom: 20px;}
+
+        .flex-left {display: flex;align-items: center;justify-content: center;}
+
+    </style>
+
+</div>
+
+<div id='client' class="client-user-wrapper hidden">
+
+    <div class="user-main">
+
+        <div class="user-crumb">Hello!<br />欢迎来到菲莱克斯</div>
+
+        <div class="user-form">
+
+            <form action="" id="client-login-form">
+
+                <div class="user-form-item" id="user-account">
+
+                    <i class="iconfont icon-username"></i>
+
+                    <input type="text" name="data[username]" value="{$login.username}" placeholder="{:L('USERNAME_NOTE')}" id='client-username' autocomplete="off">
+
+                </div>
+
+                <div class="user-form-item">
+
+                    <i class="iconfont icon-password"></i>
+
+                    <input type="password" name="data[password]" value="{$login.password}" placeholder="{:L('ENTER_PASSWORD')}" id='client-password' autocomplete="off">
+
+                </div>
+
+                <div class="user-form-item layui-form clearfix">
+
+                    <input type="checkbox" lay-skin="primary" title="{:L('REMEMBER_PASSWORD')}"  id='client-remember'>
+
+                    <a href="/u-reset" class="fr" target="_blank">{:L('FORGOT')}?</a>
+
+                </div>
+
+                <input type="hidden" name="data[isClient]" value="client">
+
+                <div class="user-form-item"><a href="javascript:login()" class="submit-btn">{:L('LOGIN')}</a></div>
+
+                <div class="user-form-item go-btn-item"><a href="/u-reg" class="go-btn" target="_blank">{:L('SIGN_UP')}</a></div>
+
+            </form>
+
+        </div>
+
+        <div class="user-footer"><img src="INDEX_IMG/client-login-logo.png" alt=""></div>
+
+    </div>
+
+</div>
+
+<script>
+
+    $(function ()
+    {
+        if(window.isclient === 'true')
+        {
+            $('#client').removeClass('hidden');
+
+            $('.user-form-item').find('input').focus(function()
+            {
+                $(this).css('caret-color','#2c6ee5').prev('i').css('color','#2c6ee5');
+
+            }).blur(function ()
+            {
+                $(this).removeAttr('style').prev('i').removeAttr('style');
+            });
+
+            var accounts = JSON.parse(chatcloud.getAccountList(['name']));
+
+            if(accounts.length > 0)
+            {
+                $('#client-remember').prop('checked',true);
+
+                //默认显示记录
+                var defaultKey = 'Feelec-'+accounts[0]['name'];
+
+                var defaultInfo = JSON.parse(chatcloud.getAccountInfo(defaultKey,['name','pass']));
+
+                $('#client-username').val(defaultInfo[defaultKey]['name']);
+
+                $('#client-password').val(defaultInfo[defaultKey]['pass']);
+
+                //历史记录
+                var accountItem = "<ul class='user-form-accounts hidden'>";
+
+                $.each(accounts,function (k,v)
+                {
+                    accountItem += "<li class='account-item'><span>"+v.name+"</span><i class='iconfont icon-cha1 delete-account' title='{:L(\"DELETE_ACCOUNT\")}'></i></li>";
+                });
+
+                accountItem += "</ul>";
+
+                var userAccountObj = $('#user-account');
+
+                //焦点 - 显示历史记录列表
+                userAccountObj.append(accountItem).find('input').focus(function()
+                {
+                    $('.user-form-accounts').removeClass('hidden');
+
+                    //账号切换
+                    $(document).on('click','.account-item span',function()
+                    {
+                        var name = $(this).text();
+
+                        var key = 'Feelec-'+name;
+
+                        var info = JSON.parse(chatcloud.getAccountInfo(key,['name','pass']));
+
+                        $('#client-username').val(info[key]['name']);
+
+                        $('#client-password').val(info[key]['pass']);
+                    });
+
+                    //删除记录
+                    $(document).on('click','.delete-account',function(e)
+                    {
+                        e.stopPropagation();
+
+                        var delName = $(this).prev('span').text();
+
+                        var delKey = 'Feelec-'+delName;
+
+                        chatcloud.delAccount(delKey);
+
+                        $(this).parent('li').remove();
+
+                        if($('.user-form-accounts').find('li').length === 0)
+                        {
+                            $('.user-form-accounts').remove();
+                        }
+                    })
+
+                }).blur(function ()
+                {
+                    setTimeout(
+                        function ()
+                        {
+                            $('.user-form-accounts').addClass('hidden');
+                        },200
+                    )
+                });
+            }
+        }
+        else
+        {
+            $('#web').removeClass('hidden');
+
+            loadSlideVerify();
+        }
+    })
+
+</script>

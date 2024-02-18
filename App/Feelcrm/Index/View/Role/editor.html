@@ -1,0 +1,75 @@
+<extend name="Public:window"/>
+
+<block name="window-form">
+
+    <form action="" class="layui-form">
+
+        <div class="form-item">
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('ROLE_NAME')}</label>
+
+                <div class="layui-input-inline">
+
+                    <input type="text" name="role[role_name]" value="{$detail.role_name}" class="layui-input" placeholder="{:L('ENTER_ROLE_NAME')}" />
+
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">{:L('DEFAULT_ROLE')}</label>
+
+                <div class="layui-input-inline w-auto">
+
+                    <input type="radio" name="role[is_default]" value="10" title="{:L('YES')}" <eq name="detail.is_default" value="10">checked</eq>>
+
+                    <input type="radio" name="role[is_default]" value="20" title="{:L('NO')}" <eq name="detail.is_default" value="20">checked</eq>>
+
+                </div>
+
+                <i class="layui-icon layui-icon-about intro-icon" data-note="{:L('DEFAULT_ROLE_NOTE')}"></i>
+
+            </div>
+
+            <neq name="detail.is_supper" value="20">
+
+                <div class="layui-form-item">
+
+                    <label class="layui-form-label">{:L('IS_ENABLE')}</label>
+
+                    <div class="layui-input-inline">
+
+                        <input type="checkbox" name="role[closed]" lay-skin="switch" <eq name="detail.closed" value="0">checked</eq>>
+
+                    </div>
+
+                    <div class="clear"></div>
+
+                </div>
+
+            </neq>
+
+        </div>
+
+        <div class="form-submit">
+
+            <div class="layui-form-item">
+
+                <div class="layui-input-inline">
+
+                    <a href="javascript:" class="layui-btn layui-btn-normal" id="submitForm">{:L('SUBMIT')}</a>
+
+                    <a href="javascript:" class="layui-btn layui-btn-normal cancel-btn" id="cancel-form">{:L('CANCEL')}</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</block>

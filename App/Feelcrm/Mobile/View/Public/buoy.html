@@ -1,0 +1,48 @@
+<div class="buoy-shade hidden"></div>
+
+<div class="feeldesk-buoy">
+
+	<div class="operate-buoy hidden">
+
+		<if condition="$groupSystemAuth['crm_auth'] eq 1 && $isCreateCrmCustomerAuth gt 0">
+
+			<a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/CrmMobile/Customer/create" class="crm-buoy"><span>{:L('ADD_CUSTOMER')}</span><img src="MOBILE_PUBLIC_IMG/crm-buoy.png" alt="" width="100%"></a>
+
+		</if>
+
+		<if condition="$groupSystemAuth['ticket_auth'] eq 1 && $isCreateTicketAuth gt 0">
+
+			<a href="{:C('HTTP_PROTOCOL')}://{:C('HOST_DOMAIN')}/Mobile/Ticket/template" class="ticket-buoy"><span>{:L('CREATE_TICKET')}</span><img src="MOBILE_PUBLIC_IMG/ticket-buoy.png" alt="" width="100%"></a>
+
+		</if>
+
+	</div>
+
+	<a href="javascript:" class="create-buoy"><img src="MOBILE_PUBLIC_IMG/feeldesk-buoy.png" alt="" width="100%" class="transfer0"></a>
+
+</div>
+
+<script type="text/javascript">
+
+	$(function()
+	{
+		$('.create-buoy').unbind('click').on('click',function()
+		{
+			var createBuoy = $(this).find('img');
+
+			createBuoy.toggleClass('transfer45').toggleClass('transfer0');
+
+			$('.operate-buoy').fadeToggle('300');
+
+			$('.buoy-shade').fadeToggle('fast').unbind('click').on('click',function()
+			{
+				$('.operate-buoy').fadeOut('fast');
+
+				$(this).fadeOut('fast');
+
+				createBuoy.toggleClass('transfer45').toggleClass('transfer0');
+			});
+		})
+	})
+
+</script>

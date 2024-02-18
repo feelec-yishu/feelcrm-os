@@ -1,0 +1,481 @@
+﻿<extend name="Public:common"/>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0 feelcrm-form">
+
+		<form id="web_setting" action="{:U('index')}" method="post" class="layui-form">
+
+        <div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('BASIC_PARAMETER_SETTING')}</li>
+
+				<div class="form-submit">
+
+					<a href="javascript:" class="layui-btn layui-btn-normal submitForm">{:l('SUBMIT')}</a>
+
+				</div>
+
+            </ul>
+
+            <div class="layui-tab-content form-content">
+
+                <div class="layui-tab-item layui-show">
+
+                        <div class="form-item">
+
+                            <!--<div class="layui-form-item">
+
+                                <label class="layui-form-label left">订单编码前缀</label>
+
+                                <div class="layui-input-inline mr0 wauto">
+
+                                    <input type="text" name="crmsite[orderCode]" value="{$crmsite.orderCode|default='O-'}"  placeholder="" class="layui-input w100 mr20">
+
+									<input type="checkbox" name="rOrderCode" lay-skin="primary" value="1" class="layui-input"  title="{:L('REPLACE_ORIGINAL_PREFIX')}"/>
+
+                                </div>
+
+								<i class="layui-icon layui-icon-about intro-icon fl blue8" data-note="可修改商机编号的前缀"></i>
+
+                            </div>-->
+
+							<div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('CONTRACT_CODE_PREFIX')}</label>
+
+                                <div class="layui-input-inline mr0 wauto">
+
+                                    <input type="text" name="crmsite[contractCode]" value="{$crmsite.contractCode|default='H-'}"  placeholder="" class="layui-input w100 mr20">
+
+									<input type="checkbox" name="rContractCode" lay-skin="primary" value="1" class="layui-input"  title="{:L('REPLACE_ORIGINAL_PREFIX')}"/>
+
+                                </div>
+
+								<i class="layui-icon layui-icon-about intro-icon fl blue8" data-note="{:L('CONTRACT_PREFIX_REMARK')}"></i>
+
+                            </div>
+
+							<div class="layui-form-item">
+
+								<label class="layui-form-label left">{:L('CLUE_CODE_PREFIX')}</label>
+
+								<div class="layui-input-inline mr0 wauto">
+
+									<input type="text" name="crmsite[clueCode]" value="{$crmsite.clueCode|default='X-'}"  placeholder="" class="layui-input w100 mr20">
+
+									<input type="checkbox" name="rClueCode" lay-skin="primary" value="1" class="layui-input"  title="{:L('REPLACE_ORIGINAL_PREFIX')}"/>
+
+								</div>
+
+								<i class="layui-icon layui-icon-about intro-icon fl blue8" data-note="{:L('CLUE_PREFIX_REMARK')}"></i>
+
+							</div>
+
+							<div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('CUSTOMER_CODE_PREFIX')}</label>
+
+                                <div class="layui-input-inline mr0 wauto">
+
+                                    <input type="text" name="crmsite[customerCode]" value="{$crmsite.customerCode|default='C-'}"  placeholder="" class="layui-input w100 mr20">
+
+									<input type="checkbox" name="rCustomerCode" lay-skin="primary" value="1" class="layui-input"  title="{:L('REPLACE_ORIGINAL_PREFIX')}"/>
+
+                                </div>
+
+								<i class="layui-icon layui-icon-about intro-icon fl blue8" data-note="{:L('CUSTOMER_PREFIX_REMARK')}"></i>
+
+                            </div>
+
+							<div class="layui-form-item">
+
+								<label class="layui-form-label left">{:L('OPPORTUNITY_CODE_PREFIX')}</label>
+
+								<div class="layui-input-inline mr0 wauto">
+
+									<input type="text" name="crmsite[opportunityCode]" value="{$crmsite.opportunityCode|default='S-'}"  placeholder="" class="layui-input w100 mr20">
+
+									<input type="checkbox" name="rOpportunityCode" lay-skin="primary" value="1" class="layui-input"  title="{:L('REPLACE_ORIGINAL_PREFIX')}"/>
+
+								</div>
+
+								<i class="layui-icon layui-icon-about intro-icon fl blue8" data-note="{:L('OPPORTUNITY_PREFIX_REMARK')}"></i>
+
+							</div>
+
+							<div class="layui-form-item">
+
+                               <!-- <label class="layui-form-label left">{:L('WHETHER_OPEN_DISTRIBUTOR')}</label>-->
+                                <label class="layui-form-label left">{:L('ENABLE_PARTNER')}</label>
+
+                                <div class="layui-input-inline">
+
+									<input type="radio" name="crmsite[customerReseller]" value="1" title="{:L('YES')}" <eq name='crmsite.customerReseller' value='1'>checked</eq> >
+
+									<input type="radio" name="crmsite[customerReseller]" value="-1" title="{:L('NO')}" <empty name="crmsite.customerReseller">checked</empty> <eq name='crmsite.customerReseller' value='-1'>checked</eq> >
+
+                                </div>
+
+                            </div>
+
+							<div class="layui-form-item hidden">
+
+								<label class="layui-form-label left">{:L('PROPORTION_COMPUTING_INDUSTRY')}</label>
+
+								<div class="layui-input-inline mar20" style="width:250px;" id="shipment_trade"></div>
+
+								<i class="layui-icon layui-icon-about intro-icon fl blue8" data-note="{:L('PROPORTION_COMPUTING_REMARK')}"></i>
+
+								<script type="text/javascript">
+
+									var follow_customer = {$trades};
+
+									var shipment_trade = '{$crmsite.shipment_trade}';
+
+									layui.config({
+										base : '__PUBLIC__/js/layui/extends/'
+									}).extend({
+										selectM: 'selectM'
+									}).use(['selectM'],function()
+									{
+										layui.selectM(
+										{
+											elem: '#shipment_trade',
+											data: follow_customer,
+											selected: shipment_trade.split(','),
+											width:'60%',
+											max:100
+										});
+									})
+
+								</script>
+
+							</div>
+
+							<div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('WORKING_HOURS_CONFIGURATION')}</label>
+
+                                <div class="layui-input-inline">
+
+									<span class="">
+
+										<input type="text" name="crmsite[workStartTime]" value="{$crmsite.workStartTime|default='09:00:00'}" class="layui-input w100" id="workStartTime" placeholder="HH:mm:ss"> -- <input type="text" name="crmsite[workEndTime]" value="{$crmsite.workEndTime|default='18:00:00'}" class="layui-input w100" id="workEndTime" placeholder="HH:mm:ss">
+
+									</span>
+
+                                </div>
+
+                            </div>
+
+							<script>
+
+								layui.use('laydate', function()
+								{
+									var laydate = layui.laydate;
+
+									laydate.render({
+										elem: '#workStartTime',
+										type: 'time'
+									});
+
+									laydate.render({
+										elem: '#workEndTime',
+										type: 'time'
+									});
+								})
+
+							</script>
+
+							<div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('CUSTOMER_NOT_FOLLOW_UP_NOTICE')}</label>
+
+                                <div class="layui-input-inline">
+
+									<span class=""><input type="number" name="crmsite[noFollowup]" value="{$crmsite.noFollowup|default='3'}"  placeholder="" class="layui-input w100"/> {:L('DAYS_HAVE_NOT_FOLLOWED_UP')}</span>
+
+                                </div>
+
+                            </div>
+
+							<div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('CUSTOMER_NON_REVISIT_NOTICE')}</label>
+
+                                <div class="layui-input-inline">
+
+									<span class=""><input type="number" name="crmsite[noReturnvisit]" value="{$crmsite.noReturnvisit|default='30'}"  placeholder="" class="layui-input w100"/> {:L('DAYS_HAVE_NOT_REVISIT')}</span>
+
+                                </div>
+
+                            </div>
+
+							<div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('CONTRACT_EXPIRATION_REMINDER')}</label>
+
+                                <div class="layui-input-inline">
+
+									<span class="">{:L('ADVANCE')} <input type="number" name="crmsite[contractExpire]" value="{$crmsite.contractExpire|default='3'}"  placeholder="" class="layui-input w100"/> {:L('DAYS_REMINDER')}</span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('CUSTOMER_PAYBACK_CYCLE')}</label>
+
+                                <div class="layui-input-inline">
+
+                                    <input type="radio" name="crmsite[custRecover]" lay-filter="custRecover" value="-1" title="{:L('DISABLE')}" checked <eq name='crmsite.custRecover' value='-1'>checked</eq>>
+
+									<input type="radio" name="crmsite[custRecover]" lay-filter="custRecover" value="1" title="{:L('ENABLE')}" <eq name='crmsite.custRecover' value='1'>checked</eq>>
+
+									<span class="RecoverCondition <neq name='crmsite.custRecover' value='1'>hidden</neq>">
+										<input type="number" name="crmsite[noFollowupDay]" value="{$crmsite.noFollowupDay|default='7'}"  placeholder="" class="layui-input w50">
+										{:L('DAYS_NOT_FOLLOWED_UP_OR')}
+										<input type="number" name="crmsite[noSignOrderDay]" value="{$crmsite.noSignOrderDay|default='60'}"  placeholder="" class="layui-input w50">
+										{:L('DAYS_NOT_SIGNED')}
+									</span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('CUSTOMER_LIMIT')}</label>
+
+                                <div class="layui-input-inline">
+
+                                    <input type="radio" name="crmsite[custLimit]" value="-1" title="{:L('DISABLE')}" checked <eq name='crmsite.custLimit' value='-1'>checked</eq>>
+
+									<input type="radio" name="crmsite[custLimit]" value="1" title="{:L('ENABLE')}" <eq name='crmsite.custLimit' value='1'>checked</eq>>
+
+                                </div>
+
+                            </div>
+
+                            <div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('CUSTOMER_COLLECTION_CYCLE')}</label>
+
+                                <div class="layui-input-inline">
+
+									<div class="fl w100">
+
+										<select name="crmsite[custDrawT]">
+
+											<option value="day" <eq name="crmsite.custDrawT" value="day">selected</eq>>{:L('THAT_DAY')}</option>
+											<option value="week" <eq name="crmsite.custDrawT" value="week">selected</eq>>{:L('WITHIN_A_WEEK')}</option>
+											<option value="month" <eq name="crmsite.custDrawT" value="month">selected</eq>>{:L('WITHIN_ONE_MONTH')}</option>
+
+										</select>
+
+								   </div>
+								   &nbsp;{:L('RESTRICTED_COLLECTION')} <input type="number" name="crmsite[custDrawNum]" value="{$crmsite.custDrawNum}"  placeholder="" class="layui-input w100">
+
+                                </div>
+
+                            </div>
+
+							<div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('AREA_SCOPE')}</label>
+
+                                <div class="layui-input-inline">
+
+									<input type="radio" name="crmsite[regionType]" value="world" title="{:L('GLOBAL')}" checked <eq name='crmsite.regionType' value='world'>checked</eq> lay-filter="regionType">
+
+									<input type="radio" name="crmsite[regionType]" value="china" title="{:L('CHINA')}" <eq name='crmsite.regionType' value='china'>checked</eq> lay-filter="regionType">
+
+                                </div>
+
+                            </div>
+
+                            <div class="layui-form-item">
+
+                                <label class="layui-form-label left">{:L('DEFAULT_REGION')}</label>
+
+								<div class="layui-input-inline w150 layui-form region-item <neq name='crmsite.regionType' value='world'>hidden</neq>" lay-filter="country">
+
+									<select class="regionCountry" name="crmsite[defaultCountry]" lay-filter="select-country" id="country" lay-ignore>
+
+										<option value="">{:L('PLEASE_SELECT')}</option>
+
+										<volist name="country" id="vc">
+
+											<option value="{$vc.code}" <neq name='crmsite.regionType' value='world'><eq name='vc.code' value='1'>selected</eq><else/><eq name='crmsite.defaultCountry' value='$vc.code'>selected</eq></neq>>{$vc.name}</option>
+
+										</volist>
+
+									</select>
+
+								</div>
+
+                                <div class="layui-input-inline w150 <empty name='crmsite.defaultProv'>hidden</empty> layui-form region-item" lay-filter="province">
+
+									<select class="regionProv" name="crmsite[defaultProv]" lay-filter="select-province" id="province" lay-ignore>
+
+										<option value="">{:L('PLEASE_SELECT')}</option>
+
+										<notempty name='crmsite.defaultProv'>
+
+											<volist name="province" id="vc">
+
+												<option c-value="{$vc.country_code}" value="{$vc.code}" <eq name='crmsite.defaultProv' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+											</volist>
+
+										</notempty>
+
+									</select>
+
+								</div>
+
+								<div class="layui-input-inline w150 <empty name='crmsite.defaultCity'>hidden</empty> layui-form region-item" lay-filter="city">
+
+									<select class="regionCity" name="crmsite[defaultCity]"  lay-filter="select-city" id="city" lay-ignore>
+
+										<option value="">{:L('PLEASE_SELECT')}</option>
+
+										<notempty name='crmsite.defaultCity'>
+
+											<volist name="city" id="vc">
+
+												<option c-value="{$vc.country_code}" p-value="{$vc.province_code}" value="{$vc.code}" <eq name='crmsite.defaultCity' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+											</volist>
+
+										</notempty>
+
+									</select>
+
+								</div>
+
+								<div class="layui-input-inline w150 <empty name='crmsite.defaultArea'>hidden</empty> layui-form region-item" lay-filter="area">
+
+									<select class="regionArea" name="crmsite[defaultArea]"  lay-filter="select-area" id="area" lay-ignore>
+
+										<option value="">{:L('PLEASE_SELECT')}</option>
+
+										<notempty name='crmsite.defaultArea'>
+
+											<volist name="area" id="vc">
+
+												<option value="{$vc.code}" <eq name='crmsite.defaultArea' value='$vc.code'>selected</eq>>{$vc.name}</option>
+
+											</volist>
+
+										</notempty>
+
+									</select>
+
+								</div>
+
+								<i class="layui-icon layui-icon-about intro-icon fl blue8" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+                            </div>
+
+							<script type="text/javascript">
+
+								layui.use('form',function()
+								{
+									var form = layui.form;
+
+									form.on('radio(regionType)',function(data)
+									{
+										var value = data.value;
+
+										if(value == 'world')
+										{
+											$('#country').parents('.region-item').slideDown('fast');
+
+											$('#province').html('<option value="">{:L(\'SELECT_CITY\')}</option>').parents('.region-item').slideUp('fast');
+
+											$('#city').html('<option value="">{:L(\'SELECT_CITY\')}</option>').parents('.region-item').slideUp('fast');
+
+											$('#area').html('<option value="">{:L(\'SELECT_AREA\')}</option>').parents('.region-item').slideUp('fast');
+
+											$("#country").select2();
+
+											selectProvince('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+										}
+										else
+										{
+											$("#country option[value='1']").attr("selected", true);
+
+											$('#country').parents('.region-item').slideUp('fast');
+
+											selectProvince('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+										}
+									})
+
+								})
+
+								$("#country").select2();
+
+								$("#province").select2();
+
+								$("#city").select2();
+
+								$("#area").select2();
+
+								if($("#country<php>echo $reg;</php>").val() && !$("#province<php>echo $reg;</php>").val())
+								{
+									selectProvince('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+								}
+
+								if($("#province<php>echo $reg;</php>").val() && !$("#city<php>echo $reg;</php>").val())
+								{
+									selectCity('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+								}
+
+								if($("#city<php>echo $reg;</php>").val() && !$("#area<php>echo $reg;</php>").val())
+								{
+									selectArea('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+								}
+
+								$("#country<php>echo $reg;</php>").change(function()
+								{
+									selectProvince('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+								})
+
+								$("#province<php>echo $reg;</php>").change(function()
+								{
+									selectCity('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+								})
+
+								$("#city<php>echo $reg;</php>").change(function()
+								{
+									selectArea('<php>echo $reg;</php>',"{:U('AjaxRequest/getRegion')}");
+								})
+
+							</script>
+
+                        </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        </form>
+
+    </div>
+
+	<script>
+
+	</script>
+
+    <script type="text/javascript" src="__PUBLIC__/js/submitform.js"></script>
+
+    <include file="Public/footer" />
+
+</block>

@@ -1,0 +1,121 @@
+﻿<extend name="Public:common"/>
+
+<block name="crumb1">{:L('SYSTEM')}</block>
+
+<block name="content">
+
+    <div class="list-main pd0">
+
+        <div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('REASON_FOR_GIVING_UP')}</li>
+
+            </ul>
+
+        </div>
+
+		<div class="list-header clearfix">
+
+            <div class="header-left">
+
+                {:FEELCRM('Abandon/create','',L('ADD_REASON_ABANDONMENT'),'item-deleteBtn','add','iconfont icon-xinzeng')}
+
+            </div>
+
+        </div>
+
+        <div class="item-list feelcrm-list">
+
+            <table class="layui-table" lay-skin="line">
+
+                <thead>
+
+                    <tr>
+
+                        <th class="common_con_th">{:L('REASON')}</th>
+						<th>{:L('STATUS')}</th>
+						<th>{:L('CREATE_TIME')}</th>
+						<th>{:L('OPERATION')}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <empty name="abandon">
+
+                        <tr class="nodata center">
+
+                            <td colspan="4">
+
+                                <p><i class="iconfont icon-nothing fts20"></i></p>
+
+                                <p>{:L('NO_DATA')}</p>
+
+                            </td>
+
+                        </tr>
+
+                    <else />
+
+                        <volist name="abandon" id="vo">
+
+                            <tr>
+
+                               <td class="common_con_td" title="{$vo.abandon_name}">{$vo.abandon_name}</td>
+
+                               <td>
+
+                                    <eq name="vo.closed" value="1">
+
+                                        <span class="open-status disable">{:L('DISABLE')}</span>
+
+                                    <else />
+
+                                        <span class="open-status enable">{:L('ENABLE')}</span>
+
+                                    </eq>
+
+                                </td>
+
+                                <td>{$vo.createtime|date="Y-m-d H:i",###}</td>
+
+                                <td class="listOperate">
+
+                                    <i class="iconfont icon-dian"></i>
+
+                                    <div class="operate hidden">
+
+                                        {:FEELCRM('Abandon/edit',['id'=>encrypt($vo['abandon_id'],'ABANDON')],L('EDITOR'),'','edt')}
+
+										{:FEELCRM('Abandon/delete',['id'=>encrypt($vo['abandon_id'],'ABANDON')],L('DELETE'),'','async')}
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </volist>
+
+                    </empty>
+
+                </tbody>
+
+            </table>
+
+            <div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+        </div>
+
+
+    </div>
+
+    <script type="text/javascript" src="__PUBLIC__/js/submitform.js"></script>
+
+    <include file="Public/footer" />
+
+</block>

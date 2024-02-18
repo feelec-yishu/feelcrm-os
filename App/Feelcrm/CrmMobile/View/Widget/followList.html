@@ -1,0 +1,132 @@
+<empty name="follow">
+
+	<div class="follow-item center">
+
+		{:L('NO_DATA')}
+
+	</div>
+
+	<else/>
+
+	<volist name="follow" id="vo">
+
+		<div class="follow-item fts0">
+
+			<div class="follow-info clearfix">
+
+				<div class="follow-info-left"><img src="{$vo.member_face|default='/Attachs/face/face.png'}" alt=""></div>
+
+				<div class="follow-info-right">
+
+					<div class="member-name">{$vo.member_name} <span class="follow-type">{$vo.cmncate_name}</span> <span class="follow-date">{$vo.createtime|getDates}</span></div>
+
+					<div class="follow-content ticket-reply-content followTextareaImg{$vo['follow_id']}" id="followTextareaImages{$vo['follow_id']}" data-value="{$vo.follow_id}">
+
+						{$vo.content|htmlspecialchars_decode} <span class="follow-time"><notempty name="vo.contacter_detail">({:L('CONTACT')}：{$vo.contacter_detail.name})</notempty><notempty name="vo.nextcontacttime">({:L('NEXT_CONTACT_TIME')}：{$vo.nextcontacttime|getDates})</notempty></span>
+
+					</div>
+
+					<script type="text/javascript">
+
+						$(function ()
+						{
+							var followTextareaImg{$vo['follow_id']} = $(".followTextareaImg{$vo['follow_id']}");
+
+							followTextareaImg{$vo['follow_id']}.find('img').each(function(k,v)
+							{
+								$(this).attr('onclick',"openPhotoSwipe("+k+",'followTextareaImages{$vo['follow_id']}')");
+							})
+						})
+
+					</script>
+
+					<notempty name="vo.createFiles">
+
+						<div class="follow-content">{:L('ATTACHMENT')}：</div>
+
+					</notempty>
+
+					<volist name="vo.createFiles" id="v">
+
+						<div class="follow-content gray3">
+
+							<span>{$v.file_name|getFileName}.{$v.file_type}</span><span class="gray4"> ({$v.file_size|getFileSize})</span>
+
+							<a href="{$v.file_link}" title="{$v.file_name}" download="{$v.file_name}" class="iconfont icon-download blue0787f6"></a>
+
+						</div>
+
+					</volist>
+
+					<notempty name="vo.followComment">
+
+						<div class="comment-main">
+
+							<php>$j = 1</php>
+
+							<volist name="vo.followComment" id="vc">
+
+								<if condition="$vc['follow_id'] eq $vo['follow_id']">
+
+									<div class="comment-item <gt name='j' value='2'>hidden</gt>">
+
+										<span class="comment-name">{$members[$vc['member_id']]['name']}:</span>
+
+										<span class="comment-content">{$vc.content|getHtml}</span>
+
+										<notempty name="isDeleteCommentAuth"><a href="javascript:" data-value="{:encrypt($vc['comment_id'],'COMMENT')}" class="iconfont icon-delete comment-delete fr"></a></notempty>
+
+									</div>
+
+									<php>$j++;</php>
+
+								</if>
+
+							</volist>
+
+							<gt name="vo.countComment" value="2">
+
+								<div class="comment-total">{:L('REPLY_COUNT_NUMBER',['number'=>$vo['countComment']])}></div>
+
+							</gt>
+
+
+						</div>
+
+					</notempty>
+
+					<div class="follow-info-footer relative">
+
+						<div class="common-btn">
+
+							<notempty name="isCommentFollowAuth">
+
+								<a href="javascript:" class="iconfont icon-comment follow-comment-btn" data-value="{$vo.follow_id}"></a>
+
+							</notempty>
+
+							<notempty name="isEditFollowAuth">
+
+								<a href="{:U('Customer/edit_follow',['id'=>encrypt($vo['follow_id'],'FOLLOW'),'detailtype'=>encrypt('follow',strtoupper($Think.CONTROLLER_NAME))])}" class="iconfont icon-xie" ></a>
+
+							</notempty>
+
+							<notempty name="isDeleteFollowAuth">
+
+								<a href="javascript:" class="iconfont icon-delete follow-delete" data-value="{:encrypt($vo['follow_id'],'FOLLOW')}"></a>
+
+							</notempty>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</volist>
+
+</empty>

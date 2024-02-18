@@ -1,0 +1,346 @@
+<extend name="Public:base"/>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0">
+
+		<form action="{:U('customer/edit',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'type'=>encrypt($type,'CUSTOMER'),'detailtype'=>encrypt($detailtype,'CUSTOMER')])}" class="layui-form" method="post" enctype="multipart/form-data">
+
+        <div class="form-nav feelcrm-nav">
+
+            <ul>
+
+                <li><a href="javascript:" class="form-tab active">{:L('MODIFY_CUSTOMER')}</a></li>
+
+				<notempty name="detailtype"><a href="javascript:history.go(-1);" class="feelcrm-cancleBtn fr mt5 mr30">{:L('CANCEL')}</a></notempty>
+
+				<a href="javascript:void(0)" class="layui-btn layui-btn-normal feelcrm-commbtn fr mt5 mr10" id="submitFormCrmEdit">{:L('SUBMIT')}</a>
+
+            </ul>
+
+        </div>
+
+        <div class="form-content pt50">
+		<php>
+			$t = 0;
+			$ft = 0;
+			$reg = 0;
+		</php>
+
+
+				 <div class="form-item">
+
+					<div class="layui-form-item">
+
+						<label class="layui-form-label">
+
+							<span class="red">*</span>
+
+						   {:L('TRANSACTION_STATUS')}
+
+						</label>
+
+						<div class="layui-input-inline">
+
+							<input type="radio" name="customer[is_trade]" <eq name="customer[is_trade]" value="0" >checked</eq> value="0" title="{:L('UNSOLD')}">
+
+							<input type="radio" name="customer[is_trade]" <eq name="customer[is_trade]" value="1" >checked</eq> value="1" title="{:L('DEAL_DONE')}">
+
+						</div>
+
+					</div>
+
+					<if condition="$crmsite['customerReseller'] == 1">
+
+						<div class="layui-form-item">
+
+							<label class="layui-form-label">
+
+								<span class="red">*</span>
+
+							   {:L('CUSTOMER_TYPE')}
+
+							</label>
+
+							<div class="layui-input-inline">
+
+								<input type="radio" name="customer[customer_type]" value="customer" <if condition="!$customer['customer_type'] || $customer['customer_type'] =='customer'">checked</if> title="{:L('ORDINARY_CUSTOMER')}">
+
+								<input type="radio" name="customer[customer_type]" value="agent" <eq name="customer[customer_type]" value="agent" >checked</eq> title="{:L('DEALER')}">
+
+							</div>
+
+						</div>
+
+					</if>
+
+                       <volist name="customerform" id="vo">
+
+                       <!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+                       <if condition="!$vo['role_id'] || in_array($index['role_id'],explode(',',$vo['role_id']))">
+
+                       <!-- 字段未设置编辑权限或当前用户在编辑权限内 -->
+                       <if condition="!$vo['member_id'] || in_array($index['member_id'],explode(',',$vo['member_id']))">
+
+                        <div class="layui-form-item">
+
+                            <label class="layui-form-label">
+
+                                <eq name="vo.is_required" value="0"><span class="red">*</span> </eq>
+
+                                {$vo.form_description}
+
+                            </label>
+
+							<eq name="vo.form_type" value="region">
+
+                                <php>
+									$reg++;
+								</php>
+
+								{:W('Region/getRegionEdit',['customer_form',$vo['form_name'],$reg,$customer])}
+
+							<else/>
+
+                            <div class="layui-input-inline">
+
+                                <eq name="vo.form_type" value="text">
+
+                                    <!-- 单行文本框 -->
+                                    <input type="text" name="customer_form[{$vo.form_name}]" value="{$customer[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="phone">
+
+                                    <!-- {:L('CELL_PHONE')} -->
+                                    <input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="customer_form[{$vo.form_name}]" value="{$customer[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="email">
+
+                                    <!-- {:L('MAILBOX')} -->
+                                    <input type="text" name="customer_form[{$vo.form_name}]" value="{$customer[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								 <eq name="vo.form_type" value="number">
+
+                                    <!-- {:L('DIGITAL')} -->
+                                    <input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="customer_form[{$vo.form_name}]" value="{$customer[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+								<eq name="vo.form_type" value="decimal">
+
+                                    <!-- 小数 -->
+                                    <input type="text" name="customer_form[{$vo.form_name}]" value="{$customer[$vo['form_name']]}" placeholder="" class="layui-input">
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="select">
+
+                                    <!-- 下拉菜单 -->
+                                    <select name="customer_form[{$vo.form_name}]">
+
+                                        <option value="">{$vo.form_description}</option>
+
+                                        <foreach name="vo.option" item="op">
+
+                                            <option value="{$op}" <eq name="customer[$vo[form_name]]" value="$op" >selected</eq>>{$op}</option>
+
+                                        </foreach>
+
+                                    </select>
+
+                                </eq>
+								
+								<eq name="vo.form_type" value="select_text">
+
+                                    <php>
+                                        $st++;
+                                    </php>
+                                    <!-- 下拉填写 -->
+                                    {:W('Update/selectTextForm',['customer',$vo,$st,$customer])}
+
+                                </eq>
+
+                                <!-- 时间控件 -->
+                                <eq name="vo.form_type" value="date">
+
+									<php>
+										$ft++;
+									</php>
+
+                                    <input type='text' name="customer_form[{$vo.form_name}]" value="{$customer[$vo['form_name']]}" class="layui-input cursor layui-form-time" id="form_time<php>echo $ft;</php>" placeholder="{:L('SELECT_TIME')}" >
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="checkbox">
+
+                                    <!-- 复选框 -->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="checkbox" name="customer_form[{$vo.form_name}][]" <in name="op" value="$customer[$vo[form_name]]">checked</in> lay-skin="primary" title="{$op}" value="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <eq name="vo.form_type" value="radio">
+
+                                    <!-- 单选框-->
+                                    <volist name="vo.option" id="op">
+
+                                        <input type="radio" name="customer_form[{$vo.form_name}]" <eq name="customer[$vo[form_name]]" value="$op" >checked</eq> value="{$op}" title="{$op}">
+
+                                    </volist>
+
+                                </eq>
+
+                                <!-- 文本域 -->
+                                <eq name="vo.form_type" value="textarea">
+
+									<php>
+										$t++
+									</php>
+
+                                    <textarea class="layui-textarea layui-hide crm-textarea" name="customer_form[{$vo.form_name}]" id="crmEditor<php>echo $t;</php>">{$customer[$vo['form_name']]}</textarea>
+
+                                </eq>
+
+                            </div>
+
+							</eq>
+
+                            <notempty name="vo.form_explain">
+
+                                <i class="layui-icon layui-icon-about intro-icon" data-note="{$vo.form_explain}"></i>
+
+                            </notempty>
+
+                        </div>
+
+                       <else/>
+
+                           <eq name="vo.form_type" value="region">
+
+                               <input type="hidden" name="customer_form[{$vo.form_name}_defaultCountry]" value="{$customer[$vo['form_name']]['defaultCountry']}" >
+                               <input type="hidden" name="customer_form[{$vo.form_name}_defaultProv]" value="{$customer[$vo['form_name']]['defaultProv']}" >
+                               <input type="hidden" name="customer_form[{$vo.form_name}_defaultCity]" value="{$customer[$vo['form_name']]['defaultCity']}" >
+                               <input type="hidden" name="customer_form[{$vo.form_name}_defaultArea]" value="{$customer[$vo['form_name']]['defaultArea']}" >
+
+                               <else/>
+
+                               <input type="hidden" name="customer_form[{$vo.form_name}]" value="{$customer[$vo['form_name']]}" >
+
+                           </eq>
+
+                       </if>
+
+                       <else/>
+
+                           <eq name="vo.form_type" value="region">
+
+                               <input type="hidden" name="customer_form[{$vo.form_name}_defaultCountry]" value="{$customer[$vo['form_name']]['defaultCountry']}" >
+                               <input type="hidden" name="customer_form[{$vo.form_name}_defaultProv]" value="{$customer[$vo['form_name']]['defaultProv']}" >
+                               <input type="hidden" name="customer_form[{$vo.form_name}_defaultCity]" value="{$customer[$vo['form_name']]['defaultCity']}" >
+                               <input type="hidden" name="customer_form[{$vo.form_name}_defaultArea]" value="{$customer[$vo['form_name']]['defaultArea']}" >
+
+                           <else/>
+
+                               <input type="hidden" name="customer_form[{$vo.form_name}]" value="{$customer[$vo['form_name']]}" >
+
+                           </eq>
+
+                       </if>
+                    </volist>
+
+				</div>
+
+        </div>
+
+		</form>
+
+    </div>
+
+
+
+    <include file="Public:language" />
+
+    <script type="text/javascript">
+
+        $("#choose").hide();
+
+        layui.use('form',function()
+        {
+            var form = layui.form;
+
+            form.on('select(form_type)', function(data)
+            {
+                var type = data.value;
+
+                if(type == 'radio' || type == 'checkbox' || type == 'select')
+                {
+                    $("#choose").slideDown(300);
+                }
+                else
+                {
+                    $("#choose").slideUp(300);
+                }
+            });
+        })
+
+		layui.use(['form','layedit'],function()
+		{
+			var form = layui.form;
+
+			var layedit = layui.layedit;
+
+			var crmEditor = [];
+
+			for(var i = 1;i <= $(".crm-textarea").length;i++)
+			{
+				crmEditor[i] = layedit.build('crmEditor'+i,{uploadImage: {url:"/"+moduleName+"/Upload/uploadImageFile?type=editor", type: 'post'},hideTool:['face'],height:200}); //建立编辑器
+			}
+
+			$('#submitFormCrmEdit').on('click',function(e){
+
+				e.stopPropagation();
+
+				var loading = layer.load(2,{offset:'15vw'});
+
+				for(var i = 1;i <= $(".crm-textarea").length;i++)
+				{
+					layedit.sync(crmEditor[i]);
+				}
+
+				var formObj = $(this).parents('form');
+
+				var action = formObj.attr('action');
+
+				$.post(action,formObj.serialize(),function(data)
+				{
+					if(data.status == 0 || data.status == 1)
+					{
+                        feelDeskAlert(data.msg);
+					}
+					else
+					{
+						window.parent.$("tr[data-no='{$customer.customer_prefix}{$customer.customer_no}']").html(data.html);
+
+						window.parent.layui.form.render();
+
+                        feelDeskAlert(data.msg,data);
+					}
+
+                    layer.close(loading);
+
+				},'JSON');
+			})
+		})
+
+    </script>
+
+</block>

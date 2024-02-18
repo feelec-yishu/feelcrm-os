@@ -1,0 +1,203 @@
+<!-- 头部开始 -->
+
+	<include file="Public/login_header" />
+
+<!-- 头部结束 -->
+
+	<!-- 登录界面开始 -->
+
+    <div class="wrapper">
+
+        <div class="main clearfix">
+
+            <div class="login clearfix">
+
+                <div class="login-left">
+
+                    <img src="/Public/index/img/Welcome.png" alt="" />
+
+                    <div class="content">
+
+                        {:C('WEB_NAME')}工单管理系统，是专业的企业级内部事务流转和外部客户服务支持平台；
+                        通过部署{:C('WEB_NAME')}，企业可以轻松实现客户服务、售后支持等工作跨部门的流转；
+                        {:C('WEB_NAME')}支持邮件转工单、帮助页面自助提交工单以及与在线客服系统、CRM管理系统等对接的API提交工单，真正实现了多渠道接入的开放平台。
+
+                    </div>
+
+                    <div class="banner">
+
+                        <div class="swiper-container">
+
+                            <div class="swiper-wrapper">
+
+                                <div class="swiper-slide"><img src="/Public/index/img/login-banner1.png" alt=""></div>
+
+                                <div class="swiper-slide"><img src="/Public/index/img/login-banner2.png" alt=""></div>
+
+                            </div>
+
+                            <!-- 如果需要分页器 -->
+                            <div class="swiper-pagination"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="login-right">
+
+                    <div class="login-box">
+
+                        <div class="logo"><img src="/Public/index/img/felldesk.png" alt=""></div>
+
+                        <div class="login-form">
+
+                            <form action="" method="post">
+
+                                <div class="login-input username">
+
+                                    <i class="iconfont icon-username"></i>
+
+                                    <input type="text" name="username" placeholder="{:L('USERNAME_NOTE')}"/>
+
+                                </div>
+
+                                <div class="login-input password">
+
+                                    <i class="iconfont icon-password"></i>
+
+                                    <input type="password" name="password" placeholder="{:L('PASSWORD_NOTE')}"/>
+
+                                </div>
+
+                                <div class="verify-input">
+
+                                    <div class="verify">
+
+                                        <i class="iconfont icon-verify"></i>
+
+                                        <input type="text" name="code" placeholder="{:L('IMAGE_CODE')}"/>
+
+                                    </div>
+
+                                    <img src="{:U('Public/imageVerify')}" alt="" align="absmiddle" onclick="getVerifyImage()" id="verifyImg"/>
+
+                                </div>
+
+                                <a href="javascript:" class="login-btn" id="login">{:l('LOGIN')}</a>
+
+                                <div class="login-footer">
+
+                                    <a href="{:U('Register/index')}" target="_blank">{:L('SIGN_UP')}</a>
+
+                                    <div class="language">
+
+                                        <a href="javascript:" class="lang">
+
+                                            <foreach name="language" item="val"><eq name="lang" value="$val['lang']">{$val['text']}</eq></foreach>
+
+                                        </a>
+
+                                        <div class="change-lang hidden">
+
+                                            <img src="/Public/index/img/sanjiao.png" alt="">
+
+                                            <foreach name="language" item="val">
+
+                                                <a href="{:U('login/index',['l'=>$val['lang']])}">{$val.text}</a>
+
+                                            </foreach>
+
+                                        </div>
+
+                                    </div>
+
+                                    <a href="{:U('Forget/index')}" target="_blank">{:L('FORGOT')}?</a>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<script type="text/javascript">
+
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction: 'horizontal',
+        loop: true,
+        pagination: '.swiper-pagination',
+        autoplay:3000,
+        autoplayDisableOnInteraction:false,
+        speed:1500
+    });
+
+    $("#login").click(function()
+    {
+        login();
+    });
+
+    $("form").find('input').keydown(function(e)
+    {
+        if(e.keyCode === 13) login();
+    });
+
+    var lang = $('.change-lang');
+
+    $(".language").hover(function()
+    {
+        lang.show();
+    },function()
+    {
+        lang.hide();
+    });
+
+
+    //刷新验证码
+    function getVerifyImage()
+    {
+        var verifyURL = "{:U('Public/imageVerify')}";
+
+        var time = new Date().getTime();
+
+        $("#verifyImg").attr('src',verifyURL + "?" + time);
+    }
+
+    function login()
+    {
+        $.post("{:U('Login/loging')}",$('form').serialize(),function(ret)
+        {
+            if(ret.status === 1)
+            {
+                layer.msg(ret.msg,{icon:5,time:1500,offset:'180px'},function()
+                {
+                    getVerifyImage();
+                });
+            }
+            else
+            {
+                layer.msg(ret.msg,{shift: 0,icon: 6,time:1000,offset:'180px'},function()
+                {
+                    window.location.href = ret.url;
+                });
+            }
+        },'JSON');
+    }
+
+</script>
+
+<!-- 底部开始 -->
+
+	<include file="Public/footer" />
+
+<!-- 底部结束 -->

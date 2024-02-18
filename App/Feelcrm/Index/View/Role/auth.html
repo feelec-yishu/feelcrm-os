@@ -1,0 +1,122 @@
+<extend name="Public:common"/>
+
+<block name="crumb1">{:L('ROLE_MANAGER')} <i class="layui-icon">&#xe623;</i> {$role_name}</block>
+
+<block name="content">
+
+    <div class="list-main role-auth-main">
+
+        <form method="post" class='layui-form hg100'>
+
+            <div class="auth-item feeldesk-form relative hg100 pd0">
+
+                <div class="layui-tab mt0 hg100" lay-filter="auth">
+
+                    <ul class="layui-tab-title">
+
+                        <li class="layui-this">{:L('FEELDESK_AUTH')}</li>
+
+                        <li>{:L('FEELCRM_AUTH')}</li>
+
+                    </ul>
+
+                    <a href="javascript:" class="role-submit-btn" lay-submit data-id="{:encrypt($role_id,'ROLE')}">{:L('SUBMIT')}</a>
+
+                    <div class="layui-tab-content">
+
+                        <div class="layui-tab-item layui-show">
+
+                            <div id="ticketAuth">
+
+                                <div class='loading'><i class='layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop'></i></div>
+
+                            </div>
+
+                        </div>
+
+                        <eq name="systemAuth.crm_auth" value="10">
+							
+							<input type="hidden" name="isSwitchCrm" value="0" />
+							
+                            <div class="layui-tab-item">
+
+                                <div id="crmAuth">
+
+                                    <div class='loading'><i class='layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop'></i></div>
+
+                                </div>
+
+                            </div>
+
+                        </eq>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <script type="text/javascript">
+
+        layui.config({base: '/Public/js/layui/extends/'}).extend({authtree: 'authtree/authtree'}).use(['form','authtree','element'],function()
+        {
+            var form = layui.form;
+
+            var tree = layui.authtree;
+
+            var element = layui.element;
+
+            var ticketMenus = JSON.parse('{$ticketMenus}');
+
+            getFeelMenus('ticketAuth',ticketMenus,'ticket[]')
+
+            element.on('tab(auth)', function(data)
+            {
+				$("input[name='isSwitchCrm']").val('1');
+				
+                if(data.index === 1 && "{$systemAuth.crm_auth}" === "10")
+                {
+                    var crmMenus = JSON.parse('{$crmMenus}');
+
+                    getFeelMenus('crmAuth',crmMenus,'crm[]')
+                }
+            });
+
+            function getFeelMenus(id,menu,name)
+            {
+                tree.render('#'+id, menu,
+                {
+                    inputname: name,
+                    layfilter: 'lay-check-auth',
+                    childKey:'children',
+                    nameKey: 'lang_name',
+                    valueKey: 'menu_id',
+                    autowidth: true
+                });
+            }
+
+            form.on('submit',function(data)
+            {
+                var role_id = data.elem.getAttribute('data-id');
+
+                $.post("/Role/auth?id="+role_id,$('form').serialize(),function(data)
+                {
+                    if(data.status === 0)
+                    {
+                        feelDeskAlert(data.msg);
+                    }
+                    else
+                    {
+                        feelDeskAlert(data.msg,data);
+                    }
+                },'JSON');
+            })
+        });
+
+    </script>
+
+</block>

@@ -1,0 +1,570 @@
+<extend name="Public:base"/>
+
+<block name="content">
+
+    <div class="feeldesk-form pd0">
+
+        <div class="form-nav">
+
+            <ul>
+
+                <li><a href="javascript:" class="form-tab active">{:L('NEW_FORM')}</a></li>
+
+                <li><a href="javascript:" class="intro-tab">{:L('SET_INSTRUCT')}</a></li>
+
+            </ul>
+
+        </div>
+
+        <div class="form-content pt50">
+
+            <form action="{:U('DefineForm/create',['type'=>encrypt($type,'DEFINEFORM')])}" class="layui-form" method="post" enctype="multipart/form-data">
+
+                <div class="form-item">
+
+                    <input type="hidden" name="define_form[type]" value="{$type|encrypt='DEFINEFORM'}"/>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('FORM_TYPE')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <select name="define_form[form_type]" lay-filter="form_type">
+
+                                <option value="">{:L('SELECT_FORM_TYPE')}</option>
+
+                                <option value="text">{:L('TEXT')}</option>
+
+                                <option value="textarea">{:L('TEXTAREA')}</option>
+
+                                <option value="radio">{:L('RADIO')}</option>
+
+                                <option value="checkbox">{:L('CHECKBOX')}</option>
+
+                                <option value="select">{:L('SELECT')}</option>
+
+                                <option value="select_text">{:L('SELECT_TEXT')}</option>
+
+                                <option value="date">{:L('DATETIME')}</option>
+
+                                <option value="region">{:L('AREA_COMPONENTS')}</option>
+
+                                <option value="phone">{:L('CELL_PHONE')}</option>
+
+                                <option value="email">{:L('MAILBOX')}</option>
+
+                                <option value="number">{:L('DIGITAL')}</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item" id='choose'>
+
+                        <label class="layui-form-label">{:L('FORM_OPTION')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="text" name="define_form[form_option]" placeholder="{:L('ENTER_OPTION')}" id="ticket_form_option"  class="layui-input">
+
+                        </div>
+
+                        <div class="clear"></div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('FIELD_NAME')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="text" name="define_form[form_name]" id="ticket_form_name" class="layui-input" placeholder="{:L('ENTER_FIELD_NAME')}" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('FORM_NAME')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="text" name="define_form[form_description]" id="ticket_form_description" class="layui-input" placeholder="{:L('ENTER_FORM_NAME')}" />
+
+                        </div>
+
+                    </div>
+
+                    <eq name="langAuth['en_auth']" value="10">
+
+                        <div class="layui-form-item">
+
+                            <label class="layui-form-label">English name</label>
+
+                            <div class="layui-input-inline">
+
+                                <input type="text" name="define_form[name_en]" value=""  placeholder="Enter English name" class="layui-input">
+
+                            </div>
+
+                        </div>
+
+                    </eq>
+
+                    <eq name="langAuth['jp_auth']" value="10">
+
+                        <div class="layui-form-item">
+
+                            <label class="layui-form-label">日本語名</label>
+
+                            <div class="layui-input-inline">
+
+                                <input type="text" name="define_form[name_jp]" value=""  placeholder="日本語名を入力してください" class="layui-input">
+
+                            </div>
+
+                        </div>
+
+                    </eq>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('FORM_DESCRIPTION')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="text" name="define_form[form_explain]" id="ticket_form_explain" class="layui-input" placeholder="{:L('ENTER_FORM_DESCRIPTION')}" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('IS_NOT_REQUIRED')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <select name="define_form[is_required]">
+
+                                <option value="0">{:L('YES')}</option>
+
+                                <option value="1">{:L('NO')}</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+					<div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('WHETHER_TO_PREVENT_WEIGHT')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <select name="define_form[is_unique]">
+
+                                <option value="1">{:L('YES')}</option>
+
+                                <option value="0" selected>{:L('NO')}</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+					<div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('LIST_DISPLAY')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <select name="define_form[show_list]">
+
+                                <option value="1">{:L('YES')}</option>
+
+                                <option value="0" selected>{:L('NO')}</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('IS_ENABLE')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <select name="define_form[closed]">
+
+                                <option value="0">{:L('ENABLE')}</option>
+
+                                <option value="1">{:L('DISABLE')}</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label mt5">{:L('VIEW_RANGE')}</label>
+
+                        <div class="layui-input-inline" id="form_view_range"></div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label mt5">{:L('MODIFY_AUTH')}</label>
+
+                        <div class="layui-input-inline" id="form_edit_auth"></div>
+
+                    </div>
+
+                    <script type="text/javascript">
+
+                        var roleList = {$roleList};
+
+                        var memberList = {$memberList};
+
+                        var is_loaded = 1;
+
+                        layui.config({
+                            base : '__PUBLIC__/js/layui/extends/'
+                        }).use(['selectM'],function()
+                        {
+                            var list = layui.selectM(
+                            {
+                                elem: '#form_edit_auth',
+                                tips: '{:L("PLEASE_SELECT")}',
+                                data: memberList,
+                                width:'60%',
+                                max:100,
+                            });
+
+                            layui.selectM(
+                            {
+                                elem: '#form_view_range',
+                                data: roleList,
+                                tips: '{:L("PLEASE_SELECT")}',
+                                width:'60%',
+                                max:100,
+                                callback:function (values)
+                                {
+                                    var roles = values;
+
+                                    if(roles && (roles.length != 0 || is_loaded != 1))
+                                    {
+                                        if(roles.length == 0)
+                                        {
+                                            list.config.data = memberList;
+                                            list.render();
+                                            list.render();
+                                        }
+                                        else
+                                        {
+                                            $.ajax({
+                                                url:"{:U('AjaxRequest/getMemberByRole')}",
+                                                type:'POST',
+                                                async: false,
+                                                data:{'role_id':roles},
+                                                datatype:'json',
+                                                success:function(data)
+                                                {
+                                                    if(data)
+                                                    {
+                                                        list.config.data = data.data;
+                                                        list.render();
+                                                        list.render();
+                                                        is_loaded = 0;
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+                        })
+
+                    </script>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">{:L('SORT')}</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="number" name="define_form[orderby]" class="layui-input" placeholder="{:L('ENTER_FORM_SORT')}" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="form-submit">
+
+                    <div class="layui-form-item">
+
+                        <div class="layui-input-inline">
+
+                            <a href="javascript:void(0)" class="layui-btn layui-btn-normal" id="submitForm">{:L('SUBMIT')}</a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="form-intro hidden">
+
+            <div class="intro-item">
+
+                <div class="intro-title">{:L('FORM_TYPE_STYLE')} <i class="iconfont icon-xiangxiajiantou fr"></i></div>
+
+                <div class="intro-detail layui-form hidden">
+
+                    <div class="intro-form layui-input-block ml0">
+
+                        <input type="text" class="layui-input form-input" placeholder="{:L('TEXT')}" disabled>
+
+                        <select name="xiala" lay-filter="form_type">
+
+                            <option value="">{:L('SELECT')}</option>
+
+                            <option value="">{:L('OPTION',['format'=>'A'])}</option>
+
+                            <option value="">{:L('OPTION',['format'=>'B'])}</option>
+
+                            <option value="">{:L('OPTION',['format'=>'C'])}</option>
+
+                        </select>
+
+                        <textarea class="layui-textarea" disabled>{:L('TEXTAREA_NOTE')}</textarea>
+
+                        <div class="layui-form-item">
+
+                            <label class="layui-form-label pl0">{:L('RADIO')}</label>
+
+                            <div class="layui-input-block ml0">
+
+                                <input type="radio" name="danxuan" title="{:L('OPTION',['format'=>'A'])}"/>
+
+                                <input type="radio" name="danxuan" title="{:L('OPTION',['format'=>'B'])}"/>
+
+                                <input type="radio" name="danxuan" title="{:L('OPTION',['format'=>'C'])}"/>
+
+                            </div>
+
+                        </div>
+
+                        <div class="layui-form-item">
+
+                            <label class="layui-form-label pl0">{:L('CHECKBOX')}</label>
+
+                            <div class="layui-input-block ml0">
+
+                                <input type="checkbox" name="danxuan" title="{:L('OPTION',['format'=>'A'])}" lay-skin="primary" />
+
+                                <input type="checkbox" name="danxuan" title="{:L('OPTION',['format'=>'B'])}" lay-skin="primary" />
+
+                                <input type="checkbox" name="danxuan" title="{:L('OPTION',['format'=>'C'])}" lay-skin="primary" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="intro-item">
+
+                <div class="intro-title">{:L('FORM_OPTION_NOTE')} <i class="iconfont icon-xiangxiajiantou fr"></i></div>
+
+                <div class="intro-detail hidden">
+
+                    <p>1. {:L('FORM_OPTION_NOTE5',['a'=>l('RADIO'),'b'=>l('CHECKBOX'),'c'=>l('SELECT'),'d'=>l('SELECT_TEXT')])}</p>
+
+                    <p>2. {:L('FORM_OPTION_NOTE2')}</p>
+
+                    <p>3. {:L('FORM_OPTION_NOTE3')}</p>
+
+                    <p>4. {:L('FORM_OPTION_NOTE4')}</p>
+
+                    <p>5. {:L('FORM_OPTION_NOTE6',['a'=>l('SELECT_TEXT')])}</p>
+
+                </div>
+
+            </div>
+
+            <div class="intro-item">
+
+                <div class="intro-title">{:L('FIELD_NAME_NOTE')} <i class="iconfont icon-xiangxiajiantou fr"></i></div>
+
+                <div class="intro-detail hidden">
+
+                    <p>1. {:L('FIELD_NAME_NOTE1')}</p>
+
+                    <p>2. {:L('FIELD_NAME_NOTE2')}</p>
+
+                    <p>3. {:L('FIELD_NAME_NOTE3')}</p>
+
+                    <p>4. {:L('FIELD_NAME_NOTE4')}</p>
+
+                    <p>5. {:L('FIELD_NAME_NOTE5')}</p>
+
+                </div>
+
+            </div>
+
+            <div class="intro-item">
+
+                <div class="intro-title">{:L('FORM_NAME_NOTE')} <i class="iconfont icon-xiangxiajiantou fr"></i></div>
+
+                <div class="intro-detail hidden">
+
+                    <p>1. {:L('FORM_NAME_NOTE1')}</p>
+
+                    <p>2. {:L('FORM_NAME_NOTE2')}</p>
+
+                    <p>3. {:L('FORM_NAME_NOTE3')}</p>
+
+                </div>
+
+            </div>
+
+            <div class="intro-item">
+
+                <div class="intro-title">{:L('FORM_DESCRIPTION_NOTE')} <i class="iconfont icon-xiangxiajiantou fr"></i></div>
+
+                <div class="intro-detail hidden">
+
+                    <p>{:L('FORM_DESCRIPTION_NOTE1')}</p>
+
+                </div>
+
+            </div>
+
+            <div class="intro-item">
+
+                <div class="intro-title">{:L('REQUIRED_ENABLE_NOTE')} <i class="iconfont icon-xiangxiajiantou fr"></i></div>
+
+                <div class="intro-detail hidden">
+
+                    <p>1. {:L('REQUIRED_ENABLE_NOTE1')}</p>
+
+                    <p>2. {:L('REQUIRED_ENABLE_NOTE2')}</p>
+
+                </div>
+
+            </div>
+
+            <div class="intro-item">
+
+                <div class="intro-title">{:L('FORM_SORT_NOTE')} <i class="iconfont icon-xiangxiajiantou fr"></i></div>
+
+                <div class="intro-detail hidden">
+
+                    <p>1. {:L('FORM_SORT_NOTE1')} </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <include file="Public:section" />
+
+    </div>
+
+    <include file="Public:language" />
+
+    <script type="text/javascript">
+
+        $(function()
+        {
+            $(".form-tab").on('click',function()
+            {
+                if(!$(this).hasClass('active'))
+                {
+                    $(this).addClass('active');
+
+                    $('.form-content').removeClass('hidden');
+
+                    $(".intro-tab,.form-intro").addClass('hidden').removeClass('active');
+                }
+            });
+
+            $(".intro-tab").on('click',function()
+            {
+                if(!$(this).hasClass('active'))
+                {
+                    $(this).addClass('active');
+
+                    $('.form-intro').removeClass('hidden');
+
+                    $('.form-tab,.form-content').addClass('hidden').removeClass('active');
+                }
+            });
+
+            $(".intro-title").on('click',function()
+            {
+                $(this).next('.intro-detail').slideToggle().parent('.intro-item').toggleClass('active');
+
+                if($(this).find('i').hasClass('icon-xiangxiajiantou'))
+                {
+                    $(this).find('i').removeClass('icon-xiangxiajiantou').addClass('icon-upward');
+                }
+                else
+                {
+                    $(this).find('i').removeClass('icon-upward').addClass('icon-xiangxiajiantou');
+                }
+            })
+        })
+
+    </script>
+
+    <script type="text/javascript">
+
+        $("#choose").hide();
+
+        layui.use('form',function()
+        {
+            var form = layui.form;
+
+            form.on('select(form_type)', function(data)
+            {
+                var type = data.value;
+
+                if(type == 'radio' || type == 'checkbox' || type == 'select'  || type == 'select_text')
+                {
+                    $("#choose").slideDown(300);
+                }
+                else
+                {
+                    $("#choose").slideUp(300);
+                }
+            });
+        })
+
+    </script>
+
+</block>

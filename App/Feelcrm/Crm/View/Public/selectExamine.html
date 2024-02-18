@@ -1,0 +1,54 @@
+<div class="select-examine relative">
+
+	<input type="hidden" name='examine_status' value="{$examine_status}" />
+
+	<a class="layui-form-select select-online">
+
+		<eq name="examine_status" value="0">{:L('WHOLE')}</eq>
+
+		<eq name="examine_status" value="1">{:L('WAIT_AUDIT')}</eq>
+
+		<eq name="examine_status" value="2">{:L('AUDITED')}</eq>
+
+		<eq name="examine_status" value="-1">{:L('REJECTED')}</eq>
+
+		<i class="layui-edge"></i>
+
+	</a>
+
+	<ul class="hidden select-radio" >
+
+		<li class="<eq name='examine_status' value='0'>item-active</eq>"  data-value="0">{:L('WHOLE')}</li>
+
+		<li class="<eq name='examine_status' value='1'>item-active</eq>" data-value="1">{:L('WAIT_AUDIT')}</li>
+
+		<li class="<eq name='examine_status' value='2'>item-active</eq>" data-value="2">{:L('AUDITED')}</li>
+
+		<li class="<eq name='examine_status' value='-1'>item-active</eq>" data-value="-1">{:L('REJECTED')}</li>
+
+	</ul>
+
+</div>
+
+<script>
+
+	$(function ()
+	{
+		$('.select-examine').hover(function (e)
+		{
+			e.preventDefault();
+
+			$(this).find('ul').slideToggle('fast');
+		})
+
+		$('.select-examine').find('li').on('click',function ()
+		{
+			var range = $(this).data('value');
+
+			$("input[name='examine_status']").val(range);
+
+			$('#filterForm').submit();
+		})
+	})
+
+</script>

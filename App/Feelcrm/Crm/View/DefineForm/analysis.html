@@ -1,0 +1,269 @@
+<extend name="Public:base"/>
+
+<block name="content">
+
+    <div class="list-main">
+
+		<div class="layui-tab">
+
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">{:L('CONTACT_CUSTOM_FIELD_SETTINGS')}</li>
+
+            </ul>
+
+        </div>
+
+        <div class="list-header clearfix">
+
+            <div class="header-left">
+
+                {:FEELCRM('DefineForm/create',['type'=>encrypt('analysis','DEFINEFORM')],L('NEW_FORM'),'item-deleteBtn','','iconfont icon-xinzeng')}
+
+            </div>
+
+            <div class="header-right">
+
+                <form action="{$controllerAndAction}" method="get" class="fr">
+
+                    <div class="compact-search">
+
+                        <i class="iconfont icon-search"></i>
+
+                        <input type="text" name="keyword" value="{$keyword}" placeholder="{:L('NAME/TYPE')}"/>
+
+                        <a href="javascript:" class="searchBtn">{:L('SEARCH')}</a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="item-list feelcrm-list">
+
+            <table class="layui-table" lay-skin="line" id='sortable'>
+
+                <thead>
+
+                    <tr>
+
+                        <th>{:L('FORM_NAME')}</th><th>{:L('FORM_TYPE')}</th><th>{:L('IS_NOT_REQUIRED')}</th><th>{:L('WHETHER_TO_PREVENT_WEIGHT')}</th><th>{:L('LIST_DISPLAY')}</th>
+                        <th>{:L('IS_ENABLE')}</th><th>{:L('SORT')}</th><th>{:L('OPERATION')}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <empty name="analysisform">
+
+                        <tr class="nodata center">
+
+                            <td colspan="8">
+
+                                <p><i class="iconfont icon-nothing fts20"></i></p>
+
+                                <p>{:L('NO_DATA')}</p>
+
+                            </td>
+
+                        </tr>
+
+                    <else />
+
+                        <volist name="analysisform" id="vo">
+
+                            <tr class='cursor-move' sort="{$vo.orderby}">
+
+                                <td>{$vo.form_description}</td>
+
+                                <td>{$vo.form_type}</td>
+
+                                <td><eq name="vo.is_required" value="0"><span class="red1">{:L('YES')}</span><else /><span class="green1">{:L('NO')}</span></eq></td>
+
+								<td><eq name="vo.is_unique" value="1"><span class="red1">{:L('YES')}</span><else /><span class="green1">{:L('NO')}</span></eq></td>
+
+								<td><eq name="vo.show_list" value="1"><span class="red1">{:L('YES')}</span><else /><span class="green1">{:L('NO')}</span></eq></td>
+
+                                <td>
+
+                                    <eq name="vo.closed" value="1">
+
+                                        <span class="open-status disable">{:L('DISABLE')}</span>
+
+                                    <else />
+
+                                        <span class="open-status enable">{:L('ENABLE')}</span>
+
+                                    </eq>
+
+                                </td>
+
+                                <td><span>{$vo.orderby}</span></td>
+
+                                <td class="listOperate">
+
+                                    <i class="iconfont icon-dian"></i>
+
+                                    <div class="operate hidden">
+
+                                        {:FEELCRM('DefineForm/edit',['id'=>encrypt($vo['form_id'],'DEFINEFORM'),'type'=>encrypt('analysis','DEFINEFORM')],l('EDITOR'))}
+
+                                        <neq name="vo.is_default" value="1">
+										{:FEELCRM('DefineForm/delete',['id'=>encrypt($vo['form_id'],'DEFINEFORM'),'type'=>encrypt('analysis','DEFINEFORM')],l('DELETE'),'','async')}
+
+										</neq>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </volist>
+
+                    </empty>
+
+                </tbody>
+
+            </table>
+
+            <notempty name="page">
+
+                <div class="right-list-page clearfix"><div class="feeldesk-page">{$page}</div></div>
+
+            </notempty>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+
+        var fixHelper = function(e, ui)
+        {
+            ui.children().each(function()
+            {
+                $(this).width($(this).width());
+            });
+
+            return ui;
+        };
+
+        $(function()
+        {
+            var sortable = $( "#sortable");
+
+            var formIds = [];//受影响的表单ID
+
+            var selectSort,selectSx,placeSort,placeSx,temp,flag;
+
+            sortable.find('tbody').sortable(
+            {
+                cursor: "move",
+                helper: fixHelper,                  //调用fixHelper
+                axis:"y",
+                start:function(e, ui)
+                {
+                    ui.helper.css({"background":"#fff"});  //拖动时的行，要用ui.helper
+                    return ui;
+                },
+                sort:function(e, ui)
+                {
+                    formIds = [];
+
+                    selectSort = ui.item.attr("sort"); //当前元素的顺序
+
+                    placeSort = $(this).find('tr').filter('.ui-sortable-placeholder').next('tr').attr('sort');//新位置下的下一个元素的排序
+
+                    placeSx = parseInt(placeSort);
+
+                    selectSx = parseInt(selectSort);
+
+//                    说明是 向上移动
+                    if(selectSx > placeSx)
+                    {
+                        temp = placeSort;
+
+                        placeSx = selectSort;//最大
+
+                        selectSx = temp;//最小
+
+                        flag = false;
+                    }
+                    else
+                    {
+//                        向下移动
+                        placeSort = $(this).find('tr').filter('.ui-sortable-placeholder').prev('tr').attr('sort');
+
+                        placeSx = parseInt(placeSort);
+
+                        flag = true;
+                    }
+                },
+                stop:function(e, ui)
+                {
+                    var temp = "";
+
+                    var definForm = JSON.parse('{$analysisFormJson}');
+
+                    $.each(definForm,function(k,v)
+                    {
+                        var sort = parseInt(v.orderby);
+
+                        if(sort >= selectSx && sort <= placeSx)
+                        {
+                            if(sort == parseInt(selectSort))
+                            {
+                                if(flag)
+                                {
+                                    temp = v.form_id;
+                                }
+                                else
+                                {
+                                    formIds.splice(0,0,v.form_id);
+                                }
+                            }
+                            else
+                            {
+                                formIds.push(v.form_id);
+                            }
+                        }
+                    });
+
+                    if(flag)
+                    {
+                        formIds.splice(placeSx-selectSx,0,temp);
+                    }
+
+                    $.ajax(
+                    {
+                        url:"{:U('AjaxRequest/updateDefinFormSort')}",
+                        type:'POST',
+                        async: false,
+                        data:{'ids':formIds, selectSx:selectSx, placeSx:placeSx},
+                        datatype:'json',
+                        success:function()
+                        {
+                            window.location.reload();
+                        },
+                        error:function()
+                        {
+                           layer.msg("{:L('SAVE_SORT_EXCEPTION')}");
+                        }
+                    });
+
+                    return ui;
+                }
+            });
+
+            sortable.disableSelection();
+        });
+
+    </script>
+
+</block>

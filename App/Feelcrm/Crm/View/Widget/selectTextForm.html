@@ -1,0 +1,50 @@
+
+
+	<input type="text" name="{$formType}_form[{$formData.form_name}]" placeholder="" value="{$dataInfo[$formData['form_name']]}" readonly="readonly" class="layui-input cursor">
+
+	<ul id="selectText{$t}" class="select-text">
+
+		<foreach name="formData.option" item="op">
+
+			<li data-value="{$op}" <eq name="dataInfo[$formData[form_name]]" value="$op" >class="active"</eq>>{$op}</li>
+
+		</foreach>
+
+	</ul>
+
+	<script>
+
+		$('input[name="{$formType}_form[{$formData.form_name}]"]').click(function ()
+		{
+			if($('#selectText{$t}').is(':hidden'))
+			{
+				$('#selectText{$t}').slideDown(100);
+			}
+			else
+			{
+				$('#selectText{$t}').slideUp(100);
+			}
+
+			$('#selectText{$t} li').unbind('click').click(function ()
+			{
+				$('#selectText{$t} li').removeClass('active');
+				var value = $(this).data('value');
+
+				if($(this).is(':last-child'))
+				{
+					$('input[name="{$formType}_form[{$formData.form_name}]"]').removeAttr("readonly");
+					$('input[name="{$formType}_form[{$formData.form_name}]"]').val('');
+					$('input[name="{$formType}_form[{$formData.form_name}]"]').focus();
+				}
+				else
+				{
+					$('input[name="{$formType}_form[{$formData.form_name}]"]').attr('readonly','readonly');
+					$('input[name="{$formType}_form[{$formData.form_name}]"]').val(value);
+				}
+				$(this).addClass('active');
+				$('#selectText{$t}').hide();
+			})
+		})
+
+	</script>
+

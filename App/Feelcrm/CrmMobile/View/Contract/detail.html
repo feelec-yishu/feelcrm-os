@@ -1,0 +1,287 @@
+<include file="Public/header" />
+
+<div class="feeldesk crm-detail" id="formWrapper">
+
+    <header class="relative">
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('CONTRACT_DETAILS')}</div>
+
+			<a href="javascript:" class="header-right hidden" id="detailMenu"><i class="iconfont icon-menu"></i></a>
+
+            <div class="header-menu" id="headerMenu">
+
+                <b class="menu-mark"></b>
+
+				<notempty name="isEditContractAuth">
+
+					<div class='menu-operate'><i class="iconfont icon-xiugai"></i><span><a href="{:U('edit',['id'=>encrypt($contract['contract_id'],'CONTRACT'),'detailtype'=>encrypt('index','CONTRACT')])}">{:L('MODIFY_CONTRACT')}</a></span></div>
+
+				</notempty>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <div class="crm-main">
+
+        <div class="order-detail-tab">
+
+            <ul class="fts0">
+
+			<notempty name="isDetailAuthView">
+
+                <li <eq name='detailtype' value='index'>class="current"</eq> data-value="contract">{:L('CONTRACT')}</li>
+
+			</notempty>
+
+			<notempty name="isProductAuthView">
+
+                <li <eq name='detailtype' value='product'>class="current"</eq> data-value="product">{:L('PRODUCT')}</li>
+
+			</notempty>
+
+            </ul>
+
+        </div>
+
+        <!-- 合同信息 -->
+        <div class="crm-detail-main <neq name='detailtype' value='index'>hidden</neq>" id="contract">
+
+            <div class="detail-main">
+
+				<div class="detail-info">
+
+					<div class="crm-title">{$contract.detail.name}</div>
+
+					<div class="time-status-priority clearfix">
+
+						<div class="publish-time"><i class="iconfont icon-date"></i><span class="middle">{$contract.createtime|getDates}</span></div>
+
+					</div>
+
+				</div>
+
+				<div class="crm-detail-split"></div>
+
+                <div class="crm-detail-item"><i class="iconfont icon-info item-icon fts4"></i> <span>{:L('CONTRACT_INFORMATION')}</span></div>
+
+                <div class="crm-detail-item"><span>{:L('CONTRACT_NO')}</span><div class="detail-item">{$contract.contract_prefix}{$contract.contract_no}</div></div>
+
+                <div class="crm-detail-item"><span>{:L('OWNED_CUSTOMER')}</span><a href="{:U('Customer/detail',['id'=>encrypt($contract['customer_id'],'CUSTOMER')])}"><div class="detail-item blue0787f6">{$customer['detail']['name']}</div></a></div>
+
+				<notempty name="contract.opportunity_id">
+
+					<div class="crm-detail-item"><span>{:L('OWNED_OPPORTUNITY')}</span><a href="{:U('Opportunity/detail',['id'=>encrypt($contract['opportunity_id'],'OPPORTUNITY')])}"><div class="detail-item blue0787f6">{$opportunity['detail']['name']}</div></a></div>
+
+				</notempty>
+
+				<div class="clear"></div>
+
+				<volist name="contractform" id="vo">
+
+					<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+					<if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+					<div class="crm-detail-item"><span>{$vo.form_description}</span><div class="detail-item">{$contract['detail'][$vo['form_name']]|default='--'}</div></div>
+
+					</if>
+
+				</volist>
+
+				<volist name="contractform2" id="vo">
+
+					<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+					<if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+					<div class="item-textarea">
+
+						<div class="item-textarea-title">{$vo.form_description}</div>
+
+						<div class="item-textarea-content textareaImg" id="textareaImages">{$contract['detail'][$vo['form_name']]|default='--'}</div>
+
+					</div>
+
+					</if>
+
+				</volist>
+				
+				<script type="text/javascript">
+
+					$(function ()
+					{
+						var textareaImg = $(".textareaImg");
+
+						textareaImg.find('img').each(function(k,v)
+						{
+							$(this).attr('onclick',"openPhotoSwipe("+k+",'textareaImages')");
+						})
+					})
+
+				</script>
+
+				<div class="item-textarea">
+
+					<div class="item-textarea-title">{:L('SCANNED_COPY_OF_CONTRACT')}</div>
+
+					<div class="item-textarea-content">
+
+						<div class="item-textarea-content detail-image" id="images">
+
+							<volist name="contract.contract_img" id="vo">
+
+								<php>$m = ($i)%2;</php>
+
+								<div class="image-item <eq name='m' value='0'>mr0</eq>"><img src="{$vo}" onclick="openPhotoSwipe({$i-1},'images')" alt=""/></div>
+
+							</volist>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="item-textarea">
+
+					<div class="item-textarea-title">{:L('CONTRACT_ATTACHMENT')}</div>
+
+					<div class="item-textarea-content">
+
+						<volist name="contract.createFiles" id="vo">
+
+							<div class="attach-item">
+
+                                {$vo.file_name|getFileName}.{$vo.file_type} <span>({$vo.file_size|getFileSize}) </span>
+
+                                <a href="{$vo.file_link}" title="{$vo.file_name}" download="{$vo.file_name}" class="iconfont icon-download blue0787f6"></a>
+
+                            </div>
+
+						</volist>
+
+					</div>
+
+				</div>
+
+				<div class="item-textarea">
+
+					<div class="item-textarea-title">{:L('SUBORDINATE_SECTOR')}</div>
+
+					<div class="item-textarea-content">{:CrmgetMemberGroupName($groupList,$contract['group_id'])}</div>
+
+				</div>
+
+                <div class="crm-detail-item"><span>{:L('ORDER_RESPONSIBLE')}</span><div class="detail-item blue0787f6">{$contract.member_name}</div></div>
+
+                <div class="crm-detail-item"><span>{:L('FOUNDER')}</span><div class="detail-item">{$contract.creater_name}</div></div>
+
+                <div class="crm-detail-item"><span>{:L('CREATE_TIME')}</span><div class="detail-item">{$contract.createtime|getDates}</div></div>
+
+				<div class="crm-detail-item noborder"><span>{:L('ENTRY_METHOD')}</span><div class="detail-item">{:getCrmEntryMethod($contract['entry_method'])}</div></div>
+
+            </div>
+
+        </div>
+
+		<!-- 产品信息 -->
+        <div class="crm-detail-main <neq name='detailtype' value='product'>hidden</neq>" id="product">
+
+            <div class="detail-main">
+
+                <div class="crm-detail-item"><i class="iconfont icon-info item-icon fts4"></i> <span>{:L('PRODUCT_DETAILS')}</span></div>
+
+				<notempty name="product">
+
+					<volist name="product" id="vo">
+
+						<neq name="key" value="0"><div class="crm-detail-split"></div></neq>
+
+						<div class="crm-detail-item"><span>{:L('CONTRACT_NO')}</span><div class="detail-item">{$contract.contract_prefix}{$contract.contract_no}</div></div>
+
+						<div class="crm-detail-item"><span>{:L('PRODUCT_NAME')}</span><div class="detail-item">{$vo.detail.name}</div></div>
+
+						<div class="crm-detail-item"><span>{:L('PRODUCT_NUM')}</span><div class="detail-item">{$vo.detail.product_num}</div></div>
+
+						<div class="crm-detail-item"><span>{:L('PRODUCT_PRICE')}</span><div class="detail-item">{$vo.detail.list_price}</div></div>
+
+						<div class="crm-detail-item"><span>{:L('PRODUCT_SELLING_PRICE')}</span><div class="detail-item">{$vo.unit_price}</div></div>
+
+						<div class="crm-detail-item noborder"><span>{:L('PRODUCT_QUANTITY')}</span><div class="detail-item">{$vo.num}</div></div>
+
+					</volist>
+
+				<else/>
+
+					<div class="layui-flow-more">{:L('NO_DATA')}</div>
+
+				</notempty>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(function()
+    {
+		//        头部菜单
+        $("#detailMenu").unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+            $("#headerMenu").slideToggle('fast').find('div').removeClass('current').find('span').css({'border-top':'1px solid #eee'});
+
+            $(".menu-operate:first").find('span').css({'border-top':'none'});
+
+            $(".menu-operate").unbind('click').on('click',function()
+            {
+                $("#headerMenu").slideToggle('fast');
+
+                if(!$(this).hasClass('current'))
+                {
+                    $(this).addClass('current').siblings('.menu-operate').removeClass('current');
+
+                    $(this).siblings('.menu-operate:not(":first")').find('span').css({'border-top':'1px solid #eee'});
+
+                    $(this).find('span').css({'border-top':'none'}).parent().next().find('span').css({'border-top':'none'});
+                }
+            });
+
+            $(document).unbind('click').bind('click',function(e)
+            {
+                $("#headerMenu").slideUp('fast');
+            });
+        });
+
+        $('.order-detail-tab').find('li').on('click',function()
+        {
+            $(this).addClass('current').siblings().removeClass('current');
+
+            var value = $(this).data('value');
+
+            $('#'+value).removeClass('hidden').siblings('.crm-detail-main').addClass('hidden');
+        })
+    })
+
+</script>
+<script>
+
+	$(function()
+	{
+		if($("#headerMenu").find(".menu-operate").length > 0)
+		{
+			$('#detailMenu').removeClass('hidden');
+		}
+	})
+
+</script>

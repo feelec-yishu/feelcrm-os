@@ -1,0 +1,654 @@
+<include file="Public/header" />
+
+<div class="feeldesk" id="formWrapper">
+
+	<form action="{$controllerAndAction}" method="get" id="filterForm">
+
+    <header>
+
+        <div class="menu-header">
+
+			<!--<div class="header-title">{:L('CUSTOMER_LIST')}</div>
+
+            {:FEELCRM('Customer/create','','','header-right','','iconfont icon-xie')}-->
+
+			<input type="search" name="keyword" value="{$keyword}" placeholder="{:L('NAME2')}/{:L('PHONE')}/{:L('MAILBOX')}/{:L('COMPANY')}" id="keyword" class="header-serach-input" />
+
+        </div>
+
+    </header>
+
+	<div class="feelcrm-list-choice">
+
+		<div class="fl feelcrm-list-sort">{:L('SORT')}<i class="iconfont icon-sort"></i></div>
+
+		<div class="fl feelcrm-list-screen">{:L('FILTER')}<i class="iconfont icon-shaixuan"></i></div>
+
+		<div class="clear"></div>
+
+	</div>
+
+	<div class="feelcrm-sort hidden">
+
+		<input type="hidden" name="sort" value="{$sort}" />
+
+		<a href="javascript:selectsort('followtime-asc');"><div class="feelcrm-sort-list <eq name='sort' value='followtime-asc'>sort-active</eq>">{:L('POSITIVE_ORDER_LAST_FOLLOW_UP_TIME')}<i class="iconfont icon-gouxuan"></i></div></a>
+
+		<a href="javascript:selectsort('followtime-desc');"><div class="feelcrm-sort-list <eq name='sort' value='followtime-desc'>sort-active</eq>">{:L('REVERSE_ORDER_LAST_FOLLOW_UP_TIME')}<i class="iconfont icon-gouxuan"></i></div></a>
+
+		<a href="javascript:selectsort('createtime-asc');"><div class="feelcrm-sort-list <eq name='sort' value='createtime-asc'>sort-active</eq>">{:L('POSITIVE_ORDER_BY_CREATION_TIME')}<i class="iconfont icon-gouxuan"></i></div></a>
+
+		<a href="javascript:selectsort('createtime-desc');"><div class="feelcrm-sort-list border-none <eq name='sort' value='createtime-desc'>sort-active</eq>">{:L('REVERSE_ORDER_BY_CREATION_TIME')}<i class="iconfont icon-gouxuan"></i></div></a>
+
+	</div>
+
+	<div class="feelcrm-screen hidden">
+
+		<div class="feelcrm-screen-list">
+
+			<div class="fl feelcrm-screen-list-L">
+
+				<div onclick="switchScreen(this,1)" class="feelcrm-screen-title feelcrm-screen-title-active"><div class="feelcrm-screen-titlename">{:L('SCREENING_SCENE')}</div></div>
+
+				<div onclick="switchScreen(this,2)" class="feelcrm-screen-title"><div class="feelcrm-screen-titlename">{:L('LEADER')}</div></div>
+
+				<notempty name="isCreaterView"><div onclick="switchScreen(this,3)" class="feelcrm-screen-title"><div class="feelcrm-screen-titlename">{:L('FOUNDER')}</div></div></notempty>
+
+			</div>
+
+			<div class="fl feelcrm-screen-list-R" id="screen-layer1">
+
+				<input type="hidden" name="customer_auth" value="{$customer_auth}" />
+
+				<gt name="isAllViewAuth" value="0"><div data-value="all" class="feelcrm-screen-info feelcrm-customer-auth <eq name='customer_auth' value='all'>feelcrm-screen-infoactive</eq>"><div class="feelcrm-screen-infoname" >{:L('WHOLE')}<i class="iconfont icon-gouxuan"></i></div></div></gt>
+
+				<gt name="isOwnViewAuth" value="0"><div data-value="own" class="feelcrm-screen-info feelcrm-customer-auth <eq name='customer_auth' value='own'>feelcrm-screen-infoactive</eq>"><div class="feelcrm-screen-infoname" >{:L('MYCLUES')}<i class="iconfont icon-gouxuan"></i></div></div></gt>
+
+				<gt name="isGroupViewAuth" value="0"><div data-value="group" class="feelcrm-screen-info feelcrm-customer-auth <eq name='customer_auth' value='group'>feelcrm-screen-infoactive</eq>"><div class="feelcrm-screen-infoname" >{:L('CLUES_IN_MY_DEPARTMENT')}<i class="iconfont icon-gouxuan"></i></div></div></gt>
+
+				<gt name="isCluePoolAuth" value="0"><div data-value="pool" class="feelcrm-screen-info feelcrm-customer-auth <eq name='customer_auth' value='pool'>feelcrm-screen-infoactive</eq>"><div class="feelcrm-screen-infoname" >{:L('HIGH_SEAS')}<i class="iconfont icon-gouxuan"></i></div></div></gt>
+
+			</div>
+
+			<div class="fl feelcrm-screen-list-R feelcrm-screen-member hidden" id="screen-layer2">
+
+				<div class="feelcrm-screen-info-member"><div class="feelcrm-screen-infoname" >{:L('BELONG')}</div></div>
+
+				<div id="cc-item">
+
+					<div class="feelcrm-screen-info-member feelcrm-screen-member-select" id="select-cc">
+
+						<div class="feelcrm-screen-infoname" >{:L('SELECT_LEADER')}<i class="iconfont icon-gengduo1"></i></div>
+
+						<volist name="ccList" id="vo">
+
+							<span data-id='{$vo.member_id}'>@{$vo.member_name}</span>
+
+						</volist>
+
+					</div>
+
+					<volist name="ccList" id="vo">
+
+						<input type="hidden" name="cc[]" value="{$vo.member_id}">
+
+					</volist>
+
+				</div>
+
+			</div>
+
+			<notempty name="isCreaterView">
+
+				<div class="fl feelcrm-screen-list-R feelcrm-screen-member hidden" id="screen-layer3">
+
+					<div class="feelcrm-screen-info-member"><div class="feelcrm-screen-infoname" >{:L('BELONG')}</div></div>
+
+					<div id="creater-item">
+
+						<div class="feelcrm-screen-info-member feelcrm-screen-member-select" id="select-creater">
+
+							<div class="feelcrm-screen-infoname" >{:L('PLEASE_SELECT_THE_CREATOR')}<i class="iconfont icon-gengduo1"></i></div>
+
+							<volist name="createrList" id="vo">
+
+								<span data-id='{$vo.member_id}'>@{$vo.member_name}</span>
+
+							</volist>
+
+						</div>
+
+						<volist name="createrList" id="vo">
+
+							<input type="hidden" name="creater[]" value="{$vo.member_id}">
+
+						</volist>
+
+					</div>
+
+				</div>
+
+			</notempty>
+
+			<div class="clear"></div>
+
+		</div>
+
+		<div class="clear"></div>
+
+		<div class="feelcrm-screen-oper" >
+
+			<div class="fl feelcrm-screen-custom" id="select-screen">{:L('CUSTOM_FILTER')}</div>
+
+			<div class="fr"><span class="feelcrm-screen-reset">{:L('RESET')}</span> <span class="feelcrm-screen-finish">{:L('COMPLETE')}</span></div>
+
+		</div>
+
+		<div class="clear"></div>
+
+	</div>
+
+	</form>
+
+	<div class="feeldesk-main plr2 no-footer-main feelcrm-customer-main" >
+
+        <div class='feeldesk-item' id='customerItem'>
+
+
+
+        </div>
+
+        <include file="Public/buoy" />
+
+    </div>
+
+</div>
+
+<div class="feelcrm-sort-layer hidden"></div>
+
+<div class="feelcrm-screen-layer hidden"></div>
+
+<div class="feeldesk" id="screenWrapper">
+
+	<header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="iconfont icon-back-left back" id="screenBack"></a>
+
+            <div class="header-title">{:L('ADD_FILTER')}</div>
+
+			<a href="javascript:" class="header-right" id="finish-clue-screen">{:L('SAVE')}</a>
+
+        </div>
+
+    </header>
+
+	<div class="feeldesk-main no-footer-main pd0">
+
+        <div class="screen-main">
+
+			<div class="group-item">
+
+				<div class="group-name">{:L('CHOSEN')}</div>
+
+				<ul class="member-item">
+
+					<li class="screen-member-info <if condition="!in_array('1', $SelectedscreenFixed)">hidden</if>" onclick="cancelSelectFixed(this,1)" id="screen-selected-fixed-1">
+
+						<span class="iconfont icon-check icon-checkbox-checked"></span>
+
+						<div class="member-name">{:L('CLUE_NO')}</div>
+
+						<i class="iconfont icon-shanchu"></i>
+
+					</li>
+
+					<li class="screen-member-info <if condition="!in_array('2', $SelectedscreenFixed)">hidden</if>" onclick="cancelSelectFixed(this,2)" id="screen-selected-fixed-2">
+
+						<span class="iconfont icon-check icon-checkbox-checked"></span>
+
+						<div class="member-name">{:L('STATUS')}</div>
+
+						<i class="iconfont icon-shanchu"></i>
+
+					</li>
+
+					<volist name="clueform" id="vo">
+
+						<li class="screen-member-info <if condition="!in_array($vo['form_id'], $Selectedscreen)">hidden</if>" onclick="cancelSelect(this,{$vo.form_id})" id="screen-selected-{$vo.form_id}">
+
+							<span class="iconfont icon-check icon-checkbox-checked"></span>
+
+							<div class="member-name">{$vo.form_description}</div>
+
+							<i class="iconfont icon-shanchu"></i>
+
+						</li>
+
+					</volist>
+
+				</ul>
+
+				<div class="group-name">{:L('OTHER_OPTIONS')}</div>
+
+				<ul class="member-item">
+
+					<li class="screen-member-info <if condition="in_array('1', $SelectedscreenFixed)">hidden</if>" onclick="toSelectFixed(this,1)" id="screen-list-fixed-1">
+
+						<span class="iconfont icon-check"></span>
+
+						<div class="member-name">{:L('CLUE_NO')}</div>
+
+					</li>
+
+					<li class="screen-member-info <if condition="in_array('2', $SelectedscreenFixed)">hidden</if>" onclick="toSelectFixed(this,2)" id="screen-list-fixed-2">
+
+						<span class="iconfont icon-check"></span>
+
+						<div class="member-name">{:L('STATUS')}</div>
+
+					</li>
+
+					<volist name="clueform" id="vo">
+
+						<li class="screen-member-info <if condition="in_array($vo['form_id'], $Selectedscreen)">hidden</if>" onclick="toSelect(this,{$vo.form_id})" id="screen-list-{$vo.form_id}">
+
+							<span class="iconfont icon-check"></span>
+
+							<div class="member-name">{$vo.form_description}</div>
+
+						</li>
+
+					</volist>
+
+				</ul>
+
+			</div>
+
+        </div>
+
+    </div>
+
+	<volist name="Selectedscreen" id="vo">
+
+		<input type="hidden" name="screen[]" value="{$vo}">
+
+	</volist>
+
+	<volist name="SelectedscreenFixed" id="vo">
+
+		<input type="hidden" name="screenFixed[]" value="{$vo}">
+
+	</volist>
+
+</div>
+
+<!--选择客户负责人-->
+<div class="feeldesk" id="ccWrapper">
+
+    <header>
+
+        <div class="menu-header">
+
+            <a href="javascript:" class="iconfont icon-back-left back" id="ccBack"></a>
+
+            <div class="header-title">{:L('SELECT_LEADER')}</div>
+
+        </div>
+
+    </header>
+
+    <div class="feeldesk-main no-footer-main pd0">
+
+        <div class="main-search">
+
+            <i class="iconfont icon-search"></i>
+
+            <input type="text" name="keyword" value="" placeholder="{:L('SEARCH')}" id="ccSearch">
+
+        </div>
+
+        <div class="cc-choose-all" id="ccChooseAll">
+
+            <div>{:L('SELECT_ALL')}</div>
+
+            <span class="iconfont icon-check"></span>
+
+        </div>
+
+        <div class="cc-main" id="cc-list">
+
+            <volist name="FormData.groups" id="v1">
+
+                <div class="group-item">
+
+                    <div class="group-name">{$v1.group_name}</div>
+
+                    <ul class="member-item">
+
+                        <volist name="FormData.members" id="v2">
+
+                            <in name="v1.group_id" value="$v2['group_id']">
+
+                                <li class="cc-member-info" data-value="{$v2.member_id}" data-name="{$v2.name}">
+
+                                    <img src="{$v2.face|default='/Attachs/face/face.png'}" alt="">
+
+                                    <div class="member-name">{$v2.name}</div>
+
+                                    <span class="iconfont icon-check <in name='v2.member_id' value='$cc'>icon-checkbox-checked</in>"></span>
+
+                                </li>
+
+                            </in>
+
+                        </volist>
+
+                    </ul>
+
+                </div>
+
+            </volist>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--选择客户创建人-->
+<div class="feeldesk" id="createrWrapper">
+
+	<header>
+
+		<div class="menu-header">
+
+			<a href="javascript:" class="iconfont icon-back-left back" id="createrBack"></a>
+
+			<div class="header-title">{:L('PLEASE_SELECT_THE_CREATOR')}</div>
+
+		</div>
+
+	</header>
+
+	<div class="feeldesk-main no-footer-main pd0">
+
+		<div class="main-search">
+
+			<i class="iconfont icon-search"></i>
+
+			<input type="text" name="keyword" value="" placeholder="{:L('SEARCH')}" id="createrSearch">
+
+		</div>
+
+		<div class="cc-choose-all" id="createrChooseAll">
+
+			<div>{:L('SELECT_ALL')}</div>
+
+			<span class="iconfont icon-check"></span>
+
+		</div>
+
+		<div class="creater-main" id="creater-list">
+
+			<volist name="FormData.groups" id="v1">
+
+				<div class="group-item">
+
+					<div class="group-name">{$v1.group_name}</div>
+
+					<ul class="member-item">
+
+						<volist name="FormData.members" id="v2">
+
+							<in name="v1.group_id" value="$v2['group_id']">
+
+								<li class="creater-member-info" data-value="{$v2.member_id}" data-name="{$v2.name}">
+
+									<img src="{$v2.face|default='/Attachs/face/face.png'}" alt="">
+
+									<div class="member-name">{$v2.name}</div>
+
+									<span class="iconfont icon-check <in name='v2.member_id' value='$creater'>icon-checkbox-checked</in>"></span>
+
+								</li>
+
+							</in>
+
+						</volist>
+
+					</ul>
+
+				</div>
+
+			</volist>
+
+		</div>
+
+	</div>
+
+</div>
+
+<script type="text/javascript" src="MOBILE_PUBLIC_JS/cc.js"></script>
+
+<include file="Public/footer" />
+
+<script type="text/javascript">
+
+	CustomerScreen('clue');
+
+	$("#keyword").on('keypress', function(e) {
+        var keycode = e.keyCode;
+        //获取搜索框的值
+        var searchContent = $(this).val();
+        if (keycode == '13') {
+            e.preventDefault();
+            //请求搜索接口
+            $('#filterForm').submit();
+        }
+    });
+
+	function selectsort(type)
+	{
+		$('input[name="sort"]').val(type);
+
+		$('#filterForm').submit();
+	}
+
+	function switchScreen(obj,k)
+	{
+		$('.feelcrm-screen-title').removeClass('feelcrm-screen-title-active');
+
+		$(obj).addClass('feelcrm-screen-title-active');
+
+		$('.feelcrm-screen-list-R').hide();
+
+		$('#screen-layer'+k).show();
+	}
+
+	$(function()
+	{
+		$('.feelcrm-list-sort').click(function(){
+
+			if($(this).hasClass('feelcrm-list-active'))
+			{
+				$(this).removeClass('feelcrm-list-active');
+
+				$('.feelcrm-sort-layer').hide();
+			}
+			else
+			{
+				$(this).addClass('feelcrm-list-active');
+
+				$('.feelcrm-sort-layer').show();
+			}
+
+			if($('.feelcrm-list-screen').hasClass('feelcrm-list-active'))
+			{
+				$('.feelcrm-list-screen').removeClass('feelcrm-list-active');
+			}
+
+			$('.feelcrm-screen-layer').hide();
+
+			$('.feelcrm-screen').hide();
+
+			$('.feelcrm-sort').toggle();
+
+		})
+
+		$('.feelcrm-list-screen').click(function(){
+
+			if($(this).hasClass('feelcrm-list-active'))
+			{
+				$(this).removeClass('feelcrm-list-active');
+
+				$('.feelcrm-screen-layer').hide();
+			}
+			else
+			{
+				$(this).addClass('feelcrm-list-active');
+
+				$('.feelcrm-screen-layer').show();
+			}
+
+			if($('.feelcrm-list-sort').hasClass('feelcrm-list-active'))
+			{
+				$('.feelcrm-list-sort').removeClass('feelcrm-list-active');
+			}
+
+			$('.feelcrm-sort-layer').hide();
+
+			$('.feelcrm-sort').hide();
+
+			$('.feelcrm-screen').toggle();
+
+		})
+
+		$('.feelcrm-customer-auth').unbind('click').click(function(){
+
+			$('.feelcrm-customer-auth').removeClass('feelcrm-screen-infoactive');
+
+			$(this).addClass('feelcrm-screen-infoactive');
+
+			var customer_auth = $(this).attr('data-value');
+
+			$('input[name="customer_auth"]').val(customer_auth);
+
+		})
+
+		$('.feelcrm-screen-finish').click(function(){
+
+			$('#filterForm').submit();
+
+		})
+		$('.feelcrm-screen-reset').click(function(){
+
+			$('.feelcrmScreen').find('.feelcrm-screen-info').removeClass('feelcrm-screen-infoactive');
+
+			$('.feelcrmScreen').children(".feelcrm-screen-info:first-child").addClass('feelcrm-screen-infoactive');
+
+			$('.feelcrmScreen').find('input').val('');
+
+			$('.feelcrmScreen').find("input[data-type='checkbox']").remove();
+
+			$.each($('.feelcrm-screen-member').find("input[name='cc[]']"),function(){
+
+				var val = $(this).val();
+
+				$(this).parent().find(".feelcrm-screen-member-select span[data-id='"+val+"']").remove();
+
+				$(this).remove();
+
+			});
+
+			$.each($('.feelcrm-screen-member').find("input[name='creater[]']"),function(){
+
+				var val = $(this).val();
+
+				$(this).parent().find(".feelcrm-screen-member-select span[data-id='"+val+"']").remove();
+
+				$(this).remove();
+
+			});
+
+			layer.msg("{:L('RESET_THE_SUCCESS')}");
+		})
+	})
+
+    layui.use('flow', function()
+    {
+        var flow = layui.flow;
+
+        flow.load(
+        {
+            elem: '#customerItem',
+            scrollElem:'.feeldesk-main',
+            isAuto:false,
+            done: function(page, next)
+            {
+                var url = "{$Think.ACTION_NAME}";
+
+                var lis = [];
+
+				var keyword = "{$keyword}";
+
+				var sort = "{$sort}";
+
+				var customer_auth = "{$customer_auth}";
+
+                $.get("{:U('clue/'.ACTION_NAME)}?p="+page+"&request=flow&keyword="+keyword+"&sort="+sort+"&customer_auth="+customer_auth, function(data)
+                {
+
+					if(data.data.length > 0)
+					{
+						layui.each(data.data, function(index, item)
+						{
+							var url = "{:U('Clue/detail')}?id="+item.clue_id;
+
+							var trade_str = "";
+
+							var follow_str = "<div class='customer-server'>{:L('NOT_YET_FOLLOWED_UP')}</div>";
+
+							if(item.status == 2)
+							{
+								trade_str = "<span class='customer-list-label customer-trade bg-2c6ee5'>{:L('CONVERTED')}</span>";
+							}
+							else if(item.status == 1)
+							{
+								trade_str = "<span class='customer-list-label customer-trade bg-85D654'>{:L('FOLLOWING_UP')}</span>";
+							}
+							else
+							{
+								trade_str = "<span class='customer-list-label customer-trade bg-ffae3a'>{:L('NOT_FOLLOWED_UP')}</span>";
+							}
+
+							if(item.follow_member)
+							{
+								follow_str = "<div class='customer-server'>"+item.follow_member+" "+item.follow_time+" "+item.follow_content+"</div>";
+							}
+
+							var items ="<div class='feeldesk-list customer-list relative'><a href='"+url+"' class='clearfix customer-item'><div class='feeldesk-list-left'><div class='customer-name ellipsis'>"+item.detail.name+"</div>"+trade_str+follow_str+"</div></a></div>";
+
+							lis.push(items);
+						});
+
+						next(lis.join(''), page < data.pages);
+					}
+					else
+					{
+						var items = "";
+
+						lis.push(items);
+
+						next(lis.join(''), page < data.pages);
+					}
+                });
+
+            }
+        });
+    });
+
+</script>
+
+

@@ -1,0 +1,895 @@
+<include file="Public/header" />
+
+<div class="feeldesk crm-detail" id="formWrapper">
+
+    <header class="relative">
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('CLUE_DETAILS')}</div>
+
+            <a href="javascript:" class="header-right hidden" id="detailMenu"><i class="iconfont icon-menu"></i></a>
+
+            <div class="header-menu" id="headerMenu">
+
+                <b class="menu-mark"></b>
+
+				<notempty name="isEditClueAuth">
+
+					<div class='menu-operate'><i class="iconfont icon-xiugai"></i><span><a href="{:U('edit',['id'=>encrypt($clue['clue_id'],'CLUE'),'detailtype'=>encrypt('index','CLUE')])}">{:L('MODIFY_CLUES')}</a></span></div>
+
+				</notempty>
+
+				<if condition="$clue['member_id'] gt 0">
+
+					<neq name="clue.status" value="2">
+
+						<notempty name="isTransformClueAuth">
+
+							<div class='menu-operate'><i class="iconfont icon-zhuanyi"></i><span><a href="{:U('transform',['id'=>encrypt($clue['clue_id'],'CLUE')])}">{:L('TRANSFORM')}</a></span></div>
+
+						</notempty>
+
+						<notempty name="istoPoolClueAuth">
+
+							<div class='menu-operate' id="put-pool"><i class="iconfont icon-member"></i><span>{:L('GIVE_UP_CLUES')}</span></div>
+
+						</notempty>
+
+					</neq>
+
+					<notempty name="istransferClueAuth">
+
+						<div class='menu-operate' id="transfer-clue" data-href="{:U('clue/transfer')}"><i class="iconfont icon-zhuanyi"></i><span>{:L('TRANSFER_CLUES')}</span></div>
+
+					</notempty>
+
+				<else/>
+
+					<notempty name="isDrawClueAuth">
+
+						<div class='menu-operate' id="draw-clue" ><i class="iconfont icon-renwulingquchi"></i><span>{:L('GET_CLUES')}</span></div>
+
+					</notempty>
+
+					<notempty name="isAllotClueAuth">
+
+						<div class='menu-operate' id="allot-clue" data-href="{:U('clue/allot')}"><i class="iconfont icon-fenpei2"></i><span>{:L('ASSIGN_CLUES')}</span></div>
+
+					</notempty>
+
+				</if>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <div class="crm-main">
+
+        <div class="customer-detail-tab relative">
+
+            <ul class="fts0">
+
+				<notempty name="isDetailAuthView">
+
+					<li data-value='clue' <eq name='detailtype' value='index'>class="current"</eq>>{:L('CLUE_DETAILS')}</li>
+
+				</notempty>
+
+				<notempty name="isFollowAuthView">
+
+					<li data-value="follow" <eq name='detailtype' value='follow'>class="current"</eq>>{:L('CONTACT_RECORD')}</li>
+
+					<li data-value="attachment" >{:L('ATTACHMENT')}</li>
+
+				</notempty>
+
+            </ul>
+
+			<!--下拉菜单-->
+			<div class="customer-detail-tab-more" id="customerDetailMenu"><i class="iconfont icon-faq-directory"></i></div>
+
+			<div class="detail-tab-menu" id="detailMenuList">
+
+				<notempty name="isDetailAuthView">
+
+					<div class="menu-operate <eq name='detailtype' value='index'>current</eq>" data-value='clue' ><span>{:L('CLUE_DETAILS')}</span></notempty></div>
+
+				</notempty>
+
+				<notempty name="isFollowAuthView">
+
+					<div class="menu-operate <eq name='detailtype' value='follow'>current</eq>" data-value="follow" ><span>{:L('CONTACT_RECORD')}</span></div>
+
+					<div class="menu-operate" data-value="attachment" ><span>{:L('ATTACHMENT')}</span></div>
+
+				</notempty>
+
+			</div>
+
+        </div>
+
+        <!-- 客户详情 -->
+        <div class="crm-detail-main <neq name='detailtype' value='index'>hidden</neq>" id="clue">
+
+        <div class="detail-main">
+
+            <div class="detail-info">
+
+                <div class="crm-title">{$clue.detail.name}</div>
+
+                <div class="time-status-priority clearfix">
+
+                    <div class="publish-time"><i class="iconfont icon-date"></i><span class="middle">{$clue.createtime|getDates}</span></div>
+
+                    <div class="status-priority">
+
+						<span class="ticket-priority"><eq name="clue.status" value="2">{:L('CONVERTED')}<else/>{:L('FOLLOWING_UP')}</eq></span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="crm-detail-split"></div>
+
+            <div class="crm-detail-item">
+
+                <i class="iconfont icon-info item-icon fts4"></i> <span>{:L('CLUE_INFO')}</span>
+
+            </div>
+
+			<eq name="clue.status" value="2">
+
+				<div class="crm-detail-item"><span>{:L('ASSOCIATE_CUSTOMER')}</span><a href="{:U('Customer/detail',['id'=>encrypt($clue['customer_id'],'CUSTOMER')])}"><div class="detail-item blue0787f6">{$clue['customer']['name']}</div></a></div>
+
+			</eq>
+
+            <div class="crm-detail-item"><span>{:L('CLUE_NO')}</span><div class="detail-item">{$clue.clue_prefix}{$clue.clue_no}</div></div>
+
+			<volist name="clueform" id="vo">
+
+				<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+				<if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+				<div class="crm-detail-item"><span>{$vo.form_description}</span><div class="detail-item">{$clue['detail'][$vo['form_name']]|default='--'}</div></div>
+
+				</if>
+
+			</volist>
+
+			<volist name="clueform2" id="vo">
+
+				<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+				<if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+				<div class="item-textarea">
+
+					<div class="item-textarea-title">{$vo.form_description}</div>
+
+					<div class="item-textarea-content textareaImg" id="textareaImages">{$clue['detail'][$vo['form_name']]|default='--'}</div>
+
+				</div>
+
+				</if>
+
+			</volist>
+			
+			<script type="text/javascript">
+
+				$(function ()
+				{
+					var textareaImg = $(".textareaImg");
+
+					textareaImg.find('img').each(function(k,v)
+					{
+						$(this).attr('onclick',"openPhotoSwipe("+k+",'textareaImages')");
+					})
+				})
+
+			</script>
+
+            <div class="crm-detail-split"></div>
+
+            <div class="crm-detail-item">
+
+                <i class="iconfont icon-info item-icon fts4"></i> <span>{:L('SYSTEM_MESSAGE')}</span>
+
+            </div>
+
+			<div class="item-textarea">
+
+				<div class="item-textarea-title">{:L('SUBORDINATE_SECTOR')}</div>
+
+				<div class="item-textarea-content">{:CrmgetMemberGroupName($groupList,$clue['group_id'])}</div>
+
+			</div>
+
+            <div class="crm-detail-item"><span>{:L('LAST_FOLLOW-UP_TIME')}</span><div class="detail-item">{$clue.follow_time|getDates}</div></div>
+
+            <div class="crm-detail-item"><span>{:L('CLUE_LEADER')}</span><div class="detail-item blue0787f6">{$clue.member_name}</div></div>
+
+            <div class="crm-detail-item"><span>{:L('NEXT_CONTACT_TIME')}</span><div class="detail-item">{$clue.nextcontacttime|getDates}</div></div>
+
+            <div class="crm-detail-item"><span>{:L('FOUNDER')}</span><div class="detail-item">{:getCustomerCreateName($clue['creater_id'],$clue['creater_name'])}</div></div>
+
+            <div class="crm-detail-item"><span>{:L('CREATE_TIME')}</span><div class="detail-item">{$clue.createtime|getDates}</div></div>
+
+			<div class="crm-detail-item noborder"><span>{:L('ENTRY_METHOD')}</span><div class="detail-item">{:getCrmEntryMethod($clue['entry_method'])}</div></div>
+
+        </div>
+
+		</div>
+
+        <!-- {:L('CONTACT_RECORD')} -->
+        <div class="crm-detail-main <neq name='detailtype' value='follow'>hidden</neq>" id="follow">
+
+			<div class="crm-detail-item detail-item-head">
+
+				<i class="iconfont icon-info icon-fenxi"></i> <span>{:L('CONTACT_RECORD')}</span>
+
+				<notempty name="isCreateFollowAuth">
+
+					<a href="{:U('Customer/create_follow',['id'=>encrypt($clue['clue_id'],'CLUE'),'detailtype'=>encrypt('follow','CLUE'),'sourcetype'=>'clue'])}" class="fr w-auto gray737e95" id="analysis-edit">{:L('ADD')}</a>
+
+				</notempty>
+
+			</div>
+
+            <div class="detail-main hg100">
+
+                <div class="follow-box">
+
+					{:W('Follow/followList',[$follow])}
+
+                </div>
+
+                <div class="follow-detail-footer hidden" id="follow-comment">
+
+                    <!-- 联系记录评论 -->
+                    <div id="crm-follow">
+
+                        <form id="commentForm">
+
+                            <input type="hidden" name="comment[follow_id]" value="">
+
+                            <div class="follow-input" id="replyCommentInput">
+
+                                <textarea name="comment[content]" class="follow-comment-content" placeholder="{:L('ENTER_COMMENT_CONTENT_HERE')}"></textarea>
+
+                                <a href="javascript:" class="submit-follow" id="submitFollowComment">{:L('SEND')}</a>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+		<div class="crm-detail-main hidden" id="attachment">
+
+			<div class="crm-detail-item detail-item-head">
+
+				<i class="iconfont icon-info icon-fenxi"></i> <span>{:L('ATTACHMENT_LIST')}</span>
+
+			</div>
+
+			<div class="detail-main hg100">
+
+				{:W('Follow/fileList',[$files])}
+
+			</div>
+
+		</div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/mobileSelect/mobileSelect.js"></script>
+
+<script type="text/javascript">
+
+    $(function()
+    {
+//        头部菜单
+        $("#detailMenu").unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+            $("#headerMenu").slideToggle('fast').find('div').removeClass('current').find('span').css({'border-top':'1px solid #eee'});
+
+			if(!$("#detailMenuList").is(':hidden')) $("#detailMenuList").slideToggle('fast');
+
+			if($("#customerDetailMenu").hasClass('current')) $("#customerDetailMenu").removeClass('current');
+
+            $(".menu-operate:first").find('span').css({'border-top':'none'});
+
+            $(".menu-operate").unbind('click').on('click',function()
+            {
+                $("#headerMenu").slideToggle('fast');
+
+                if(!$(this).hasClass('current'))
+                {
+                    $(this).addClass('current').siblings('.menu-operate').removeClass('current');
+
+                    $(this).siblings('.menu-operate:not(":first")').find('span').css({'border-top':'1px solid #eee'});
+
+                    $(this).find('span').css({'border-top':'none'}).parent().next().find('span').css({'border-top':'none'});
+                }
+
+				//                领取线索
+				if($(this).attr('id') === 'draw-clue')
+				{
+					$(".detail-shade").fadeIn('fast').next('.detail-window').fadeIn('fast').find('.window-content').text('{:L(\'CONFIRM_TO_RECEIVE_CLUES\')}');
+
+					$('#cancel-window').on('click',function()
+					{
+						$(".detail-shade,.detail-window").fadeOut('fast');
+					});
+
+					$('#sure-window').unbind('click').on('click',function(e)
+					{
+						e.stopPropagation();
+
+						layer.load(2,{offset:['40%']});
+
+						var clue_id = "{:encrypt($clue['clue_id'],'CLUE')}";
+
+						$.post("{:U('clue/draw')}",{clue_id:clue_id},function(data)
+						{
+							if(data.status === 2)
+							{
+								layer.closeAll('loading');
+
+								layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+								{
+									window.location.reload();
+								});
+							}
+							else
+							{
+								layer.closeAll('loading');
+
+								layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+							}
+						},'JSON')
+					})
+				}
+
+//               转移线索、分配线索
+                if($(this).attr('id') === 'transfer-clue' || $(this).attr('id') === 'allot-clue')
+                {
+                    $('#transfer').toggleClass('transfer-show');
+
+					var postAction = $(this).data('href');
+
+                    if($('.transfer-show').length > 0)
+                    {
+                        layui.use('flow', function ()
+                        {
+                            var flow = layui.flow;
+
+                            flow.load(
+                            {
+                                elem: '#transferItem',
+                                end: '{:L(\'NO_MORE\')}',
+                                done: function (page, next)
+                                {
+                                    $.post("/"+moduleName+"/AjaxRequest/getMember?request=transfer&p=" + page, function (data)
+                                    {
+                                        var lis = [];
+
+                                        var item = '';
+
+                                        $.each(data.data,function(k,v)
+                                        {
+                                            item +="<div class='transfer-item' data-value='"+v.member_id+"'>" +
+                                                    "<span class='ticket-title ellipsis'>"+ v.name+"</span>" +
+                                                    "<span class='iconfont icon-check'></span></div>"
+                                        });
+
+                                        lis.push(item);
+
+                                        next(lis.join(''), page < data.pages);
+
+                                        $('.transfer-item').unbind('click').on('click',function()
+                                        {
+                                            var value = $(this).data('value');
+
+                                            $(this).find('span.iconfont').addClass('icon-radio-checked').parent().siblings().find('span').removeClass('icon-radio-checked');
+
+                                            $('#transfer-id').val(value);
+                                        })
+
+                                    },'JSON');
+                                }
+                            });
+                        });
+
+                        $('#transferDone').unbind('click').on('click',function()
+                        {
+                            var loading = layer.load(2,{offset:['40%']});
+
+                            $.post(postAction,$('#transferForm').serialize(),function(data)
+                            {
+                                if(data.status === 2)
+                                {
+                                    layer.msg(data.msg,{time:1000,offset:['40%']},function()
+                                    {
+                                        window.location.reload();
+                                    });
+                                }
+                                else
+                                {
+                                    layer.close(loading);
+
+                                    layer.msg(data.msg,{time:1500,offset:['40%']});
+                                }
+                            },'JSON');
+                        })
+                    }
+
+                    $('#transferCancel').unbind('click').on('click',function()
+                    {
+                        $('#transfer').toggleClass('transfer-show');
+                    });
+
+                    $('#transferSearch').keyup(function ()
+                    {
+                        var value = $(this).val();
+
+                        var transfer = $('.transfer-item');
+
+                        var transferItem = $('#transferItem');
+
+                        if(value)
+                        {
+                            transferItem.find('.layui-flow-more').fadeOut('fast');
+
+                            transfer.hide().filter(":contains('" + ($(this).val()) + "')").show();
+
+                            if(transfer.filter(":contains('" + ($(this).val()) + "')").length === 0)
+                            {
+                                transferItem.find('.no-match').fadeIn('fast');
+                            }
+                            else
+                            {
+                                transferItem.find('.no-match').fadeOut('fast');
+                            }
+                        }
+                        else
+                        {
+                            transferItem.find('.layui-flow-more').fadeIn('fast');
+
+                            transfer.show();
+
+                            transferItem.find('.no-match').fadeOut('fast');
+                        }
+                    });
+                }
+
+//                放入公海
+                if($(this).attr('id') === 'put-pool')
+                {
+					$('#topool').toggleClass('topool-show');
+
+					if($('.topool-show').length > 0)
+					{
+						$('.topool-item').unbind('click').on('click',function()
+						{
+							var value = $(this).data('value');
+
+							$(this).find('span.iconfont').addClass('icon-radio-checked').parent().siblings().find('span').removeClass('icon-radio-checked');
+
+							$('#topool-id').val(value);
+						})
+
+						$('#topoolDone').unbind('click').on('click',function()
+						{
+							var loading = layer.load(2,{offset:['40%']});
+
+							$.post("{:U('clue/toPool')}",$('#topoolForm').serialize(),function(data)
+							{
+								if(data.status === 2)
+								{
+									layer.msg(data.msg,{time:1000,offset:['40%']},function()
+									{
+										window.location.reload();
+									});
+								}
+								else
+								{
+									layer.close(loading);
+
+									layer.msg(data.msg,{time:1500,offset:['40%']});
+								}
+							},'JSON');
+						})
+					}
+
+					$('#topoolCancel').unbind('click').on('click',function()
+					{
+						$('#topool').toggleClass('topool-show');
+					});
+
+					$('#topoolSearch').keyup(function ()
+					{
+						var value = $(this).val();
+
+						var topool = $('.topool-item');
+
+						var topoolItem = $('#topoolItem');
+
+						if(value)
+						{
+							topoolItem.find('.layui-flow-more').fadeOut('fast');
+
+							topool.hide().filter(":contains('" + ($(this).val()) + "')").show();
+
+							if(topool.filter(":contains('" + ($(this).val()) + "')").length === 0)
+							{
+								topoolItem.find('.no-match').fadeIn('fast');
+							}
+							else
+							{
+								topoolItem.find('.no-match').fadeOut('fast');
+							}
+						}
+						else
+						{
+							topoolItem.find('.layui-flow-more').fadeIn('fast');
+
+							topool.show();
+
+							topoolItem.find('.no-match').fadeOut('fast');
+						}
+					});
+                }
+            });
+
+            $(document).unbind('click').bind('click',function(e)
+            {
+                $("#headerMenu").slideUp('fast');
+            });
+        });
+
+//        客户菜单
+		$("#customerDetailMenu").unbind('click').on('click',function(e)
+		{
+			e.stopPropagation();
+
+			$("#detailMenuList").slideToggle('fast');
+
+			if(!$("#headerMenu").is(':hidden')) $("#headerMenu").slideToggle('fast');
+
+			if($("#customerDetailMenu").hasClass('current'))
+			{
+				$("#customerDetailMenu").removeClass('current');
+			}
+			else
+			{
+				$("#customerDetailMenu").addClass('current');
+			}
+
+			$("#detailMenuList .menu-operate").unbind('click').on('click',function()
+			{
+				$("#detailMenuList").slideToggle('fast');
+
+				$(this).addClass('current').siblings().removeClass('current');
+
+				var value = $(this).data('value');
+
+				$('#'+value).removeClass('hidden').siblings('.crm-detail-main').addClass('hidden');
+
+				$('.customer-detail-tab').find('li[data-value="'+value+'"]').addClass('current').siblings().removeClass('current');
+			});
+
+			$(document).unbind('click').bind('click',function(e)
+			{
+				$("#detailMenuList").slideUp('fast');
+
+				$("#customerDetailMenu").removeClass('current');
+			});
+		});
+
+//        Tab切换
+        $('.customer-detail-tab').find('li').on('click',function()
+        {
+            $(this).addClass('current').siblings().removeClass('current');
+
+            var value = $(this).data('value');
+
+            $('#'+value).removeClass('hidden').siblings('.crm-detail-main').addClass('hidden');
+
+			$("#detailMenuList").find('.menu-operate[data-value="'+value+'"]').addClass('current').siblings().removeClass('current');
+        })
+    });
+
+</script>
+
+<!-- 客户池与添加会员 -->
+<div class="detail-shade"></div>
+
+<div class="detail-window">
+
+    <div class="window-name">{:L('PROMPT')}</div>
+
+    <div class="window-content" id="windowContent"></div>
+
+    <div class="window-footer fts0">
+
+        <a href="javascript:" id="cancel-window">{:L('CANCEL')}</a>
+
+        <a href="javascript:" id="sure-window">{:L('SURE')}</a>
+
+    </div>
+
+</div>
+
+<!-- 转移线索 -->
+<div class="transfer" id="transfer">
+
+    <div class="transfer-shade"></div>
+
+    <form id="transferForm">
+
+        <input type="hidden" name="update_member[clue_id]" value="{$clue.clue_id}">
+
+        <input type="hidden" name="update_member[member_id]" id="transfer-id">
+
+    </form>
+
+    <div class="transfer-content">
+
+        <header>
+
+            <a href="javascript:" class="transfer-cancel" id="transferCancel">{:L('CANCEL')}</a>
+
+            <div class="transfer-search">
+
+                <i class="iconfont icon-search"></i>
+
+                <input type="text" name='' id="transferSearch" placeholder="{:L('ENTER_USER_NAME_TO_SEARCH')}">
+
+            </div>
+
+            <a href="javascript:" class="transfer-ensure" id="transferDone">{:L('COMPLETE')}</a>
+
+        </header>
+
+        <main id="transferItem"><div class="no-match">{:L('NO_MATCH')}</div></main>
+
+    </div>
+
+</div>
+
+<!-- 放入公海 -->
+<div class="topool" id="topool">
+
+	<div class="topool-shade"></div>
+
+	<form id="topoolForm">
+
+		<input type="hidden" name="topool[clue_id]" value="{$clue.clue_id}">
+
+		<input type="hidden" name="topool[abandon_id]" id="topool-id">
+
+	</form>
+
+	<div class="topool-content">
+
+		<header>
+
+			<a href="javascript:" class="topool-cancel" id="topoolCancel">{:L('CANCEL')}</a>
+
+			<div class="topool-search">
+
+				<i class="iconfont icon-search"></i>
+
+				<input type="text" name='' id="topoolSearch" placeholder="{:L('PLEASE_ENTER_KEYWORDS')}">
+
+			</div>
+
+			<a href="javascript:" class="topool-ensure" id="topoolDone">{:L('COMPLETE')}</a>
+
+		</header>
+
+		<main id="topoolItem">
+
+			<volist name="abandons" id="v">
+
+				<div class='topool-item' data-value='{$v.abandon_id}'>
+
+					<span class='ticket-title ellipsis'>{$v.abandon_name}</span>
+
+					<span class='iconfont icon-check'></span>
+
+				</div>
+
+			</volist>
+
+		</main>
+
+	</div>
+
+</div>
+
+<!-- 跟进记录 —— 评论相关 -->
+<script type="text/javascript" src="__PUBLIC__/js/autoHeightTextarea.js"></script>
+
+<script type="text/javascript">
+
+    $('.follow-form-content').autoHeightTextarea();
+
+    $('.follow-comment-content').autoHeightTextarea();
+
+    $('.comment-total').on('click',function()
+    {
+        $(this).siblings('.comment-item:gt(1)').slideToggle('fast');
+    });
+
+    $('.follow-comment-btn').on('click',function(e)
+    {
+        e.stopPropagation();
+
+        var value = $(this).data('value');
+
+        $("input[name='comment[follow_id]']").val(value);
+
+        $('.follow-detail-footer').slideDown('fast');
+
+        $(document).bind('click',function(e)
+        {
+            var target = $(e.target);
+
+            if(target.closest('#follow-comment').length == 0)
+            {
+                $('.follow-detail-footer').slideUp('fast');
+            }
+        })
+    });
+
+	$('#submitFollowComment').unbind('click').on('click',function()
+	{
+		layer.load(2,{offset:['40%']});
+
+		var clue_id = "{:encrypt($clue['clue_id'],'CLUE')}";
+
+		var detailtype = "{:encrypt('follow','CLUE')}";
+
+		var url = "{:U('clue/detail')}?id="+clue_id+"&detailtype="+detailtype;
+
+		$.post("{:U('customer/commentFollow')}",$('#commentForm').serialize(),function(data)
+		{
+			if(data.errcode == 0)
+			{
+				layer.closeAll('loading');
+
+				layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+				{
+					window.location.href = url;
+				});
+			}
+			else
+			{
+				layer.closeAll('loading');
+
+				layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+			}
+		},'JSON')
+	})
+
+    $('.follow-delete').on('click',function()
+    {
+		var follow_id = $(this).data('value');
+
+		var posturl = "{:U('customer/delete_follow')}?id={:encrypt($clue['clue_id'],'CLUE')}&follow_id="+follow_id;
+
+        $(".detail-shade").fadeIn('fast').next('.detail-window').fadeIn('fast').find('.window-content').text('{:L(\'CONFIRM_DELETE_CONTACT_RECORD\')}');
+
+        $('#cancel-window').on('click',function()
+        {
+            $(".detail-shade,.detail-window").fadeOut('fast');
+        });
+
+        $('#sure-window').unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+			layer.load(2,{offset:['40%']});
+
+			var clue_id = "{:encrypt($clue['clue_id'],'CLUE')}";
+
+			var detailtype = "{:encrypt('follow','CLUE')}";
+
+			var url = "{:U('clue/detail')}?id="+clue_id+"&detailtype="+detailtype;
+
+			$.post(posturl,function(data)
+			{
+				if(data.status == 2)
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+					{
+						window.location.href = url;
+					});
+				}
+				else
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+				}
+			},'JSON')
+        })
+    });
+
+	$('.comment-delete').on('click',function()
+    {
+		var comment_id = $(this).data('value');
+
+		var posturl = "{:U('customer/delete_comment')}?id={:encrypt($clue['clue_id'],'CLUE')}&comment_id="+comment_id+"&detailtype={:encrypt('follow','CLUE')}"+"&sourcetype=clue";
+
+        $(".detail-shade").fadeIn('fast').next('.detail-window').fadeIn('fast').find('.window-content').text('{:L(\'CONFIRM_DELETE_COMMENT\')}');
+
+        $('#cancel-window').on('click',function()
+        {
+            $(".detail-shade,.detail-window").fadeOut('fast');
+        });
+
+        $('#sure-window').unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+			layer.load(2,{offset:['40%']});
+
+			var clue_id = "{:encrypt($clue['clue_id'],'CLUE')}";
+
+			var detailtype = "{:encrypt('follow','CLUE')}";
+
+			var url = "{:U('clue/detail')}?id="+clue_id+"&detailtype="+detailtype;
+
+			$.post(posturl,function(data)
+			{
+				if(data.status == 2)
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+					{
+						window.location.href = url;
+					});
+				}
+				else
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+				}
+			},'JSON')
+        })
+    });
+
+</script>
+<script>
+
+	$(function()
+	{
+		if($("#headerMenu").find(".menu-operate").length > 0)
+		{
+			$('#detailMenu').removeClass('hidden');
+		}
+	})
+
+</script>

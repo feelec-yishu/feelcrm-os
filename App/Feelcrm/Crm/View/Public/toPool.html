@@ -1,0 +1,113 @@
+<div class="hidden hg100 div-layerframe feeldesk-form layui-form" id="abandonCust">
+
+	<div class="feeldesk-form pd0 feelcrm-form">
+
+		<div class="layui-tab">
+
+			<ul class="layui-tab-title">
+
+				<li class="tab-title-name">{:L('CHOOSE_GIVE_UP_REASON')}</li>
+
+				<li class="tab-title-btn">
+
+					<eq name="Think.CONTROLLER_NAME" value="Customer">
+
+						<notempty name="customer.customer_id">
+
+							<a href="javascript:abandonOperate('{:U(\'customer/toPool\')}','{:L(\'GIVE_UP\')}','{:encrypt($customer[\'customer_id\'],\'CUSTOMER\')}')" class="layui-btn layui-btn-normal titleSubmit">{:l('SUBMIT')}</a>
+
+							<else/>
+
+							<a href="javascript:abandonOperate('{:U(\'customer/toPool\')}','{:L(\'GIVE_UP\')}')" class="layui-btn layui-btn-normal titleSubmit">{:l('SUBMIT')}</a>
+
+						</notempty>
+
+					<else/>
+
+						<notempty name="clue.clue_id">
+
+							<a href="javascript:abandonOperate('{:U(\'clue/toPool\')}','{:L(\'GIVE_UP\')}','{:encrypt($clue[\'clue_id\'],\'CLUE\')}')" class="layui-btn layui-btn-normal titleSubmit">{:l('SUBMIT')}</a>
+
+							<else/>
+
+							<a href="javascript:abandonOperate('{:U(\'clue/toPool\')}','{:L(\'GIVE_UP\')}')" class="layui-btn layui-btn-normal titleSubmit">{:l('SUBMIT')}</a>
+
+						</notempty>
+
+					</eq>
+
+					<a href="javascript:closeLayerAll();" class="layui-btn layui-btn-normal titleCancel">{:l('CANCEL')}</a>
+
+					<div class="clear"></div>
+
+				</li>
+
+			</ul>
+
+		</div>
+
+	</div>
+
+	<div class="form-content">
+
+		<div class="form-item pb25 pt50 create-both-end">
+
+			<div class="layui-form-item">
+
+				<label class="layui-form-label">
+
+				   {:L('REASON_FOR_GIVING_UP')}
+
+				</label>
+
+				<div class="layui-input-inline">
+
+					<select name="abandon_id" id="abandon_id" lay-ignore >
+
+						<option value="">{:L('CHOOSE_GIVE_UP_REASON')}</option>
+
+						<volist name="abandons" id="v">
+
+							<option value="{$v.abandon_id}" title="{$v.abandon_name}">{$v.abandon_name}</option>
+
+						</volist>
+
+					</select>
+
+					<script>
+
+						$("#abandon_id").select2();
+
+					</script>
+
+				</div>
+
+				<i class="layui-icon layui-icon-about intro-icon" data-note="{:L('ENTER_NAME_SEARCH')}"></i>
+
+			</div>
+
+			<div class="layui-form-item layui-form-item-remark">
+
+				<label class="layui-form-label">{:L('REMARKS')}：</label>
+
+				<div class="layui-input-inline" style="line-height: 32px">
+
+					<eq name="Think.CONTROLLER_NAME" value="Customer">
+
+						{:L('GIVE_UP_REMARK',['name'=>L('CUSTOMER')])}
+
+					<else/>
+
+						{:L('GIVE_UP_REMARK',['name'=>L('CLUE')])}
+
+					</eq>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

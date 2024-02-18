@@ -1,0 +1,66 @@
+<div class="export-content hidden" id="export-content">
+
+	<form action="" method="get" id="exportForm">
+
+		<ul>
+
+			<volist name="export_list" id="v">
+
+				<li>
+
+					<a href="javascript:">{$v.name}</a>
+
+					<input type="checkbox" name="exportList[]" value="{$v.define}" class="hidden" />
+
+				</li>
+
+			</volist>
+
+
+			<div class="clear"></div>
+
+			<li class="export-type">
+
+				<a href="javascript:" class="select-this">{:L('EXPORT_THIS_PAGE')}</a>
+
+				<input type="radio" name="exporttype" value="thisdata" checked class="hidden" />
+
+			</li>
+
+			<li class="export-type">
+
+				<a href="javascript:">{:L('EXPORT_ALL')}</a>
+
+				<input type="radio" name="exporttype" value="alldata" class="hidden" />
+
+			</li>
+
+			<li class="export-type">
+
+				<a href="javascript:">{:L('PAGINATED_EXPORT')}</a>
+
+				<input type="radio" name="exporttype" value="pagedata" class="hidden" />
+
+			</li>
+
+			<span>
+
+				<input type="number" name="startpage" class="export-page-input" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="" /> {:L('PAGE')} --
+
+				<input type="number" name="endpage" class="export-page-input" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="" /> {:L('PAGE')}
+
+				<input type="hidden" name="nowpage" value="{$nowPage}"  />
+
+			</span>
+
+			<div class="clear"></div>
+
+			<div class="export_explain"><span>*</span> {:L('EXPORT_REMARK')}</div>
+
+		</ul>
+
+	   <div class="export-content-footer mb20"><a href="javascript:" class="feelcrm-commbtn" id="toExport">{:L('START_EXPORT')}</a></div>
+
+	</form>
+
+</div>

@@ -1,0 +1,2198 @@
+<include file="Public/header" />
+
+<div class="feeldesk crm-detail" id="formWrapper">
+
+    <header class="relative">
+
+        <div class="menu-header">
+
+            <a href="javascript:history.go(-1)" class="iconfont icon-back-left back"></a>
+
+            <div class="header-title">{:L('CUSTOMER_DETAIL')}</div>
+
+            <a href="javascript:" class="header-right hidden" id="detailMenu"><i class="iconfont icon-menu"></i></a>
+
+            <div class="header-menu" id="headerMenu">
+
+                <b class="menu-mark"></b>
+
+				<notempty name="isEditCustomerAuth">
+
+					<div class='menu-operate'><i class="iconfont icon-xiugai"></i><span><a href="{:U('edit',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('index','CUSTOMER')])}">{:L('MODIFY_CUSTOMER')}</a></span></div>
+
+				</notempty>
+				<!--
+				<notempty name="isLoseCustomerAuth">
+
+					<neq name="customer.is_losed" value="1">
+
+						 <div class='menu-operate' id="lose-customer"><i class="iconfont icon-zhuanyi"></i><span>客户失单</span></div>
+
+					</neq>
+
+				</notempty>
+
+				<notempty name="isDelCustomerAuth">
+
+					<div class='menu-operate'><i class="iconfont icon-delete"></i><span><a href="{:U('delete',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'type'=>encrypt('index','CUSTOMER')])}">{:L('DELETE_CUSTOMER')}</a></span></div>
+
+				</notempty>
+				-->
+
+				<if condition="$customer['member_id'] gt 0">
+
+					<notempty name="istransferCustomerAuth">
+
+						<div class='menu-operate' id="transfer-customer" data-href="{:U('customer/transfer')}"><i class="iconfont icon-zhuanyi"></i><span>{:L('CUSTOMER_TRANSFER')}</span></div>
+
+					</notempty>
+
+					<notempty name="istoPoolCustomerAuth">
+
+						<div class='menu-operate' id="put-pool"><i class="iconfont icon-member"></i><span>{:L('GIVE_UP_CUSTOMERS')}</span></div>
+
+					</notempty>
+
+				<else/>
+
+					<notempty name="isDrawCustomerAuth">
+
+						<div class='menu-operate' id="draw-customer" ><i class="iconfont icon-renwulingquchi"></i><span>{:L('GET_CUSTOMER')}</span></div>
+
+					</notempty>
+
+					<notempty name="isAllotCustomerAuth">
+
+						<div class='menu-operate' id="allot-customer" data-href="{:U('customer/allot')}"><i class="iconfont icon-fenpei2"></i><span>{:L('ASSIGN_CUSTOMER')}</span></div>
+
+					</notempty>
+
+				</if>
+
+				<notempty name="isCreateContacterAuth">
+
+					<div class='menu-operate'><i class="iconfont icon-xiugai"></i><span><a href="{:U('Customer/create_contacter',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('index','CUSTOMER')])}">{:L('ADD_CONTACTS')}</a></span></div>
+
+				</notempty>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <div class="crm-main">
+
+        <div class="customer-detail-tab relative">
+
+            <ul class="fts0">
+
+				<notempty name="isDetailAuthView">
+
+					<li data-value='customer' <eq name='detailtype' value='index'>class="current"</eq>>{:L('CUSTOMER_DETAIL')}</li>
+
+				</notempty>
+
+				<notempty name="isFollowAuthView">
+
+					<li data-value="follow" <eq name='detailtype' value='follow'>class="current"</eq>>{:L('CONTACT_RECORD')}</li>
+
+				</notempty>
+
+				<notempty name="isOpportunityAuthView">
+
+					<li data-value="opportunity" <eq name='detailtype' value='opportunity'>class="current"</eq>>{:L('OPPORTUNITY')}</li>
+
+				</notempty>
+
+				<notempty name="isContractAuthView">
+
+					<li data-value="contract" <eq name='detailtype' value='contract'>class="current"</eq>>{:L('CONTRACT')}</li>
+
+				</notempty>
+
+				<eq name="crmsite.customerReseller" value="1">
+
+				<notempty name="isShipmentAuthView">
+
+					<!--<li data-value="shipment" <eq name='detailtype' value='shipment'>class="current"</eq>>{:L('INVOICING')}</li>-->
+
+				</notempty>
+
+				</eq>
+
+				<if condition="$isFollowAuthView || $isContractAuthView">
+
+					<li data-value="attachment" >{:L('ATTACHMENT')}</li>
+
+				</if>
+
+            </ul>
+
+			<!--下拉菜单-->
+			<div class="customer-detail-tab-more" id="customerDetailMenu"><i class="iconfont icon-faq-directory"></i></div>
+
+			<div class="detail-tab-menu" id="detailMenuList">
+
+				<notempty name="isDetailAuthView">
+
+					<div class="menu-operate <eq name='detailtype' value='index'>current</eq>" data-value='customer' ><span>{:L('CUSTOMER_DETAIL')}</span></div>
+
+				</notempty>
+
+				<notempty name="isFollowAuthView">
+
+					<div class="menu-operate <eq name='detailtype' value='follow'>current</eq>" data-value="follow" ><span>{:L('CONTACT_RECORD')}</span></div>
+
+				</notempty>
+
+				<notempty name="isOpportunityAuthView">
+
+					<div class="menu-operate <eq name='detailtype' value='opportunity'>current</eq>" data-value="opportunity" ><span>{:L('OPPORTUNITY')}</span></div>
+
+				</notempty>
+
+				<notempty name="isContractAuthView">
+
+					<div class="menu-operate <eq name='detailtype' value='contract'>current</eq>" data-value="contract" ><span>{:L('CONTRACT')}</span></div>
+
+				</notempty>
+
+				<eq name="crmsite.customerReseller" value="1">
+
+					<notempty name="isShipmentAuthView">
+
+						<!--<div class="menu-operate <eq name='detailtype' value='shipment'>current</eq>" data-value="shipment" ><span>{:L('INVOICING')}</span></div>-->
+
+					</notempty>
+
+				</eq>
+
+				<if condition="$isFollowAuthView || $isContractAuthView">
+
+					<div class="menu-operate" data-value="attachment" ><span>{:L('ATTACHMENT')}</span></div>
+
+				</if>
+
+			</div>
+
+        </div>
+
+        <!-- 客户详情 -->
+        <div class="crm-detail-main <neq name='detailtype' value='index'>hidden</neq>" id="customer">
+
+        <div class="detail-main">
+
+            <div class="detail-info">
+
+                <div class="crm-title">{$customer.detail.name} <span class="completed-du">({$customer.percent})</span></div>
+
+                <div class="time-status-priority clearfix">
+
+                    <div class="publish-time"><i class="iconfont icon-date"></i><span class="middle">{$customer.createtime|getDates}</span></div>
+
+                    <div class="status-priority">
+
+						<span class="ticket-priority mar0"><eq name="customer.is_trade" value="1">{:L('DEAL_DONE')}<else/>{:L('UNSOLD')}</eq></span>
+
+                       <!-- <span class="ticket-status mar0"><eq name="customer.is_losed" value="1">{:L('HAS_LOST_ORDER')}<else/>{:L('NO_ORDERS_LOST')}</eq></span>-->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="crm-detail-split"></div>
+
+            <div class="crm-detail-item">
+
+                <i class="iconfont icon-info item-icon fts4"></i> <span>{:L('CUSTOMER_INFO')}</span>
+
+            </div>
+
+            <div class="crm-detail-item"><span>{:L('CUSTOMER_NUMBER')}</span><div class="detail-item">{$customer.customer_prefix}{$customer.customer_no}</div></div>
+
+			<eq name="crmsite.customerReseller" value="1">
+
+				<div class="crm-detail-item"><span>{:L('CUSTOMER_TYPE')}</span><div class="detail-item"><eq name="customer.customer_type" value="agent">{:L('DEALER')}<else/>{:L('ORDINARY_CUSTOMER')}</eq></div></div>
+
+			</eq>
+
+			<volist name="customerform" id="vo">
+				<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+				<if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+				<div class="crm-detail-item"><span>{$vo.form_description}</span><div class="detail-item">{$customer['detail'][$vo['form_name']]|default='--'}</div></div>
+
+				</if>
+			</volist>
+
+			<volist name="customerform2" id="vo">
+
+				<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+				<if condition="!$vo['role_id'] || in_array($mobile['role_id'],explode(',',$vo['role_id']))">
+
+				<div class="item-textarea">
+
+					<div class="item-textarea-title">{$vo.form_description}</div>
+
+					<div class="item-textarea-content textareaImg" id="textareaImages">{$customer['detail'][$vo['form_name']]|default='--'}</div>
+
+				</div>
+
+				</if>
+			</volist>
+
+			<script type="text/javascript">
+
+				$(function ()
+				{
+					var textareaImg = $(".textareaImg");
+
+					textareaImg.find('img').each(function(k,v)
+					{
+						$(this).attr('onclick',"openPhotoSwipe("+k+",'textareaImages')");
+					})
+				})
+
+			</script>
+
+            <div class="crm-detail-split"></div>
+
+            <div class="crm-detail-item">
+
+                <i class="iconfont icon-info item-icon fts4"></i> <span>{:L('SYSTEM_MESSAGE')}</span>
+
+            </div>
+
+			<div class="item-textarea">
+
+				<div class="item-textarea-title">{:L('SUBORDINATE_SECTOR')}</div>
+
+				<div class="item-textarea-content">{:CrmgetMemberGroupName($groupList,$customer['group_id'])}</div>
+
+			</div>
+
+            <div class="crm-detail-item"><span>{:L('LAST_FOLLOW-UP_TIME')}</span><div class="detail-item">{$customer.follow_time|getDates}</div></div>
+
+            <div class="crm-detail-item"><span>{:L('CUSTOMER_RESPONSIBLE')}</span><div class="detail-item blue0787f6">{$customer.member_name}</div></div>
+
+            <div class="crm-detail-item"><span>{:L('NEXT_CONTACT_TIME')}</span><div class="detail-item">{$customer.nextcontacttime|getDates}</div></div>
+
+            <div class="crm-detail-item"><span>{:L('FOUNDER')}</span><div class="detail-item">{:getCustomerCreateName($customer['creater_id'],$customer['creater_name'])}</div></div>
+
+            <div class="crm-detail-item"><span>{:L('CREATE_TIME')}</span><div class="detail-item">{$customer.createtime|getDates}</div></div>
+
+            <div class="crm-detail-item noborder"><span>{:L('ENTRY_METHOD')}</span><div class="detail-item">{:getCrmEntryMethod($customer['entry_method'])}</div></div>
+
+        </div>
+
+		<!--联系人-->
+		<div class="detail-main">
+
+			<div class="crm-detail-split"></div>
+
+			<div class="contact-box">
+
+				<empty name="contacter">
+
+					<div class="layui-flow-more">{:L('NO_DATA')}</div>
+
+				<else/>
+
+					<volist name="contacter" id="vo">
+
+						<div class="contact-list">
+
+							<div class="crm-detail-split"></div>
+
+							<div class="crm-detail-item detail-item-head">
+
+								<i class="iconfont icon-info item-icon fts4"></i> <span>{:L('CONTACT')}</span>
+
+								<div class="detail-item contact-icon">
+
+									<notempty name="isEditContacterAuth"><a href="{:U('edit_contacter',['id'=>encrypt($vo['contacter_id'],'CONTACTER'),'detailtype'=>encrypt('index','CUSTOMER')])}" class="iconfont icon-xie"></a></notempty>
+
+									<notempty name="isDeleteContacterAuth"><a href="javascript:" data-value="{:encrypt($vo['contacter_id'],'CONTACTER')}" class="iconfont icon-delete contact-delete"></a></notempty>
+
+								</div>
+
+							</div>
+
+							<div class="clear"></div>
+
+							<volist name="contacterformList" id="v">
+
+								<!-- 字段未设置查看范围或当前用户角色在查看范围内 -->
+								<if condition="!$v['role_id'] || in_array($mobile['role_id'],explode(',',$v['role_id']))">
+
+								<div class="crm-detail-item"><span>{$v.form_description}</span><div class="detail-item">{$vo['detail'][$v['form_name']]|default='--'}
+
+									<eq name='v.form_name' value='name'>
+
+										<eq name="vo.contacter_id" value="$customer.first_contact_id"><span class="first-contact">({:L('PRIMARY')})</span></eq>
+
+									</eq>
+									</div>
+								</div>
+
+								</if>
+
+							</volist>
+
+						</div>
+
+					</volist>
+
+				</empty>
+
+			</div>
+
+		</div>
+
+		<!--{:L('CLIENT_ANALYSIS')}-->
+		<!-- <div class="detail-main">
+
+			<div class="crm-detail-split"></div>
+
+				<form action="{:U('Customer/edit_analysis',['id'=>encrypt($analysis_id,'CUSTOMER'),'customer_id'=>encrypt($customer['customer_id'],'CUSTOMER')])}" id="analysisForm" method="post" class="layui-form">
+
+                <div class="crm-detail-item detail-item-head">
+
+                    <i class="iconfont icon-info icon-fenxi"></i> <span>{:L('CLIENT_ANALYSIS')}</span>
+
+					<notempty name="isEditAnalysisAuth">
+
+						<a href="javascript:showForm('analysis-edit','analysis-done','analysis-list','analysis-form')" class="fr w-auto gray737e95" id="analysis-edit">{:L('EDITOR')}</a>
+
+					</notempty>
+
+                    <a href="javascript:" class="fr w-auto gray737e95 hidden" id="analysis-done">{:L('COMPLETE')}</a>
+
+                </div>
+
+                <div id="analysis-list">
+
+					<volist name="analysisform1" id="vo">
+
+						<div class="crm-detail-item"><span>{$vo.form_description}</span>
+
+							<div class="assign-ticket mr0">{$analysis[$vo['form_name']]|default='&#45;&#45;'}
+
+							<eq name="vo.form_name" value="cycle">
+
+								<notempty name="analysis.cycle">
+									{:L('DAYS')}
+								</notempty>
+
+							</eq>
+							</div>
+						</div>
+
+					</volist>
+
+					<volist name="analysisform2" id="vo">
+
+						<div class="item-textarea">
+
+							<div class="item-textarea-title">{$vo.form_description}</div>
+
+							<div class="item-textarea-content textareaAnalysisImg" id="analysisImages">{$analysis[$vo['form_name']]|default='&#45;&#45;'}</div>
+
+						</div>
+
+					</volist>
+					
+					<script type="text/javascript">
+
+						$(function ()
+						{
+							var textareaImg = $(".textareaAnalysisImg");
+
+							textareaImg.find('img').each(function(k,v)
+							{
+								$(this).attr('onclick',"openPhotoSwipe("+k+",'analysisImages')");
+							})
+						})
+
+					</script>
+
+                </div>
+
+                <div id="analysis-form" class="feeldesk hidden">
+
+				<php>
+					$ft = 0;
+					$reg = 0;
+				</php>
+
+					<notempty name="isEditAnalysisAuth">
+                    <div class="feeldesk-main no-footer-main pd0">
+
+                            <div class="feeldesk-form pd5" id="customer-label2">
+
+                               <volist name="analysisform" id="vo">
+
+									<eq name="vo.form_type" value="region">
+
+										<php>
+											$reg++;
+										</php>
+
+										{:W('Region/getRegionEdit',['analysis_form',$vo['form_name'],$reg,$analysis])}
+
+									<else/>
+
+									 <div class="feeldesk-form-item relative">
+
+										<div class="feeldesk-form-block">
+
+											<eq name="vo.form_type" value="text">
+
+												&lt;!&ndash; 单行文本框 &ndash;&gt;
+												<input type="text" name="analysis_form[{$vo.form_name}]" value="{$analysis[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="phone">
+
+												&lt;!&ndash; 手机 &ndash;&gt;
+												<input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="analysis_form[{$vo.form_name}]" value="{$analysis[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="email">
+
+												&lt;!&ndash; 邮箱 &ndash;&gt;
+												<input type="text" name="analysis_form[{$vo.form_name}]" value="{$analysis[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="number">
+
+												&lt;!&ndash; 数字 &ndash;&gt;
+												<input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="analysis_form[{$vo.form_name}]" value="{$analysis[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="decimal">
+
+												&lt;!&ndash; 小数 &ndash;&gt;
+												<input type="text" name="analysis_form[{$vo.form_name}]" value="{$analysis[$vo['form_name']]}" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="select">
+
+												&lt;!&ndash; 下拉菜单 &ndash;&gt;
+												<select name="analysis_form[{$vo.form_name}]" lay-filter="">
+
+													<option value="">{$vo.form_description}</option>
+
+													<foreach name="vo.option" item="op">
+
+														<option value="{$op}" <eq name="analysis[$vo[form_name]]" value="$op" >selected</eq>>{$op}</option>
+
+													</foreach>
+
+												</select>
+
+											</eq>
+											
+											<eq name="vo.form_type" value="select_text">
+
+												<php>
+													$st++;
+												</php>
+												&lt;!&ndash; 下拉填写 &ndash;&gt;
+												{:W('Update/selectTextForm',['analysis',$vo,$st,$analysis])}
+
+											</eq>
+
+											<eq name="vo.form_type" value="checkbox">
+
+												&lt;!&ndash; 多选 &ndash;&gt;
+												<div class="feeldesk-input feeldesk-form-check checkbox">
+
+													<span class='gray9'>{$vo.form_description}</span>
+
+													<i class="feeldesk-edge"></i>
+
+												</div>
+
+												<ul class="feeldesk-option-panel hidden checkboxPanel">
+
+													<volist name="vo.option" id="op">
+
+														<li data-value="{$op}">
+
+															<input type="checkbox" name="analysis_form[{$vo.form_name}][]" <in name="op" value="$analysis[$vo[form_name]]">checked</in> value="{$op}"/>
+
+															<div class="feeldesk-option">
+
+																<span class="feeldesk-option-title">{$op}</span>
+
+																<span class="iconfont icon-check <in name="op" value="$analysis[$vo[form_name]]">icon-checkbox-checked</in>"></span>
+
+															</div>
+
+														</li>
+
+													</volist>
+
+												</ul>
+
+											</eq>
+
+											<eq name="vo.form_type" value="radio">
+
+												 &lt;!&ndash; 单选 &ndash;&gt;
+												<div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{$vo.form_description}</span><i class="feeldesk-edge"></i></div>
+
+												<ul class="feeldesk-option-panel radioPanel hidden">
+
+													<input type="hidden" name="analysis_form[{$vo.form_name}]" value="{$analysis[$vo['form_name']]}"/>
+
+													<volist name="vo.option" id="op">
+
+													<li data-name="{$op}" data-value="{$op}">
+
+														<div class="feeldesk-option">
+
+															<span class="feeldesk-option-title">{$op}</span>
+
+															<span class="iconfont icon-check <eq name='analysis[$vo[form_name]]' value='$op' >icon-radio-checked</eq>"></span>
+
+														</div>
+
+													</li>
+
+													</volist>
+
+												</ul>
+
+											</eq>
+
+											&lt;!&ndash; 文本域 &ndash;&gt;
+											<eq name="vo.form_type" value="textarea">
+
+												<textarea name="analysis_form[{$vo.form_name}]" class="feeldesk-input feeldesk-textarea" placeholder="{$vo.form_description}">{$analysis[$vo['form_name']]}</textarea>
+
+											</eq>
+
+											&lt;!&ndash; 时间控件 &ndash;&gt;
+											<eq name="vo.form_type" value="date">
+
+												<php>
+													$ft++;
+												</php>
+
+												<input type="text" name="analysis_form[{$vo.form_name}]" value="{$analysis[$vo['form_name']]}" placeholder="{$vo.form_description}" id="datetime<php>echo $ft;</php>" class="feeldesk-input" readonly />
+
+												<script type="text/javascript">
+
+													$(function()
+													{
+														jeDate("#datetime<php>echo $ft;</php>",{
+															minDate:"1900-01-01",              //最小日期
+															maxDate:"2099-12-31",              //最大日期
+															method:{
+																choose:function (params) {
+
+																}
+															},
+															format: "YYYY-MM-DD hh:mm:ss"
+														});
+													})
+
+												</script>
+
+											</eq>
+
+										</div>
+
+									</div>
+
+									</eq>
+
+								</volist>
+
+                            </div>
+
+
+
+                    </div>
+
+					</notempty>
+
+                </div>
+
+				</form>
+
+                <div class="crm-detail-split"></div>
+
+                &lt;!&ndash; 竞争对手START &ndash;&gt;
+
+				<form action="{:U('Customer/create_competitor',['id'=>encrypt($customer['customer_id'],'CUSTOMER')])}" method="post" class="layui-form">
+                <div class="crm-detail-item detail-item-head">
+
+                    <i class="iconfont icon-info icon-contrast"></i> <span>{:L('COMPETITOR')}</span>
+
+					<notempty name="isCreateCompetitorAuth">
+
+						<a href="javascript:showForm('opponent-add','opponent-done','opponent-list','opponent-form')" class="fr w-auto gray737e95" id="opponent-add">{:L('ADD')}</a>
+
+					</notempty>
+
+                    <a href="javascript:" class="fr w-auto gray737e95 hidden" id="opponent-cancel">{:L('CANCEL')}</a>
+
+                    <a href="javascript:" class="fr w-auto gray737e95 hidden" id="opponent-done">{:L('COMPLETE')}</a>
+
+                </div>
+
+                &lt;!&ndash; {:L('COMPETITOR')} —— 列表 &ndash;&gt;
+                <div id="opponent-list" class="opponent-box mb30">
+
+					<volist name="competitor" id="vo">
+
+						<div class="opponent-item" data-value="{$key}">
+
+							<a href="{:U('Customer/edit_competitor',['id'=>encrypt($vo['competitor_id'],'CUSTOMER'),'customer_id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt($detailtype,'CUSTOMER'),'detail_source'=>'crm'])}" class='clearfix customer-item'>
+
+								<div class='opponent-item-left'>
+
+									<span class='opponent-name ellipsis'>{$vo.detail.name}</span>
+
+								</div>
+
+								<div class='opponent-item-right fr'><span>{:L('DETAIL')}</span></div>
+
+							</a>
+
+						</div>
+
+					</volist>
+
+                </div>
+
+                &lt;!&ndash; {:L('COMPETITOR')} —— 新增 &ndash;&gt;
+				<notempty name="isCreateCompetitorAuth">
+
+                <div id="opponent-form" class="feeldesk hidden">
+
+                    <div class="feeldesk-main no-footer-main pd0">
+
+                        <form action="" id="opponentForm" method="post" class="layui-form">
+
+                            <div class="feeldesk-form pd5">
+
+                                <volist name="competitorform" id="vo">
+
+									<eq name="vo.form_type" value="region">
+
+										<php>
+										$reg++;
+									</php>
+
+									{:W('Region/getRegion',['competitor_form',$vo['form_name'],$reg])}
+
+									<else/>
+
+									 <div class="feeldesk-form-item relative">
+
+										<div class="feeldesk-form-block">
+
+											<eq name="vo.form_type" value="text">
+
+												&lt;!&ndash; 单行文本框 &ndash;&gt;
+												<input type="text" name="competitor_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="phone">
+
+												&lt;!&ndash; 手机 &ndash;&gt;
+												<input type="text" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="competitor_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="email">
+
+												&lt;!&ndash; 邮箱 &ndash;&gt;
+												<input type="text" name="competitor_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="number">
+
+												&lt;!&ndash; 数字 &ndash;&gt;
+												<input type="number" onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57) event.returnValue=false" name="competitor_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="decimal">
+
+												&lt;!&ndash; 小数 &ndash;&gt;
+												<input type="text" name="competitor_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" class="feeldesk-input"/>
+
+											</eq>
+
+											<eq name="vo.form_type" value="select">
+
+												&lt;!&ndash; 下拉菜单 &ndash;&gt;
+												<select name="competitor_form[{$vo.form_name}]" lay-filter="">
+
+													<option value="">{$vo.form_description}</option>
+
+													<foreach name="vo.option" item="op">
+
+														<option value="{$op}" >{$op}</option>
+
+													</foreach>
+
+												</select>
+
+											</eq>
+											
+											<eq name="vo.form_type" value="select_text">
+
+												<php>
+													$st++;
+												</php>
+												&lt;!&ndash; 下拉填写 &ndash;&gt;
+												{:W('Update/selectTextForm',['competitor',$vo,$st])}
+
+											</eq>
+
+											<eq name="vo.form_type" value="checkbox">
+
+												&lt;!&ndash; 多选 &ndash;&gt;
+												<div class="feeldesk-input feeldesk-form-check checkbox">
+
+													<span class='gray9'>{$vo.form_description}</span>
+
+													<i class="feeldesk-edge"></i>
+
+												</div>
+
+												<ul class="feeldesk-option-panel hidden checkboxPanel">
+
+													<volist name="vo.option" id="op">
+
+														<li data-value="{$op}">
+
+															<input type="checkbox" name="competitor_form[{$vo.form_name}][]" value="{$op}"/>
+
+															<div class="feeldesk-option">
+
+																<span class="feeldesk-option-title">{$op}</span>
+
+																<span class="iconfont icon-check"></span>
+
+															</div>
+
+														</li>
+
+													</volist>
+
+												</ul>
+
+											</eq>
+
+											<eq name="vo.form_type" value="radio">
+
+												 &lt;!&ndash; 单选 &ndash;&gt;
+												<div class="feeldesk-input feeldesk-form-check radio name-radio"><span>{$vo.form_description}</span><i class="feeldesk-edge"></i></div>
+
+												<ul class="feeldesk-option-panel radioPanel hidden">
+
+													<input type="hidden" name="competitor_form[{$vo.form_name}]" value=""/>
+
+													<volist name="vo.option" id="op">
+
+													<li data-name="{$op}" data-value="{$op}">
+
+														<div class="feeldesk-option">
+
+															<span class="feeldesk-option-title">{$op}</span>
+
+															<span class="iconfont icon-check"></span>
+
+														</div>
+
+													</li>
+
+													</volist>
+
+												</ul>
+
+											</eq>
+
+											&lt;!&ndash; 文本域 &ndash;&gt;
+											<eq name="vo.form_type" value="textarea">
+
+												<textarea name="competitor_form[{$vo.form_name}]" class="feeldesk-input feeldesk-textarea" placeholder="{$vo.form_description}"></textarea>
+
+											</eq>
+
+											&lt;!&ndash; 时间控件 &ndash;&gt;
+											<eq name="vo.form_type" value="date">
+
+												<php>
+													$ft++;
+												</php>
+
+												<input type="text" name="competitor_form[{$vo.form_name}]" value="" placeholder="{$vo.form_description}" id="datetime<php>echo $ft;</php>" class="feeldesk-input" readonly />
+
+												<script type="text/javascript">
+
+													$(function()
+													{
+														jeDate("#datetime<php>echo $ft;</php>",{
+															minDate:"1900-01-01",              //最小日期
+															maxDate:"2099-12-31",              //最大日期
+															method:{
+																choose:function (params) {
+
+																}
+															},
+															format: "YYYY-MM-DD hh:mm:ss"
+														});
+													})
+
+												</script>
+
+											</eq>
+
+										</div>
+
+									</div>
+
+									</eq>
+
+								</volist>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+				</notempty>
+
+				</form>
+
+            </div>-->
+
+		</div>
+
+        <!-- {:L('CONTACT_RECORD')} -->
+        <div class="crm-detail-main <neq name='detailtype' value='follow'>hidden</neq>" id="follow">
+
+			<div class="crm-detail-item detail-item-head">
+
+				<i class="iconfont icon-info icon-fenxi"></i> <span>{:L('CONTACT_RECORD')}</span>
+
+				<notempty name="isCreateFollowAuth">
+
+					<a href="{:U('Customer/create_follow',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('follow','CUSTOMER')])}" class="fr w-auto gray737e95" id="analysis-edit">{:L('ADD')}</a>
+
+				</notempty>
+
+			</div>
+
+			<div class="crm-detail-item detail-item-head">
+
+				<div class="customer-detail-tab relative">
+
+					<ul class="fts0 pd0">
+
+						<li class="current" onclick="switchFollowContent(this,1)">{:L('WHOLE')}</li>
+						<li class="" onclick="switchFollowContent(this,2)">{:L('CUSTOMER')}</li>
+						<li class="" onclick="switchFollowContent(this,3)">{:L('OPPORTUNITY')}</li>
+						<li class="" onclick="switchFollowContent(this,4)">{:L('CLUE')}</li>
+
+					</ul>
+				</div>
+
+			</div>
+
+			<script>
+
+				function switchFollowContent(obj,i)
+				{
+					$(obj).siblings().removeClass('current');
+
+					$('.followContent').hide();
+
+					$(obj).addClass('active');
+
+					$('#followContent'+i).show();
+				}
+
+			</script>
+
+            <div class="detail-main hg100" >
+
+                <div class="follow-box followContent" id="followContent1">
+
+					{:W('Follow/followList',[$follow])}
+
+                </div>
+
+				<div class="follow-box followContent hidden" id="followContent2">
+
+					{:W('Follow/followList',[$customer_follow])}
+
+				</div>
+
+				<div class="follow-box followContent hidden" id="followContent3">
+
+					{:W('Follow/followList',[$opportunity_follow])}
+
+				</div>
+
+				<div class="follow-box followContent hidden" id="followContent4">
+
+					{:W('Follow/followList',[$clue_follow])}
+
+				</div>
+
+                <div class="follow-detail-footer hidden" id="follow-comment">
+
+                    <!-- 联系记录评论 -->
+                    <div id="crm-follow">
+
+                        <form id="commentForm">
+
+                            <input type="hidden" name="comment[follow_id]" value="">
+
+                            <div class="follow-input" id="replyCommentInput">
+
+                                <textarea name="comment[content]" class="follow-comment-content" placeholder="{:L('ENTER_COMMENT_CONTENT_HERE')}"></textarea>
+
+                                <a href="javascript:" class="submit-follow" id="submitFollowComment">{:L('SEND')}</a>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+		<!-- 商机 -->
+		<div class="crm-detail-main <neq name='detailtype' value='opportunity'>hidden</neq>" id="opportunity">
+
+			<div class="detail-main">
+
+				<div class="crm-detail-item detail-item-head">
+
+					<i class="iconfont icon-info item-icon fts4"></i> <span>{:L('OPPORTUNITY_LIST')}</span>
+
+					<notempty name="isCreateOpportunityAuthView">
+
+						<a href="{:U('Opportunity/create',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('opportunity','CUSTOMER')])}" class="fr w-auto gray737e95" >{:L('ADD')}</a>
+
+					</notempty>
+
+				</div>
+
+				<div id="opportunity-list" class="opportunity-box">
+
+
+
+				</div>
+
+			</div>
+
+			<script type="text/javascript">
+
+				layui.use('flow', function()
+				{
+					var flow = layui.flow;
+
+					var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+					var detailtype = "{:encrypt('opportunity','CUSTOMER')}";
+
+					flow.load(
+					{
+						elem: '#opportunity-list',
+						scrollElem:'.detail-main',
+						isAuto:false,
+						done: function(page, next)
+						{
+							var url = "{$Think.ACTION_NAME}";
+
+							var lis = [];
+
+							$.get("{:U('customer/'.ACTION_NAME)}?id="+customer_id+"&detailtype="+detailtype+"&detail_source=crm&p="+page+"&request=flow", function(data)
+							{
+
+								if(data.data.length > 0)
+								{
+									layui.each(data.data, function(index, item)
+									{
+										var detailUrl = "{:U('opportunity/detail')}?id="+item.opportunity_id;
+
+										var items = '<div class="order-item" ><a href="'+detailUrl+'" class="clearfix customer-item"><div class="order-item-left"><span class="order-name ellipsis">'+item.detail.name+'</span></div><div class="order-item-right fr"><span>'+item.detail.stage+'</span></div></a></div>';
+
+										lis.push(items);
+									});
+
+									next(lis.join(''), page < data.pages);
+								}
+								else
+								{
+									var items = "";
+
+									lis.push(items);
+
+									next(lis.join(''), page < data.pages);
+								}
+							});
+
+						}
+					});
+				});
+
+			</script>
+
+		</div>
+
+		<!-- 合同 -->
+
+        <div class="crm-detail-main <neq name='detailtype' value='contract'>hidden</neq>" id="contract">
+
+            <div class="detail-main">
+
+                <div class="crm-detail-item detail-item-head">
+
+                    <i class="iconfont icon-info item-icon fts4"></i> <span>{:L('CONTRACT_LIST')}</span>
+
+					<notempty name="isCreateContractAuthView">
+
+						<a href="{:U('Contract/create',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('contract','CUSTOMER')])}" class="fr w-auto gray737e95" >{:L('ADD')}</a>
+
+					</notempty>
+
+                </div>
+
+                <div id="contract-list" class="contract-box">
+
+
+
+                </div>
+
+            </div>
+
+			<script type="text/javascript">
+
+				layui.use('flow', function()
+				{
+					var flow = layui.flow;
+
+					var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+					var detailtype = "{:encrypt('contract','CUSTOMER')}";
+
+					flow.load(
+					{
+						elem: '#contract-list',
+						scrollElem:'.detail-main',
+						isAuto:false,
+						done: function(page, next)
+						{
+							var url = "{$Think.ACTION_NAME}";
+
+							var lis = [];
+
+							$.get("{:U('customer/'.ACTION_NAME)}?id="+customer_id+"&detailtype="+detailtype+"&detail_source=crm&p="+page+"&request=flow", function(data)
+							{
+
+								if(data.data.length > 0)
+								{
+									layui.each(data.data, function(index, item)
+									{
+										var detailUrl = "{:U('contract/detail')}?id="+item.contract_id;
+
+										var items = '<div class="order-item" data-value="1"><a href="'+detailUrl+'" class="clearfix customer-item"><div class="order-item-left"><span class="order-name ellipsis">'+item.detail.name+'</span></div><div class="order-item-right fr"><span>'+item.member_name+'</span></div></a></div>';
+
+										lis.push(items);
+									});
+
+									next(lis.join(''), page < data.pages);
+								}
+								else
+								{
+									var items = "";
+
+									lis.push(items);
+
+									next(lis.join(''), page < data.pages);
+								}
+							});
+
+						}
+					});
+				});
+
+			</script>
+
+        </div>
+
+		<eq name="crmsite.customerReseller" value="1">
+		<!-- {:L('INVOICING')} -->
+        <div class="crm-detail-main <neq name='detailtype' value='shipment'>hidden</neq>" id="shipment">
+
+            <div class="detail-main">
+
+                <div class="crm-detail-item detail-item-head">
+
+                    <i class="iconfont icon-info item-icon fts4"></i> <span>{:L('IN_STOCK')}</span>
+
+                </div>
+
+                <div id="productStock-list" class="productStock-box">
+
+                    <volist name="productStock" id="vo">
+
+						<div class='productStock-item'>
+
+							<div class='productStock-item-left'>
+
+								<div class='productStock-name ellipsis'>{:L('PRODUCT_NAME')}：{$vo.product_name}</div>
+
+								<div class='productStock-num'>{:L('EXPORT_QUANTITY')}: {$vo.shipment_num}</div>
+
+							</div>
+
+							<div class='productStock-item-right fr'>
+
+								<div class='productStock-name'>{:L('TOTAL_NUMBER_OF_PRODUCTS')}：{$vo.num}</div>
+
+								<div class='productStock-num'>{:L('IN_STOCK')}：{$vo.surplus_num}</div>
+
+							</div>
+
+							<div class="clear"></div>
+
+						</div>
+
+					</volist>
+
+                </div>
+
+				<div class="crm-detail-split"></div>
+
+				<div class="crm-detail-item detail-item-head">
+
+                    <i class="iconfont icon-info item-icon fts4"></i> <span>{:L('SHIPMENT_LIST')}</span>
+
+					<a href="{:U('shipment/create',['id'=>encrypt($customer['customer_id'],'CUSTOMER'),'detailtype'=>encrypt('shipment','CUSTOMER')])}" class="fr w-auto gray737e95">{:L('ADD')}</a>
+
+                </div>
+
+				<div id="shipment-list" class="shipment-box">
+
+
+
+				</div>
+
+            </div>
+
+			<script type="text/javascript">
+
+				layui.use('flow', function()
+				{
+					var flow = layui.flow;
+
+					var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+					var detailtype = "{:encrypt('shipment','CUSTOMER')}";
+
+					var isCreateShipmentAuth = '{$isCreateShipmentAuth}';
+
+					var isEditShipmentAuth = '{$isEditShipmentAuth}';
+
+					var isDeleteShipmentAuth = '{$isDeleteShipmentAuth}';
+
+					flow.load(
+					{
+						elem: '#shipment-list',
+						scrollElem:'.detail-main',
+						isAuto:false,
+						done: function(page, next)
+						{
+							var url = "{$Think.ACTION_NAME}";
+
+							var lis = [];
+
+							$.get("{:U('customer/'.ACTION_NAME)}?id="+customer_id+"&detailtype="+detailtype+"&detail_source=crm&p="+page+"&request=flow", function(data)
+							{
+
+								if(data.data.length > 0)
+								{
+									layui.each(data.data, function(index, item)
+									{
+										var detailTypeShip = "{:encrypt('shipment','SHIPMENT')}";
+
+										var editUrl = "{:U('shipment/edit')}?id="+item.shipment_id+"&detailtype="+detailTypeShip;
+
+										var items = '<div><div class="crm-detail-split"></div><div class="crm-detail-item detail-item-head"><span>{:L(\'SHIPPING_INFORMATION\')}</span><div class="detail-item contact-icon">';
+
+										if(isEditShipmentAuth)
+										{
+											items += '<a href="'+editUrl+'" class="iconfont icon-xie"></a>';
+										}
+
+										if(isDeleteShipmentAuth)
+										{
+											items += '<a href="javascript:;" data-value="'+item.shipment_id+'" class="iconfont icon-delete shipment-delete"></a>';
+										}
+
+										items += '</div></div><div class="clear"></div>';
+
+										items += '<div class="crm-detail-item"><span>{:L(\'DELIVERY_TIME\')}</span><div class="detail-item">'+item.createtime+'</div></div>';
+
+										items += '<div class="crm-detail-item"><span>{:L(\'PRODUCT_NAME\')}</span><div class="detail-item">'+item.product.name+'</div></div>';
+
+										items += '<div class="crm-detail-item"><span>{:L(\'EXPORT_QUANTITY\')}</span><div class="detail-item">'+item.num+'</div></div>';
+
+										items += '<div class="crm-detail-item"><span>{:L(\'TOTAL_SHIPMENT_AMOUNT\')}</span><div class="detail-item">'+item.money+'</div></div>';
+
+										layui.each(data.formList, function(index1, item1)
+										{
+											items += '<div class="crm-detail-item"><span>'+item1.form_description+'</span><div class="detail-item">'+item.detail[item1.form_name]+'</div></div>';
+										});
+
+										items += '</div>';
+
+										lis.push(items);
+									});
+
+									next(lis.join(''), page < data.pages);
+								}
+								else
+								{
+									var items = " ";
+
+									lis.push(items);
+
+									next(lis.join(''), page < data.pages);
+								}
+
+								$('.shipment-delete').on('click',function()
+								{
+									var shipment_id = $(this).data('value');
+
+									$(".detail-shade").fadeIn('fast').next('.detail-window').fadeIn('fast').find('.window-content').text('{:L(\'CONFIRM_DELETE_SHIPPING_INFORMATION\')}');
+
+									$('#cancel-window').on('click',function()
+									{
+										$(".detail-shade,.detail-window").fadeOut('fast');
+									});
+
+									$('#sure-window').unbind('click').on('click',function(e)
+									{
+										e.stopPropagation();
+
+										layer.load(2,{offset:['40%']});
+
+										var detailtype = "{:encrypt('shipment','SHIPMENT')}";
+
+										var url = "{:U('shipment/delete')}?id="+shipment_id+"&detailtype="+detailtype;
+
+										$.post(url,function(data)
+										{
+											if(data.status == 2)
+											{
+												layer.closeAll('loading');
+
+												layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+												{
+													window.location.href = data.url;
+												});
+											}
+											else
+											{
+												layer.closeAll('loading');
+
+												layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+											}
+										},'JSON')
+									})
+								})
+							});
+
+						}
+					});
+				});
+
+			</script>
+
+        </div>
+
+		</eq>
+
+		<div class="crm-detail-main hidden" id="attachment">
+
+			<div class="crm-detail-item detail-item-head">
+
+				<i class="iconfont icon-info icon-fenxi"></i> <span>{:L('ATTACHMENT_LIST')}</span>
+
+			</div>
+
+			<div class="crm-detail-item detail-item-head">
+
+				<div class="customer-detail-tab relative">
+
+					<ul class="fts0 pd0">
+
+						<li class="current" onclick="switchFileContent(this,1)">{:L('WHOLE')}</li>
+
+						<notempty name="isFollowAuthView">
+							<li class="" onclick="switchFileContent(this,2)">{:L('CUSTOMER')}</li>
+							<li class="" onclick="switchFileContent(this,3)">{:L('OPPORTUNITY')}</li>
+							<li class="" onclick="switchFileContent(this,4)">{:L('CLUE')}</li>
+						</notempty>
+
+						<notempty name="isContractAuthView">
+							<li class="" onclick="switchFileContent(this,5)">{:L('CONTRACT')}</li>
+						</notempty>
+
+					</ul>
+				</div>
+
+			</div>
+
+			<script>
+
+				function switchFileContent(obj,i)
+				{
+					$(obj).siblings().removeClass('current');
+
+					$('.fileContent').hide();
+
+					$(obj).addClass('active');
+
+					$('#fileContent'+i).show();
+				}
+
+			</script>
+
+			<div class="detail-main hg100 fileContent" id="fileContent1">
+
+				{:W('Follow/fileList',[$files])}
+
+			</div>
+
+			<notempty name="isFollowAuthView">
+
+				<div class="detail-main hg100 fileContent hidden" id="fileContent2">
+
+					{:W('Follow/fileList',[$file_customer])}
+
+				</div>
+
+				<div class="detail-main hg100 fileContent hidden" id="fileContent3">
+
+					{:W('Follow/fileList',[$file_opportunity])}
+
+				</div>
+
+				<div class="detail-main hg100 fileContent hidden" id="fileContent4">
+
+					{:W('Follow/fileList',[$file_clue])}
+
+				</div>
+
+			</notempty>
+
+			<notempty name="isContractAuthView">
+
+				<div class="detail-main hg100 fileContent hidden" id="fileContent5">
+
+					{:W('Follow/fileList',[$file_contract])}
+
+				</div>
+
+			</notempty>
+
+		</div>
+
+    </div>
+
+</div>
+
+
+<!-- {:L('CLIENT_ANALYSIS')} -->
+<script type="text/javascript">
+
+    function showForm(edit,done,list,form)
+    {
+        $('#'+edit).addClass('hidden');
+
+        $('#'+list).addClass('hidden');
+
+        $("#"+done+",#"+form).removeClass('hidden');
+
+        $("#"+done).prev('#opponent-cancel').removeClass('hidden');
+    }
+
+    $(function()
+    {
+        $('#analysis-done').on('click',function()
+        {
+			var loading = layer.load(2);
+
+			var formObj = $(this).parents('form');
+
+			var action = formObj.attr('action');
+
+			var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+			var detailtype = "{:encrypt('index','CUSTOMER')}";
+
+			var url = "{:U('customer/detail')}?id="+customer_id+"&detailtype="+detailtype;
+
+			$.post(action,formObj.serialize(),function(data)
+            {
+                if(data.status == 2)
+                {
+                   layer.msg(data.msg,{time:1000},function()
+					{
+						window.location.href = url;
+					});
+
+                }
+                else
+                {
+                    layer.msg(data.msg,{time:1000});
+                }
+
+                layer.close(loading);
+            });
+
+        });
+
+
+        $('#opponent-cancel').on('click',function()
+        {
+            $('#opponent-done,#opponent-form,#opponent-cancel').addClass('hidden');
+
+            $('#opponent-add,#opponent-list').removeClass('hidden');
+        });
+
+        $('#opponent-done').on('click',function()
+        {
+            var loading = layer.load(2);
+
+			var formObj = $(this).parents('form');
+
+			var action = formObj.attr('action');
+
+			var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+			var detailtype = "{:encrypt('index','CUSTOMER')}";
+
+			var url = "{:U('customer/detail')}?id="+customer_id+"&detailtype="+detailtype;
+
+			$.post(action,formObj.serialize(),function(data)
+            {
+                if(data.status == 2)
+                {
+                   layer.msg(data.msg,{time:1000},function()
+					{
+						window.location.href = url;
+					});
+
+                }
+                else
+                {
+                    layer.msg(data.msg,{time:1000});
+                }
+
+                layer.close(loading);
+            });
+
+        });
+
+        $("#opponentBack").unbind('click').on('click',function()
+        {
+            $("#opponentFormWrapper").animate({'z-index': '1',left:'100%'}, "700").fadeOut("fast").siblings('#formWrapper').animate({'z-index': '0',right:'0'}, "700");
+        });
+    })
+
+</script>
+
+<script type="text/javascript" src="__PUBLIC__/js/mobileSelect/mobileSelect.js"></script>
+
+<script type="text/javascript">
+
+    $(function()
+    {
+//        头部菜单
+        $("#detailMenu").unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+            $("#headerMenu").slideToggle('fast').find('div').removeClass('current').find('span').css({'border-top':'1px solid #eee'});
+
+			if(!$("#detailMenuList").is(':hidden')) $("#detailMenuList").slideToggle('fast');
+
+			if($("#customerDetailMenu").hasClass('current')) $("#customerDetailMenu").removeClass('current');
+
+            $(".menu-operate:first").find('span').css({'border-top':'none'});
+
+            $(".menu-operate").unbind('click').on('click',function()
+            {
+                $("#headerMenu").slideToggle('fast');
+
+                if(!$(this).hasClass('current'))
+                {
+                    $(this).addClass('current').siblings('.menu-operate').removeClass('current');
+
+                    $(this).siblings('.menu-operate:not(":first")').find('span').css({'border-top':'1px solid #eee'});
+
+                    $(this).find('span').css({'border-top':'none'}).parent().next().find('span').css({'border-top':'none'});
+                }
+
+				//领取客户
+				if($(this).attr('id') === 'draw-customer')
+				{
+					$(".detail-shade").fadeIn('fast').next('.detail-window').fadeIn('fast').find('.window-content').text('{:L(\'CONFIRM_TO_RECEIVE_CUSTOMERS\')}');
+
+					$('#cancel-window').on('click',function()
+					{
+						$(".detail-shade,.detail-window").fadeOut('fast');
+					});
+
+					$('#sure-window').unbind('click').on('click',function(e)
+					{
+						e.stopPropagation();
+
+						layer.load(2,{offset:['40%']});
+
+						var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+						$.post("{:U('customer/draw')}",{customer_id:customer_id},function(data)
+						{
+							if(data.status === 2)
+							{
+								layer.closeAll('loading');
+
+								layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+								{
+									window.location.reload();
+								});
+							}
+							else
+							{
+								layer.closeAll('loading');
+
+								layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+							}
+						},'JSON')
+					})
+				}
+
+//               转移客户、分配客户
+                if($(this).attr('id') === 'transfer-customer' || $(this).attr('id') === 'allot-customer')
+                {
+                    $('#transfer').toggleClass('transfer-show');
+
+					var postAction = $(this).data('href');
+
+                    if($('.transfer-show').length > 0)
+                    {
+                        layui.use('flow', function ()
+                        {
+                            var flow = layui.flow;
+
+                            flow.load(
+                            {
+                                elem: '#transferItem',
+                                end: '{:L(\'NO_MORE\')}',
+                                done: function (page, next)
+                                {
+                                    $.post("/"+moduleName+"/AjaxRequest/getMember?request=transfer&p=" + page, function (data)
+                                    {
+                                        var lis = [];
+
+                                        var item = '';
+
+                                        $.each(data.data,function(k,v)
+                                        {
+                                            item +="<div class='transfer-item' data-value='"+v.member_id+"'>" +
+                                                    "<span class='ticket-title ellipsis'>"+ v.name+"</span>" +
+                                                    "<span class='iconfont icon-check'></span></div>"
+                                        });
+
+                                        lis.push(item);
+
+                                        next(lis.join(''), page < data.pages);
+
+                                        $('.transfer-item').unbind('click').on('click',function()
+                                        {
+                                            var value = $(this).data('value');
+
+                                            $(this).find('span.iconfont').addClass('icon-radio-checked').parent().siblings().find('span').removeClass('icon-radio-checked');
+
+                                            $('#transfer-id').val(value);
+                                        })
+
+                                    },'JSON');
+                                }
+                            });
+                        });
+
+                        $('#transferDone').unbind('click').on('click',function()
+                        {
+                            var loading = layer.load(2,{offset:['40%']});
+
+                            $.post(postAction,$('#transferForm').serialize(),function(data)
+                            {
+                                if(data.status === 2)
+                                {
+                                    layer.msg(data.msg,{time:1000,offset:['40%']},function()
+                                    {
+                                        window.location.reload();
+                                    });
+                                }
+                                else
+                                {
+                                    layer.close(loading);
+
+                                    layer.msg(data.msg,{time:1500,offset:['40%']});
+                                }
+                            },'JSON');
+                        })
+                    }
+
+                    $('#transferCancel').unbind('click').on('click',function()
+                    {
+                        $('#transfer').toggleClass('transfer-show');
+                    });
+
+                    $('#transferSearch').keyup(function ()
+                    {
+                        var value = $(this).val();
+
+                        var transfer = $('.transfer-item');
+
+                        var transferItem = $('#transferItem');
+
+                        if(value)
+                        {
+                            transferItem.find('.layui-flow-more').fadeOut('fast');
+
+                            transfer.hide().filter(":contains('" + ($(this).val()) + "')").show();
+
+                            if(transfer.filter(":contains('" + ($(this).val()) + "')").length === 0)
+                            {
+                                transferItem.find('.no-match').fadeIn('fast');
+                            }
+                            else
+                            {
+                                transferItem.find('.no-match').fadeOut('fast');
+                            }
+                        }
+                        else
+                        {
+                            transferItem.find('.layui-flow-more').fadeIn('fast');
+
+                            transfer.show();
+
+                            transferItem.find('.no-match').fadeOut('fast');
+                        }
+                    });
+                }
+
+//                客户池
+				if($(this).attr('id') === 'put-pool')
+				{
+					$('#topool').toggleClass('topool-show');
+
+					if($('.topool-show').length > 0)
+					{
+						$('.topool-item').unbind('click').on('click',function()
+						{
+							var value = $(this).data('value');
+
+							$(this).find('span.iconfont').addClass('icon-radio-checked').parent().siblings().find('span').removeClass('icon-radio-checked');
+
+							$('#topool-id').val(value);
+						})
+
+						$('#topoolDone').unbind('click').on('click',function()
+						{
+							var loading = layer.load(2,{offset:['40%']});
+
+							$.post("{:U('customer/toPool')}",$('#topoolForm').serialize(),function(data)
+							{
+								if(data.status === 2)
+								{
+									layer.msg(data.msg,{time:1000,offset:['40%']},function()
+									{
+										window.location.reload();
+									});
+								}
+								else
+								{
+									layer.close(loading);
+
+									layer.msg(data.msg,{time:1500,offset:['40%']});
+								}
+							},'JSON');
+						})
+					}
+
+					$('#topoolCancel').unbind('click').on('click',function()
+					{
+						$('#topool').toggleClass('topool-show');
+					});
+
+					$('#topoolSearch').keyup(function ()
+					{
+						var value = $(this).val();
+
+						var topool = $('.topool-item');
+
+						var topoolItem = $('#topoolItem');
+
+						if(value)
+						{
+							topoolItem.find('.layui-flow-more').fadeOut('fast');
+
+							topool.hide().filter(":contains('" + ($(this).val()) + "')").show();
+
+							if(topool.filter(":contains('" + ($(this).val()) + "')").length === 0)
+							{
+								topoolItem.find('.no-match').fadeIn('fast');
+							}
+							else
+							{
+								topoolItem.find('.no-match').fadeOut('fast');
+							}
+						}
+						else
+						{
+							topoolItem.find('.layui-flow-more').fadeIn('fast');
+
+							topool.show();
+
+							topoolItem.find('.no-match').fadeOut('fast');
+						}
+					});
+				}
+
+//                添加到会员
+                if($(this).attr('id') === 'add-member')
+                {
+                    $(".detail-shade").fadeIn('fast').next('.detail-window').fadeIn('fast').find('.window-content').text('{:L(\'CONFIRM_TO_ADD_TO_MEMBER\')}');
+
+                    $('#cancel-window').on('click',function()
+                    {
+                        $(".detail-shade,.detail-window").fadeOut('fast');
+                    });
+
+                    $('#sure-window').unbind('click').on('click',function(e)
+                    {
+                        e.stopPropagation();
+
+                        layer.msg('{:L(\'SUBMIT_SUCCESS\')}');
+
+                        $(".detail-shade,.detail-window").fadeOut('fast');
+                    })
+                }
+            });
+
+            $(document).unbind('click').bind('click',function(e)
+            {
+                $("#headerMenu").slideUp('fast');
+            });
+        });
+
+//        客户菜单
+		$("#customerDetailMenu").unbind('click').on('click',function(e)
+		{
+			e.stopPropagation();
+
+			$("#detailMenuList").slideToggle('fast');
+
+			if(!$("#headerMenu").is(':hidden')) $("#headerMenu").slideToggle('fast');
+
+			if($("#customerDetailMenu").hasClass('current'))
+			{
+				$("#customerDetailMenu").removeClass('current');
+			}
+			else
+			{
+				$("#customerDetailMenu").addClass('current');
+			}
+
+			$("#detailMenuList .menu-operate").unbind('click').on('click',function()
+			{
+				$("#detailMenuList").slideToggle('fast');
+
+				$(this).addClass('current').siblings().removeClass('current');
+
+				var value = $(this).data('value');
+
+				$('#'+value).removeClass('hidden').siblings('.crm-detail-main').addClass('hidden');
+
+				$('.customer-detail-tab').find('li[data-value="'+value+'"]').addClass('current').siblings().removeClass('current');
+			});
+
+			$(document).unbind('click').bind('click',function(e)
+			{
+				$("#detailMenuList").slideUp('fast');
+
+				$("#customerDetailMenu").removeClass('current');
+			});
+		});
+
+//        Tab切换
+        $('.customer-detail-tab').find('li').on('click',function()
+        {
+            $(this).addClass('current').siblings().removeClass('current');
+
+            var value = $(this).data('value');
+
+            $('#'+value).removeClass('hidden').siblings('.crm-detail-main').addClass('hidden');
+
+			$("#detailMenuList").find('.menu-operate[data-value="'+value+'"]').addClass('current').siblings().removeClass('current');
+        })
+    });
+
+</script>
+
+<!-- 客户池与添加会员 -->
+<div class="detail-shade"></div>
+
+<div class="detail-window">
+
+    <div class="window-name">{:L('PROMPT')}</div>
+
+    <div class="window-content" id="windowContent"></div>
+
+    <div class="window-footer fts0">
+
+        <a href="javascript:" id="cancel-window">{:L('CANCEL')}</a>
+
+        <a href="javascript:" id="sure-window">{:L('SURE')}</a>
+
+    </div>
+
+</div>
+
+<!-- 转移客户 -->
+<div class="transfer" id="transfer">
+
+    <div class="transfer-shade"></div>
+
+    <form id="transferForm">
+
+        <input type="hidden" name="update_member[customer_id]" value="{$customer.customer_id}">
+
+        <input type="hidden" name="update_member[member_id]" id="transfer-id">
+
+    </form>
+
+    <div class="transfer-content">
+
+        <header>
+
+            <a href="javascript:" class="transfer-cancel" id="transferCancel">{:L('CANCEL')}</a>
+
+            <div class="transfer-search">
+
+                <i class="iconfont icon-search"></i>
+
+                <input type="text" name='' id="transferSearch" placeholder="{:L('ENTER_USER_NAME_TO_SEARCH')}">
+
+            </div>
+
+            <a href="javascript:" class="transfer-ensure" id="transferDone">{:L('COMPLETE')}</a>
+
+        </header>
+
+        <main id="transferItem"><div class="no-match">{:L('NO_MATCH')}</div></main>
+
+    </div>
+
+</div>
+
+<!-- 放入公海 -->
+<div class="topool" id="topool">
+
+	<div class="topool-shade"></div>
+
+	<form id="topoolForm">
+
+		<input type="hidden" name="topool[customer_id]" value="{$customer.customer_id}">
+
+		<input type="hidden" name="topool[abandon_id]" id="topool-id">
+
+	</form>
+
+	<div class="topool-content">
+
+		<header>
+
+			<a href="javascript:" class="topool-cancel" id="topoolCancel">{:L('CANCEL')}</a>
+
+			<div class="topool-search">
+
+				<i class="iconfont icon-search"></i>
+
+				<input type="text" name='' id="topoolSearch" placeholder="{:L('PLEASE_ENTER_KEYWORDS')}">
+
+			</div>
+
+			<a href="javascript:" class="topool-ensure" id="topoolDone">{:L('COMPLETE')}</a>
+
+		</header>
+
+		<main id="topoolItem">
+
+			<volist name="abandons" id="v">
+
+				<div class='topool-item' data-value='{$v.abandon_id}'>
+
+					<span class='ticket-title ellipsis'>{$v.abandon_name}</span>
+
+					<span class='iconfont icon-check'></span>
+
+				</div>
+
+			</volist>
+
+		</main>
+
+	</div>
+
+</div>
+
+
+<!-- 跟进记录 —— 评论相关 -->
+<script type="text/javascript" src="__PUBLIC__/js/autoHeightTextarea.js"></script>
+
+<script type="text/javascript">
+
+    $('.follow-form-content').autoHeightTextarea();
+
+    $('.follow-comment-content').autoHeightTextarea();
+
+    $('.comment-total').on('click',function()
+    {
+        $(this).siblings('.comment-item:gt(1)').slideToggle('fast');
+    });
+
+    $('.follow-comment-btn').on('click',function(e)
+    {
+        e.stopPropagation();
+
+        var value = $(this).data('value');
+
+        $("input[name='comment[follow_id]']").val(value);
+
+        $('.follow-detail-footer').slideDown('fast');
+
+        $(document).bind('click',function(e)
+        {
+            var target = $(e.target);
+
+            if(target.closest('#follow-comment').length == 0)
+            {
+                $('.follow-detail-footer').slideUp('fast');
+            }
+        })
+    });
+
+	$('#submitFollowComment').unbind('click').on('click',function()
+	{
+		layer.load(2,{offset:['40%']});
+
+		var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+		var detailtype = "{:encrypt('follow','CUSTOMER')}";
+
+		var url = "{:U('customer/detail')}?id="+customer_id+"&detailtype="+detailtype;
+
+		$.post("{:U('commentFollow')}",$('#commentForm').serialize(),function(data)
+		{
+			if(data.errcode == 0)
+			{
+				layer.closeAll('loading');
+
+				layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+				{
+					window.location.href = url;
+				});
+			}
+			else
+			{
+				layer.closeAll('loading');
+
+				layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+			}
+		},'JSON')
+	})
+
+    $('.follow-delete').on('click',function()
+    {
+		var follow_id = $(this).data('value');
+
+		var posturl = "{:U('delete_follow')}?id={:encrypt($customer['customer_id'],'CUSTOMER')}&follow_id="+follow_id;
+
+        $(".detail-shade").fadeIn('fast').next('.detail-window').fadeIn('fast').find('.window-content').text('{:L(\'CONFIRM_DELETE_CONTACT_RECORD\')}');
+
+        $('#cancel-window').on('click',function()
+        {
+            $(".detail-shade,.detail-window").fadeOut('fast');
+        });
+
+        $('#sure-window').unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+			layer.load(2,{offset:['40%']});
+
+			var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+			var detailtype = "{:encrypt('follow','CUSTOMER')}";
+
+			var url = "{:U('customer/detail')}?id="+customer_id+"&detailtype="+detailtype;
+
+			$.post(posturl,function(data)
+			{
+				if(data.status == 2)
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+					{
+						window.location.href = url;
+					});
+				}
+				else
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+				}
+			},'JSON')
+        })
+    });
+
+	$('.comment-delete').on('click',function()
+    {
+		var comment_id = $(this).data('value');
+
+		var posturl = "{:U('delete_comment')}?id={:encrypt($customer['customer_id'],'CUSTOMER')}&comment_id="+comment_id;
+
+        $(".detail-shade").fadeIn('fast').next('.detail-window').fadeIn('fast').find('.window-content').text('{:L(\'CONFIRM_DELETE_COMMENT\')}');
+
+        $('#cancel-window').on('click',function()
+        {
+            $(".detail-shade,.detail-window").fadeOut('fast');
+        });
+
+        $('#sure-window').unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+			layer.load(2,{offset:['40%']});
+
+			var customer_id = "{:encrypt($customer['customer_id'],'CUSTOMER')}";
+
+			var detailtype = "{:encrypt('follow','CUSTOMER')}";
+
+			var url = "{:U('customer/detail')}?id="+customer_id+"&detailtype="+detailtype;
+
+			$.post(posturl,function(data)
+			{
+				if(data.status == 2)
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+					{
+						window.location.href = url;
+					});
+				}
+				else
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+				}
+			},'JSON')
+        })
+    });
+
+    $('.contact-delete').on('click',function()
+    {
+		var contacter_id = $(this).data('value');
+
+		var detailtype = "{:encrypt('index','CUSTOMER')}";
+
+		var url = "{:U('delete_contacter')}?id="+contacter_id+"&detailtype="+detailtype;
+
+        $(".detail-shade").fadeIn('fast').next('.detail-window').fadeIn('fast').find('.window-content').text('{:L(\'CONFIRM_DELETE_CONTACT\')}');
+
+        $('#cancel-window').on('click',function()
+        {
+            $(".detail-shade,.detail-window").fadeOut('fast');
+        });
+
+        $('#sure-window').unbind('click').on('click',function(e)
+        {
+            e.stopPropagation();
+
+			layer.load(2,{offset:['40%']});
+
+			$.post(url,function(data)
+			{
+				if(data.status == 2)
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:1,time:1000,offset:['150px']},function()
+					{
+						window.location.href = data.url;
+					});
+				}
+				else
+				{
+					layer.closeAll('loading');
+
+					layer.msg(data.msg,{icon:2,time:1500,offset:['150px']});
+				}
+			},'JSON')
+        })
+    })
+
+</script>
+<script>
+
+	$(function()
+	{
+		if($("#headerMenu").find(".menu-operate").length > 0)
+		{
+			$('#detailMenu').removeClass('hidden');
+		}
+	})
+
+</script>

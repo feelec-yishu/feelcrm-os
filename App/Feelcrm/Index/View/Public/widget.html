@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
+	<title>{:C('WEB_TITLE')}</title>
+
+	<link rel="stylesheet" href="__PUBLIC__/css/common.css"/>
+
+	<link rel="stylesheet" href="INDEX_PUBLIC_CSS/style.css"/>
+
+	<link rel="stylesheet" href="INDEX_PUBLIC_CSS/index.css"/>
+
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/js/layui/css/layui.css"/>
+
+	<link rel="stylesheet" href="{:C('PC_ICON_HTTP')}">
+
+	<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.1.min.js"></script>
+
+	<script type="text/javascript" src="__PUBLIC__/js/lang/{$Think.cookie.think_language|getStrToLower}.js"></script>
+
+	<script type="text/javascript" src="__PUBLIC__/js/layer/layer.js"></script>
+
+	<script type="text/javascript" src="__PUBLIC__/js/layui/layui.js"></script>
+
+	<script type="text/javascript" src="INDEX_PUBLIC_JS/global.js"></script>
+
+	<!--    <script type="text/javascript" src="__PUBLIC__/js/Lodop/LodopFuncs.js"></script>-->
+
+</head>
+
+<body>
+
+<div class="ticket-main">
+
+	<div class="ticket-main-left">
+
+		<div class="feeldesk-leftMenu hg100">
+
+			<div class="feeldesk-menu-logo first-menu-logo">
+
+				<a href="{:U('Index/welcome')}" target='ticketRightMain' title="{:L('HOMEPAGE')}">
+
+					<img src="{$index.firmLogo|default='__PUBLIC__/img/feelCrm.png'}" alt="">
+
+				</a>
+
+			</div>
+
+			<div class="feeldesk-menu-item">
+
+				<block name="menu"></block>
+
+			</div>
+
+		</div>
+
+	</div>
