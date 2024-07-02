@@ -52,32 +52,32 @@
 
    <br />
 
-  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E7%BA%BF%E7%B4%A2%E7%AE%A1%E7%90%86.jpg" alt="" align=center/>
+  <img src="https://foruda.gitee.com/images/1719899763442725748/48563912_10375455.png" alt="" align=center/>
 
 
 - 客户管理
 
    <br />
 
-  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E5%AE%A2%E6%88%B7%E7%AE%A1%E7%90%86.jpg" alt="" align=center/>
+  <img src="https://foruda.gitee.com/images/1719899729689237284/d8ea5ce2_10375455.png" alt="" align=center/>
 
 
 - 商机管理
 
    <br />
 
-  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E5%95%86%E6%9C%BA.jpg" alt="" align=center/>
+  <img src="https://foruda.gitee.com/images/1719899745791738212/43945090_10375455.png" alt="" align=center/>
 
 
 - 系统设置
 
    <br />
 
-  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE.jpg" alt="" align=center/>
+  <img src="https://foruda.gitee.com/images/1719899758391968169/1192c617_10375455.png" alt="" align=center/>
 
 
 - 自定义字段
 
    <br />
 
-  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AD%97%E6%AE%B5.jpg" alt="" align=center/>
+  <img src="https://foruda.gitee.com/images/1719899768480416316/98fa32b9_10375455.png" alt="" align=center/>
