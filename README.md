@@ -45,7 +45,7 @@
 
    <br />
 
-  <img src="https://qiniu.feelec.net/install/open/v3-crm/%E9%A6%96%E9%A1%B5.jpg" alt="" align=center/>
+  <img src="https://foruda.gitee.com/images/1719899751616244978/5ae1b429_10375455.png" alt="" align=center/>
 
 
 - 线索管理
