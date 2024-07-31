@@ -29,7 +29,7 @@
 
 # 开源项目部署文档
 
-[FeelCRM开源版安装部署文档](https://wiki.feelec.com.cn/zyplayer-doc-manage/doc-wiki#/page/share/view?pageId=297&space=f5d0a27926d64cafbe69190174cbef64)
+[FeelCRM开源版安装部署文档](https://bihuan.feelec.com.cn/#/withoutKnowledge?id=4f0f798ac4b8bc49257d3a713a8bd5f1&dataId=ac869bed632ddaf2beb59343c18474b8)
 
 - $\color{red}{按安装文档操作即可，已无数次成功安装，不成功请检查自己的安装步骤}$
 - $\color{red}{由于项目较多，无法回应大家的安装类问题；}$
