@@ -35,8 +35,8 @@
 - $\color{red}{由于项目较多，无法回应大家的安装类问题；}$
 # 体验FeelCRM
 * 网站地址：https://www.feelcrm.cn
-* 开源版测试账号以及商用授权： https://app.feelec.com.cn/
-* 体验账号：公司ID：feeltest  用户名：crmtest  密码：123456；
+* 开源版测试账号以及商用授权： https://crm.feelec.com.cn/
+* 体验账号：用户名：crmtest  密码：123456；
 * 推荐大家使用SAAS版本，包含了更多功能：企微助手、工作手机、CRM、工单等；
 * SAAS地址：https://www.bihuanyun.com/
 
