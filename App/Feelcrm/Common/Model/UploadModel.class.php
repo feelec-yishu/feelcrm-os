@@ -648,16 +648,36 @@ class UploadModel extends Model
 
 			if(!file_exists($file)) $file = '.'.$file;
 
-			if(unlink($file))
-			{
-				$data = ['status'=>1,'msg'=>L('DELETE_SUCCESS')];
+            # 项目上传目录
+            $crm_save_path = realpath(APP_PATH.'../../').'/Web/Attachs/Uploads';
 
-				$this->deleteDir(dirname($file));
-			}
-			else
-			{
-				$data = ['status'=>0,'msg'=>L('DELETE_FAILED')];
-			}
+            # 文件真实目录
+            $real_path = realpath($file);
+
+            // 统一路径格式（处理Windows反斜杠）
+            $crm_save_path = str_replace('\\', '/', $crm_save_path) . '/';
+            $real_path = str_replace('\\', '/', $real_path);
+
+            # 判断是否为上传文件
+            $isUpload = strpos($real_path . '/', $crm_save_path) === 0;
+
+            if($isUpload)
+            {
+                if(unlink($file))
+                {
+                    $data = ['status'=>1,'msg'=>L('DELETE_SUCCESS')];
+
+                    $this->deleteDir(dirname($file));
+                }
+                else
+                {
+                    $data = ['status'=>0,'msg'=>L('DELETE_FAILED')];
+                }
+            }
+            else
+            {
+                $data = ['status'=>0,'msg'=>L('DELETE_FAILED')];
+            }
 
 			return $data;
 		}
