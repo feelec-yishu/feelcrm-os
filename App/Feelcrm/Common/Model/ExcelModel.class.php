@@ -532,8 +532,11 @@ class ExcelModel extends Model
 				unset($cols[$i]);
 			}
 
-			//合并单元格
-			$objActSheet->mergeCells($customerFirst.'2:'.$customerLast.'2');
+            if($customerLast)
+            {
+                //合并单元格
+                $objActSheet->mergeCells($customerFirst.'2:'.$customerLast.'2');
+            }
 
 			$objActSheet->setCellValue($customerFirst.'2','客户相关信息');
 
@@ -556,6 +559,8 @@ class ExcelModel extends Model
 				if($i == 0)
 				{
 					$contacterFirst = $cols[$i];
+
+                    $createtimeFirst = $cols[$i + 1];
 				}
 				elseif($i == (count($contacterHeader) - 1 ))
 				{
@@ -565,7 +570,11 @@ class ExcelModel extends Model
 				}
 			}
 
-			$objActSheet->mergeCells($contacterFirst.'2:'.$contacterLast.'2');
+            if($contacterLast)
+            {
+                //合并单元格
+                $objActSheet->mergeCells($contacterFirst.'2:'.$contacterLast.'2');
+            }
 
 			$objActSheet->setCellValue($contacterFirst.'2','联系人相关信息');
 			$objActSheet->getStyle($contacterFirst.'2')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
