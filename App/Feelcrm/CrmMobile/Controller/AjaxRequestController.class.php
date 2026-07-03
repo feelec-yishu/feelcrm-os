@@ -37,6 +37,11 @@ class AjaxRequestController extends Controller
         $this->member = session('mobile');
 
         $this->_company_id = session('company_id');
+
+        if(!$this->member)
+        {
+            exit('Not Fount 404');
+        }
     }
 
 	public function getCustomerList() //动态获取客户

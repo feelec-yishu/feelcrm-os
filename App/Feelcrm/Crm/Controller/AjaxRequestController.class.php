@@ -37,6 +37,11 @@ class AjaxRequestController extends Controller
         $this->member = session('index');
 
         $this->_company_id = session('company_id');
+
+        if(!$this->member)
+        {
+            exit('Not Fount 404');
+        }
     }
 
     //更新收款、发票的负责人（2021.10.27更新，之前的系统没有负责人字段，数据需更新一下负责人）
